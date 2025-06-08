@@ -15,14 +15,15 @@ start:
     mov ds, ax
 
     ; load kernel from disk to KERNEL_LOAD
-    mov ax, KERNEL_LOAD >> 4
-    mov es, ax
-    xor bx, bx
-    mov ah, 0x02
+    mov ah, 0x02            ; read sectors
     mov al, KERNEL_SECTORS
     mov ch, 0
-    mov cl, 2
+    mov cl, 2               ; starting at sector 2
     mov dh, 0
+    mov dl, [boot_drive]
+    mov bx, 0
+    mov ax, KERNEL_LOAD >> 4
+    mov es, ax
     int 0x13
     jc disk_error
 
