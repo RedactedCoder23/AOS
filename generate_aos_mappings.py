@@ -6,7 +6,7 @@ import sys
 # Files
 NATIVELANG = 'nativelang.txt'
 NEWLANGBIN = 'newlangxbinary.txt'
-UPDATEBINARY = 'updatebinary laang.txt'
+UPDATEBINARY = 'updatebinary_laang.txt'
 
 # Parse nativelang.txt
 
