@@ -65,3 +65,13 @@ Run the memory allocator demo:
 ```bash
 ./examples/ui_demo.sh
 ```
+
+## Checklist Log
+
+The build process writes warnings and errors to `AOS-CHECKLIST.log`.
+Most `make` targets will fail if this log is non-empty.
+Check the file whenever a build fails:
+
+```bash
+cat AOS-CHECKLIST.log
+```

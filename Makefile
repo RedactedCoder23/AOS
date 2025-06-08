@@ -5,6 +5,7 @@ all: host bare
 # 1. Regenerate C sources from text masters
 generate:
 	python3 generate_aos_mappings.py
+	@$(MAKE) -s checklist
 
 # 2. Build host-side test harness
 host: generate
@@ -59,3 +60,10 @@ ui:
 	@echo "→ Building ui demo"
 	@mkdir -p build
 	gcc -Isubsystems/ui subsystems/ui/ui.c subsystems/ui/ui_main.c -lncurses -o build/ui_demo
+
+checklist:
+	@if [ -s AOS-CHECKLIST.log ]; then \
+	echo "Checklist has entries:"; cat AOS-CHECKLIST.log; exit 1; \
+	else \
+	echo "Checklist clean"; \
+	fi

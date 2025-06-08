@@ -2,6 +2,13 @@ import os
 import re
 import sys
 
+LOG_PATH = 'AOS-CHECKLIST.log'
+
+def log(msg):
+    with open(LOG_PATH, 'a') as lf:
+        lf.write(msg + '\n')
+    print(msg)
+
 # Files
 NATIVELANG = 'nativelang.txt'
 NEWLANGBIN = 'newlangxbinary.txt'
@@ -40,7 +47,9 @@ def parse_newlangbin(path):
 def parse_categories(path):
     categories = {}
     if not os.path.exists(path):
+        log(f"Error: missing {path}")
         return categories
+    seen = {}
     with open(path) as f:
         next(f, None)  # skip header
         for line in f:
@@ -48,8 +57,13 @@ def parse_categories(path):
             if len(parts) < 3:
                 continue
             _, name, hexid = parts
-            sanitized = re.sub(r'[^A-Za-z0-9_]', '_', name.upper())
-            macro = 'CAT_' + sanitized.replace(' ', '_')
+            sanitized = re.sub(r'[^A-Za-z0-9]', '_', name.upper())
+            sanitized = re.sub(r'_+', '_', sanitized)
+            macro = 'CAT_' + sanitized
+            if sanitized in seen:
+                log(f"Warning: duplicate category macro {macro} for '{name}' and '{seen[sanitized]}'")
+                continue
+            seen[sanitized] = name
             categories[name] = (macro, int(hexid, 16))
     return categories
 
@@ -68,6 +82,19 @@ def get_category(cmd, categories):
 
 def handler_name(cmd):
     return 'cmd_' + cmd.lower().replace(' ', '_') + '_wrapper'
+
+
+def handler_exists(name):
+    for root, _, files in os.walk('.'):  # search source tree
+        for fn in files:
+            if fn.endswith('.c'):
+                try:
+                    with open(os.path.join(root, fn)) as f:
+                        if re.search(r'\b' + re.escape(name) + r'\b', f.read()):
+                            return True
+                except Exception:
+                    pass
+    return False
 
 
 def generate_files(cmd_list, bin_list, categories):
@@ -101,6 +128,9 @@ def generate_files(cmd_list, bin_list, categories):
 
 
 def main():
+    # reset checklist log
+    open(LOG_PATH, 'w').close()
+
     cmds = parse_nativelang(NATIVELANG)
     bins_all = parse_newlangbin(NEWLANGBIN)
     cats = parse_categories(UPDATEBINARY)
@@ -119,18 +149,21 @@ def main():
     for cmd, binary, _ in bins:
         cat = get_category(cmd, cats)
         if cat is None:
-            print(f'Warning: no category for command {cmd}')
+            log(f'Warning: no category for command {cmd}')
             continue
         cat_id = cats[cat][1]
         if len(binary) == 0:
-            print(f'Error: empty binary for {cmd}')
+            log(f'Error: empty binary for {cmd}')
             sys.exit(1)
         first_digit = int(binary[0], 16)
         if first_digit != cat_id:
-            print(f'Warning: category ID mismatch for {cmd}: expected {cat_id:X}, got {binary[0]}')
+            log(f'Warning: category ID mismatch for {cmd}: expected {cat_id:X}, got {binary[0]}')
+
+        if not handler_exists(handler_name(cmd)):
+            log(f'Warning: missing handler stub for {cmd} ({handler_name(cmd)})')
 
     generate_files(cmds, bins, cats)
-    print('✅ Generated command_map.c, commands.c, and category_defs.h')
+    print('Generated command_map.c, commands.c, and category_defs.h')
 
 if __name__ == '__main__':
     main()
