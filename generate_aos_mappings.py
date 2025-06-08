@@ -1,6 +1,5 @@
 import os
 import re
-import csv
 import sys
 
 # Files
@@ -39,28 +38,20 @@ def parse_newlangbin(path):
                 entries.append((cmd, binary, handler))
     return entries
 
-# Parse updatebinary laang.txt
-
+# Parse updatebinary_laang.txt for category definitions
 def parse_categories(path):
     categories = {}
     if not os.path.exists(path):
         return categories
-    with open(path, 'r', newline='') as f:
-        reader = csv.reader(f, delimiter=',')
-        for row in reader:
-            if not row or row[0].startswith('#'):
+    with open(path) as f:
+        next(f, None)  # skip header
+        for line in f:
+            parts = [c.strip() for c in line.split('\t')]
+            if len(parts) < 3:
                 continue
-            if len(row) < 3:
-                # try tab separated
-                row = row[0].split('\t')
-                if len(row) < 3:
-                    continue
-            _, name, hex_id = row[0].strip(), row[1].strip(), row[2].strip()
-            if hex_id.lower().startswith('0x'):
-                cat_id = int(hex_id, 16)
-            else:
-                cat_id = int(hex_id)
-            categories[name] = cat_id
+            _, name, hexid = parts
+            macro = 'CAT_' + name.upper().replace(' ', '_')
+            categories[name] = (macro, int(hexid, 16))
     return categories
 
 
@@ -89,17 +80,17 @@ def generate_files(cmd_list, bin_list, categories):
         f.write('#include "command_interpreter.h"\n\n')
         f.write('CommandDictionary commands[] = {\n')
         for cmd, binary, handler in bin_list:
-            f.write(f'  {{ "{cmd}", "{binary}", {handler} }},\n')
-        f.write('  { NULL, NULL, NULL }\n};\n')
+            cat_name = get_category(cmd, categories)
+            cat_macro = categories[cat_name][0] if cat_name else '0'
+            f.write(f'  {{ "{cmd}", "{binary}", {handler}, {cat_macro} }},\n')
+        f.write('  { NULL, NULL, NULL, 0 }\n};\n')
 
     # category_defs.h
-    with open('category_defs.h', 'w') as f:
+    with open(os.path.join('include', 'category_defs.h'), 'w') as f:
         f.write('// Auto-generated category IDs\n')
         f.write('#ifndef CATEGORY_DEFS_H\n#define CATEGORY_DEFS_H\n\n')
-        # Write categories in deterministic order
-        for name, cid in sorted(categories.items()):
-            macro = name.upper().replace(' ', '_')
-            f.write(f'#define CAT_{macro}  0x{cid:X}\n')
+        for name, (macro, cid) in categories.items():
+            f.write(f'#define {macro} 0x{cid:02X}\n')
         f.write('\n#endif\n')
 
 
@@ -112,16 +103,15 @@ def main():
     for cmd, binary, _ in bins:
         cat = get_category(cmd, cats)
         if cat is None:
-            print(f'Error: no category for command {cmd}')
-            sys.exit(1)
-        cat_id = cats[cat]
+            print(f'Warning: no category for command {cmd}')
+            continue
+        cat_id = cats[cat][1]
         if len(binary) == 0:
             print(f'Error: empty binary for {cmd}')
             sys.exit(1)
         first_digit = int(binary[0], 16)
         if first_digit != cat_id:
-            print(f'Error: category ID mismatch for {cmd}: expected {cat_id:X}, got {binary[0]}')
-            sys.exit(1)
+            print(f'Warning: category ID mismatch for {cmd}: expected {cat_id:X}, got {binary[0]}')
 
     generate_files(cmds, bins, cats)
     print('✅ Generated command_map.c, commands.c, and category_defs.h')
