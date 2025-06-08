@@ -1,9 +1,9 @@
-ASM       = nasm
-ASMFLAGS  = -f bin
-CC        = gcc
-LD        = ld
-CFLAGS    = -ffreestanding -O2 -Wall -Wextra -m32
-LDFLAGS   = -T kernel.ld -m elf_i386
+ASM = nasm
+ASMFLAGS = -f bin
+CC = gcc
+LD = ld
+CFLAGS = -ffreestanding -O2 -Wall -Wextra -m32
+LDFLAGS = -T kernel.ld -m elf_i386
 
 .PHONY: all clean
 
