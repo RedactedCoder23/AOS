@@ -12,6 +12,13 @@ host: generate
 	@mkdir -p build
 	gcc -Iinclude src/*.c command_map.c commands.c -o build/host_test
 
+test: build/utils_test
+	./build/utils_test
+
+build/utils_test: tests/utils_test.c src/utils.c include/utils.h
+	@mkdir -p build
+	gcc -Iinclude tests/utils_test.c src/utils.c -o build/utils_test
+
 # 3. Build bare-metal image
 bare: generate
 	@echo "\u2192 Building bare-metal image"
