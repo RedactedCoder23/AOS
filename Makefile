@@ -1,4 +1,4 @@
-.PHONY: all generate host bare clean
+.PHONY: all generate host bare run clean
 
 all: host bare
 
@@ -14,9 +14,21 @@ host: generate
 
 # 3. Build bare-metal image
 bare: generate
-	@echo "→ Assembling bare-metal bootloader"
+	@echo "\u2192 Building bare-metal image"
 	@cd bare_metal_os && make clean && make all
-	@cp bare_metal_os/bootloader.bin aos.bin
+	@cp bare_metal_os/aos.bin aos.bin
+
+.PHONY: run
+
+# Build and launch in QEMU
+run: bare
+	@echo "\u2192 Running AOS in QEMU"
+	@sh -c '\
+  if which qemu-system-x86_64 >/dev/null 2>&1; then EMU=qemu-system-x86_64; \
+  elif which qemu-system-i386 >/dev/null 2>&1; then EMU=qemu-system-i386; \
+  else echo "Error: please install qemu-system-x86_64 or qemu-system-i386" && exit 1; \
+  fi; \
+  $$EMU -drive format=raw,file=aos.bin -serial stdio'
 
 clean:
 	@echo "→ Cleaning build artifacts"
