@@ -33,3 +33,35 @@ make run
 ```
 
 This invokes QEMU (preferring `qemu-system-x86_64`) and attaches the serial console to your terminal. If no QEMU binary is found, the command prints an error message.
+
+## Memory Subsystem Demo
+
+Run the memory allocator demo:
+
+```bash
+./examples/memory_demo.sh
+```
+
+## Filesystem Demo
+
+```bash
+./examples/fs_demo.sh
+```
+
+## AI Demo
+
+```bash
+./examples/ai_demo.sh
+```
+
+## Branch Manager Demo
+
+```bash
+./examples/branch_demo.sh
+```
+
+## UI Graph Demo
+
+```bash
+./examples/ui_demo.sh
+```

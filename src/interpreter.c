@@ -7,11 +7,9 @@ void add_command(const char *name, void (*handler)()) {
 }
 
 void cmd_hello_wrapper(void) {
-    // TODO: implement
-    printf("Executed HELLO\n");
+    printf("Hello, AOS!\n");
 }
 
 void cmd_bye_wrapper(void) {
-    // TODO: implement
-    printf("Executed BYE\n");
+    printf("Goodbye from AOS!\n");
 }
