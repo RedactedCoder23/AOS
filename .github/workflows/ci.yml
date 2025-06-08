@@ -15,8 +15,8 @@ jobs:
       - name: Build bare metal
         run: make bare
       - name: Run under QEMU
-        run: make run RUN_OPTS="-nographic -serial stdio"
+        run: make run RUN_OPTS="-nographic"
       - name: Check serial output
         run: |
-          make run -nographic -serial stdio | tee output.log
+          make run RUN_OPTS="-nographic" | tee output.log
           grep -q "Kernel started" output.log
