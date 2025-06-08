@@ -96,7 +96,8 @@ def generate_files(cmd_list, bin_list, categories):
     with open('category_defs.h', 'w') as f:
         f.write('// Auto-generated category IDs\n')
         f.write('#ifndef CATEGORY_DEFS_H\n#define CATEGORY_DEFS_H\n\n')
-        for name, cid in categories.items():
+        # Write categories in deterministic order
+        for name, cid in sorted(categories.items()):
             macro = name.upper().replace(' ', '_')
             f.write(f'#define CAT_{macro}  0x{cid:X}\n')
         f.write('\n#endif\n')
