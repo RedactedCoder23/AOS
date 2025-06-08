@@ -48,7 +48,8 @@ def parse_categories(path):
             if len(parts) < 3:
                 continue
             _, name, hexid = parts
-            macro = 'CAT_' + name.upper().replace(' ', '_')
+            sanitized = re.sub(r'[^A-Za-z0-9_]', '_', name.upper())
+            macro = 'CAT_' + sanitized.replace(' ', '_')
             categories[name] = (macro, int(hexid, 16))
     return categories
 
@@ -59,6 +60,9 @@ def get_category(cmd, categories):
         up = name.upper()
         if upper_cmd.startswith(up + '_') or upper_cmd.startswith(up + '.') or upper_cmd == up:
             return name
+    # default to Basic System Commands if not matched
+    if 'Basic System Commands' in categories:
+        return 'Basic System Commands'
     return None
 
 
@@ -104,8 +108,12 @@ def main():
     bins = []
     for cmd in cmds:
         binary = bins_all.get(cmd)
-        if binary:
-            bins.append((cmd, binary, None))
+        if not binary:
+            # default binary starts with category id
+            cat = get_category(cmd, cats)
+            cat_id = cats[cat][1] if cat else 0
+            binary = f"{cat_id:01X}" + "0" * 63
+        bins.append((cmd, binary, None))
 
     # Validation
     for cmd, binary, _ in bins:

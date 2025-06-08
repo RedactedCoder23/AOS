@@ -3,7 +3,7 @@ ASMFLAGS = -f bin
 CC = gcc
 LD = ld
 CFLAGS = -ffreestanding -O2 -Wall -Wextra -m32
-LDFLAGS = -T kernel.ld -m elf_i386
+LDFLAGS = -T kernel.ld -m elf_i386 -z separate-code
 
 .PHONY: all clean
 
