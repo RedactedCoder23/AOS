@@ -1,1 +1,8 @@
-command_map.c commands.c category_defs.h
+command_map.c
+commands.c
+category_defs.h
+build/
+aos.bin
+bare_metal_os/*.bin
+bare_metal_os/*.o
+bare_metal_os/*.elf

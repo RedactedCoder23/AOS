@@ -2,6 +2,10 @@
 #include <string.h>
 #include "interpreter.h"
 #include "command_interpreter.h"
+#include "memory.h"
+#include "fs.h"
+#include "ai.h"
+#include "branch.h"
 
 extern CommandDictionary commands[];
 
@@ -17,6 +21,10 @@ static handler_fn find_handler(const char *name) {
 int main(void) {
     char line[256];
     init_command_map();
+    init_memory();
+    fs_init();
+    ai_init();
+    branch_manager_init();
     printf("AOS> ");
     while (fgets(line, sizeof(line), stdin)) {
         char *nl = strchr(line, '\n');

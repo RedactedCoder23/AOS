@@ -1,3 +1,7 @@
 #,CategoryName,ID
 0,HELLO,1
 0,BYE,1
+0,TESTALLOC,2
+0,CAT,3
+0,AI,4
+0,OPENBR,5

@@ -32,4 +32,20 @@ Then launch AOS:
 make run
 ```
 
-This invokes QEMU (preferring `qemu-system-x86_64`) and attaches the serial console to your terminal. If no QEMU binary is found, the command prints an error message.
+This invokes QEMU (preferring `qemu-system-x86_64`) and attaches the serial console to your terminal. If no QEMU binary is found, the command prints an error message and `make run` fails.
+
+When QEMU is installed you should see:
+
+```
+Kernel started
+AOS>
+```
+
+Additional demo commands are available in the host REPL:
+
+```bash
+make memory  # exercise bump allocator
+make fs      # print a file from the ramdisk
+make ai      # invoke the AI service layer
+make branch  # test branch manager
+```

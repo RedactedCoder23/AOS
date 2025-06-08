@@ -1,2 +1,6 @@
 add_command("HELLO", say_hello)
 add_command("BYE", say_bye)
+add_command("TESTALLOC", test_alloc)
+add_command("CAT", do_cat)
+add_command("AI", ai_demo)
+add_command("OPENBR", open_branch)

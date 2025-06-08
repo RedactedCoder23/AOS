@@ -1,2 +1,6 @@
 { "HELLO", "10", say_hello }
 { "BYE", "11", say_bye }
+{ "TESTALLOC", "20", test_alloc }
+{ "CAT", "30", do_cat }
+{ "AI", "40", ai_demo }
+{ "OPENBR", "50", open_branch }
