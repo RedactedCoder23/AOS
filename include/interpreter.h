@@ -2,8 +2,8 @@
 #define INTERPRETER_H
 
 void add_command(const char *name, void (*handler)());
-void say_hello();
-void say_bye();
+void cmd_hello_wrapper(void);
+void cmd_bye_wrapper(void);
 void init_command_map();
 
 #endif

@@ -32,4 +32,5 @@ run: bare
 
 clean:
 	@echo "→ Cleaning build artifacts"
-	rm -rf build aos.bin bare_metal_os/*.o bare_metal_os/*.bin
+	rm -rf build aos.bin
+	@$(MAKE) -C bare_metal_os clean

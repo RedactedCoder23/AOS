@@ -6,10 +6,12 @@ void add_command(const char *name, void (*handler)()) {
     printf("Registered command: %s\n", name);
 }
 
-void say_hello() {
-    printf("Hello from handler\n");
+void cmd_hello_wrapper(void) {
+    // TODO: implement
+    printf("Executed HELLO\n");
 }
 
-void say_bye() {
-    printf("Bye from handler\n");
+void cmd_bye_wrapper(void) {
+    // TODO: implement
+    printf("Executed BYE\n");
 }

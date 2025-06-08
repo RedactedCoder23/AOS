@@ -2,6 +2,6 @@
 #include "interpreter.h"
 
 void init_command_map() {
-  add_command("HELLO", say_hello);
-  add_command("BYE", say_bye);
+  add_command("HELLO", cmd_hello_wrapper);
+  add_command("BYE", cmd_bye_wrapper);
 }
