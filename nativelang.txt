@@ -1,0 +1,2 @@
+add_command("HELLO", say_hello)
+add_command("BYE", say_bye)

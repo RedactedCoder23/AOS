@@ -1,0 +1,2 @@
+{ "HELLO", "10", say_hello }
+{ "BYE", "11", say_bye }
