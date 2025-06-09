@@ -276,3 +276,24 @@ Next agent must:
 
 Next agent must:
 - Ensure CI passes with updated workflow.
+## [2025-06-09 12:34 UTC] meta sweep [codex]
+- Ran clang-format and clang-tidy across sources (tidy reports many errors).
+- Pre-commit failed due to GitHub auth prompt.
+- `make test` failed: linker cannot find gcc and memory errors (see PATCHLOG).
+- Cleaned merge markers from Makefile but left build logic unchanged.
+- Consolidated open tasks into Active Baton Passes section below.
+
+## Active Baton Passes
+- Resolve clang-tidy warnings and restore failing builds (`host`, `branch-net`).
+- Expand ext2 filesystem backend and add persistence tests.
+- Flesh out device and security subsystem APIs and documentation.
+- Review network branch sync for race conditions and add tests.
+- Improve AI error handling and provide offline mock responses.
+- Integrate policy engine with network layer and credential storage plan.
+- Extend WASM runtime with capability enforcement.
+- Continue expanding subsystem READMEs and overall developer docs.
+- Verify pre-commit hooks run without authentication prompts in CI.
+- Keep ROADMAP.md updated as milestones progress.
+
+## Archive
+Previous baton passes and session notes kept above.

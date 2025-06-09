@@ -426,3 +426,11 @@ by: codex
 - Removed merge conflict lines from `.github/workflows/ci.yml`.
 ### Tests
 - `python -c "import yaml,sys;yaml.safe_load(open('.github/workflows/ci.yml'))"`
+## [2025-06-09 12:34 UTC] meta sweep [codex]
+### Changes
+- Ran clang-format over repository.
+- Cleaned Makefile merge artifacts.
+### Tests
+- `clang-tidy` *(errors remain)*
+- `pre-commit run` *(failed: GitHub auth prompt)*
+- `make test` *(failed: linker cannot find gcc)*
