@@ -1,8 +1,8 @@
-#include <stdint.h>
 #include "command_interpreter.h"
 #include "config.h"
-#include "logging.h"
 #include "error.h"
+#include "logging.h"
+#include <stdint.h>
 
 /* Boot entry points provided by assembly stub. */
 extern void repl(void);
@@ -29,6 +29,6 @@ void main(void) {
 void _start(void) {
     /* Minimal bootstrap that calls main and halts when it returns. */
     main();
-    for(;;) __asm__("hlt");
+    for (;;)
+        __asm__("hlt");
 }
-

@@ -1,18 +1,15 @@
-/* Profiler implementation stub. Measures elapsed time between start and report. TODO: integrate with logging subsystem. */
+/* Profiler implementation stub. Measures elapsed time between start and report. TODO: integrate
+ * with logging subsystem. */
 
 #include "profiler.h"
-#include <time.h>
 #include <stdio.h>
+#include <time.h>
 
 static clock_t start_time;
 
-void profiler_start(void) {
-    start_time = clock();
-}
+void profiler_start(void) { start_time = clock(); }
 
-void profiler_stop(void) {
-    /* noop for now */
-}
+void profiler_stop(void) { /* noop for now */ }
 
 void profiler_report(const char *label) {
     clock_t end = clock();

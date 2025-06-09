@@ -25,5 +25,4 @@ int fs_delete(const char *name);
 void fs_use_ramfs(void);
 void fs_use_ext2(const char *root);
 
-
 #endif

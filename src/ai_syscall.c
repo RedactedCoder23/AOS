@@ -6,19 +6,18 @@
  */
 #include <stdio.h>
 #include <stdlib.h>
-#include <time.h>
 #include <string.h>
+#include <time.h>
 
 static int service_id;
 
 int ai_service_create(const char *type, const char *params) {
-    printf("created AI service %d type=%s params=%s\n", service_id, type ? type : "", params ? params : "");
+    printf("created AI service %d type=%s params=%s\n", service_id, type ? type : "",
+           params ? params : "");
     return service_id++;
 }
 
-void ai_service_monitor(int id) {
-    printf("AI service %d running\n", id);
-}
+void ai_service_monitor(int id) { printf("AI service %d running\n", id); }
 
 int ai_infer(const char *prompt, char *out, unsigned long outsz) {
     if (!prompt || !out || outsz == 0)
@@ -27,7 +26,8 @@ int ai_infer(const char *prompt, char *out, unsigned long outsz) {
     ai_config_load();
     const char *prov = ai_get_provider();
     const char *key = ai_get_param();
-    if (!prov[0]) prov = "openai"; /* default */
+    if (!prov[0])
+        prov = "openai"; /* default */
     if (strcmp(prov, "openai") == 0) {
         if (!key) {
             if (outsz > 0)

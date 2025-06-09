@@ -1,5 +1,5 @@
-#include "plugin.h"
 #include "logging.h"
+#include "plugin.h"
 #include "plugin_supervisor.h"
 #include "wasm_runtime.h"
 /* [2025-06-09 06:07 UTC] Hot-swap plugin loader via dlopen
@@ -11,12 +11,12 @@
  * by: codex
  * Added simple path validation and rlimit-based sandbox hooks.
  */
-#include <stdio.h>
-#include <string.h>
 #include <dlfcn.h>
-#include <sys/resource.h>
 #include <limits.h>
+#include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
+#include <sys/resource.h>
 
 #define MAX_PLUGINS 4
 #define MAX_HOOKS 4
@@ -43,9 +43,11 @@ static int path_is_safe(const char *path) {
             return 0;
         allowed_real_set = 1;
     }
-    if (strstr(path, "..")) return 0;
+    if (strstr(path, ".."))
+        return 0;
     char real[PATH_MAX];
-    if (!realpath(path, real)) return 0;
+    if (!realpath(path, real))
+        return 0;
     return strncmp(real, allowed_real, strlen(allowed_real)) == 0;
 }
 
@@ -82,7 +84,8 @@ static int run_with_limits_int(int (*func)(void)) {
 }
 
 int plugin_register_hook(int (*hook)(const char *)) {
-    if (hook_count >= MAX_HOOKS) return -1;
+    if (hook_count >= MAX_HOOKS)
+        return -1;
     hooks[hook_count++] = hook;
     return 0;
 }
@@ -98,16 +101,18 @@ static void normalize_name(const char *path, char *out, size_t outsz) {
     strncpy(out, base, outsz - 1);
     out[outsz - 1] = '\0';
     char *dot = strstr(out, ".so");
-    if (dot) *dot = '\0';
+    if (dot)
+        *dot = '\0';
 }
 
 static int check_manifest(const char *path) {
     char manifest[160];
     snprintf(manifest, sizeof(manifest), "%s.manifest", path);
     FILE *f = fopen(manifest, "r");
-    if (!f) return 1; /* allow if missing */
+    if (!f)
+        return 1; /* allow if missing */
     char buf[256];
-    size_t n = fread(buf, 1, sizeof(buf)-1, f);
+    size_t n = fread(buf, 1, sizeof(buf) - 1, f);
     buf[n] = '\0';
     fclose(f);
     return strstr(buf, "allow") != NULL;
@@ -118,7 +123,8 @@ static int check_manifest(const char *path) {
  * @return 0 on success, -1 on error
  */
 int plugin_load(const char *file) {
-    if (plugin_count >= MAX_PLUGINS) return -1;
+    if (plugin_count >= MAX_PLUGINS)
+        return -1;
     char path[128];
     if (strchr(file, '/'))
         snprintf(path, sizeof(path), "%s", file);
@@ -126,11 +132,13 @@ int plugin_load(const char *file) {
         snprintf(path, sizeof(path), "build/plugins/%s", file);
 
     const char *ext = strrchr(path, '.');
-    if (!ext) strcat(path, ".so");
+    if (!ext)
+        strcat(path, ".so");
 
     /* Run registered validation hooks before loading the plugin. */
-    if (hook_count == 0) plugin_register_hook(builtin_hook);
-    for (int i=0;i<hook_count;i++)
+    if (hook_count == 0)
+        plugin_register_hook(builtin_hook);
+    for (int i = 0; i < hook_count; i++)
         if (!hooks[i](path)) {
             printf("plugin validation failed for %s\n", path);
             log_message(LOG_ERROR, "plugin validation failed %s", path);
@@ -172,7 +180,7 @@ int plugin_load(const char *file) {
 
     char norm[32];
     normalize_name(path, norm, sizeof(norm));
-    strncpy(plugins[plugin_count].name, norm, sizeof(plugins[plugin_count].name)-1);
+    strncpy(plugins[plugin_count].name, norm, sizeof(plugins[plugin_count].name) - 1);
     plugins[plugin_count].handle = h;
     plugins[plugin_count].exec = exec;
     plugins[plugin_count].cleanup = cleanup;
@@ -184,8 +192,8 @@ int plugin_load(const char *file) {
 }
 
 int plugin_exec(const char *name) {
-    for (int i=0;i<plugin_count;i++)
-        if (strcmp(plugins[i].name, name)==0) {
+    for (int i = 0; i < plugin_count; i++)
+        if (strcmp(plugins[i].name, name) == 0) {
             run_with_limits_void(plugins[i].exec);
             return 0;
         }
@@ -194,13 +202,13 @@ int plugin_exec(const char *name) {
 }
 
 int plugin_unload(const char *name) {
-    for (int i=0;i<plugin_count;i++) {
-        if (strcmp(plugins[i].name, name)==0) {
+    for (int i = 0; i < plugin_count; i++) {
+        if (strcmp(plugins[i].name, name) == 0) {
             if (plugins[i].cleanup)
                 run_with_limits_void(plugins[i].cleanup);
             dlclose(plugins[i].handle);
-            for (int j=i;j<plugin_count-1;j++)
-                plugins[j]=plugins[j+1];
+            for (int j = i; j < plugin_count - 1; j++)
+                plugins[j] = plugins[j + 1];
             plugin_count--;
             printf("Unloaded %s\n", name);
             return 0;
@@ -208,11 +216,14 @@ int plugin_unload(const char *name) {
     }
     printf("Plugin %s not found\n", name);
     FILE *log = fopen("AGENT.md", "a");
-    if (log) { fprintf(log, "plugin unload not found %s\n", name); fclose(log); }
+    if (log) {
+        fprintf(log, "plugin unload not found %s\n", name);
+        fclose(log);
+    }
     return -1;
 }
 
 void plugin_list(void) {
-    for(int i=0;i<plugin_count;i++)
+    for (int i = 0; i < plugin_count; i++)
         printf("%d:%s\n", i, plugins[i].name);
 }

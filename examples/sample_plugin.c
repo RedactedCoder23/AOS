@@ -5,10 +5,6 @@ int plugin_init(void) {
     return 0;
 }
 
-void plugin_exec(void) {
-    printf("sample plugin executed\n");
-}
+void plugin_exec(void) { printf("sample plugin executed\n"); }
 
-void plugin_cleanup(void) {
-    printf("sample plugin cleanup\n");
-}
+void plugin_cleanup(void) { printf("sample plugin cleanup\n"); }

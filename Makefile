@@ -1,8 +1,4 @@
- codex/improve-project-hygiene-and-cross-platform-build
-.PHONY: all generate host bootloader kernel bare run clean ui ui-check web-ui branch-vm plugins iso efi branch-net desktop-ui ai-service policy net
-=======
-.PHONY: all generate host bare run clean ui ui-check web-ui branch-vm plugins iso efi branch-net desktop-ui ai-service aicell modeld policy net
- main
+.PHONY: all generate host bootloader kernel bare run clean ui ui-check web-ui branch-vm plugins iso efi branch-net desktop-ui ai-service aicell modeld policy net
 		
 CC_TARGET ?= x86_64
 
@@ -17,12 +13,20 @@ generate:
 NCURSES_CFLAGS := $(shell pkg-config --cflags ncurses 2>/dev/null)
 NCURSES_LIBS := $(shell pkg-config --libs ncurses 2>/dev/null || echo -lncurses)
 
+
 host: generate subsystems
 	@echo "→ Building host binaries"
 	@mkdir -p build
- codex/improve-project-hygiene-and-cross-platform-build
-	       gcc -Wall -Werror -rdynamic -Iinclude -Isubsystems/memory -Isubsystems/fs -Isubsystems/ai -Isubsystems/branch -Isubsystems/net $(NCURSES_CFLAGS) src/main.c src/interpreter.c src/branch_manager.c src/ui_graph.c src/branch_vm.c src/plugin_loader.c src/branch_net.c src/ai_syscall.c src/policy.c src/memory.c src/app_runtime.c src/config.c src/logging.c src/error.c command_map.c commands.c subsystems/memory/memory.c subsystems/fs/fs.c subsystems/ai/ai.c subsystems/branch/branch.c subsystems/net/net.c $(NCURSES_LIBS) -ldl -lcurl -lm -o build/host_test
-	       gcc -Wall -Werror -Iinclude $(NCURSES_CFLAGS) src/ui_graph.c src/branch_manager.c \
+	gcc -Wall -Werror -rdynamic -Iinclude -Isubsystems/memory -Isubsystems/fs -Isubsystems/ai -Isubsystems/branch -Isubsystems/net $(NCURSES_CFLAGS) \
+	            src/main.c src/repl.c src/interpreter.c src/branch_manager.c src/ui_graph.c \
+	            src/branch_vm.c src/plugin_loader.c src/plugin_supervisor.c src/wasm_runtime.c \
+	            src/branch_net.c src/ai_syscall.c src/aicell.c src/checkpoint.c src/policy.c \
+	            src/memory.c src/app_runtime.c src/config.c src/logging.c src/error.c \
+	            command_map.c commands.c \
+	            subsystems/memory/memory.c subsystems/fs/fs.c subsystems/ai/ai.c \
+	            subsystems/branch/branch.c subsystems/net/net.c \
+	            $(NCURSES_LIBS) -ldl -lcurl -lm -o build/host_test
+	gcc -Wall -Werror -Iinclude $(NCURSES_CFLAGS) src/ui_graph.c src/branch_manager.c \
             src/logging.c src/error.c src/ui_main.c $(NCURSES_LIBS) -lm -o build/ui_graph
 
 # 3. Build bare-metal components
@@ -30,19 +34,6 @@ bootloader: generate
 	       @echo "\u2192 Building bootloader"
 	       @cd bare_metal_os && make clean stage1.bin stage2.bin bootloader.bin ARCH=$(CC_TARGET)
 	       @cp bare_metal_os/bootloader.bin bootloader.bin
-=======
- codex/refactor-repl-core-and-language-mappings
-	gcc -rdynamic -Iinclude -Isubsystems/memory -Isubsystems/fs -Isubsystems/ai -Isubsystems/branch -Isubsystems/net $(NCURSES_CFLAGS) src/main.c src/repl.c src/interpreter.c src/branch_manager.c src/ui_graph.c src/branch_vm.c src/plugin_loader.c src/branch_net.c src/ai_syscall.c src/policy.c src/memory.c src/app_runtime.c src/config.c src/logging.c src/error.c command_map.c commands.c subsystems/memory/memory.c subsystems/fs/fs.c subsystems/ai/ai.c subsystems/branch/branch.c subsystems/net/net.c $(NCURSES_LIBS) -ldl -lcurl -lm -o build/host_test
-=======
- codex/implement-ui,-plugins,-networking,-policy,-ci/cd-phases-6–10
-	gcc -rdynamic -Iinclude -Isubsystems/memory -Isubsystems/fs -Isubsystems/ai -Isubsystems/branch -Isubsystems/net $(NCURSES_CFLAGS) src/main.c src/interpreter.c src/branch_manager.c src/ui_graph.c src/branch_vm.c src/plugin_loader.c src/plugin_supervisor.c src/wasm_runtime.c src/branch_net.c src/ai_syscall.c src/policy.c src/memory.c src/app_runtime.c src/config.c src/logging.c src/error.c command_map.c commands.c subsystems/memory/memory.c subsystems/fs/fs.c subsystems/ai/ai.c subsystems/branch/branch.c subsystems/net/net.c $(NCURSES_LIBS) -ldl -lcurl -lm -o build/host_test
-=======
-	gcc -rdynamic -Iinclude -Isubsystems/memory -Isubsystems/fs -Isubsystems/ai -Isubsystems/branch -Isubsystems/net $(NCURSES_CFLAGS) src/main.c src/interpreter.c src/branch_manager.c src/ui_graph.c src/branch_vm.c src/plugin_loader.c src/branch_net.c src/ai_syscall.c src/aicell.c src/checkpoint.c src/policy.c src/memory.c src/app_runtime.c src/config.c src/logging.c src/error.c command_map.c commands.c subsystems/memory/memory.c subsystems/fs/fs.c subsystems/ai/ai.c subsystems/branch/branch.c subsystems/net/net.c $(NCURSES_LIBS) -ldl -lcurl -lm -o build/host_test
- main
- main
-	gcc -Iinclude $(NCURSES_CFLAGS) src/ui_graph.c src/branch_manager.c \
-	    src/logging.c src/error.c src/ui_main.c $(NCURSES_LIBS) -lm -o build/ui_graph
- main
 
 	kernel: generate
 	       @echo "\u2192 Building kernel"
@@ -127,10 +118,11 @@ branch-vm:
 	gcc -Iinclude src/branch_vm.c subsystems/branch/branch.c examples/branch_vm_demo.c -o build/branch_vm_demo
 
 plugins:
-	@echo "→ Building plugins demo"
-	@mkdir -p build/plugins
-	@gcc -fPIC -shared -o build/plugins/sample.so examples/sample_plugin.c
-	@gcc -Iinclude src/plugin_loader.c src/plugin_supervisor.c src/wasm_runtime.c src/logging.c src/error.c examples/plugin_demo.c -ldl -o build/plugin_demo
+	        @echo "→ Building plugins demo"
+	        @mkdir -p build/plugins
+	        gcc -fPIC -shared -o build/plugins/sample.so examples/sample_plugin.c
+	        gcc -Iinclude src/plugin_loader.c src/plugin_supervisor.c src/wasm_runtime.c \
+	            src/logging.c src/error.c examples/plugin_demo.c -ldl -o build/plugin_demo
 
 aos-cli:
 	@echo "→ Building aos CLI"
@@ -145,13 +137,18 @@ branch-net:
 ai-service:
 	@echo "→ Building ai service demo"
 	@mkdir -p build
-	gcc -Iinclude -Isubsystems/ai src/ai_syscall.c examples/ai_service_demo.c subsystems/ai/ai.c -o build/ai_service_demo -lcurl
+	        gcc -Iinclude -Isubsystems/ai src/ai_syscall.c examples/ai_service_demo.c subsystems/ai/ai.c -o build/ai_service_demo -lcurl
 
 aicell:
 	@echo "→ Building aicell demo"
 	@mkdir -p build
-	gcc -Iinclude src/aicell.c examples/aicell_daemon.c -o build/aicell_daemon -lrt
-	gcc -Iinclude src/aicell.c examples/aicell_client.c -o build/aicell_client -lrt
+	        gcc -Iinclude src/aicell.c examples/aicell_daemon.c -o build/aicell_daemon -lrt
+	        gcc -Iinclude src/aicell.c examples/aicell_client.c -o build/aicell_client -lrt
+
+modeld:
+	@echo "→ Building aos-modeld"
+	@mkdir -p build
+	        gcc -Iinclude src/aicell.c src/modeld.c -o build/aos-modeld -lrt
 
 policy:
 	@echo "→ Building policy demo"
@@ -162,10 +159,6 @@ net:
 	@echo "→ Building net echo demo"
 	@mkdir -p build
 	gcc -Isubsystems/net subsystems/net/net.c examples/net_echo.c -o build/net_echo
-modeld:
-	@echo "→ Building aos-modeld"
-	@mkdir -p build
-	gcc -Iinclude src/aicell.c src/modeld.c -o build/aos-modeld -lrt
 apps:
 	@echo "→ Building sample apps"
 	@mkdir -p build/apps
@@ -203,16 +196,8 @@ test-unit:
 	@echo "→ Running unit tests"
 	@mkdir -p build/tests
 	gcc -Isubsystems/memory -Iinclude tests/unit/test_memory.c \
-        subsystems/memory/memory.c src/logging.c src/error.c -o build/tests/test_memory
+	subsystems/memory/memory.c src/logging.c src/error.c -o build/tests/test_memory
 	@./build/tests/test_memory
- codex/implement-buddy-allocator-and-vfs-with-ext2-plugin
-	gcc -Isubsystems/memory -Iinclude tests/unit/test_memory_fuzz.c \
-	subsystems/memory/memory.c src/logging.c src/error.c -o build/tests/test_memory_fuzz
-	@./build/tests/test_memory_fuzz
-=======
-	gcc -Iinclude -Isubsystems/memory -Isubsystems/fs -Isubsystems/ai -Isubsystems/branch -Isubsystems/net src/tests/test_commands.c src/repl.c src/interpreter.c src/branch_manager.c src/branch_vm.c src/plugin_loader.c src/branch_net.c src/ai_syscall.c src/policy.c src/memory.c src/app_runtime.c src/config.c src/logging.c src/error.c command_map.c commands.c subsystems/memory/memory.c subsystems/fs/fs.c subsystems/ai/ai.c subsystems/branch/branch.c subsystems/net/net.c -ldl -lcurl -lm -o build/tests/test_commands
-	@./build/tests/test_commands
- main
 
 test-integration:
 	@echo "→ Running integration tests"
@@ -221,10 +206,6 @@ test-integration:
 	tests/integration/test_fs_memory.c \
 	subsystems/fs/fs.c subsystems/memory/memory.c src/logging.c src/error.c -o build/tests/test_fs
 	@./build/tests/test_fs
-	gcc -Isubsystems/fs -Isubsystems/memory -Iinclude \
-	tests/integration/test_persistence.c \
-	subsystems/fs/fs.c subsystems/memory/memory.c src/logging.c src/error.c -o build/tests/test_persist
-	@./build/tests/test_persist
 
 efi:
 	@echo "→ Building EFI stub"

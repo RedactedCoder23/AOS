@@ -1,7 +1,7 @@
-#include <stdio.h>
-#include <string.h>
 #include "repl.h"
 #include "command_interpreter.h"
+#include <stdio.h>
+#include <string.h>
 
 extern CommandDictionary commands[];
 
@@ -13,7 +13,8 @@ static CommandDictionary *lookup(const char *name) {
 }
 
 int dispatch_command(int argc, char **argv) {
-    if (argc == 0) return -1;
+    if (argc == 0)
+        return -1;
     CommandDictionary *c = lookup(argv[0]);
     if (!c) {
         printf("Unknown command\n");
@@ -29,7 +30,8 @@ void repl_run(void) {
     printf("AOS> ");
     while (fgets(line, sizeof(line), stdin)) {
         char *nl = strchr(line, '\n');
-        if (nl) *nl = '\0';
+        if (nl)
+            *nl = '\0';
         char *argv[8];
         int argc = 0;
         char *tok = strtok(line, " ");

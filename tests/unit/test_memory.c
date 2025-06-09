@@ -1,6 +1,6 @@
+#include "memory.h"
 #include <assert.h>
 #include <stdio.h>
-#include "memory.h"
 
 int main(void) {
     unsigned char pool[128];

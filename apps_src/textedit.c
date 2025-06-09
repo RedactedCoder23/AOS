@@ -7,7 +7,10 @@ int main(int argc, char **argv) {
         return 1;
     }
     FILE *f = fopen(argv[1], "w");
-    if (!f) { perror("fopen"); return 1; }
+    if (!f) {
+        perror("fopen");
+        return 1;
+    }
     char line[256];
     while (fgets(line, sizeof(line), stdin)) {
         if (strcmp(line, ".quit\n") == 0)
