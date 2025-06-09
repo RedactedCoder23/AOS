@@ -18,8 +18,13 @@ jobs:
       - uses: actions/checkout@v2
       - name: Install clang-tidy
         run: sudo apt-get update && sudo apt-get install -y clang-tidy
+      - name: Generate compilation database
+        run: |
+          pip install compiledb
+          make regenerate
+          compiledb -n make host
       - name: tidy
-        run: clang-tidy $(git ls-files '*.c') -- -Iinclude
+        run: clang-tidy -p compile_commands.json $(git ls-files '*.c') -- -Iinclude
 
   build:
     runs-on: ubuntu-latest
@@ -42,9 +47,11 @@ jobs:
       - name: Coverage
         run: gcovr -r . --lcov -o coverage.lcov
       - name: Upload coverage
-        uses: coverallsapp/github-action@v2
+        uses: codecov/codecov-action@v3
         with:
-          path-to-lcov: coverage.lcov
+          files: coverage.lcov
+          token: ${{ secrets.CODECOV_TOKEN }}
+          slug: RedactedCoder23/AOS
 
   sanitize-build:
     runs-on: ubuntu-latest
