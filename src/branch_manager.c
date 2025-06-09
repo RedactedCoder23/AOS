@@ -137,7 +137,7 @@ int bm_clone(int id, const char *name) {
         strncpy(newname, name, sizeof(newname) - 1);
         newname[sizeof(newname) - 1] = '\0';
     } else {
-        snprintf(newname, sizeof(newname), "%s_clone", graph.branches[id].name);
+        snprintf(newname, sizeof(newname), "%.25s_clone", graph.branches[id].name);
     }
     int nid = bm_create(newname);
     if (nid >= 0) {
