@@ -21,3 +21,8 @@ void mem_free(void *p) {
     memory_host_init();
     memory_free(p);
 }
+
+void mem_reset(void) {
+    memory_host_init();
+    memory_reset();
+}
