@@ -60,9 +60,10 @@ make ai
 ```
 Uses OpenAI ChatCompletion via a helper script.
 
-The interactive REPL also supports an `ai` command which
-executes `scripts/ai_backend.py`. Set `OPENAI_API_KEY` before running
-`make host` for real responses.
+The interactive REPL also supports an `ai` command. Run `ai setup`
+once to configure your provider and store the API key securely in
+`~/.aos/ai.conf`. Environment variables still override the stored
+value when present.
 
 ## Branch Manager Demo
 

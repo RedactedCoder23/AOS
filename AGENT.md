@@ -149,6 +149,16 @@ Next agent must:
 - Persist policy configs and validate JSON input.
 - Integrate web UI with live branch data via IPC and secure the HTTP service with tests.
 AI error: missing OPENAI_API_KEY
+codex/setup-ai-integration-with-secure-config
+
+## [2025-06-09 08:32 UTC] — ai setup wizard [agent-mem]
+by: codex
+- Added `ai setup` CLI with provider selection.
+- Config saved to `~/.aos/ai.conf`.
+- ai_infer reads provider info and sets env var.
+- README updated with instructions.
+
+=======
  codex/implement-minimal-runtime-and-installer
 ## [2025-06-09 08:35 UTC] — userland & apps bootstrap [agent-mem]
 by: codex
@@ -263,3 +273,4 @@ main
 main
 main
  main
+main

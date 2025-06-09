@@ -133,6 +133,19 @@ by: codex
 - `./examples/plugin_demo.sh`
 - `./examples/ai_service_demo.sh`
 - `echo "ai test\nexit" | ./build/host_test` *(fails: openai module missing)*
+ codex/setup-ai-integration-with-secure-config
+
+## [2025-06-09 08:32 UTC] — provider selection and secure config [agent-mem]
+### Changes
+- Added interactive `ai setup` wizard storing config in `~/.aos/ai.conf`.
+- `ai_infer` now loads provider and key from config.
+- Updated README with setup instructions.
+### Tests
+- `make host`
+- `echo -e \"ai setup\nopenai\nkey\nexit\" | ./build/host_test`
+- `echo -e \"ai hello\nexit\" | ./build/host_test` *(fails: openai module missing)*
+
+=======
  codex/implement-modular-vfs-with-ramfs-and-ext2
 ## [2025-06-09 08:30 UTC] — persistent filesystem [agent-mem]
 ### Changes
@@ -244,4 +257,5 @@ codex/develop-graphical-desktop-and-ai-copilot
  main
 main
 main
+ main
  main

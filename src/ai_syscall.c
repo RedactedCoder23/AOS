@@ -7,6 +7,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
+#include <string.h>
 
 static int service_id;
 
@@ -23,16 +24,25 @@ int ai_infer(const char *prompt, char *out, unsigned long outsz) {
     if (!prompt || !out || outsz == 0)
         return -1;
 
-    const char *key = getenv("OPENAI_API_KEY");
-    if (!key) key = getenv("AOS_OPENAI_API_KEY");
-    if (!key) {
-        if (outsz > 0)
-            snprintf(out, outsz, "missing OPENAI_API_KEY");
-        FILE *log = fopen("AGENT.md", "a");
-        if (log) {
-            fprintf(log, "AI error: missing OPENAI_API_KEY\n");
-            fclose(log);
+    ai_config_load();
+    const char *prov = ai_get_provider();
+    const char *key = ai_get_param();
+    if (!prov[0]) prov = "openai"; /* default */
+    if (strcmp(prov, "openai") == 0) {
+        if (!key) {
+            if (outsz > 0)
+                snprintf(out, outsz, "missing OPENAI_API_KEY");
+            FILE *log = fopen("AGENT.md", "a");
+            if (log) {
+                fprintf(log, "AI error: missing OPENAI_API_KEY\n");
+                fclose(log);
+            }
+            return -1;
         }
+        setenv("OPENAI_API_KEY", key, 1);
+    } else {
+        if (outsz > 0)
+            snprintf(out, outsz, "provider %s not supported", prov);
         return -1;
     }
 

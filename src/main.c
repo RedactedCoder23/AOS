@@ -50,6 +50,8 @@ int main(void) {
     bm_init();
     config_load_default();
     fs_init();
+    if (ai_config_load() != 0)
+        printf("Run 'ai setup' to configure provider\n");
     const char *p = getenv("AOS_PORT");
     if (p) br_set_port(atoi(p));
     br_start_service();
@@ -168,13 +170,16 @@ int main(void) {
                 printf("unknown subcommand %s\n", sub);
             }
         } else if (strcmp(cmd, "ai") == 0) {
-            char *question = strtok(NULL, "");
-            if (!question) {
-                printf("usage: ai <question>\n");
-                log_agent_error("ai missing question");
+            char *arg = strtok(NULL, "");
+            if (!arg) {
+                printf("usage: ai <question|setup>\n");
+                log_agent_error("ai missing arg");
+            } else if (strcmp(arg, "setup") == 0) {
+                if (ai_setup_wizard() == 0) printf("config saved\n");
+                else printf("setup failed\n");
             } else {
                 char out[64];
-                ai_infer(question, out, sizeof(out));
+                ai_infer(arg, out, sizeof(out));
                 printf("%s\n", out);
             }
         } else if (strcmp(cmd, "plugin") == 0) {
