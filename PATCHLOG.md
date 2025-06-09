@@ -74,6 +74,7 @@ by: codex
 - `./examples/plugin_demo.sh`
 - `./examples/ai_service_demo.sh`
 - `echo 'ai hello\nexit' | ./build/host_test` *(fails: openai module missing)*
+codex/build-graphical-branch-visualizer-ui
 ## [2025-06-09 07:51 UTC] — graphical branch UI [agent-mem]
 ### Changes
 - Added `scripts/branch_ui.py` HTTP server.
@@ -83,3 +84,26 @@ by: codex
 ### Tests
 - `make host`
 - `make web-ui` *(manual run)*
+=======
+
+codex/integrate-ai-cli-with-llm-apis
+## [2025-06-09 07:51 UTC] — AI backend integration [agent-mem]
+### Changes
+- ai_infer now checks for OPENAI_API_KEY, logs latency, and captures errors.
+- ai.c uses ai_infer for real LLM responses.
+- README updated with OpenAI instructions.
+### Tests
+- `make host`
+- `echo 'ai hello\nexit' | ./build/host_test`
+=======
+## [2025-06-09 06:40 UTC] — policy engine & sandbox [agent-mem]
+### Changes
+- Reworked policy engine to load JSON rules with per-branch and app context.
+- Added `policy_check_ctx` API and default `policy_check` wrapper.
+- Introduced `bm_current_name` helper and enforcement hooks in FS wrappers.
+- Updated policy demo to use JSON rules.
+### Tests
+- `make policy`
+- `./examples/policy_demo.sh`
+main
+main
