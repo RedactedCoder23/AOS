@@ -24,7 +24,7 @@ int app_run(const char *name, int argc, char **argv) {
     if (pid == 0) {
         execv(path, args);
         perror("execv");
-        _exit(1);
+        _exit(EXIT_FAILURE);
     }
     int status = 0;
     if (pid > 0)

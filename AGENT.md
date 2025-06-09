@@ -312,6 +312,19 @@ Previous baton passes and session notes kept above.
 - Restricted whitespace/yaml hooks to specific file types.
 - Fixed Makefile test targets and ensured unit/integration tests build.
 - Verified `pre-commit run --all-files`, `make test-unit`, and `make test-integration` all succeed.
+codex/expand-c-unit-tests-and-unify-error-handling
+
+## [2025-06-09 14:00 UTC] test expansion and lint [codex-agent-xyz]
+- Added unit tests for branch, net, plugin and policy subsystems under `tests/c`.
+- Added pytest suites for `audit_cli.py` and `desktop_backend.py`.
+- Updated Makefile `test-unit` to compile and run new tests.
+- Added flake8 to pre-commit and updated Python requirements.
+- Standardised app_runtime error path to return codes.
+### Tests
+- `pre-commit run --all-files`
+- `make test-unit`
+- `pytest -q tests/python`
+=======
  codex/move-generated-c-files-and-update-makefile
 ## [2025-06-09 22:25 UTC] generated code path update [codex-agent]
 - Moved generated sources to `src/generated/` and updated Makefiles.

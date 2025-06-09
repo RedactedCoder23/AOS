@@ -222,20 +222,39 @@ test-net: net
 
 test-unit:
 	@echo "→ Running unit tests"
-	@mkdir -p build/tests
+	@mkdir -p build/tests build/plugins
 	gcc --coverage -Isubsystems/memory -Iinclude \
 	tests/unit/test_memory.c \
 	subsystems/memory/memory.c src/logging.c src/error.c \
 	-o build/tests/test_memory
 	@./build/tests/test_memory
-	@python3 -m unittest tests/python/test_generate_mappings.py
-	
+	gcc --coverage -Isubsystems/branch -Iinclude \
+	tests/c/test_branch.c \
+	subsystems/branch/branch.c src/logging.c src/error.c \
+	-o build/tests/test_branch
+	@./build/tests/test_branch
+	gcc --coverage -Isubsystems/net -Iinclude \
+	tests/c/test_net.c \
+	subsystems/net/net.c src/logging.c src/error.c \
+	-o build/tests/test_net
+	@./build/tests/test_net
+	gcc -fPIC -shared -o build/plugins/sample.so examples/sample_plugin.c
+	gcc --coverage -Iinclude \
+	tests/c/test_plugin.c src/plugin_loader.c src/plugin_supervisor.c src/wasm_runtime.c src/logging.c src/error.c -ldl \
+	-o build/tests/test_plugin
+	@./build/tests/test_plugin
+	gcc --coverage -Iinclude \
+	tests/c/test_policy.c src/policy.c src/logging.c src/error.c \
+	-o build/tests/test_policy
+	@./build/tests/test_policy
+	@python3 -m pytest -q tests/python
+		
 test-integration:
 	@echo "\u2192 Running integration tests"
 	@mkdir -p build/tests
-	gcc --coverage -Isubsystems/fs -Isubsystems/memory -Iinclude \
-	tests/integration/test_fs_memory.c \
-	subsystems/fs/fs.c subsystems/memory/memory.c src/logging.c src/error.c \
+		gcc --coverage -Isubsystems/fs -Isubsystems/memory -Iinclude \
+		tests/integration/test_fs_memory.c \
+		subsystems/fs/fs.c subsystems/memory/memory.c src/logging.c src/error.c \
 	-o build/tests/test_fs
 	@./build/tests/test_fs
 	gcc --coverage -Isubsystems/fs -Isubsystems/memory -Iinclude \
