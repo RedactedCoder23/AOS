@@ -1,4 +1,5 @@
 # AOS
+[![Coverage Status](https://coveralls.io/repos/github/example/AOS/badge.svg?branch=main)](https://coveralls.io/github/example/AOS?branch=main)
 
 [![Build Status](https://img.shields.io/github/actions/workflow/status/example/AOS/ci.yml?branch=main)](https://github.com/example/AOS/actions)
 [![Coverage](https://img.shields.io/codecov/c/github/example/AOS)](https://codecov.io/gh/example/AOS)
