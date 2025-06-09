@@ -454,6 +454,16 @@ by: codex
 - `pre-commit run --all-files`
 - `make test-unit`
 - `make test-integration`
+ codex/move-generated-c-files-and-update-makefile
+## [2025-06-09 22:25 UTC] generated code refactor [codex-agent]
+### Changes
+- Relocated `command_map.c` and `commands.c` to `src/generated/`.
+- Added `regenerate` Makefile target and updated include paths.
+- Updated generator script default and documentation.
+### Tests
+- `make regenerate`
+- `make host`
+=======
 = codex/initialize-js-tooling-and-standardize-python-scripts
 ## [2025-06-09 22:20 UTC] js tooling and script cleanup [agent-mem]
 ### Changes

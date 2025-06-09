@@ -1,4 +1,4 @@
-.PHONY: all clean test install generate host bootloader kernel bare run ui ui-check web-ui branch-vm plugins iso efi branch-net desktop-ui ai-service aicell modeld policy net subsystems checklist
+.PHONY: all clean test install regenerate host bootloader kernel bare run ui ui-check web-ui branch-vm plugins iso efi branch-net desktop-ui ai-service aicell modeld policy net subsystems checklist
 
 MAKEFLAGS += -j$(shell nproc)
 
@@ -10,7 +10,7 @@ src/main.c src/repl.c src/interpreter.c src/branch_manager.c src/ui_graph.c \
 src/branch_vm.c src/plugin_loader.c src/plugin_supervisor.c src/wasm_runtime.c \
 src/branch_net.c src/ai_syscall.c src/aicell.c src/checkpoint.c src/policy.c \
 src/memory.c src/app_runtime.c src/config.c src/logging.c src/error.c \
-command_map.c commands.c \
+src/generated/command_map.c src/generated/commands.c \
 subsystems/memory/memory.c subsystems/fs/fs.c subsystems/ai/ai.c \
 subsystems/branch/branch.c subsystems/net/net.c
 HOST_OBJS := $(patsubst %.c, build/obj/%.o, $(HOST_SRCS))
@@ -19,8 +19,8 @@ CFLAGS := -Wall -Werror -Wno-format-truncation
 all: host
 
 # 1. Regenerate C sources from text masters
-generate:
-	python3 scripts/generate_aos_mappings.py
+regenerate:
+	python3 scripts/generate_aos_mappings.py --outdir src/generated
 	@$(MAKE) -s checklist
 
 # 2. Build host-side test harness
@@ -34,34 +34,34 @@ check_deps:
 
 build/obj/%.o: %.c
 	@mkdir -p $(dir $@)
-	$(CC) $(CFLAGS) -Iinclude $(addprefix -I,$(SUBSYSTEM_DIRS)) $(NCURSES_CFLAGS) -c $< -o $@
+	$(CC) $(CFLAGS) -Iinclude -Isrc/generated $(addprefix -I,$(SUBSYSTEM_DIRS)) $(NCURSES_CFLAGS) -c $< -o $@
 
-host: check_deps generate subsystems $(HOST_OBJS) build/obj/src/ui_main.o
+host: check_deps regenerate subsystems $(HOST_OBJS) build/obj/src/ui_main.o
 	@echo "→ Building host binaries"
 	$(CC) -rdynamic $(HOST_OBJS) $(NCURSES_LIBS) $(CURL_LIBS) -ldl -lm -o build/host_test
 	$(CC) build/obj/src/ui_graph.o build/obj/src/branch_manager.o \
 build/obj/src/logging.o build/obj/src/error.o build/obj/src/ui_main.o \
 $(NCURSES_LIBS) -lm -o build/ui_graph
 	@mkdir -p build
-	gcc -Wall -Werror -rdynamic -Iinclude -Igen -Isubsystems/memory -Isubsystems/fs -Isubsystems/ai -Isubsystems/branch -Isubsystems/net $(NCURSES_CFLAGS) \
+	gcc -Wall -Werror -rdynamic -Iinclude -Isrc/generated -Isubsystems/memory -Isubsystems/fs -Isubsystems/ai -Isubsystems/branch -Isubsystems/net $(NCURSES_CFLAGS) \
 	            src/main.c src/repl.c src/interpreter.c src/branch_manager.c src/ui_graph.c \
 	            src/branch_vm.c src/plugin_loader.c src/plugin_supervisor.c src/wasm_runtime.c \
 	            src/branch_net.c src/ai_syscall.c src/aicell.c src/checkpoint.c src/policy.c \
 	            src/memory.c src/app_runtime.c src/config.c src/logging.c src/error.c \
-	            gen/command_map.c gen/commands.c \
+	            src/generated/command_map.c src/generated/commands.c \
 	            subsystems/memory/memory.c subsystems/fs/fs.c subsystems/ai/ai.c \
 	            subsystems/branch/branch.c subsystems/net/net.c \
 	            $(NCURSES_LIBS) -ldl -lcurl -lm -o build/host_test
-	gcc -Wall -Werror -Iinclude -Igen $(NCURSES_CFLAGS) src/ui_graph.c src/branch_manager.c \
+	gcc -Wall -Werror -Iinclude -Isrc/generated $(NCURSES_CFLAGS) src/ui_graph.c src/branch_manager.c \
             src/logging.c src/error.c src/ui_main.c $(NCURSES_LIBS) -lm -o build/ui_graph
 
 # 3. Build bare-metal components
-bootloader: generate
+bootloader: regenerate
 	@echo "→ Building bootloader"
 	$(MAKE) -C bare_metal_os bootloader.bin ARCH=$(CC_TARGET)
 	cp bare_metal_os/bootloader.bin bootloader.bin
 
-kernel: generate
+kernel: regenerate
 	@echo "→ Building kernel"
 	$(MAKE) -C bare_metal_os kernel.bin ARCH=$(CC_TARGET)
 	cp bare_metal_os/kernel.bin kernel.bin
@@ -123,17 +123,17 @@ clean:
 memory:
 	@echo "→ Building memory demo"
 	@mkdir -p build
-	       gcc -Wall -Werror -Isubsystems/memory -Iinclude -Igen subsystems/memory/memory.c src/memory.c examples/memory_demo.c src/logging.c src/error.c -o build/memory_demo
+	       gcc -Wall -Werror -Isubsystems/memory -Iinclude -Isrc/generated subsystems/memory/memory.c src/memory.c examples/memory_demo.c src/logging.c src/error.c -o build/memory_demo
 
 fs:
 	@echo "→ Building fs demo"
 	@mkdir -p build
-	       gcc -Wall -Werror -Isubsystems/fs -Iinclude -Igen subsystems/fs/fs.c examples/fs_demo.c -o build/fs_demo
+	       gcc -Wall -Werror -Isubsystems/fs -Iinclude -Isrc/generated subsystems/fs/fs.c examples/fs_demo.c -o build/fs_demo
 
 ai:
 	@echo "→ Building ai demo"
 	@mkdir -p build
-	gcc -Isubsystems/ai -Iinclude -Igen subsystems/ai/ai.c src/ai_syscall.c examples/ai_demo.c -lcurl -o build/ai_demo
+	gcc -Isubsystems/ai -Iinclude -Isrc/generated subsystems/ai/ai.c src/ai_syscall.c examples/ai_demo.c -lcurl -o build/ai_demo
 
 branch:
 	@echo "→ Building branch demo"
@@ -143,13 +143,13 @@ branch:
 branch-vm:
 	@echo "→ Building branch VM demo"
 	@mkdir -p build
-	gcc -Iinclude -Igen src/branch_vm.c subsystems/branch/branch.c examples/branch_vm_demo.c -o build/branch_vm_demo
+	gcc -Iinclude -Isrc/generated src/branch_vm.c subsystems/branch/branch.c examples/branch_vm_demo.c -o build/branch_vm_demo
 
 plugins:
 	        @echo "→ Building plugins demo"
 	        @mkdir -p build/plugins
 	        gcc -fPIC -shared -o build/plugins/sample.so examples/sample_plugin.c
-	        gcc -Iinclude -Igen src/plugin_loader.c src/plugin_supervisor.c src/wasm_runtime.c \
+	        gcc -Iinclude -Isrc/generated src/plugin_loader.c src/plugin_supervisor.c src/wasm_runtime.c \
 	            src/logging.c src/error.c examples/plugin_demo.c -ldl -o build/plugin_demo
 
 aos-cli:
@@ -160,28 +160,28 @@ aos-cli:
 branch-net:
 	@echo "→ Building branch net demo"
 	@mkdir -p build
-	@gcc -Iinclude -Igen src/branch_net.c src/branch_manager.c examples/branch_fed_demo.c -pthread -lm -o build/branch_fed_demo
+	@gcc -Iinclude -Isrc/generated src/branch_net.c src/branch_manager.c examples/branch_fed_demo.c -pthread -lm -o build/branch_fed_demo
 
 ai-service:
 	@echo "→ Building ai service demo"
 	@mkdir -p build
-	        gcc -Iinclude -Igen -Isubsystems/ai src/ai_syscall.c examples/ai_service_demo.c subsystems/ai/ai.c -o build/ai_service_demo -lcurl
+	        gcc -Iinclude -Isrc/generated -Isubsystems/ai src/ai_syscall.c examples/ai_service_demo.c subsystems/ai/ai.c -o build/ai_service_demo -lcurl
 
 aicell:
 	@echo "→ Building aicell demo"
 	@mkdir -p build
-	        gcc -Iinclude -Igen src/aicell.c examples/aicell_daemon.c -o build/aicell_daemon -lrt
-	        gcc -Iinclude -Igen src/aicell.c examples/aicell_client.c -o build/aicell_client -lrt
+	        gcc -Iinclude -Isrc/generated src/aicell.c examples/aicell_daemon.c -o build/aicell_daemon -lrt
+	        gcc -Iinclude -Isrc/generated src/aicell.c examples/aicell_client.c -o build/aicell_client -lrt
 
 modeld:
 	@echo "→ Building aos-modeld"
 	@mkdir -p build
-	        gcc -Iinclude -Igen src/aicell.c src/modeld.c -o build/aos-modeld -lrt
+	        gcc -Iinclude -Isrc/generated src/aicell.c src/modeld.c -o build/aos-modeld -lrt
 
 policy:
 	@echo "→ Building policy demo"
 	@mkdir -p build
-	gcc -Iinclude -Igen src/policy.c examples/policy_demo.c -o build/policy_demo
+	gcc -Iinclude -Isrc/generated src/policy.c examples/policy_demo.c -o build/policy_demo
 
 net:
 	@echo "→ Building net echo demo"
@@ -293,3 +293,5 @@ checklist:
 	else \
 	echo "Checklist clean"; \
 	fi
+
+generate: regenerate
