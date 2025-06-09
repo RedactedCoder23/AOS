@@ -1,6 +1,6 @@
+#include "aicell.h"
 #include <stdio.h>
 #include <unistd.h>
-#include "aicell.h"
 
 /* aos-modeld daemon: tracks models via simple IPC. */
 int main(void) {

@@ -1,7 +1,7 @@
 #include "checkpoint.h"
 #include <stdio.h>
-#include <string.h>
 #include <stdlib.h>
+#include <string.h>
 #ifdef __linux__
 #include <unistd.h>
 #endif
@@ -11,7 +11,8 @@
 
 static int write_stub(const char *path, const char *msg) {
     FILE *f = fopen(path, "w");
-    if (!f) return -1;
+    if (!f)
+        return -1;
     fputs(msg, f);
     fclose(f);
     return 0;
@@ -20,7 +21,8 @@ static int write_stub(const char *path, const char *msg) {
 int cp_snapshot(const char *branch, const char *dest) {
 #ifdef __linux__
     char cmd[256];
-    snprintf(cmd, sizeof(cmd), "criu dump -t %d -D %s/%s --shell-job >/dev/null 2>&1", getpid(), dest, branch);
+    snprintf(cmd, sizeof(cmd), "criu dump -t %d -D %s/%s --shell-job >/dev/null 2>&1", getpid(),
+             dest, branch);
     int rc = system(cmd);
     return rc;
 #else
@@ -45,7 +47,8 @@ int cp_restore(const char *branch, const char *src) {
     char file[256];
     snprintf(file, sizeof(file), "%s/%s.chk", src, branch);
     FILE *f = fopen(file, "r");
-    if (!f) return -1;
+    if (!f)
+        return -1;
     fclose(f);
     return 0;
 #endif

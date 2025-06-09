@@ -222,6 +222,13 @@ Next agent must:
 
 Next agent must:
 - Expand checkpoint delta handling and integrate with branch state.
- main
- main
- main
+
+## [2025-06-09 11:02 UTC] cleanup sweep [agent-mem]
+- Ran clang-format on all C sources and headers.
+- Ran cppcheck for static analysis; many missing include and unused function warnings remain (see PATCHLOG).
+- Cleaned stray lines in AGENT.md and PATCHLOG.md.
+- Reconstructed Makefile without merge artifacts and fixed tabs.
+
+Next agent must:
+- Review cppcheck warnings, especially missing includes and unused functions.
+- Continue consolidation of docs and subsystem READMEs.

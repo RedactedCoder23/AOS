@@ -304,6 +304,16 @@ by: codex
 - `make host`
 - `make test-unit`
 - `make test-integration`
+
+## [2025-06-09 11:02 UTC] — cleanup sweep [agent-mem]
+### Changes
+- Applied clang-format to all source files.
+- Ran cppcheck; warnings logged for review.
+- Fixed Makefile merge artifacts and restored tabs.
+- Removed stray meta-log lines.
+### Tests
+- `make test-unit`
+- `make test-integration`
 ## [2025-06-09 10:28 UTC] — docs sweep [agent-mem]
 ### Changes
 - Added LICENSE, expanded CONTRIBUTING and CODE_OF_CONDUCT.
@@ -351,10 +361,7 @@ by: codex
 - Implemented checkpoint.h with CRIU-based stubs.
 - Added aos-modeld stub and AI_TRIGGER syscall in kernel.
 - Updated Makefile and README with new demo targets.
- main
 ### Tests
 - `make host`
- main
 - `make test-unit`
 - `make test-integration`
- main

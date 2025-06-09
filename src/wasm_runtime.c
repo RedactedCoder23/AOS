@@ -10,13 +10,15 @@ int wasm_runtime_init(void) {
 }
 
 int wasm_load_module(const char *path) {
-    if (!initialised) wasm_runtime_init();
+    if (!initialised)
+        wasm_runtime_init();
     printf("loading wasm module %s\n", path);
     return 0; /* stub */
 }
 
 int wasm_invoke(const char *func) {
-    if (!initialised) return -1;
+    if (!initialised)
+        return -1;
     printf("invoke %s\n", func);
     return 0;
 }

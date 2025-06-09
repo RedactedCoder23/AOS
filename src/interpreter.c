@@ -1,13 +1,13 @@
-#include <stdio.h>
 #include "interpreter.h"
-#include "ui_graph.h"
-#include "memory.h"
-#include "fs.h"
 #include "ai.h"
 #include "branch.h"
+#include "fs.h"
+#include "memory.h"
 #include "plugin.h"
 #include "policy.h"
+#include "ui_graph.h"
 #include <errno.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
@@ -17,28 +17,30 @@ void add_command(const char *name, command_handler handler) {
 }
 
 void cmd_hello_wrapper(int argc, char **argv) {
-    (void)argc; (void)argv;
+    (void)argc;
+    (void)argv;
     printf("Hello, AOS!\n");
 }
 
 void cmd_bye_wrapper(int argc, char **argv) {
-    (void)argc; (void)argv;
+    (void)argc;
+    (void)argv;
     printf("Goodbye from AOS!\n");
 }
 
 void ui_graph_wrapper(int argc, char **argv) {
-    (void)argc; (void)argv;
+    (void)argc;
+    (void)argv;
     ui_graph_run();
 }
 
-void cmd_ui_graph_wrapper(int argc, char **argv) {
-    ui_graph_wrapper(argc, argv);
-}
+void cmd_ui_graph_wrapper(int argc, char **argv) { ui_graph_wrapper(argc, argv); }
 
 static unsigned char mem_pool[4096];
 static int subsys_init = 0;
 static void ensure_init(void) {
-    if (subsys_init) return;
+    if (subsys_init)
+        return;
     memory_init(mem_pool, sizeof(mem_pool));
     fs_init();
     ai_init("default");
@@ -93,7 +95,7 @@ void cmd_mem_free_wrapper(int argc, char **argv) {
         log_checklist("MEM_FREE invalid pointer");
         return;
     }
-    void *p = (void*)addr;
+    void *p = (void *)addr;
     mem_free(p);
     printf("Freed %p\n", p);
 }
@@ -176,7 +178,8 @@ void cmd_fs_read_wrapper(int argc, char **argv) {
         return;
     }
     char buf[256];
-    if (n >= sizeof(buf)) n = sizeof(buf)-1;
+    if (n >= sizeof(buf))
+        n = sizeof(buf) - 1;
     size_t r = fs_read(fd, buf, n);
     buf[r] = '\0';
     if (r == 0) {
@@ -226,7 +229,9 @@ void cmd_fs_mkdir_wrapper(int argc, char **argv) {
 }
 
 void cmd_fs_ls_wrapper(int argc, char **argv) {
-    (void)argc; (void)argv; ensure_init();
+    (void)argc;
+    (void)argv;
+    ensure_init();
     fs_ls();
 }
 
@@ -278,7 +283,7 @@ void cmd_br_list_wrapper(int argc, char **argv) {
     ensure_init();
     Branch b[MAX_BRANCHES];
     int n = bm_list(b);
-    for (int i=0;i<n;i++)
+    for (int i = 0; i < n; i++)
         printf("%d:%s (%s)\n", b[i].id, b[i].name, b[i].state);
 }
 
@@ -324,63 +329,91 @@ void cmd_br_vm_create_wrapper(int argc, char **argv) {
 }
 
 void cmd_br_vm_list_wrapper(int argc, char **argv) {
-    (void)argc; (void)argv; ensure_init();
+    (void)argc;
+    (void)argv;
+    ensure_init();
     bm_vm_list();
 }
 
 void cmd_br_vm_switch_wrapper(int argc, char **argv) {
     ensure_init();
-    if (argc < 2) { printf("usage: BR_VM_SWITCH <id>\n"); return; }
+    if (argc < 2) {
+        printf("usage: BR_VM_SWITCH <id>\n");
+        return;
+    }
     bm_vm_switch(atoi(argv[1]));
 }
 
 void cmd_br_vm_stop_wrapper(int argc, char **argv) {
     ensure_init();
-    if (argc < 2) { printf("usage: BR_VM_STOP <id>\n"); return; }
+    if (argc < 2) {
+        printf("usage: BR_VM_STOP <id>\n");
+        return;
+    }
     bm_vm_stop(atoi(argv[1]));
 }
 
 void cmd_plugin_install_wrapper(int argc, char **argv) {
     ensure_init();
-    if (argc < 2) { printf("usage: PLUGIN_INSTALL <url>\n"); return; }
+    if (argc < 2) {
+        printf("usage: PLUGIN_INSTALL <url>\n");
+        return;
+    }
     plugin_install(argv[1]);
 }
 
 void cmd_plugin_list_wrapper(int argc, char **argv) {
-    (void)argc; (void)argv; ensure_init();
+    (void)argc;
+    (void)argv;
+    ensure_init();
     plugin_list();
 }
 
 void cmd_plugin_load_wrapper(int argc, char **argv) {
     ensure_init();
-    if (argc < 2) { printf("usage: PLUGIN_LOAD <name>\n"); return; }
+    if (argc < 2) {
+        printf("usage: PLUGIN_LOAD <name>\n");
+        return;
+    }
     plugin_load(argv[1]);
 }
 
 void cmd_plugin_unload_wrapper(int argc, char **argv) {
     ensure_init();
-    if (argc < 2) { printf("usage: PLUGIN_UNLOAD <name>\n"); return; }
+    if (argc < 2) {
+        printf("usage: PLUGIN_UNLOAD <name>\n");
+        return;
+    }
     plugin_unload(argv[1]);
 }
 
 void cmd_br_peer_add_wrapper(int argc, char **argv) {
     ensure_init();
-    if (argc < 2) { printf("usage: BR_PEER_ADD <addr>\n"); return; }
+    if (argc < 2) {
+        printf("usage: BR_PEER_ADD <addr>\n");
+        return;
+    }
     br_peer_add(argv[1]);
 }
 
 void cmd_br_sync_wrapper(int argc, char **argv) {
-    (void)argc; (void)argv; ensure_init();
+    (void)argc;
+    (void)argv;
+    ensure_init();
     br_sync();
 }
 
 void cmd_br_sync_all_wrapper(int argc, char **argv) {
-    (void)argc; (void)argv; ensure_init();
+    (void)argc;
+    (void)argv;
+    ensure_init();
     bm_sync_all();
 }
 
 void cmd_br_discover_wrapper(int argc, char **argv) {
-    (void)argc; (void)argv; ensure_init();
+    (void)argc;
+    (void)argv;
+    ensure_init();
     char found[8][64];
     int n = br_discover(found, 8);
     for (int i = 0; i < n; i++)
@@ -389,7 +422,10 @@ void cmd_br_discover_wrapper(int argc, char **argv) {
 
 void cmd_br_sync_peer_wrapper(int argc, char **argv) {
     ensure_init();
-    if (argc < 2) { printf("usage: BR_SYNC_PEER <addr>\n"); return; }
+    if (argc < 2) {
+        printf("usage: BR_SYNC_PEER <addr>\n");
+        return;
+    }
     br_sync_peer(argv[1]);
 }
 
@@ -408,7 +444,10 @@ void cmd_ai_service_monitor_wrapper(int argc, char **argv) {
 
 void cmd_policy_load_wrapper(int argc, char **argv) {
     ensure_init();
-    if (argc < 2) { printf("usage: POLICY_LOAD <file>\n"); return; }
+    if (argc < 2) {
+        printf("usage: POLICY_LOAD <file>\n");
+        return;
+    }
     policy_load_file(argv[1]);
 }
 

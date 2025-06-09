@@ -5,14 +5,14 @@
  * single-threaded but mitigates fragmentation.
  */
 
-#include <stdint.h>
-#include <string.h>
-#include <stdio.h>
-#include "logging.h"
 #include "error.h"
+#include "logging.h"
+#include <stdint.h>
+#include <stdio.h>
+#include <string.h>
 
-#define MIN_ORDER 4               /* 16 byte minimum block */
-#define MAX_ORDER 16              /* 64KB max pool block   */
+#define MIN_ORDER 4  /* 16 byte minimum block */
+#define MAX_ORDER 16 /* 64KB max pool block   */
 
 typedef struct BuddyBlock {
     struct BuddyBlock *next;
@@ -54,7 +54,7 @@ void memory_init(void *buffer, size_t size) {
 }
 
 static void add_block(void *addr, unsigned order) {
-    BuddyBlock *b = (BuddyBlock*)addr;
+    BuddyBlock *b = (BuddyBlock *)addr;
     b->order = order;
     b->next = free_lists[order];
     free_lists[order] = b;
@@ -82,7 +82,7 @@ void *memory_alloc(size_t size) {
     BuddyBlock *b = remove_block(cur);
     while (cur > o) {
         cur--;
-        add_block((uint8_t*)b + (1u << cur), cur);
+        add_block((uint8_t *)b + (1u << cur), cur);
     }
     b->order = o;
     return b + 1;
@@ -90,11 +90,11 @@ void *memory_alloc(size_t size) {
 
 static int try_merge(void *addr, unsigned order) {
     size_t size = 1u << order;
-    uintptr_t offset = (uintptr_t)((uint8_t*)addr - heap_base);
+    uintptr_t offset = (uintptr_t)((uint8_t *)addr - heap_base);
     uintptr_t buddy_off = offset ^ size;
     BuddyBlock **prev = &free_lists[order];
     for (BuddyBlock *b = free_lists[order]; b; b = b->next) {
-        if ((uint8_t*)b - heap_base == buddy_off) {
+        if ((uint8_t *)b - heap_base == buddy_off) {
             *prev = b->next;
             if (buddy_off < offset)
                 addr = heap_base + buddy_off;
@@ -109,8 +109,8 @@ static int try_merge(void *addr, unsigned order) {
 void memory_free(void *ptr) {
     if (!ptr)
         return;
-    BuddyBlock *b = (BuddyBlock*)ptr - 1;
-    uintptr_t offset = (uint8_t*)b - heap_base;
+    BuddyBlock *b = (BuddyBlock *)ptr - 1;
+    uintptr_t offset = (uint8_t *)b - heap_base;
     if (offset >= heap_total) {
         log_msg("Double free or invalid pointer");
         aos_last_error = AOS_ERR_INVALID;
@@ -121,7 +121,7 @@ void memory_free(void *ptr) {
 
 void memory_reset(void) {
     memset(free_lists, 0, sizeof(free_lists));
-    BuddyBlock *b = (BuddyBlock*)heap_base;
+    BuddyBlock *b = (BuddyBlock *)heap_base;
     b->order = max_order;
     b->next = NULL;
     free_lists[max_order] = b;

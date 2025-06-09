@@ -1,7 +1,7 @@
+#include "fs.h"
+#include "memory.h"
 #include <assert.h>
 #include <stdio.h>
-#include "memory.h"
-#include "fs.h"
 
 int main(void) {
     unsigned char pool[256];

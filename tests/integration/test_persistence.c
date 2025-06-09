@@ -1,8 +1,8 @@
+#include "fs.h"
+#include "memory.h"
 #include <assert.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include "memory.h"
-#include "fs.h"
 
 int main(void) {
     unsigned char pool[4096];
@@ -22,7 +22,7 @@ int main(void) {
     char buf[3] = {0};
     assert(fs_read(fd, buf, 2) == 2);
     fs_close(fd);
-    assert(buf[0]=='h' && buf[1]=='i');
+    assert(buf[0] == 'h' && buf[1] == 'i');
     printf("persistence test passed\n");
     return 0;
 }

@@ -1,10 +1,10 @@
 #ifndef COMMAND_INTERPRETER_H
 #define COMMAND_INTERPRETER_H
 
+#include "category_defs.h"
+#include "interpreter.h"
 #include <stddef.h>
 #include <stdint.h>
-#include "interpreter.h"
-#include "category_defs.h"
 typedef struct {
     const char *name;
     const char *binary;

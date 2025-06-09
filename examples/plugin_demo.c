@@ -1,6 +1,6 @@
 #include "plugin.h"
 #include <stdio.h>
-int main(void){
+int main(void) {
     plugin_install("local");
     plugin_load("sample");
     /* attempt to load a missing plugin to trigger error */

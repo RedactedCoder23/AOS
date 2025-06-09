@@ -1,8 +1,8 @@
+#include "memory.h"
 #include <assert.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
-#include "memory.h"
 
 int main(void) {
     unsigned char pool[4096];
@@ -20,7 +20,8 @@ int main(void) {
         }
     }
     for (int i = 0; i < 128; i++)
-        if (ptrs[i]) memory_free(ptrs[i]);
+        if (ptrs[i])
+            memory_free(ptrs[i]);
     printf("memory fuzz test passed\n");
     return 0;
 }

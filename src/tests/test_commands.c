@@ -1,14 +1,14 @@
-#include <assert.h>
-#include <stdio.h>
-#include "repl.h"
-#include "interpreter.h"
-#include "command_interpreter.h"
-#include "fs.h"
-#include "memory.h"
 #include "ai.h"
 #include "branch.h"
+#include "command_interpreter.h"
+#include "fs.h"
+#include "interpreter.h"
+#include "memory.h"
 #include "plugin.h"
 #include "policy.h"
+#include "repl.h"
+#include <assert.h>
+#include <stdio.h>
 
 extern CommandDictionary commands[];
 

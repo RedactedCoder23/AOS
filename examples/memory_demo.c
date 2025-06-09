@@ -1,5 +1,5 @@
-#include <stdio.h>
 #include "memory.h"
+#include <stdio.h>
 
 /* deliberately small pool to trigger OOM */
 static unsigned char pool[128];
@@ -12,7 +12,7 @@ int main(void) {
     void *b = memory_alloc(80);
     printf("b=%p (expected NULL)\n", b);
     /* invalid free to test error logging */
-    memory_free((void*)0xdeadbeef);
+    memory_free((void *)0xdeadbeef);
     /* reset and allocate again */
     mem_reset();
     void *c = memory_alloc(32);
