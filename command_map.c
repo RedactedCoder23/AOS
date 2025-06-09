@@ -5,4 +5,17 @@ void init_command_map() {
   add_command("HELLO", cmd_hello_wrapper);
   add_command("BYE", cmd_bye_wrapper);
   add_command("UI_GRAPH", cmd_ui_graph_wrapper);
+  add_command("MEM_ALLOC", cmd_mem_alloc_wrapper);
+  add_command("MEM_FREE", cmd_mem_free_wrapper);
+  add_command("FS_OPEN", cmd_fs_open_wrapper);
+  add_command("FS_WRITE", cmd_fs_write_wrapper);
+  add_command("FS_READ", cmd_fs_read_wrapper);
+  add_command("FS_CLOSE", cmd_fs_close_wrapper);
+  add_command("FS_LS", cmd_fs_ls_wrapper);
+  add_command("AI_PROMPT", cmd_ai_prompt_wrapper);
+  add_command("AI_PROFILE", cmd_ai_profile_wrapper);
+  add_command("BR_CREATE", cmd_br_create_wrapper);
+  add_command("BR_LIST", cmd_br_list_wrapper);
+  add_command("BR_STOP", cmd_br_stop_wrapper);
+  add_command("BR_DELETE", cmd_br_delete_wrapper);
 }

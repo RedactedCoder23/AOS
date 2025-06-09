@@ -6,24 +6,75 @@
 #define MAX_NAME 32
 #define MAX_CONTENT 256
 
-static struct { char name[MAX_NAME]; char content[MAX_CONTENT]; } files[MAX_FILES];
-static int file_count;
+typedef struct File {
+    char name[MAX_NAME];
+    char content[MAX_CONTENT];
+    size_t size;
+    size_t pos;
+    int used;
+    int open;
+} File;
 
-void fs_init() { file_count = 0; }
+static File files[MAX_FILES];
 
-int fs_write(const char *name, const char *data) {
-    if (file_count >= MAX_FILES) return -1;
-    strncpy(files[file_count].name, name, MAX_NAME-1);
-    strncpy(files[file_count].content, data, MAX_CONTENT-1);
-    file_count++;
-    return 0;
+void fs_init(void) {
+    memset(files, 0, sizeof(files));
 }
 
-const char *fs_read(const char *name) {
-    for (int i=0;i<file_count;i++) if (strcmp(files[i].name,name)==0) return files[i].content;
+static File *find_file(const char *name) {
+    for (int i = 0; i < MAX_FILES; i++) {
+        if (files[i].used && strcmp(files[i].name, name) == 0)
+            return &files[i];
+    }
     return NULL;
 }
 
-void fs_list() {
-    for (int i=0;i<file_count;i++) printf("%s\n", files[i].name);
+int fs_open(const char *name, const char *mode) {
+    File *f = find_file(name);
+    if (!f) {
+        for (int i = 0; i < MAX_FILES; i++) {
+            if (!files[i].used) { f = &files[i]; break; }
+        }
+        if (!f) return -1;
+        memset(f, 0, sizeof(File));
+        strncpy(f->name, name, MAX_NAME-1);
+        f->used = 1;
+    }
+    f->pos = 0;
+    f->open = 1;
+    if (mode && mode[0] == 'w') f->size = 0;
+    return (int)(f - files);
+}
+
+size_t fs_read(int fd, char *buf, size_t size) {
+    if (fd < 0 || fd >= MAX_FILES) return 0;
+    File *f = &files[fd];
+    if (!f->open) return 0;
+    size_t remain = f->size - f->pos;
+    if (size > remain) size = remain;
+    memcpy(buf, f->content + f->pos, size);
+    f->pos += size;
+    return size;
+}
+
+size_t fs_write(int fd, const char *buf, size_t size) {
+    if (fd < 0 || fd >= MAX_FILES) return 0;
+    File *f = &files[fd];
+    if (!f->open) return 0;
+    if (f->pos + size > MAX_CONTENT) size = MAX_CONTENT - f->pos;
+    memcpy(f->content + f->pos, buf, size);
+    f->pos += size;
+    if (f->pos > f->size) f->size = f->pos;
+    return size;
+}
+
+void fs_close(int fd) {
+    if (fd < 0 || fd >= MAX_FILES) return;
+    files[fd].open = 0;
+}
+
+void fs_ls(void) {
+    for (int i = 0; i < MAX_FILES; i++)
+        if (files[i].used)
+            printf("%s\n", files[i].name);
 }

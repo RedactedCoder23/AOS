@@ -11,10 +11,10 @@ generate:
 NCURSES_CFLAGS := $(shell pkg-config --cflags ncurses 2>/dev/null)
 NCURSES_LIBS := $(shell pkg-config --libs ncurses 2>/dev/null || echo -lncurses)
 
-host: generate
+host: generate subsystems
 	@echo "→ Building host binaries"
 	@mkdir -p build
-	gcc -Iinclude $(NCURSES_CFLAGS) src/main.c src/interpreter.c src/branch_manager.c src/ui_graph.c command_map.c commands.c $(NCURSES_LIBS) -lm -o build/host_test
+	gcc -Iinclude -Isubsystems/memory -Isubsystems/fs -Isubsystems/ai -Isubsystems/branch $(NCURSES_CFLAGS) src/main.c src/interpreter.c src/branch_manager.c src/ui_graph.c command_map.c commands.c subsystems/memory/memory.c subsystems/fs/fs.c subsystems/ai/ai.c subsystems/branch/branch.c $(NCURSES_LIBS) -lcurl -lm -o build/host_test
 	gcc -Iinclude $(NCURSES_CFLAGS) src/ui_graph.c src/branch_manager.c src/ui_main.c $(NCURSES_LIBS) -lm -o build/ui_graph
 
 # 3. Build bare-metal image
@@ -43,22 +43,24 @@ clean:
 memory:
 	@echo "→ Building memory demo"
 	@mkdir -p build
-	gcc -Isubsystems/memory subsystems/memory/memory.c subsystems/memory/memory_main.c -o build/memory_demo
+	gcc -Isubsystems/memory subsystems/memory/memory.c examples/memory_demo.c -o build/memory_demo
 
 fs:
 	@echo "→ Building fs demo"
 	@mkdir -p build
-	gcc -Isubsystems/fs subsystems/fs/fs.c subsystems/fs/fs_main.c -o build/fs_demo
+	gcc -Isubsystems/fs subsystems/fs/fs.c examples/fs_demo.c -o build/fs_demo
 
 ai:
 	@echo "→ Building ai demo"
 	@mkdir -p build
-	gcc -Isubsystems/ai subsystems/ai/ai.c subsystems/ai/ai_main.c -o build/ai_demo
+	gcc -Isubsystems/ai subsystems/ai/ai.c examples/ai_demo.c -lcurl -o build/ai_demo
 
 branch:
 	@echo "→ Building branch demo"
 	@mkdir -p build
-	gcc -Isubsystems/branch subsystems/branch/branch.c subsystems/branch/branch_main.c -o build/branch_demo
+	gcc -Isubsystems/branch subsystems/branch/branch.c examples/branch_demo.c -o build/branch_demo
+
+subsystems: memory fs ai branch
 
 ui: host
 	@echo "UI built via host target"

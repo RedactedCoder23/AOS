@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include <sys/stat.h>
 #include <limits.h>
+#include <time.h>
 
 static Branch branches[MAX_BRANCHES];
 static int branch_count = 0;
@@ -12,21 +13,51 @@ static char save_path[PATH_MAX];
 
 static void save_state(void) {
     if (!save_path[0]) return;
-    FILE *f = fopen(save_path, "wb");
+    FILE *f = fopen(save_path, "w");
     if (!f) return;
-    fwrite(&branch_count, sizeof(branch_count), 1, f);
-    fwrite(&current_branch, sizeof(current_branch), 1, f);
-    fwrite(branches, sizeof(Branch), MAX_BRANCHES, f);
+    fprintf(f, "[\n");
+    for (int i = 0; i < branch_count; i++) {
+        Branch *b = &branches[i];
+        fprintf(f,
+            " {\"id\":%d,\"name\":\"%s\",\"created\":%ld,\"state\":\"%s\",\"connections\":[",
+            b->id, b->name, b->created_ts, b->state);
+        for (int j = 0; j < b->conn_count; j++) {
+            if (j) fprintf(f, ",");
+            fprintf(f, "%d", b->connections[j]);
+        }
+        fprintf(f, "]}%s\n", i == branch_count - 1 ? "" : ",");
+    }
+    fprintf(f, "]\n");
     fclose(f);
 }
 
 static void load_state(void) {
     if (!save_path[0]) return;
-    FILE *f = fopen(save_path, "rb");
+    FILE *f = fopen(save_path, "r");
     if (!f) return;
-    fread(&branch_count, sizeof(branch_count), 1, f);
-    fread(&current_branch, sizeof(current_branch), 1, f);
-    fread(branches, sizeof(Branch), MAX_BRANCHES, f);
+    branch_count = 0;
+    char line[256];
+    while (fgets(line, sizeof(line), f) && branch_count < MAX_BRANCHES) {
+        Branch *b = &branches[branch_count];
+        if (sscanf(line,
+                   " {\"id\":%d,\"name\":\"%31[^\"]\",\"created\":%ld,\"state\":\"%15[^\"]\"",
+                   &b->id, b->name, &b->created_ts, b->state) == 4) {
+            char *conn = strchr(line, '[');
+            b->conn_count = 0;
+            if (conn) {
+                conn++;
+                while (*conn && *conn != ']') {
+                    int id;
+                    if (sscanf(conn, "%d", &id) == 1 && b->conn_count < MAX_BRANCHES)
+                        b->connections[b->conn_count++] = id;
+                    conn = strchr(conn, ',');
+                    if (!conn) break;
+                    conn++;
+                }
+            }
+            branch_count++;
+        }
+    }
     fclose(f);
 }
 
@@ -37,7 +68,7 @@ void bm_init(void) {
     if (home) {
         snprintf(save_path, sizeof(save_path), "%s/.aos", home);
         mkdir(save_path, 0755);
-        strncat(save_path, "/branches.bin", sizeof(save_path)-strlen(save_path)-1);
+        strncat(save_path, "/branches.json", sizeof(save_path)-strlen(save_path)-1);
         load_state();
     } else {
         save_path[0] = '\0';
@@ -53,9 +84,11 @@ int bm_create(const char *name) {
     }
     Branch *b = &branches[branch_count];
     b->id = branch_count;
-    strncpy(b->name, name, sizeof(b->name)-1);
-    b->name[sizeof(b->name)-1] = '\0';
+    strncpy(b->name, name, sizeof(b->name) - 1);
+    b->name[sizeof(b->name) - 1] = '\0';
     b->conn_count = 0;
+    b->created_ts = time(NULL);
+    strncpy(b->state, "running", sizeof(b->state) - 1);
     int id = branch_count++;
     save_state();
     return id;
@@ -90,5 +123,25 @@ int bm_list(Branch *out) {
     for (int i=0; i<branch_count; ++i)
         out[i] = branches[i];
     return branch_count;
+}
+
+int bm_stop(int id) {
+    if (id < 0 || id >= branch_count)
+        return BM_ERR_INVALID;
+    strncpy(branches[id].state, "stopped", sizeof(branches[id].state)-1);
+    save_state();
+    return BM_SUCCESS;
+}
+
+int bm_delete(int id) {
+    if (id < 0 || id >= branch_count)
+        return BM_ERR_INVALID;
+    for (int i = id; i < branch_count - 1; i++) {
+        branches[i] = branches[i + 1];
+        branches[i].id = i;
+    }
+    branch_count--;
+    save_state();
+    return BM_SUCCESS;
 }
 
