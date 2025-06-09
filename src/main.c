@@ -10,6 +10,7 @@
 #include "ai.h"
 #include "plugin.h"
 #include "fs.h"
+#include "config.h"
 
 static void log_agent_error(const char *msg) {
     FILE *f = fopen("AGENT.md", "a");
@@ -43,6 +44,7 @@ int main(void) {
     char line[256];
 
     bm_init();
+    config_load_default();
     fs_init();
     const char *p = getenv("AOS_PORT");
     if (p) br_set_port(atoi(p));
