@@ -60,11 +60,29 @@ Run the memory allocator demo:
 ./examples/branch_demo.sh
 ```
 
-## UI Graph Demo
+## Branch Graph UI
 
+Build and run:
 ```bash
-./examples/ui_demo.sh
+make ui
+./build/ui_graph
 ```
+
+Controls:
+
+* Arrows / h,j,k,l: move selection
+* Enter: switch branch
+* n: create new branch
+* c: connect to another branch
+* q: quit
+
+Example script:
+```bash
+./examples/ui_graph_demo.sh
+```
+
+Branch state is saved to `~/.aos/branches.bin`, so any branches you create will
+persist between sessions.
 
 ## Checklist Log
 
