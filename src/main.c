@@ -2,7 +2,7 @@
 /* [2025-06-09 06:06 UTC] Host-side REPL entry
  * by: codex
  * Edge cases: input parsing brittle; no history or completion. Networking thread not joined.
- * Next agent must: add command history, sanitize input, and handle clean shutdown.
+ * Next agent must: see AGENT.md "UNRESOLVED ISSUES".
  */
 #include <string.h>
 #include <stdlib.h>

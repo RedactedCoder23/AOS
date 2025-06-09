@@ -30,20 +30,18 @@ Initial repository had no AGENT log. PATCHLOG.md notes prior work on branch CLI 
 - Fixed branch graph orientation bug. Clone now links parent->child for tree output.
 - Updated load_state to rebuild symmetric adjacency matrix.
 - Verified `branch tree` prints hierarchy correctly.
- codex/implement-udp-based-peer-discovery-and-branch-sync
-RESOLVED: unknown command handled in REPL
-=======
- main
 ## [2025-06-09 06:06 UTC] — meta sweep: repo agent-memory update
 by: codex
 - Introduced time-stamped log format and baton-pass comments across core subsystems.
 - Added header comments noting open issues for memory, fs, ai, branches, plugins, and REPL.
 - No functional changes.
-
 Next agent must:
-- Follow the same log and comment style for all future updates.
- codex/implement-udp-based-peer-discovery-and-branch-sync
-- Refine peer discovery protocol and implement graceful shutdown of network thread.
+
+- Preserve this log style for future updates.
+- Implement graceful shutdown for network service.
+- Add plugin path validation and sandboxing.
+- Replace AI stubs with real backend.
+- Add REPL history and clean shutdown.
 
 ### Step 5 — [2025-06-09 06:17 UTC] by codex
 - Implemented UDP peer discovery and sync in `branch_net.c` with `br_start_service`, `br_discover`, and `br_sync_peer` APIs.
@@ -52,8 +50,6 @@ Next agent must:
 - Removed error log for unknown commands, resolving previous UNRESOLVED entry.
 - Limitations: no authentication, blocking server thread, and fixed port 9999.
 
-=======
- codex/implement-plugin-loader-and-hot-swap-framework
 - Review plugin sandboxing and security.
 
 ## [2025-06-09 06:18 UTC] — plugin hot-swap MVP
@@ -63,7 +59,6 @@ by: codex
 - Updated sample plugin and demo to exercise unload logic.
 - Resolved UNRESOLVED entry by recognizing plugin commands in REPL.
 - Open issue: plugin path validation and sandboxing remain.
-=======
 - Resolve the earlier UNRESOLVED entry about "unknown command" in REPL.
 ## [2025-06-09 06:16 UTC] — ai backend hook [agent-mem]
 by: codex
@@ -71,5 +66,33 @@ by: codex
 - ai_syscall.c now executes the script for `ai` REPL command.
 - Requires `OPENAI_API_KEY` and network access.
 - Limited quoting, prompts with quotes may fail.
-main
- main
+
+## [2025-06-09 06:31 UTC] — post-merge integration sweep [agent-mem]
+by: codex
+- Cleaned merge artifacts in meta logs.
+- Standardized baton-pass comments across subsystems.
+- Smoke-tested networking, plugin, and AI features together.
+### Tests
+- `make host`
+- `make branch-net`
+- `make plugins`
+- `make ai-service`
+- `./examples/plugin_demo.sh`
+- `./examples/ai_service_demo.sh`
+- `echo 'ai hello\nexit' | ./build/host_test` *(fails: openai module missing)*
+
+## UNRESOLVED ISSUES
+- Network service lacks graceful shutdown and authentication.
+- Plugin loader needs path validation and sandboxing.
+- ai_backend requires openai module; real backend pending.
+- REPL lacks history and clean shutdown.
+- Branch manager JSON loading unvalidated and unlocked.
+## UNRESOLVED ISSUES (as of 2025-06-09 16:30 AEST)
+- Validate file contents and add locking strategy in branch_manager.c
+- Implement real inference backend and error reporting in ai_syscall.c
+- Add command history, sanitize input, handle clean shutdown in main.c
+- Audit plugin paths and sandbox execution in plugin_loader.c
+- Audit for fragmentation and add unit tests in memory.c
+- Design persistent storage backend or VFS integration in fs.c
+- Confirm usage/reconcile with new system in branch.c
+- Replace AI stub with real backend and add retries in ai.c
