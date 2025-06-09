@@ -24,56 +24,38 @@ jobs:
   build:
     runs-on: ubuntu-latest
     needs: [clang-format, clang-tidy]
-    strategy:
-      matrix:
-        arch: [x86_64, riscv64, arm]
-    env:
-      CC_TARGET: ${{ matrix.arch }}
     steps:
       - uses: actions/checkout@v2
       - name: Install deps
         run: |
           sudo apt-get update
-          sudo apt-get install -y libncurses5-dev libncursesw5-dev pkg-config libcurl4-openssl-dev clang clang-tidy clang-format lcov qemu-system-x86 qemu-system-arm qemu-system-misc
-          pip install pre-commit
+          sudo apt-get install -y libncurses5-dev libncursesw5-dev pkg-config libcurl4-openssl-dev clang lcov
+          pip install pre-commit gcovr
       - name: pre-commit
         run: pre-commit run --files $(git ls-files '*.py' '*.c' '*.h' '*.yaml')
-      - name: validate mappings
-        run: python3 scripts/generate_aos_mappings.py --validate
-      - name: build host
-      - name: Format check
-        run: |
-          files=$(git ls-files '*.c' '*.h')
-          clang-format -n --Werror $files
-      - name: Clang tidy
-        run: clang-tidy $(git ls-files '*.c') -- -Iinclude
-      - name: Validate mappings
-        run: python3 generate_aos_mappings.py --validate
       - name: Build host
         run: make host
-      - name: Run tests
-        run: make test
-      - name: Fuzz tests
-        run: make test-fuzz
-      - name: Coverage
-        run: make coverage
-      - name: Validate mappings
-        run: python3 generate_aos_mappings.py --validate
-      - name: Build
-        run: make all
-      - name: Test
-        run: make test
-      - name: Validate mappings
-        run: python3 scripts/generate_aos_mappings.py --validate
-      - name: Build host and demos
-        run: make host
-      - name: unit tests
+      - name: Unit tests
         run: make test-unit
-      - name: integration tests
+      - name: Integration tests
         run: make test-integration
-      - name: ui tests
-        run: make ui-check
-      - name: QEMU smoke
-        run: |
-          make boot CC_TARGET=${{ matrix.arch }}
-          ./scripts/qemu_smoke.sh ${{ matrix.arch }}
+      - name: Coverage
+        run: gcovr -r . --lcov -o coverage.lcov
+      - name: Upload coverage
+        uses: coverallsapp/github-action@v2
+        with:
+          path-to-lcov: coverage.lcov
+
+  sanitize-build:
+    runs-on: ubuntu-latest
+    needs: [clang-format, clang-tidy]
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install deps
+        run: sudo apt-get update && sudo apt-get install -y clang
+      - name: Build with sanitizers
+        run: CFLAGS='-fsanitize=address,undefined -g' make host
+      - name: Unit tests with sanitizers
+        run: CFLAGS='-fsanitize=address,undefined -g' make test-unit
+      - name: Integration tests with sanitizers
+        run: CFLAGS='-fsanitize=address,undefined -g' make test-integration

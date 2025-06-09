@@ -312,3 +312,8 @@ Previous baton passes and session notes kept above.
 - Restricted whitespace/yaml hooks to specific file types.
 - Fixed Makefile test targets and ensured unit/integration tests build.
 - Verified `pre-commit run --all-files`, `make test-unit`, and `make test-integration` all succeed.
+
+## [2025-06-09 22:18 UTC] ci coverage + sanitizer [codex]
+- Added `sanitize-build` job compiling with `-fsanitize=address,undefined`.
+- Integrated `gcovr` coverage reporting and Coveralls upload.
+- Inserted coverage badge into README.

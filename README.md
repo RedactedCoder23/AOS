@@ -1,4 +1,5 @@
 # AOS
+[![Coverage Status](https://coveralls.io/repos/github/example/AOS/badge.svg?branch=main)](https://coveralls.io/github/example/AOS?branch=main)
 
 Minimal experimental OS used for interpreter tests.
 
