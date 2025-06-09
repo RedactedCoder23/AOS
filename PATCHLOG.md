@@ -133,3 +133,13 @@ by: codex
 - `./examples/plugin_demo.sh`
 - `./examples/ai_service_demo.sh`
 - `echo "ai test\nexit" | ./build/host_test` *(fails: openai module missing)*
+
+## [2025-06-09 08:31 UTC] — persistence & federation [agent-mem]
+### Changes
+- Log file/network errors in branch manager and net.
+- Added persist_restore_demo.sh and updated branch_fed_demo.sh.
+### Tests
+- `make host`
+- `./examples/persist_restore_demo.sh`
+- `make branch-net`
+- `./examples/branch_fed_demo.sh`

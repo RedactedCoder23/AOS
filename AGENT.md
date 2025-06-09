@@ -131,3 +131,50 @@ Next agent must:
 - Persist policy configs and validate JSON input.
 - Integrate web UI with live branch data via IPC and secure the HTTP service with tests.
 AI error: missing OPENAI_API_KEY
+
+## [2025-06-09 08:31 UTC] — persistent branches & federation [agent-mem]
+by: codex
+- Added IO and network error logs.
+- Created persistence and federation demos.
+- Next agent must handle graceful shutdown and JSON validation.
+IO error: load_state fopen failed
+IO error: load_state fopen failed
+IO error: load_state parse error
+IO error: load_state parse error
+IO error: load_state parse error
+IO error: load_state parse error
+IO error: load_state parse error
+IO error: load_state parse error
+IO error: load_state parse error
+IO error: load_state parse error
+IO error: load_state fopen failed
+IO error: load_state fopen failed
+IO error: load_state parse error
+IO error: load_state parse error
+IO error: load_state parse error
+IO error: load_state parse error
+IO error: load_state parse error
+IO error: load_state parse error
+IO error: load_state fopen failed
+IO error: load_state fopen failed
+IO error: load_state parse error
+IO error: load_state parse error
+IO error: load_state parse error
+IO error: load_state parse error
+IO error: load_state fopen failed
+IO error: load_state fopen failed
+IO error: load_state parse error
+IO error: load_state parse error
+IO error: load_state parse error
+IO error: load_state parse error
+IO error: load_state fopen failed
+IO error: load_state fopen failed
+IO error: load_state parse error
+IO error: load_state parse error
+IO error: load_state parse error
+IO error: load_state parse error
+IO error: load_state parse error
+IO error: load_state parse error
+NET error: sync bind fail
+NET error: sync bind fail
+NET error: sync bind fail
