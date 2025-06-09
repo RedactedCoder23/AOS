@@ -170,3 +170,12 @@ Next agent must:
 
 Next agent must:
 - Continue filling out subsystem READMEs and ensure diagrams stay updated.
+
+## [2025-06-09 10:45 UTC] repl refactor [agent-mem]
+- Added table-driven dispatcher in new `src/repl.c` and minimal main entry.
+- Merged legacy mapping text files into `mappings.json` and updated generator.
+- Added command handler unit tests under `src/tests` and CI validation step.
+
+Next agent must:
+- Review networked branch sync for race conditions.
+AI error: missing OPENAI_API_KEY

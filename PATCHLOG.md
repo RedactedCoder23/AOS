@@ -313,3 +313,13 @@ by: codex
 ### Tests
 - `make test-unit`
 - `make test-integration`
+
+## [2025-06-09 10:45 UTC] — repl refactor [agent-mem]
+### Changes
+- Introduced `src/repl.c` with table-driven dispatcher and streamlined `main`.
+- Consolidated mapping text into `mappings.json` and rewrote generator.
+- Added unit tests for all command handlers and CI mapping validation.
+### Tests
+- `make host`
+- `make test-unit`
+- `make test-integration`
