@@ -14,7 +14,7 @@ NCURSES_LIBS := $(shell pkg-config --libs ncurses 2>/dev/null || echo -lncurses)
 host: generate subsystems
 	@echo "→ Building host binaries"
 	@mkdir -p build
-	gcc -Iinclude -Isubsystems/memory -Isubsystems/fs -Isubsystems/ai -Isubsystems/branch -Isubsystems/net $(NCURSES_CFLAGS) src/main.c src/interpreter.c src/branch_manager.c src/ui_graph.c src/branch_vm.c src/plugin_loader.c src/branch_net.c src/ai_syscall.c src/policy.c src/memory.c command_map.c commands.c subsystems/memory/memory.c subsystems/fs/fs.c subsystems/ai/ai.c subsystems/branch/branch.c subsystems/net/net.c $(NCURSES_LIBS) -ldl -lcurl -lm -o build/host_test
+	gcc -Iinclude -Isubsystems/memory -Isubsystems/fs -Isubsystems/ai -Isubsystems/branch -Isubsystems/net $(NCURSES_CFLAGS) src/main.c src/interpreter.c src/branch_manager.c src/ui_graph.c src/branch_vm.c src/plugin_loader.c src/branch_net.c src/ai_syscall.c src/policy.c src/memory.c src/config.c command_map.c commands.c subsystems/memory/memory.c subsystems/fs/fs.c subsystems/ai/ai.c subsystems/branch/branch.c subsystems/net/net.c $(NCURSES_LIBS) -ldl -lcurl -lm -o build/host_test
 	gcc -Iinclude $(NCURSES_CFLAGS) src/ui_graph.c src/branch_manager.c src/ui_main.c $(NCURSES_LIBS) -lm -o build/ui_graph
 
 # 3. Build bare-metal image
@@ -27,11 +27,21 @@ bare: generate
 
 # Build and launch in QEMU
 run: bare
-	@echo "\u2192 Running AOS in QEMU"
-	@sh -c '\
+	 @echo "\u2192 Running AOS in QEMU"
+	 @sh -c '\
   if which qemu-system-x86_64 >/dev/null 2>&1; then EMU=qemu-system-x86_64; \
   elif which qemu-system-i386 >/dev/null 2>&1; then EMU=qemu-system-i386; \
   else echo "Error: please install qemu-system-x86_64 or qemu-system-i386" && exit 1; \
+  fi; \
+  $$EMU -nographic -drive format=raw,file=aos.bin $(RUN_OPTS)'
+
+boot: bare
+	@echo "\u2192 Booting AOS"
+	@if [ ! -f aos.bin ]; then echo "boot error: missing aos.bin" | tee -a AGENT.md; exit 1; fi
+	@sh -c '\
+  if which qemu-system-x86_64 >/dev/null 2>&1; then EMU=qemu-system-x86_64; \
+  elif which qemu-system-i386 >/dev/null 2>&1; then EMU=qemu-system-i386; \
+  else echo "boot error: qemu not installed" | tee -a AGENT.md; exit 1; \
   fi; \
   $$EMU -nographic -drive format=raw,file=aos.bin $(RUN_OPTS)'
 
