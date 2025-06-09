@@ -100,6 +100,59 @@ Controls:
 Branch state is saved to `~/.aos/branches.json`, so any branches you create will
 persist between sessions.
 
+## Hypervisor-Backed Branches
+
+```bash
+make branch-vm
+./examples/branch_vm_demo.sh
+```
+
+Creates a stub VM and lists it.
+
+## Plugin Marketplace
+
+```bash
+make plugins
+./examples/plugin_demo.sh
+```
+
+Loads a sample plugin built as a shared object.
+
+## Real Hardware Boot
+
+```bash
+./examples/iso_demo.sh
+```
+
+Generates a dummy `aos.iso` file.
+
+## Distributed Branch Federation
+
+```bash
+make branch-net
+./examples/branch_fed_demo.sh
+```
+
+Demonstrates syncing with a peer.
+
+## AI-driven Service Manager
+
+```bash
+make ai-service
+./examples/ai_service_demo.sh
+```
+
+Spawns a sample AI service and checks its status.
+
+## Secure Enclaves & Policy Engine
+
+```bash
+make policy
+./examples/policy_demo.sh
+```
+
+Loads a policy script and performs a check.
+
 ## Checklist Log
 
 The build process writes warnings and errors to `AOS-CHECKLIST.log`.

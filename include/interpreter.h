@@ -23,4 +23,18 @@ void cmd_br_stop_wrapper(int argc, char **argv);
 void cmd_br_delete_wrapper(int argc, char **argv);
 void init_command_map();
 
+void cmd_br_vm_create_wrapper(int argc, char **argv);
+void cmd_br_vm_list_wrapper(int argc, char **argv);
+void cmd_br_vm_switch_wrapper(int argc, char **argv);
+void cmd_br_vm_stop_wrapper(int argc, char **argv);
+void cmd_plugin_install_wrapper(int argc, char **argv);
+void cmd_plugin_list_wrapper(int argc, char **argv);
+void cmd_plugin_load_wrapper(int argc, char **argv);
+void cmd_br_peer_add_wrapper(int argc, char **argv);
+void cmd_br_sync_wrapper(int argc, char **argv);
+void cmd_ai_service_create_wrapper(int argc, char **argv);
+void cmd_ai_service_monitor_wrapper(int argc, char **argv);
+void cmd_policy_load_wrapper(int argc, char **argv);
+void cmd_policy_check_wrapper(int argc, char **argv);
+
 #endif
