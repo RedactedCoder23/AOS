@@ -18,12 +18,16 @@ typedef struct File {
     size_t pos;
     int used;
     int open;
+    int dir; /* 1 if directory */
 } File;
 
 static File files[MAX_FILES];
 
 void fs_init(void) {
     memset(files, 0, sizeof(files));
+    strncpy(files[0].name, "/", MAX_NAME-1);
+    files[0].used = 1;
+    files[0].dir = 1;
 }
 
 static File *find_file(const char *name) {
@@ -36,6 +40,8 @@ static File *find_file(const char *name) {
 
 int fs_open(const char *name, const char *mode) {
     File *f = find_file(name);
+    if (f && f->dir)
+        return -1; /* cannot open directory */
     if (!f) {
         for (int i = 0; i < MAX_FILES; i++) {
             if (!files[i].used) { f = &files[i]; break; }
@@ -78,8 +84,22 @@ void fs_close(int fd) {
     files[fd].open = 0;
 }
 
+int fs_mkdir(const char *name) {
+    if (find_file(name)) return -1;
+    for (int i = 0; i < MAX_FILES; i++) {
+        if (!files[i].used) {
+            memset(&files[i], 0, sizeof(File));
+            strncpy(files[i].name, name, MAX_NAME-1);
+            files[i].used = 1;
+            files[i].dir = 1;
+            return 0;
+        }
+    }
+    return -1;
+}
+
 void fs_ls(void) {
-    for (int i = 0; i < MAX_FILES; i++)
+    for (int i = 1; i < MAX_FILES; i++)
         if (files[i].used)
-            printf("%s\n", files[i].name);
+            printf("%s%s\n", files[i].name, files[i].dir ? "/" : "");
 }

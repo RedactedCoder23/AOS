@@ -14,6 +14,7 @@ void cmd_fs_open_wrapper(int argc, char **argv);
 void cmd_fs_write_wrapper(int argc, char **argv);
 void cmd_fs_read_wrapper(int argc, char **argv);
 void cmd_fs_close_wrapper(int argc, char **argv);
+void cmd_fs_mkdir_wrapper(int argc, char **argv);
 void cmd_fs_ls_wrapper(int argc, char **argv);
 void cmd_ai_prompt_wrapper(int argc, char **argv);
 void cmd_ai_profile_wrapper(int argc, char **argv);

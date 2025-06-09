@@ -3,11 +3,12 @@
 
 int main(void) {
     fs_init();
-    int fd = fs_open("foo.txt", "w");
+    fs_mkdir("docs");
+    int fd = fs_open("docs/foo.txt", "w");
     fs_write(fd, "hello", 5);
     fs_close(fd);
 
-    fd = fs_open("foo.txt", "r");
+    fd = fs_open("docs/foo.txt", "r");
     char buf[16];
     size_t r = fs_read(fd, buf, sizeof(buf) - 1);
     buf[r] = '\0';

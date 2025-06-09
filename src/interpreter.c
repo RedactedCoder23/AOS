@@ -211,6 +211,20 @@ void cmd_fs_close_wrapper(int argc, char **argv) {
     printf("Closed %d\n", fd);
 }
 
+void cmd_fs_mkdir_wrapper(int argc, char **argv) {
+    ensure_init();
+    if (argc < 2) {
+        printf("Error: usage: FS_MKDIR <name>\n");
+        log_checklist("FS_MKDIR missing arg");
+        return;
+    }
+    int rc = fs_mkdir(argv[1]);
+    if (rc < 0) {
+        printf("Error: mkdir failed\n");
+        log_checklist("FS_MKDIR failed");
+    }
+}
+
 void cmd_fs_ls_wrapper(int argc, char **argv) {
     (void)argc; (void)argv; ensure_init();
     fs_ls();

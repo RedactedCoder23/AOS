@@ -117,6 +117,15 @@ AI backend error rc=30720 output=Traceback (most recent call last):
 =======
 - Replace AI stub with real backend and add retries in ai.c
 
+codex/implement-minimal-filesystem-with-cli-support
+## [2025-06-09 07:54 UTC] — minimal FS mkdir & CLI [agent-mem]
+by: codex
+- Extended in-memory filesystem with directory support and `fs_mkdir` API.
+- Added FS CLI commands in host REPL for mkdir/open/write/read/close/ls.
+- Updated `fs_demo` example to showcase directory usage.
+- Generated new command mappings via `generate_aos_mappings.py`.
+- FS remains volatile with no persistence or access control.
+=======
  codex/build-graphical-branch-visualizer-ui
 ## [2025-06-09 07:51 UTC] — graphical branch UI [agent-mem]
 by: codex
@@ -138,5 +147,6 @@ by: codex
 Next agent must:
 - Extend sandbox hooks to memory, AI, and plugins.
 - Persist policy configs and validate JSON input.
+ main
  main
  main

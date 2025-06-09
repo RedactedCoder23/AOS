@@ -9,6 +9,7 @@
 #include "branch.h"
 #include "ai.h"
 #include "plugin.h"
+#include "fs.h"
 
 static void log_agent_error(const char *msg) {
     FILE *f = fopen("AGENT.md", "a");
@@ -42,6 +43,7 @@ int main(void) {
     char line[256];
 
     bm_init();
+    fs_init();
     const char *p = getenv("AOS_PORT");
     if (p) br_set_port(atoi(p));
     br_start_service();
@@ -93,6 +95,56 @@ int main(void) {
                 for (int i=0;i<n;i++) printf("%s\n", found[i]);
             } else {
                 printf("usage: peer ls\n");
+            }
+        } else if (strcmp(cmd, "fs") == 0) {
+            char *sub = strtok(NULL, " ");
+            if (!sub) {
+                printf("usage: fs <mkdir|open|write|read|close|ls> ...\n");
+            } else if (strcmp(sub, "mkdir") == 0) {
+                char *name = strtok(NULL, " ");
+                if (!name) printf("missing name\n");
+                else if (fs_mkdir(name) < 0) printf("mkdir error\n");
+            } else if (strcmp(sub, "open") == 0) {
+                char *name = strtok(NULL, " ");
+                char *mode = strtok(NULL, " ");
+                if (!name || !mode) {
+                    printf("usage: fs open <name> <mode>\n");
+                } else {
+                    int fd = fs_open(name, mode);
+                    if (fd < 0) printf("open error\n");
+                    else printf("%d\n", fd);
+                }
+            } else if (strcmp(sub, "write") == 0) {
+                char *sfd = strtok(NULL, " ");
+                char *text = strtok(NULL, "");
+                if (!sfd || !text) {
+                    printf("usage: fs write <fd> <text>\n");
+                } else {
+                    int fd = atoi(sfd);
+                    size_t w = fs_write(fd, text, strlen(text));
+                    printf("%zu\n", w);
+                }
+            } else if (strcmp(sub, "read") == 0) {
+                char *sfd = strtok(NULL, " ");
+                char *bytes = strtok(NULL, " ");
+                if (!sfd || !bytes) {
+                    printf("usage: fs read <fd> <bytes>\n");
+                } else {
+                    int fd = atoi(sfd);
+                    int n = atoi(bytes);
+                    char buf[256]; if (n > 255) n = 255;
+                    size_t r = fs_read(fd, buf, n);
+                    buf[r] = '\0';
+                    printf("%s\n", buf);
+                }
+            } else if (strcmp(sub, "close") == 0) {
+                char *sfd = strtok(NULL, " ");
+                if (!sfd) printf("usage: fs close <fd>\n");
+                else fs_close(atoi(sfd));
+            } else if (strcmp(sub, "ls") == 0) {
+                fs_ls();
+            } else {
+                printf("unknown subcommand %s\n", sub);
             }
         } else if (strcmp(cmd, "ai") == 0) {
             char *question = strtok(NULL, "");

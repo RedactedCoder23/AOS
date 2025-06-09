@@ -11,6 +11,7 @@ void init_command_map() {
   add_command("FS_WRITE", cmd_fs_write_wrapper);
   add_command("FS_READ", cmd_fs_read_wrapper);
   add_command("FS_CLOSE", cmd_fs_close_wrapper);
+  add_command("FS_MKDIR", cmd_fs_mkdir_wrapper);
   add_command("FS_LS", cmd_fs_ls_wrapper);
   add_command("AI_PROMPT", cmd_ai_prompt_wrapper);
   add_command("AI_PROFILE", cmd_ai_profile_wrapper);

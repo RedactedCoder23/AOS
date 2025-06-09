@@ -74,6 +74,18 @@ by: codex
 - `./examples/plugin_demo.sh`
 - `./examples/ai_service_demo.sh`
 - `echo 'ai hello\nexit' | ./build/host_test` *(fails: openai module missing)*
+ codex/implement-minimal-filesystem-with-cli-support
+
+## [2025-06-09 07:54 UTC] — minimal FS mkdir & CLI [agent-mem]
+### Changes
+- Added directory support in `subsystems/fs` and new `fs_mkdir` API.
+- Integrated FS commands into host REPL and updated `fs_demo`.
+- Regenerated command maps to include `FS_MKDIR`.
+### Tests
+- `make fs`
+- `./build/fs_demo`
+- `echo -e 'fs mkdir d\nfs ls\nexit' | ./build/host_test`
+=======
  codex/implement-minimal-tcp/ip-or-udp-stack
 
 ## [2025-06-09 07:51 UTC] — TCP stack demo [agent-mem]
