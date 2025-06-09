@@ -269,3 +269,10 @@ Next agent must:
 - Monitor CI for stability and extend build scripts as features land.
  main
  main
+
+## [2025-06-09 12:18 UTC] ci workflow cleanup [codex]
+- Removed leftover conflict lines from `.github/workflows/ci.yml`.
+- Restored valid YAML.
+
+Next agent must:
+- Ensure CI passes with updated workflow.

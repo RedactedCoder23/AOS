@@ -426,3 +426,9 @@ by: codex
 - `make test`
 - `make test-fuzz`
  main
+
+## [2025-06-09 12:18 UTC] ci workflow cleanup [codex]
+### Changes
+- Removed merge conflict lines from `.github/workflows/ci.yml`.
+### Tests
+- `python -c "import yaml,sys;yaml.safe_load(open('.github/workflows/ci.yml'))"`
