@@ -2,28 +2,26 @@
 
 This guide walks through building and running AOS from source.
 
-## Prerequisites
-- `gcc`, `make`, `pkg-config`
-- `libcurl-dev`, `libncurses-dev`
-- Python 3 and `pip`
+-## Prerequisites
+- build-essential (`gcc`, `make`)
+- `libncurses-dev`
+- Python 3.8+
 - QEMU (optional for bare metal)
 
 Install Python requirements:
 ```bash
-pip install -r requirements.txt
-pip install pre-commit
+pip3 install -r requirements.txt
 ```
 Run `pre-commit install` once to enable automatic formatting.
 
 ## Build Steps
 ```bash
-make host   # host tools and REPL
-make bare   # bare metal kernel
+make all  # build host tools and bare kernel
 ```
 
 ## Running the Host REPL
 ```bash
-./build/host_test
+./bin/aos-host
 ```
 The REPL accepts commands such as `branch list` and `fs mkdir`.
 

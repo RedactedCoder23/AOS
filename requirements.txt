@@ -1,2 +1,2 @@
-openai
-
+click>=8.0
+regex>=2022.10.31

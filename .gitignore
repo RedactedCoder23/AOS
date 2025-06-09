@@ -1,13 +1,17 @@
- codex/standardize-linting,-formatting,-and-dependencies
-command_map.c
-commands.c
-category_defs.h
-=======
+# Generated source files
 gen/
- main
+gen/command_map.c
+gen/commands.c
+gen/category_defs.h
+!src/commands.c
 
-build
-packages
+# Build artifacts
+build/
+bin/
+*.o
+
+# Misc
+packages/
 *.log
 AOS-CHECKLIST.log
 aos.iso
