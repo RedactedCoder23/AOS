@@ -10,6 +10,11 @@
 #include "ai.h"
 #include "plugin.h"
 #include "fs.h"
+codex/implement-minimal-runtime-and-installer
+#include "app_runtime.h"
+=======
+#include "config.h"
+ main
 
 static void log_agent_error(const char *msg) {
     FILE *f = fopen("AGENT.md", "a");
@@ -43,6 +48,7 @@ int main(void) {
     char line[256];
 
     bm_init();
+    config_load_default();
     fs_init();
     if (ai_config_load() != 0)
         printf("Run 'ai setup' to configure provider\n");
@@ -101,7 +107,7 @@ int main(void) {
         } else if (strcmp(cmd, "fs") == 0) {
             char *sub = strtok(NULL, " ");
             if (!sub) {
-                printf("usage: fs <mkdir|open|write|read|close|ls> ...\n");
+                printf("usage: fs <mkdir|open|write|read|close|delete|backend|ls> ...\n");
             } else if (strcmp(sub, "mkdir") == 0) {
                 char *name = strtok(NULL, " ");
                 if (!name) printf("missing name\n");
@@ -143,6 +149,21 @@ int main(void) {
                 char *sfd = strtok(NULL, " ");
                 if (!sfd) printf("usage: fs close <fd>\n");
                 else fs_close(atoi(sfd));
+            } else if (strcmp(sub, "delete") == 0) {
+                char *name = strtok(NULL, " ");
+                if (!name) printf("usage: fs delete <name>\n");
+                else if (fs_delete(name) < 0) printf("delete error\n");
+            } else if (strcmp(sub, "backend") == 0) {
+                char *type = strtok(NULL, " ");
+                if (!type) {
+                    printf("usage: fs backend <ram|disk>\n");
+                } else if (strcmp(type, "ram") == 0) {
+                    fs_use_ramfs();
+                } else if (strcmp(type, "disk") == 0) {
+                    if (fs_use_persistent() != 0) printf("mount error\n");
+                } else {
+                    printf("unknown backend %s\n", type);
+                }
             } else if (strcmp(sub, "ls") == 0) {
                 fs_ls();
             } else {
@@ -179,6 +200,25 @@ int main(void) {
             } else {
                 printf("unknown subcommand %s\n", sub);
                 log_agent_error("plugin unknown subcommand");
+            }
+        } else if (strcmp(cmd, "app") == 0) {
+            char *sub = strtok(NULL, " ");
+            if (!sub) {
+                printf("usage: app <run|list> [name args...]\n");
+            } else if (strcmp(sub, "list") == 0) {
+                app_list();
+            } else if (strcmp(sub, "run") == 0) {
+                char *name = strtok(NULL, " ");
+                if (!name) { printf("usage: app run <name> [args]\n"); }
+                else {
+                    char *pargs[8];
+                    int n=0; char *a;
+                    while ((a = strtok(NULL, " ")) && n<8) pargs[n++]=a;
+                    pargs[n]=NULL;
+                    app_run(name, n, pargs);
+                }
+            } else {
+                printf("unknown subcommand %s\n", sub);
             }
         } else {
             printf("Unknown command\n");

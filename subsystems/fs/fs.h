@@ -9,6 +9,9 @@ size_t fs_write(int fd, const char *buf, size_t size);
 void fs_close(int fd);
 void fs_ls(void);
 int fs_mkdir(const char *name);
+int fs_delete(const char *name);
+int fs_use_persistent(void);
+void fs_use_ramfs(void);
 
 
 #endif

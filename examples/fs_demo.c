@@ -3,6 +3,10 @@
 
 int main(void) {
     fs_init();
+    if (fs_use_persistent() != 0) {
+        printf("persistent fs unavailable\n");
+        return 1;
+    }
     fs_mkdir("docs");
     int fd = fs_open("docs/foo.txt", "w");
     fs_write(fd, "hello", 5);

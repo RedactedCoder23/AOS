@@ -1,4 +1,4 @@
-.PHONY: all generate host bare run clean ui ui-check web-ui branch-vm plugins iso efi branch-net ai-service policy net
+.PHONY: all generate host bare run clean ui ui-check web-ui branch-vm plugins iso efi branch-net desktop-ui ai-service policy net
 
 all: host bare
 
@@ -14,7 +14,11 @@ NCURSES_LIBS := $(shell pkg-config --libs ncurses 2>/dev/null || echo -lncurses)
 host: generate subsystems
 	@echo "→ Building host binaries"
 	@mkdir -p build
-	gcc -Iinclude -Isubsystems/memory -Isubsystems/fs -Isubsystems/ai -Isubsystems/branch -Isubsystems/net $(NCURSES_CFLAGS) src/main.c src/interpreter.c src/branch_manager.c src/ui_graph.c src/branch_vm.c src/plugin_loader.c src/branch_net.c src/ai_syscall.c src/policy.c src/memory.c command_map.c commands.c subsystems/memory/memory.c subsystems/fs/fs.c subsystems/ai/ai.c subsystems/branch/branch.c subsystems/net/net.c $(NCURSES_LIBS) -ldl -lcurl -lm -o build/host_test
+codex/implement-minimal-runtime-and-installer
+	gcc -rdynamic -Iinclude -Isubsystems/memory -Isubsystems/fs -Isubsystems/ai -Isubsystems/branch -Isubsystems/net $(NCURSES_CFLAGS) src/main.c src/interpreter.c src/branch_manager.c src/ui_graph.c src/branch_vm.c src/plugin_loader.c src/branch_net.c src/ai_syscall.c src/policy.c src/memory.c src/app_runtime.c command_map.c commands.c subsystems/memory/memory.c subsystems/fs/fs.c subsystems/ai/ai.c subsystems/branch/branch.c subsystems/net/net.c $(NCURSES_LIBS) -ldl -lcurl -lm -o build/host_test
+=======
+	gcc -Iinclude -Isubsystems/memory -Isubsystems/fs -Isubsystems/ai -Isubsystems/branch -Isubsystems/net $(NCURSES_CFLAGS) src/main.c src/interpreter.c src/branch_manager.c src/ui_graph.c src/branch_vm.c src/plugin_loader.c src/branch_net.c src/ai_syscall.c src/policy.c src/memory.c src/config.c command_map.c commands.c subsystems/memory/memory.c subsystems/fs/fs.c subsystems/ai/ai.c subsystems/branch/branch.c subsystems/net/net.c $(NCURSES_LIBS) -ldl -lcurl -lm -o build/host_test
+ main
 	gcc -Iinclude $(NCURSES_CFLAGS) src/ui_graph.c src/branch_manager.c src/ui_main.c $(NCURSES_LIBS) -lm -o build/ui_graph
 
 # 3. Build bare-metal image
@@ -27,11 +31,21 @@ bare: generate
 
 # Build and launch in QEMU
 run: bare
-	@echo "\u2192 Running AOS in QEMU"
-	@sh -c '\
+	 @echo "\u2192 Running AOS in QEMU"
+	 @sh -c '\
   if which qemu-system-x86_64 >/dev/null 2>&1; then EMU=qemu-system-x86_64; \
   elif which qemu-system-i386 >/dev/null 2>&1; then EMU=qemu-system-i386; \
   else echo "Error: please install qemu-system-x86_64 or qemu-system-i386" && exit 1; \
+  fi; \
+  $$EMU -nographic -drive format=raw,file=aos.bin $(RUN_OPTS)'
+
+boot: bare
+	@echo "\u2192 Booting AOS"
+	@if [ ! -f aos.bin ]; then echo "boot error: missing aos.bin" | tee -a AGENT.md; exit 1; fi
+	@sh -c '\
+  if which qemu-system-x86_64 >/dev/null 2>&1; then EMU=qemu-system-x86_64; \
+  elif which qemu-system-i386 >/dev/null 2>&1; then EMU=qemu-system-i386; \
+  else echo "boot error: qemu not installed" | tee -a AGENT.md; exit 1; \
   fi; \
   $$EMU -nographic -drive format=raw,file=aos.bin $(RUN_OPTS)'
 
@@ -55,7 +69,7 @@ memory:
 fs:
 	@echo "→ Building fs demo"
 	@mkdir -p build
-	gcc -Isubsystems/fs subsystems/fs/fs.c examples/fs_demo.c -o build/fs_demo
+	gcc -Isubsystems/fs -Iinclude subsystems/fs/fs.c examples/fs_demo.c -o build/fs_demo
 
 ai:
 	@echo "→ Building ai demo"
@@ -99,13 +113,47 @@ policy:
 	gcc -Iinclude src/policy.c examples/policy_demo.c -o build/policy_demo
 
 net:
+codex/implement-minimal-runtime-and-installer
 	       @echo "→ Building net echo demo"
 	       @mkdir -p build
 	       gcc -Isubsystems/net subsystems/net/net.c examples/net_echo.c -o build/net_echo
+apps:
+	@echo "→ Building sample apps"
+	@mkdir -p build/apps
+	gcc apps_src/fileman.c -o build/apps/fileman
+	gcc apps_src/textedit.c -o build/apps/textedit
+=======
+	@echo "→ Building net echo demo"
+	@mkdir -p build
+	gcc -Isubsystems/net subsystems/net/net.c examples/net_echo.c -o build/net_echo
+
+net-http:
+	@echo "→ Building http server demo"
+	@mkdir -p build
+	gcc -Isubsystems/net subsystems/net/net.c examples/http_server.c -o build/http_server
+main
 
 test: host branch
 	@echo "→ Running branch demo"
 	@./build/branch_demo >/tmp/branch_demo.out && cat /tmp/branch_demo.out
+
+test-memory: memory
+	./examples/memory_demo.sh
+
+test-fs: fs
+	./examples/fs_smoke.sh
+
+test-branch: branch
+	./examples/branch_smoke.sh
+
+test-plugin: plugins
+	./examples/plugin_smoke.sh
+
+test-policy: policy
+	./examples/policy_smoke.sh
+
+test-net: net
+	./examples/net_echo_test.sh
 
 efi:
 	@echo "→ Building EFI stub"
@@ -129,6 +177,9 @@ web-ui:
 	@echo "\u2192 Launching web UI at http://localhost:8000"
 	python3 scripts/branch_ui.py
 
+desktop-ui:
+	@echo "\u2192 Launching desktop UI at http://localhost:8000"
+	python3 scripts/desktop_backend.py
 checklist:
 	@if [ -s AOS-CHECKLIST.log ]; then \
 	echo "Checklist has entries:"; cat AOS-CHECKLIST.log; exit 1; \
