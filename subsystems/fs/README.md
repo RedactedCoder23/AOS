@@ -9,3 +9,6 @@ The FS subsystem now exposes a simple VFS layer. Backends implement the
 
 Use `fs_use_ramfs()` or `fs_use_ext2(path)` to switch between them at
 runtime.
+
+**Baton pass**: Extend the ext2 backend with directory operations and
+add integration tests covering persistence across restarts.

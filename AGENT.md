@@ -232,3 +232,16 @@ Next agent must:
 Next agent must:
 - Review cppcheck warnings, especially missing includes and unused functions.
 - Continue consolidation of docs and subsystem READMEs.
+AI error: missing OPENAI_API_KEY
+
+## [2025-06-09 11:18 UTC] repo polish [agent-mem]
+- Ran clang-format across the tree.
+- clang-tidy produced 105 warnings and 45 errors (see /tmp/clang_tidy.log).
+- Verified unit and integration tests pass.
+- `make host` and `branch-net` currently fail due to -Werror and missing symbols.
+- Added README files and baton-pass notes to stub directories.
+
+### Baton Pass
+- Resolve clang-tidy warnings and restore `make host` build.
+- Implement TODOs described in subsystem READMEs (dev, security, branch, net, ai, fs, memory).
+- Address open issues listed above and keep ROADMAP updated.
