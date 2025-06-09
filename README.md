@@ -39,28 +39,32 @@ This invokes QEMU (preferring `qemu-system-x86_64`) and attaches the serial cons
 Run the memory allocator demo which showcases the free-list allocator:
 
 ```bash
-./examples/memory_demo.sh
+make memory
+./build/memory_demo
 ```
 The demo allocates and frees several blocks and prints their addresses.
 
 ## Filesystem Demo
 
 ```bash
-./examples/fs_demo.sh
+make fs
+./build/fs_demo
 ```
 Demonstrates a tiny in-memory filesystem with open/read/write/close commands.
 
 ## AI Demo
 
 ```bash
-./examples/ai_demo.sh
+make ai
+./build/ai_demo
 ```
 Uses libcurl to fetch a response from a demo service.
 
 ## Branch Manager Demo
 
 ```bash
-./examples/branch_demo.sh
+make branch
+./build/branch_demo
 ```
 Creates a few branches, stops one, then deletes it, showing persistence via `~/.aos/branches.json`.
 
@@ -92,11 +96,6 @@ Controls:
 * n: create new branch
 * c: connect to another branch
 * q: quit
-
-Example script:
-```bash
-./examples/ui_graph_demo.sh
-```
 
 Branch state is saved to `~/.aos/branches.json`, so any branches you create will
 persist between sessions.
