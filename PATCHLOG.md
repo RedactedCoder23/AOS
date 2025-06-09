@@ -133,6 +133,18 @@ by: codex
 - `./examples/plugin_demo.sh`
 - `./examples/ai_service_demo.sh`
 - `echo "ai test\nexit" | ./build/host_test` *(fails: openai module missing)*
+ codex/implement-persistent-disk-backed-branches-and-sync
+
+## [2025-06-09 08:31 UTC] — persistence & federation [agent-mem]
+### Changes
+- Log file/network errors in branch manager and net.
+- Added persist_restore_demo.sh and updated branch_fed_demo.sh.
+### Tests
+- `make host`
+- `./examples/persist_restore_demo.sh`
+- `make branch-net`
+- `./examples/branch_fed_demo.sh`
+=======
  codex/implement-security-policy-engine-with-sandbox
 ## [2025-06-09 08:10 UTC] — policy engine sandbox v2 [agent-mem]
 ### Changes
@@ -186,6 +198,7 @@ codex/develop-graphical-desktop-and-ai-copilot
 ### Tests
 - `make plugins`
 - `./examples/plugin_demo.sh`
+ main
  main
  main
  main
