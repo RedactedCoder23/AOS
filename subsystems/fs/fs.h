@@ -1,9 +1,13 @@
 #ifndef FS_H
 #define FS_H
+#include <stddef.h>
 
-void fs_init();
-int fs_write(const char *name, const char *data);
-const char *fs_read(const char *name);
-void fs_list();
+void fs_init(void);
+int fs_open(const char *name, const char *mode);
+size_t fs_read(int fd, char *buf, size_t size);
+size_t fs_write(int fd, const char *buf, size_t size);
+void fs_close(int fd);
+void fs_ls(void);
+
 
 #endif

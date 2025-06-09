@@ -8,7 +8,7 @@
 typedef struct {
     const char *name;
     const char *binary;
-    void (*handler)();
+    command_handler handler;
     uint8_t category;
 } CommandDictionary;
 

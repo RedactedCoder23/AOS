@@ -1,0 +1,25 @@
+name: ci
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libncurses5-dev libncursesw5-dev pkg-config libcurl4-openssl-dev
+      - name: Build host and demos
+        run: make host
+      - name: Test memory
+        run: ./build/memory_demo
+      - name: Test fs
+        run: ./build/fs_demo
+      - name: Test ai
+        run: echo "hello" | ./build/ai_demo
+      - name: Test branch
+        run: ./build/branch_demo
+      - name: Test ui
+        run: make ui-check

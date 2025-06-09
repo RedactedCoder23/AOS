@@ -14,6 +14,8 @@ typedef struct Branch {
     char name[32];
     int connections[MAX_BRANCHES];
     int conn_count;
+    long created_ts;
+    char state[16];
 } Branch;
 
 // Initialize branch manager
@@ -24,6 +26,8 @@ int bm_create(const char *name);
 int bm_switch(int id);
 // Connect two branches bidirectionally. Returns BM_SUCCESS or error.
 int bm_connect(int from, int to);
+int bm_stop(int id);
+int bm_delete(int id);
 // Copy branch list into out array, returns count
 int bm_list(Branch *out);
 

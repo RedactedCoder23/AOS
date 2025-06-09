@@ -36,28 +36,49 @@ This invokes QEMU (preferring `qemu-system-x86_64`) and attaches the serial cons
 
 ## Memory Subsystem Demo
 
-Run the memory allocator demo:
+Run the memory allocator demo which showcases the free-list allocator:
 
 ```bash
-./examples/memory_demo.sh
+make memory
+./build/memory_demo
 ```
+The demo allocates and frees several blocks and prints their addresses.
 
 ## Filesystem Demo
 
 ```bash
-./examples/fs_demo.sh
+make fs
+./build/fs_demo
 ```
+Demonstrates a tiny in-memory filesystem with open/read/write/close commands.
 
 ## AI Demo
 
 ```bash
-./examples/ai_demo.sh
+make ai
+./build/ai_demo
 ```
+Uses libcurl to fetch a response from a demo service.
 
 ## Branch Manager Demo
 
 ```bash
-./examples/branch_demo.sh
+make branch
+./build/branch_demo
+```
+Creates a few branches, stops one, then deletes it, showing persistence via `~/.aos/branches.json`.
+
+## Sample REPL Session
+
+```
+AOS> MEM_ALLOC 128
+Allocated at 0x1f0a010
+AOS> FS_LS
+(no files)
+AOS> AI_PROMPT Hello
+Hi, I'm an AI stub...
+AOS> BR_LIST
+0:main (running)
 ```
 
 ## Branch Graph UI
@@ -76,12 +97,7 @@ Controls:
 * c: connect to another branch
 * q: quit
 
-Example script:
-```bash
-./examples/ui_graph_demo.sh
-```
-
-Branch state is saved to `~/.aos/branches.bin`, so any branches you create will
+Branch state is saved to `~/.aos/branches.json`, so any branches you create will
 persist between sessions.
 
 ## Checklist Log
