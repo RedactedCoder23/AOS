@@ -74,7 +74,6 @@ by: codex
 - `./examples/plugin_demo.sh`
 - `./examples/ai_service_demo.sh`
 - `echo 'ai hello\nexit' | ./build/host_test` *(fails: openai module missing)*
- codex/implement-minimal-filesystem-with-cli-support
 
 ## [2025-06-09 07:54 UTC] — minimal FS mkdir & CLI [agent-mem]
 ### Changes
@@ -85,8 +84,6 @@ by: codex
 - `make fs`
 - `./build/fs_demo`
 - `echo -e 'fs mkdir d\nfs ls\nexit' | ./build/host_test`
-=======
- codex/implement-minimal-tcp/ip-or-udp-stack
 
 ## [2025-06-09 07:51 UTC] — TCP stack demo [agent-mem]
 ### Changes
@@ -96,8 +93,6 @@ by: codex
 - `make net`
 - `./build/net_echo --server --port 12345 &`
 - `./build/net_echo --host 127.0.0.1 --port 12345`
-=======
-codex/build-graphical-branch-visualizer-ui
 ## [2025-06-09 07:51 UTC] — graphical branch UI [agent-mem]
 ### Changes
 - Added `scripts/branch_ui.py` HTTP server.
@@ -107,9 +102,7 @@ codex/build-graphical-branch-visualizer-ui
 ### Tests
 - `make host`
 - `make web-ui` *(manual run)*
-=======
 
-codex/integrate-ai-cli-with-llm-apis
 ## [2025-06-09 07:51 UTC] — AI backend integration [agent-mem]
 ### Changes
 - ai_infer now checks for OPENAI_API_KEY, logs latency, and captures errors.
@@ -118,7 +111,6 @@ codex/integrate-ai-cli-with-llm-apis
 ### Tests
 - `make host`
 - `echo 'ai hello\nexit' | ./build/host_test`
-=======
 ## [2025-06-09 06:40 UTC] — policy engine & sandbox [agent-mem]
 ### Changes
 - Reworked policy engine to load JSON rules with per-branch and app context.
@@ -128,6 +120,16 @@ codex/integrate-ai-cli-with-llm-apis
 ### Tests
 - `make policy`
 - `./examples/policy_demo.sh`
-main
-main
-main
+## [2025-06-09 08:03 UTC] — integration sweep [agent-mem]
+### Changes
+- Cleaned merge artifacts across AGENT.md, PATCHLOG.md, and Makefile.
+- Consolidated unresolved issue lists and baton passes.
+### Tests
+- `make host`
+- `make branch-net`
+- `make plugins`
+- `make ai-service`
+- `make net`
+- `./examples/plugin_demo.sh`
+- `./examples/ai_service_demo.sh`
+- `echo "ai test\nexit" | ./build/host_test` *(fails: openai module missing)*

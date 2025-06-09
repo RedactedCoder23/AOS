@@ -1,8 +1,4 @@
- codex/implement-minimal-tcp/ip-or-udp-stack
-.PHONY: all generate host bare run clean ui ui-check branch-vm plugins iso efi branch-net ai-service policy net
-=======
-.PHONY: all generate host bare run clean ui ui-check web-ui branch-vm plugins iso efi branch-net ai-service policy
- main
+.PHONY: all generate host bare run clean ui ui-check web-ui branch-vm plugins iso efi branch-net ai-service policy net
 
 all: host bare
 
