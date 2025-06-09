@@ -313,3 +313,13 @@ by: codex
 ### Tests
 - `make test-unit`
 - `make test-integration`
+## [2025-06-09 10:47 UTC] — aicell and checkpoint HAL [agent-mem]
+### Changes
+- Added aicell shared-memory IPC and daemon/client demos.
+- Implemented checkpoint.h with CRIU-based stubs.
+- Added aos-modeld stub and AI_TRIGGER syscall in kernel.
+- Updated Makefile and README with new demo targets.
+### Tests
+- `make host`
+- `make test-unit`
+- `make test-integration`
