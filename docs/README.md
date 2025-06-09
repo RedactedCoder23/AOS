@@ -7,5 +7,6 @@ This directory contains additional guides for AOS.
 - `profiler_usage.md` – profiler stub reference.
 - `command_flow.md` – REPL command dispatch diagram.
 - `ci_cd.md` – CI/CD automation overview.
+- `generate_mappings.md` – mapping generator usage.
 
 Refer to [../AGENT.md](../AGENT.md) and [../PATCHLOG.md](../PATCHLOG.md) for development history.

@@ -15,12 +15,17 @@ jobs:
       - name: Install dependencies
         run: |
           sudo apt-get update
+ codex/integrate-tests-into-ci-with-github-actions
           sudo apt-get install -y libncurses5-dev libncursesw5-dev pkg-config libcurl4-openssl-dev clang clang-tidy clang-format lcov qemu-system-x86 qemu-system-arm qemu-system-misc
+=======
+          sudo apt-get install -y build-essential gcc make libncurses5-dev libncursesw5-dev pkg-config libcurl4-openssl-dev clang clang-tidy clang-format qemu-system-x86 qemu-system-arm qemu-system-misc
+ main
       - name: Format check
         run: |
           files=$(git ls-files '*.c' '*.h')
           clang-format -n --Werror $files
       - name: Clang tidy
+ codex/integrate-tests-into-ci-with-github-actions
         run: clang-tidy $(git ls-files '*.c') -- -Iinclude
       - name: Validate mappings
         run: python3 generate_aos_mappings.py --validate
@@ -32,6 +37,59 @@ jobs:
         run: make test-fuzz
       - name: Coverage
         run: make coverage
+=======
+ codex/refactor-makefile-and-build-infrastructure
+        run: clang-tidy $(git ls-files '*.c') -- -Iinclude
+      - name: Validate mappings
+        run: python3 generate_aos_mappings.py --validate
+      - name: Build
+        run: make all
+      - name: Test
+        run: make test
+=======
+        run: |
+          clang-tidy $(git ls-files '*.c') -- -Iinclude
+          sudo apt-get install -y libncurses5-dev libncursesw5-dev pkg-config libcurl4-openssl-dev
+      - name: Validate mappings
+        run: python3 scripts/generate_aos_mappings.py --validate
+      - name: Build host and demos
+        run: make host
+      - name: Unit tests
+        run: make test-unit
+      - name: Integration tests
+        run: make test-integration
+      - name: Test memory
+        run: ./build/memory_demo
+      - name: Test fs
+        run: ./build/fs_demo
+      - name: Test ai
+        run: echo "hello" | ./build/ai_demo
+      - name: Test branch
+        run: ./build/branch_demo
+      - name: Test branch-vm
+        run: make branch-vm && ./build/branch_vm_demo
+      - name: Test plugins
+        run: make plugins && ./build/plugin_demo
+      - name: Test iso
+        run: make iso && test -f aos.iso
+      - name: Test branch-net
+        run: make branch-net && ./build/branch_fed_demo
+      - name: Branch Federation Smoke Test
+        run: |
+          ./build/branch_fed_demo --port 9999 &
+          SERVER_PID=$!
+          sleep 1
+          ./build/branch_fed_demo --peer 127.0.0.1:9999 --sync
+          grep -q '"branches"' federation_output.log
+          kill $SERVER_PID
+      - name: Test ai-service
+        run: make ai-service && ./build/ai_service_demo
+      - name: Test policy
+        run: make policy && ./build/policy_demo
+      - name: Test ui
+        run: make ui-check
+ main
+ main
       - name: QEMU smoke
         run: |
           make boot CC_TARGET=${{ matrix.arch }}
