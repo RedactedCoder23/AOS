@@ -36,7 +36,11 @@ run: bare
   $$EMU -nographic -drive format=raw,file=aos.bin $(RUN_OPTS)'
 
 bare-smoke: bare
-	examples/bare_repl_smoke.sh
+	@out=$$(./examples/bare_repl_smoke.sh 2>&1); \
+	echo "$$out"; \
+	echo "$$out" | grep -q "bare-smoke: ALL TESTS PASS" && exit 0; \
+	echo "$$out" >> AOS-CHECKLIST.log; \
+	exit 1
 
 clean:
 	@echo "→ Cleaning build artifacts"
