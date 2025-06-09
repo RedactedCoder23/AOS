@@ -50,6 +50,9 @@ void bm_vm_list(void);
 int bm_vm_switch(int id);
 int bm_vm_stop(int id);
 
+/* Return name of current branch or "default" if none */
+const char *bm_current_name(void);
+
 // Networking
 int br_peer_add(const char *addr);
 int br_sync(void);

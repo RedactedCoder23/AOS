@@ -1,0 +1,8 @@
+{
+  "branches": [
+    {"id": 0, "name": "main"},
+    {"id": 1, "name": "dev"},
+    {"id": 2, "name": "feature"}
+  ],
+  "edges": [ [0,1], [1,2] ]
+}

@@ -1,4 +1,8 @@
+ codex/implement-minimal-tcp/ip-or-udp-stack
 .PHONY: all generate host bare run clean ui ui-check branch-vm plugins iso efi branch-net ai-service policy net
+=======
+.PHONY: all generate host bare run clean ui ui-check web-ui branch-vm plugins iso efi branch-net ai-service policy
+ main
 
 all: host bare
 
@@ -60,7 +64,7 @@ fs:
 ai:
 	@echo "→ Building ai demo"
 	@mkdir -p build
-	gcc -Isubsystems/ai subsystems/ai/ai.c examples/ai_demo.c -lcurl -o build/ai_demo
+	gcc -Isubsystems/ai -Iinclude subsystems/ai/ai.c src/ai_syscall.c examples/ai_demo.c -lcurl -o build/ai_demo
 
 branch:
 	@echo "→ Building branch demo"
@@ -124,6 +128,10 @@ ui: host
 ui-check: ui
 	@echo "\u2192 Verifying UI binary"
 	@./build/ui_graph --help
+
+web-ui:
+	@echo "\u2192 Launching web UI at http://localhost:8000"
+	python3 scripts/branch_ui.py
 
 checklist:
 	@if [ -s AOS-CHECKLIST.log ]; then \

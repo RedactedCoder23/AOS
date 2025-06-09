@@ -100,6 +100,11 @@ void cmd_mem_free_wrapper(int argc, char **argv) {
 
 void cmd_fs_open_wrapper(int argc, char **argv) {
     ensure_init();
+    if (!policy_check_ctx(bm_current_name(), "repl", "FS_OPEN")) {
+        printf("Denied by policy\n");
+        log_checklist("FS_OPEN denied");
+        return;
+    }
     if (argc < 3) {
         printf("Error: usage: FS_OPEN <name> <mode>\n");
         log_checklist("FS_OPEN missing arg");
@@ -116,6 +121,11 @@ void cmd_fs_open_wrapper(int argc, char **argv) {
 
 void cmd_fs_write_wrapper(int argc, char **argv) {
     ensure_init();
+    if (!policy_check_ctx(bm_current_name(), "repl", "FS_WRITE")) {
+        printf("Denied by policy\n");
+        log_checklist("FS_WRITE denied");
+        return;
+    }
     if (argc < 3) {
         printf("Error: usage: FS_WRITE <fd> <text>\n");
         log_checklist("FS_WRITE missing arg");
@@ -140,6 +150,11 @@ void cmd_fs_write_wrapper(int argc, char **argv) {
 
 void cmd_fs_read_wrapper(int argc, char **argv) {
     ensure_init();
+    if (!policy_check_ctx(bm_current_name(), "repl", "FS_READ")) {
+        printf("Denied by policy\n");
+        log_checklist("FS_READ denied");
+        return;
+    }
     if (argc < 3) {
         printf("Error: usage: FS_READ <fd> <bytes>\n");
         log_checklist("FS_READ missing arg");
@@ -174,6 +189,11 @@ void cmd_fs_read_wrapper(int argc, char **argv) {
 
 void cmd_fs_close_wrapper(int argc, char **argv) {
     ensure_init();
+    if (!policy_check_ctx(bm_current_name(), "repl", "FS_CLOSE")) {
+        printf("Denied by policy\n");
+        log_checklist("FS_CLOSE denied");
+        return;
+    }
     if (argc < 2) {
         printf("Error: usage: FS_CLOSE <fd>\n");
         log_checklist("FS_CLOSE missing arg");

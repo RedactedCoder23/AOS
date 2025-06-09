@@ -58,11 +58,11 @@ Demonstrates a tiny in-memory filesystem with open/read/write/close commands.
 make ai
 ./build/ai_demo
 ```
-Uses libcurl to fetch a response from a demo service.
+Uses OpenAI ChatCompletion via a helper script.
 
-The interactive REPL also supports an `ai` command which now
+The interactive REPL also supports an `ai` command which
 executes `scripts/ai_backend.py`. Set `OPENAI_API_KEY` before running
-`make host` to enable real responses.
+`make host` for real responses.
 
 ## Branch Manager Demo
 
@@ -103,6 +103,18 @@ Controls:
 
 Branch state is saved to `~/.aos/branches.json`, so any branches you create will
 persist between sessions.
+
+## Web Branch UI
+
+Launch a lightweight web visualizer:
+
+```bash
+python3 scripts/branch_ui.py
+```
+
+Then open `http://localhost:8000` in your browser. Drag nodes to rearrange the
+graph and double-click a branch to open a new tab pane. Right-click a tab to
+close it. The demo reads from `examples/graph_sample.json`.
 
 ## Hypervisor-Backed Branches
 
