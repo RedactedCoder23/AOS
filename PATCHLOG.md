@@ -133,3 +133,12 @@ by: codex
 - `./examples/plugin_demo.sh`
 - `./examples/ai_service_demo.sh`
 - `echo "ai test\nexit" | ./build/host_test` *(fails: openai module missing)*
+## [2025-06-09 08:31 UTC] — graphical desktop and ai copilot [agent-mem]
+### Changes
+- Added `scripts/desktop_backend.py` serving desktop UI with /graph and /ai routes.
+- Created `webui/desktop.html` and `webui/desktop.js` for drag/drop graph and chat.
+- New `desktop-ui` Makefile target.
+- Updated README with desktop instructions.
+### Tests
+- `python3 scripts/desktop_backend.py --help` *(shows usage)*
+- `make desktop-ui` *(manual launch)*

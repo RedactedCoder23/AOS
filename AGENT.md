@@ -131,3 +131,10 @@ Next agent must:
 - Persist policy configs and validate JSON input.
 - Integrate web UI with live branch data via IPC and secure the HTTP service with tests.
 AI error: missing OPENAI_API_KEY
+## [2025-06-09 08:31 UTC] — graphical desktop and ai copilot [agent-mem]
+by: codex
+- Added desktop backend script serving graph JSON and AI endpoint via HTTP.
+- Introduced desktop HTML/JS with drag/drop graph and chat panel.
+- Makefile target `desktop-ui` launches the new service.
+- README updated with usage instructions.
+- Limitations: no authentication and minimal error handling.

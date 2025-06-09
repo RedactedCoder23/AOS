@@ -1,4 +1,4 @@
-.PHONY: all generate host bare run clean ui ui-check web-ui branch-vm plugins iso efi branch-net ai-service policy net
+.PHONY: all generate host bare run clean ui ui-check web-ui branch-vm plugins iso efi branch-net desktop-ui ai-service policy net
 
 all: host bare
 
@@ -129,6 +129,9 @@ web-ui:
 	@echo "\u2192 Launching web UI at http://localhost:8000"
 	python3 scripts/branch_ui.py
 
+desktop-ui:
+	@echo "\u2192 Launching desktop UI at http://localhost:8000"
+	python3 scripts/desktop_backend.py
 checklist:
 	@if [ -s AOS-CHECKLIST.log ]; then \
 	echo "Checklist has entries:"; cat AOS-CHECKLIST.log; exit 1; \
