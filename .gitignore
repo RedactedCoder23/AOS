@@ -5,3 +5,6 @@ packages
 *.log
 AOS-CHECKLIST.log
 aos.iso
+aos.bin
+bootloader.bin
+bare_metal_os/*.bin

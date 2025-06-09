@@ -1,10 +1,12 @@
 BITS 16
-ORG 0x7c00
+ORG 0x7e00
 
 KERNEL_LOAD   equ 0x10000
+%ifndef KERNEL_START_SECTOR
+%define KERNEL_START_SECTOR 3
+%endif
 
 start:
-    mov [boot_drive], dl
 
     cli
     xor ax, ax
@@ -18,9 +20,8 @@ start:
     mov ah, 0x02            ; read sectors
     mov al, KERNEL_SECTORS
     mov ch, 0
-    mov cl, 2               ; starting at sector 2
+    mov cl, KERNEL_START_SECTOR
     mov dh, 0
-    mov dl, [boot_drive]
     mov bx, 0
     mov ax, KERNEL_LOAD >> 4
     mov es, ax
@@ -42,8 +43,6 @@ start:
 disk_error:
     hlt
     jmp disk_error
-
-boot_drive: db 0
 
 align 8
 gdt_start:

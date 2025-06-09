@@ -37,8 +37,10 @@ An overview of command dispatch can be found in
 ## Build
 
 ```bash
-make host   # build host-side REPL
-make bare   # build aos.bin for QEMU
+make host         # build host-side REPL
+make bootloader   # build bootloader
+make kernel       # build kernel
+make bare         # create aos.bin for QEMU
 ```
 
 AOS uses BIOS INT 13h to load the 1 MiB kernel image.
@@ -51,10 +53,12 @@ AOS uses BIOS INT 13h to load the 1 MiB kernel image.
 sudo apt install qemu-system-x86
 ```
 
-First build both targets:
+First build the components:
 
 ```bash
 make host
+make bootloader
+make kernel
 make bare
 ```
 

@@ -1,5 +1,7 @@
-.PHONY: all generate host bare run clean ui ui-check web-ui branch-vm plugins iso efi branch-net desktop-ui ai-service policy net
+.PHONY: all generate host bootloader kernel bare run clean ui ui-check web-ui branch-vm plugins iso efi branch-net desktop-ui ai-service policy net
 		
+CC_TARGET ?= x86_64
+
 all: host bare
 
 # 1. Regenerate C sources from text masters
@@ -14,37 +16,60 @@ NCURSES_LIBS := $(shell pkg-config --libs ncurses 2>/dev/null || echo -lncurses)
 host: generate subsystems
 	@echo "→ Building host binaries"
 	@mkdir -p build
-	gcc -rdynamic -Iinclude -Isubsystems/memory -Isubsystems/fs -Isubsystems/ai -Isubsystems/branch -Isubsystems/net $(NCURSES_CFLAGS) src/main.c src/interpreter.c src/branch_manager.c src/ui_graph.c src/branch_vm.c src/plugin_loader.c src/branch_net.c src/ai_syscall.c src/policy.c src/memory.c src/app_runtime.c src/config.c src/logging.c src/error.c command_map.c commands.c subsystems/memory/memory.c subsystems/fs/fs.c subsystems/ai/ai.c subsystems/branch/branch.c subsystems/net/net.c $(NCURSES_LIBS) -ldl -lcurl -lm -o build/host_test
-	gcc -Iinclude $(NCURSES_CFLAGS) src/ui_graph.c src/branch_manager.c \
-	    src/logging.c src/error.c src/ui_main.c $(NCURSES_LIBS) -lm -o build/ui_graph
+	       gcc -Wall -Werror -rdynamic -Iinclude -Isubsystems/memory -Isubsystems/fs -Isubsystems/ai -Isubsystems/branch -Isubsystems/net $(NCURSES_CFLAGS) src/main.c src/interpreter.c src/branch_manager.c src/ui_graph.c src/branch_vm.c src/plugin_loader.c src/branch_net.c src/ai_syscall.c src/policy.c src/memory.c src/app_runtime.c src/config.c src/logging.c src/error.c command_map.c commands.c subsystems/memory/memory.c subsystems/fs/fs.c subsystems/ai/ai.c subsystems/branch/branch.c subsystems/net/net.c $(NCURSES_LIBS) -ldl -lcurl -lm -o build/host_test
+	       gcc -Wall -Werror -Iinclude $(NCURSES_CFLAGS) src/ui_graph.c src/branch_manager.c \
+            src/logging.c src/error.c src/ui_main.c $(NCURSES_LIBS) -lm -o build/ui_graph
 
-# 3. Build bare-metal image
-bare: generate
-	@echo "\u2192 Building bare-metal image"
-	@cd bare_metal_os && make clean && make all
-	@cp bare_metal_os/aos.bin aos.bin
+# 3. Build bare-metal components
+bootloader: generate
+	       @echo "\u2192 Building bootloader"
+	       @cd bare_metal_os && make clean stage1.bin stage2.bin bootloader.bin ARCH=$(CC_TARGET)
+	       @cp bare_metal_os/bootloader.bin bootloader.bin
+
+	kernel: generate
+	       @echo "\u2192 Building kernel"
+	       @cd bare_metal_os && make kernel.bin ARCH=$(CC_TARGET)
+
+	bare: bootloader kernel
+	       @echo "\u2192 Creating aos.bin"
+	       @cd bare_metal_os && cat bootloader.bin kernel.bin > aos.bin
+	       @cp bare_metal_os/aos.bin aos.bin
 
 .PHONY: run
 
 # Build and launch in QEMU
 run: bare
-	 @echo "\u2192 Running AOS in QEMU"
-	 @sh -c '\
-  if which qemu-system-x86_64 >/dev/null 2>&1; then EMU=qemu-system-x86_64; \
-  elif which qemu-system-i386 >/dev/null 2>&1; then EMU=qemu-system-i386; \
-  else echo "Error: please install qemu-system-x86_64 or qemu-system-i386" && exit 1; \
-  fi; \
-  $$EMU -nographic -drive format=raw,file=aos.bin $(RUN_OPTS)'
-
-boot: bare
-	@echo "\u2192 Booting AOS"
-	@if [ ! -f aos.bin ]; then echo "boot error: missing aos.bin" | tee -a AGENT.md; exit 1; fi
-	@sh -c '\
-  if which qemu-system-x86_64 >/dev/null 2>&1; then EMU=qemu-system-x86_64; \
-  elif which qemu-system-i386 >/dev/null 2>&1; then EMU=qemu-system-i386; \
-  else echo "boot error: qemu not installed" | tee -a AGENT.md; exit 1; \
-  fi; \
-  $$EMU -nographic -drive format=raw,file=aos.bin $(RUN_OPTS)'
+	        @echo "\u2192 Running AOS in QEMU"
+	        @sh -c '\
+		  case "$(CC_TARGET)" in \
+		    x86_64) EMU=qemu-system-x86_64 ;; \
+		    riscv64) EMU=qemu-system-riscv64 ;; \
+		    arm) EMU=qemu-system-arm ;; \
+		    *) EMU=qemu-system-x86_64 ;; \
+		  esac; \
+		  if ! which $$EMU >/dev/null 2>&1; then echo "Error: $$EMU not installed" && exit 1; fi; \
+	  if [ "$(CC_TARGET)" = "x86_64" ]; then \
+		$$EMU -nographic -drive format=raw,file=aos.bin $(RUN_OPTS); \
+		else \
+		$$EMU -nographic -kernel aos.bin $(RUN_OPTS); \
+		fi'
+		
+		boot: bare
+		@echo "\u2192 Booting AOS"
+	       @if [ ! -f aos.bin ]; then echo "boot error: missing aos.bin" | tee -a AGENT.md; exit 1; fi
+	       @sh -c '\
+	  case "$(CC_TARGET)" in \
+	    x86_64) EMU=qemu-system-x86_64 ;; \
+	    riscv64) EMU=qemu-system-riscv64 ;; \
+	    arm) EMU=qemu-system-arm ;; \
+	    *) EMU=qemu-system-x86_64 ;; \
+	  esac; \
+	  if ! which $$EMU >/dev/null 2>&1; then echo "boot error: $$EMU not installed" | tee -a AGENT.md; exit 1; fi; \
+	  if [ "$(CC_TARGET)" = "x86_64" ]; then \
+	    $$EMU -nographic -drive format=raw,file=aos.bin $(RUN_OPTS); \
+	  else \
+	    $$EMU -nographic -kernel aos.bin $(RUN_OPTS); \
+	  fi'
 
 bare-smoke: bare
 	@out=$$(./examples/bare_repl_smoke.sh 2>&1); \
@@ -61,12 +86,12 @@ clean:
 memory:
 	@echo "→ Building memory demo"
 	@mkdir -p build
-	gcc -Isubsystems/memory -Iinclude subsystems/memory/memory.c src/memory.c examples/memory_demo.c src/logging.c src/error.c -o build/memory_demo
+	       gcc -Wall -Werror -Isubsystems/memory -Iinclude subsystems/memory/memory.c src/memory.c examples/memory_demo.c src/logging.c src/error.c -o build/memory_demo
 
 fs:
 	@echo "→ Building fs demo"
 	@mkdir -p build
-	gcc -Isubsystems/fs -Iinclude subsystems/fs/fs.c examples/fs_demo.c -o build/fs_demo
+	       gcc -Wall -Werror -Isubsystems/fs -Iinclude subsystems/fs/fs.c examples/fs_demo.c -o build/fs_demo
 
 ai:
 	@echo "→ Building ai demo"

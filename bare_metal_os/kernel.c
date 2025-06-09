@@ -13,6 +13,7 @@ void bm_init(void);
 /* Initialise subsystems before entering the REPL. */
 static void kernel_init(void) {
     log_init(NULL);
+    log_message(LOG_INFO, "Hello from AOS");
     mem_init_bare();
     fs_init();
     bm_init();
