@@ -1,4 +1,4 @@
-.PHONY: all generate host bare run clean ui ui-check branch-vm plugins iso efi branch-net ai-service policy
+.PHONY: all generate host bare run clean ui ui-check web-ui branch-vm plugins iso efi branch-net ai-service policy
 
 all: host bare
 
@@ -119,6 +119,10 @@ ui: host
 ui-check: ui
 	@echo "\u2192 Verifying UI binary"
 	@./build/ui_graph --help
+
+web-ui:
+	@echo "\u2192 Launching web UI at http://localhost:8000"
+	python3 scripts/branch_ui.py
 
 checklist:
 	@if [ -s AOS-CHECKLIST.log ]; then \

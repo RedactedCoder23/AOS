@@ -96,3 +96,13 @@ by: codex
 - Design persistent storage backend or VFS integration in fs.c
 - Confirm usage/reconcile with new system in branch.c
 - Replace AI stub with real backend and add retries in ai.c
+
+## [2025-06-09 07:51 UTC] — graphical branch UI [agent-mem]
+by: codex
+- Implemented simple web UI served by `scripts/branch_ui.py` using D3.js.
+- Added drag/drop graph and tab panes for shell sessions.
+- Updated Makefile and README with `web-ui` target and usage notes.
+
+Baton pass:
+- Integrate UI with live branch data via IPC.
+- Secure HTTP service and add tests.

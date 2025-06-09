@@ -74,3 +74,12 @@ by: codex
 - `./examples/plugin_demo.sh`
 - `./examples/ai_service_demo.sh`
 - `echo 'ai hello\nexit' | ./build/host_test` *(fails: openai module missing)*
+## [2025-06-09 07:51 UTC] — graphical branch UI [agent-mem]
+### Changes
+- Added `scripts/branch_ui.py` HTTP server.
+- Created `webui/` with `index.html` and `app.js` using D3.js.
+- Added example data `examples/graph_sample.json`.
+- Updated README and Makefile with `web-ui` target.
+### Tests
+- `make host`
+- `make web-ui` *(manual run)*
