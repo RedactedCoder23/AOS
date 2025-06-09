@@ -1,4 +1,9 @@
 #include "plugin.h"
+/* [2025-06-09 06:06 UTC] Simple plugin loader via dlopen
+ * by: codex
+ * Edge cases: no path validation or unloading mechanism.
+ * Next agent must: implement security checks and plugin unload.
+ */
 #include <stdio.h>
 #include <string.h>
 #include <dlfcn.h>

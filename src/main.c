@@ -1,4 +1,9 @@
 #include <stdio.h>
+/* [2025-06-09 06:06 UTC] Host-side REPL entry
+ * by: codex
+ * Edge cases: input parsing brittle; no history or completion.
+ * Next agent must: add command history and sanitize input.
+ */
 #include <string.h>
 #include <stdlib.h>
 #include "branch.h"

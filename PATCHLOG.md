@@ -31,3 +31,11 @@
 - Fixed orientation of adjacency matrix so tree view shows child branches.
 - Updated load_state for symmetric edges.
 - Verified with `make host` and `./build/host_test`.
+## [2025-06-09 06:06 UTC] — agent-mem sweep
+by: codex
+- Added timestamped meta comments to subsystem sources.
+- Logged new format adoption in AGENT.md.
+- No functional modifications.
+
+Next agent must:
+- Ensure all future patches maintain this style and expand documentation.

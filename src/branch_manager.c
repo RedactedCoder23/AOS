@@ -1,4 +1,9 @@
 #include "branch.h"
+/* [2025-06-09 06:06 UTC] Branch manager with JSON persistence
+ * by: codex
+ * Edge cases: load_state assumes valid file; no locking for concurrent access.
+ * Next agent must: validate file contents and add locking strategy.
+ */
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>

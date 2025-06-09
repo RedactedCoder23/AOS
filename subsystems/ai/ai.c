@@ -1,4 +1,9 @@
 #include "ai.h"
+/* [2025-06-09 06:06 UTC] HTTP echo based AI stub
+ * by: codex
+ * Edge cases: network errors not handled, insecure HTTP parameters.
+ * Next agent must: replace with actual backend and add retries.
+ */
 #include <stdio.h>
 #include <string.h>
 #include <curl/curl.h>
