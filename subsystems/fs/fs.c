@@ -1,4 +1,9 @@
 #include "fs.h"
+/* [2025-06-09 06:06 UTC] In-memory FS subsystem
+ * by: codex
+ * Edge cases: lacks persistence and access control.
+ * Next agent must: design persistent storage backend or integrate with VFS.
+ */
 #include <string.h>
 #include <stdio.h>
 

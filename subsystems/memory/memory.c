@@ -1,4 +1,9 @@
 #include "memory.h"
+/* [2025-06-09 06:06 UTC] Memory subsystem basic heap allocator
+ * by: codex
+ * Edge cases: not thread-safe and no guard against misuse of freed blocks.
+ * Next agent must: audit for fragmentation behaviour and add unit tests.
+ */
 #include <stdint.h>
 #include <string.h>
 #include <stdio.h>

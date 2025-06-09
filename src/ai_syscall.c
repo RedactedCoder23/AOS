@@ -1,4 +1,9 @@
 #include "ai.h"
+/* [2025-06-09 06:06 UTC] AI syscall stub bridging to userland
+ * by: codex
+ * Edge cases: buffer size fixed; service IDs not persisted.
+ * Next agent must: implement real inference backend and error reporting.
+ */
 #include <stdio.h>
 
 static int service_id;
