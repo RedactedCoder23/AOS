@@ -39,3 +39,7 @@ by: codex
 
 Next agent must:
 - Ensure all future patches maintain this style and expand documentation.
+## [2025-06-09 06:16 UTC] — connect ai backend [agent-mem]
+- Added ai_backend Python helper calling OpenAI ChatCompletion.
+- ai_syscall.c spawns helper for `ai` REPL command.
+- Documented env var requirement in AGENT.md.

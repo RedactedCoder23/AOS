@@ -40,3 +40,9 @@ by: codex
 Next agent must:
 - Follow the same log and comment style for all future updates.
 - Resolve the earlier UNRESOLVED entry about "unknown command" in REPL.
+## [2025-06-09 06:16 UTC] — ai backend hook [agent-mem]
+by: codex
+- Added Python script `scripts/ai_backend.py` using OpenAI API.
+- ai_syscall.c now executes the script for `ai` REPL command.
+- Requires `OPENAI_API_KEY` and network access.
+- Limited quoting, prompts with quotes may fail.
