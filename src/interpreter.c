@@ -408,8 +408,8 @@ void cmd_ai_service_monitor_wrapper(int argc, char **argv) {
 
 void cmd_policy_load_wrapper(int argc, char **argv) {
     ensure_init();
-    if (argc < 2) { printf("usage: POLICY_LOAD <script>\n"); return; }
-    policy_load(argv[1]);
+    if (argc < 2) { printf("usage: POLICY_LOAD <file>\n"); return; }
+    policy_load_file(argv[1]);
 }
 
 void cmd_policy_check_wrapper(int argc, char **argv) {

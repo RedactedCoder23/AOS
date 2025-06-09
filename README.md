@@ -115,6 +115,16 @@ python3 scripts/branch_ui.py
 Then open `http://localhost:8000` in your browser. Drag nodes to rearrange the
 graph and double-click a branch to open a new tab pane. Right-click a tab to
 close it. The demo reads from `examples/graph_sample.json`.
+## Graphical Desktop & AI Copilot
+
+Launch the desktop UI with live branch data and AI chat:
+
+```bash
+make desktop-ui
+```
+
+Then open `http://localhost:8000` to view the graph and chat with the embedded copilot.
+
 
 ## Hypervisor-Backed Branches
 

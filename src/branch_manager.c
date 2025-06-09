@@ -224,3 +224,7 @@ const char *bm_current_name(void) {
     return "default";
 }
 
+int bm_current_id(void) {
+    return current_branch;
+}
+
