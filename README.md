@@ -105,6 +105,14 @@ make branch
 ```
 Creates a few branches, stops one, then deletes it, showing persistence via `~/.aos/branches.json`.
 
+## Checkpoint HAL Demo
+
+```bash
+make aicell
+./examples/aicell_demo.sh
+```
+Demonstrates the new aicell daemon and checkpoint API.
+
 ## Sample REPL Session
 
 ```
