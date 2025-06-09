@@ -34,26 +34,18 @@ jobs:
       - name: Install deps
         run: |
           sudo apt-get update
- codex/standardize-linting,-formatting,-and-dependencies
-          sudo apt-get install -y libncurses5-dev libncursesw5-dev pkg-config libcurl4-openssl-dev qemu-system-x86 qemu-system-arm qemu-system-misc
+          sudo apt-get install -y libncurses5-dev libncursesw5-dev pkg-config libcurl4-openssl-dev clang clang-tidy clang-format lcov qemu-system-x86 qemu-system-arm qemu-system-misc
           pip install pre-commit
       - name: pre-commit
         run: pre-commit run --files $(git ls-files '*.py' '*.c' '*.h' '*.yaml')
       - name: validate mappings
         run: python3 scripts/generate_aos_mappings.py --validate
       - name: build host
-=======
- codex/integrate-tests-into-ci-with-github-actions
-          sudo apt-get install -y libncurses5-dev libncursesw5-dev pkg-config libcurl4-openssl-dev clang clang-tidy clang-format lcov qemu-system-x86 qemu-system-arm qemu-system-misc
-=======
-          sudo apt-get install -y build-essential gcc make libncurses5-dev libncursesw5-dev pkg-config libcurl4-openssl-dev clang clang-tidy clang-format qemu-system-x86 qemu-system-arm qemu-system-misc
- main
       - name: Format check
         run: |
           files=$(git ls-files '*.c' '*.h')
           clang-format -n --Werror $files
       - name: Clang tidy
- codex/integrate-tests-into-ci-with-github-actions
         run: clang-tidy $(git ls-files '*.c') -- -Iinclude
       - name: Validate mappings
         run: python3 generate_aos_mappings.py --validate
@@ -65,23 +57,15 @@ jobs:
         run: make test-fuzz
       - name: Coverage
         run: make coverage
-=======
- codex/refactor-makefile-and-build-infrastructure
-        run: clang-tidy $(git ls-files '*.c') -- -Iinclude
       - name: Validate mappings
         run: python3 generate_aos_mappings.py --validate
       - name: Build
         run: make all
       - name: Test
         run: make test
-=======
-        run: |
-          clang-tidy $(git ls-files '*.c') -- -Iinclude
-          sudo apt-get install -y libncurses5-dev libncursesw5-dev pkg-config libcurl4-openssl-dev
       - name: Validate mappings
         run: python3 scripts/generate_aos_mappings.py --validate
       - name: Build host and demos
- main
         run: make host
       - name: unit tests
         run: make test-unit
@@ -89,13 +73,7 @@ jobs:
         run: make test-integration
       - name: ui tests
         run: make ui-check
- codex/standardize-linting,-formatting,-and-dependencies
-      - name: qemu smoke
-=======
- main
- main
       - name: QEMU smoke
- main
         run: |
           make boot CC_TARGET=${{ matrix.arch }}
           ./scripts/qemu_smoke.sh ${{ matrix.arch }}
