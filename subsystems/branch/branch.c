@@ -2,7 +2,7 @@
 /* [2025-06-09 06:06 UTC] Legacy branch subsystem
  * by: codex
  * Edge cases: differs from BranchGraph manager and may be unused.
- * Next agent must: see AGENT.md "UNRESOLVED ISSUES".
+ * See AGENT.md "Open Issues" for pending work.
  */
 #include <stdio.h>
 #include <string.h>
