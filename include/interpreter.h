@@ -32,6 +32,7 @@ void cmd_plugin_list_wrapper(int argc, char **argv);
 void cmd_plugin_load_wrapper(int argc, char **argv);
 void cmd_br_peer_add_wrapper(int argc, char **argv);
 void cmd_br_sync_wrapper(int argc, char **argv);
+void cmd_br_sync_all_wrapper(int argc, char **argv);
 void cmd_ai_service_create_wrapper(int argc, char **argv);
 void cmd_ai_service_monitor_wrapper(int argc, char **argv);
 void cmd_policy_load_wrapper(int argc, char **argv);
