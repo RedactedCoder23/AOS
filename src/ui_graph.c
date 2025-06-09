@@ -11,14 +11,20 @@ int ui_graph_run(void) {
     cbreak();
     noecho();
     keypad(stdscr, TRUE);
+    start_color();
+    init_pair(1, COLOR_CYAN, -1);
 
+    Branch branches_raw[MAX_BRANCHES];
     Branch branches[MAX_BRANCHES];
-    int count = bm_list(branches);
+    int show_peers = 1;
     int selected = 0;
     char status[80] = "";
 
     int running = 1;
     while (running) {
+        int count_raw = bm_list(branches_raw);
+        int count = 0;
+        for(int i=0;i<count_raw;i++) if(show_peers || branches_raw[i].origin==0) branches[count++] = branches_raw[i];
         clear();
         int center_x = COLS / 2;
         int center_y = LINES / 2;
@@ -34,13 +40,15 @@ int ui_graph_run(void) {
             double angle = 2 * M_PI * i / (count ? count : 1);
             int x = center_x + (int)(cos(angle) * radius);
             int y = center_y + (int)(sin(angle) * radius);
-            if (i == selected) {
-                attron(A_REVERSE | A_BOLD);
-                mvprintw(y, x, "[%s]", branches[i].name);
-                attroff(A_REVERSE | A_BOLD);
-            } else {
-                mvprintw(y, x, "[%s]", branches[i].name);
-            }
+            if (branches[i].origin)
+                attron(COLOR_PAIR(1) | A_BOLD);
+            if (i == selected)
+                attron(A_REVERSE);
+            mvprintw(y, x, "[%s]", branches[i].name);
+            if (i == selected)
+                attroff(A_REVERSE);
+            if (branches[i].origin)
+                attroff(COLOR_PAIR(1) | A_BOLD);
             // Draw edges
             for (int j = 0; j < branches[i].conn_count; j++) {
                 int to_id = branches[i].connections[j];
@@ -58,7 +66,7 @@ int ui_graph_run(void) {
                 }
             }
         }
-        mvprintw(LINES-2, 0, "[Arrows/hjkl]: move  [n]: new  [c]: connect  [Enter]: switch  [q]: quit");
+        mvprintw(LINES-2, 0, "[Arrows/hjkl]: move  [n]: new  [c]: connect  [p]: peers  [Enter]: switch  [q]: quit");
         mvprintw(LINES-1, 0, "%s", status);
         refresh();
         
@@ -113,6 +121,10 @@ int ui_graph_run(void) {
                     snprintf(status, sizeof(status), "Connect failed");
                 break;
             }
+            case 'p':
+                show_peers = !show_peers;
+                snprintf(status, sizeof(status), show_peers?"Showing all peers":"Local view");
+                break;
             case 'q':
                 running = 0; break;
         }

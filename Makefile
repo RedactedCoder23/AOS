@@ -74,7 +74,7 @@ plugins:
 branch-net:
 	@echo "→ Building branch net demo"
 	@mkdir -p build
-	gcc -Iinclude src/branch_net.c examples/branch_fed_demo.c -o build/branch_fed_demo
+	@gcc -Iinclude src/branch_net.c src/branch_manager.c examples/branch_fed_demo.c -pthread -lm -o build/branch_fed_demo
 
 ai-service:
 	@echo "→ Building ai service demo"
