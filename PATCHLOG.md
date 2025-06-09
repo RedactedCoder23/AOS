@@ -455,6 +455,17 @@ by: codex
 - `make test-unit`
 - `make test-integration`
 
+ codex/add-shields.io-badges,-prerequisites,-and-index.md
+## [2025-06-09 22:18 UTC] docs onboarding update [codex-agent-xyz]
+### Changes
+- Added shields.io badges to README for build status, coverage and license.
+- Expanded prerequisites with GCC >=10, Python >=3.8 and QEMU version guidance.
+- Created docs/INDEX.md linking major documentation files.
+### Tests
+- `pre-commit run --files README.md docs/INDEX.md`
+- `make test-unit`
+- `make test-integration`
+=======
 ## [2025-06-09 14:15 UTC] dependency split [agent-mem]
 ### Changes
 - Documented openai usage comment in `requirements.txt`.
@@ -463,3 +474,4 @@ by: codex
 ### Tests
 - `python3 -m venv venv && source venv/bin/activate && pip install -r requirements.txt`
 - `pip install -r requirements-dev.txt && pytest --maxfail=1 --disable-warnings -q`
+ main
