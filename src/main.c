@@ -8,6 +8,7 @@
 #include <stdlib.h>
 #include "branch.h"
 #include "ai.h"
+#include "plugin.h"
 
 static void log_agent_error(const char *msg) {
     FILE *f = fopen("AGENT.md", "a");
@@ -87,6 +88,25 @@ int main(void) {
                 char out[64];
                 ai_infer(question, out, sizeof(out));
                 printf("%s\n", out);
+            }
+        } else if (strcmp(cmd, "plugin") == 0) {
+            char *sub = strtok(NULL, " ");
+            if (!sub) {
+                printf("usage: plugin <load|unload|list> <file|name>\n");
+                log_agent_error("plugin missing subcommand");
+            } else if (strcmp(sub, "load") == 0) {
+                char *file = strtok(NULL, " ");
+                if (!file) { printf("missing file\n"); }
+                else if (plugin_load(file) != 0) printf("load failed\n");
+            } else if (strcmp(sub, "unload") == 0) {
+                char *name = strtok(NULL, " ");
+                if (!name) { printf("missing name\n"); }
+                else if (plugin_unload(name) != 0) printf("unload failed\n");
+            } else if (strcmp(sub, "list") == 0) {
+                plugin_list();
+            } else {
+                printf("unknown subcommand %s\n", sub);
+                log_agent_error("plugin unknown subcommand");
             }
         } else {
             printf("Unknown command\n");

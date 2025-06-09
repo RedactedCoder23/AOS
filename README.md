@@ -120,7 +120,7 @@ make plugins
 ./examples/plugin_demo.sh
 ```
 
-Loads a sample plugin built as a shared object.
+Loads and then unloads a sample plugin built as a shared object.
 
 ## Real Hardware Boot
 

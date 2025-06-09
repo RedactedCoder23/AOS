@@ -39,7 +39,21 @@ by: codex
 
 Next agent must:
 - Ensure all future patches maintain this style and expand documentation.
+ codex/implement-plugin-loader-and-hot-swap-framework
+
+## [2025-06-09 06:18 UTC] — plugin hot-swap MVP
+by: codex
+### Changes
+- Added plugin_unload implementation and plugin_exec API.
+- Extended REPL with `plugin` command.
+- Updated sample plugin and demo for full lifecycle.
+### Tests
+- `make host`
+- `make plugins`
+- `./examples/plugin_demo.sh`
+=======
 ## [2025-06-09 06:16 UTC] — connect ai backend [agent-mem]
 - Added ai_backend Python helper calling OpenAI ChatCompletion.
 - ai_syscall.c spawns helper for `ai` REPL command.
 - Documented env var requirement in AGENT.md.
+ main

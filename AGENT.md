@@ -30,7 +30,6 @@ Initial repository had no AGENT log. PATCHLOG.md notes prior work on branch CLI 
 - Fixed branch graph orientation bug. Clone now links parent->child for tree output.
 - Updated load_state to rebuild symmetric adjacency matrix.
 - Verified `branch tree` prints hierarchy correctly.
-UNRESOLVED: unknown command
 ## [2025-06-09 06:06 UTC] — meta sweep: repo agent-memory update
 by: codex
 - Introduced time-stamped log format and baton-pass comments across core subsystems.
@@ -39,6 +38,17 @@ by: codex
 
 Next agent must:
 - Follow the same log and comment style for all future updates.
+ codex/implement-plugin-loader-and-hot-swap-framework
+- Review plugin sandboxing and security.
+
+## [2025-06-09 06:18 UTC] — plugin hot-swap MVP
+by: codex
+- Implemented plugin_unload and extended plugin interface with init/exec/cleanup.
+- Added REPL `plugin` commands supporting load/unload/list.
+- Updated sample plugin and demo to exercise unload logic.
+- Resolved UNRESOLVED entry by recognizing plugin commands in REPL.
+- Open issue: plugin path validation and sandboxing remain.
+=======
 - Resolve the earlier UNRESOLVED entry about "unknown command" in REPL.
 ## [2025-06-09 06:16 UTC] — ai backend hook [agent-mem]
 by: codex
@@ -46,3 +56,4 @@ by: codex
 - ai_syscall.c now executes the script for `ai` REPL command.
 - Requires `OPENAI_API_KEY` and network access.
 - Limited quoting, prompts with quotes may fail.
+main
