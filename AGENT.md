@@ -85,6 +85,12 @@ by: codex
 - Added env var check and latency logging in `ai_syscall.c`.
 - Updated README with new instructions.
 AI error: missing OPENAI_API_KEY
+
+## [2025-06-09 08:30 UTC] — sandboxed plugin loader [agent-mem]
+by: codex
+- Added rlimit-based sandbox for plugin init/exec/cleanup.
+- Introduced path validation and hook registration API.
+- Default hook ensures plugins load only from `build/plugins/`.
 AI error: missing OPENAI_API_KEY
 AI latency 204 ms
 AI backend error rc=30720 output=Traceback (most recent call last):
@@ -131,3 +137,4 @@ Next agent must:
 - Persist policy configs and validate JSON input.
 - Integrate web UI with live branch data via IPC and secure the HTTP service with tests.
 AI error: missing OPENAI_API_KEY
+plugin validation failed build/plugins/missing.so
