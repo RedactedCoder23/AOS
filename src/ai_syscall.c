@@ -11,3 +11,8 @@ int ai_service_create(const char *type, const char *params) {
 void ai_service_monitor(int id) {
     printf("AI service %d running\n", id);
 }
+
+const char *ai_infer(const char *input) {
+    (void)input;
+    return "NOT IMPLEMENTED";
+}

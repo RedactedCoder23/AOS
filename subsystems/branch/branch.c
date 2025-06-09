@@ -3,21 +3,47 @@
 #include <string.h>
 
 #define MAX_BRANCHES 8
-typedef struct { char name[32]; char state[16]; } B;
-static B branches[MAX_BRANCHES];
+static branch branches[MAX_BRANCHES];
 static int count;
 
-void branch_init(){count=0;}
+void branch_init(void){
+    count = 0;
+}
 
 int branch_create(const char *name){
     if(count>=MAX_BRANCHES) return -1;
+    branches[count].id = count;
     strncpy(branches[count].name,name,31);
+    branches[count].name[31]='\0';
     strcpy(branches[count].state,"running");
-    count++; return 0;
+    branches[count].parent = NULL;
+    count++;
+    return branches[count-1].id;
 }
 
-void branch_list(){
-    for(int i=0;i<count;i++) printf("%d:%s (%s)\n", i, branches[i].name, branches[i].state);
+int branch_clone(int id, const char *name){
+    if(id < 0 || id >= count) return -1; /* invalid source */
+    if(count >= MAX_BRANCHES) return -2; /* overflow */
+    branches[count] = branches[id];
+    branches[count].id = count;
+    if(name){
+        strncpy(branches[count].name, name, 31);
+        branches[count].name[31]='\0';
+    }
+    branches[count].parent = &branches[id];
+    strcpy(branches[count].state, "running");
+    count++; return branches[count-1].id;
+}
+
+int branch_list(branch_graph *out){
+    if(!out) return -1;
+    out->count = count;
+    for(int i=0;i<count;i++){
+        out->branches[i] = branches[i];
+        for(int j=0;j<count;j++) out->adj[i][j] = 0;
+        if(branches[i].parent) out->adj[i][branches[i].parent->id] = 1;
+    }
+    return count;
 }
 
 int branch_stop(int id){

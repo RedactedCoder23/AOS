@@ -72,11 +72,16 @@ branch-vm:
 	@mkdir -p build
 	gcc -Iinclude src/branch_vm.c subsystems/branch/branch.c examples/branch_vm_demo.c -o build/branch_vm_demo
 
-plugins:
+	plugins:
 	@echo "→ Building plugins demo"
 	@mkdir -p build/plugins
 	gcc -fPIC -shared -o build/plugins/sample.so examples/sample_plugin.c
 	gcc -Iinclude src/plugin_loader.c examples/plugin_demo.c -ldl -o build/plugin_demo
+
+aos-cli:
+	@echo "→ Building aos CLI"
+	@mkdir -p build
+	gcc -Isubsystems/branch subsystems/branch/branch.c examples/aos_cli.c -o build/aos
 
 branch-net:
 	@echo "→ Building branch net demo"
@@ -92,6 +97,10 @@ policy:
 	@echo "→ Building policy demo"
 	@mkdir -p build
 	gcc -Iinclude src/policy.c examples/policy_demo.c -o build/policy_demo
+
+test: host branch
+	@echo "→ Running branch demo"
+	@./build/branch_demo >/tmp/branch_demo.out && cat /tmp/branch_demo.out
 
 efi:
 	@echo "→ Building EFI stub"

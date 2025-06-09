@@ -19,10 +19,17 @@ typedef struct Branch {
     int origin; /* 0=local,1=remote */
 } Branch;
 
+typedef struct BranchGraph {
+    Branch branches[MAX_BRANCHES];
+    int adj[MAX_BRANCHES][MAX_BRANCHES];
+    int count;
+} BranchGraph;
+
 // Initialize branch manager
 void bm_init(void);
 // Create a branch with given name. Returns new id or negative error code.
 int bm_create(const char *name);
+int bm_clone(int id, const char *name);
 int bm_create_remote(const char *name);
 // Switch to branch id. Returns BM_SUCCESS or error.
 int bm_switch(int id);
@@ -32,6 +39,7 @@ int bm_stop(int id);
 int bm_delete(int id);
 // Copy branch list into out array, returns count
 int bm_list(Branch *out);
+int bm_graph(BranchGraph *out);
 
 // VM management
 int bm_vm_create(const char *name, const char *image, int mem, int cpu);
