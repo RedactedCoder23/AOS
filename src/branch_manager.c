@@ -2,7 +2,7 @@
 /* [2025-06-09 06:06 UTC] Branch manager with JSON persistence
  * by: codex
  * Edge cases: load_state assumes valid file; no locking for concurrent access.
- * Next agent must: see AGENT.md "UNRESOLVED ISSUES".
+ * See AGENT.md "Open Issues" for pending work.
  */
 #include "logging.h"
 #include <limits.h>

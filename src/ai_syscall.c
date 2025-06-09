@@ -2,7 +2,7 @@
 /* [2025-06-09 06:06 UTC] AI syscall stub bridging to userland
  * by: codex
  * Edge cases: buffer size fixed; service IDs not persisted.
- * Next agent must: see AGENT.md "UNRESOLVED ISSUES".
+ * See AGENT.md "Open Issues" for pending work.
  */
 #include <stdio.h>
 #include <stdlib.h>

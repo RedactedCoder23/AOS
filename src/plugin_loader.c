@@ -5,7 +5,7 @@
 /* [2025-06-09 06:07 UTC] Hot-swap plugin loader via dlopen
  * by: codex
  * Edge cases: minimal error handling and no security checks.
- * Next agent must: see AGENT.md "UNRESOLVED ISSUES".
+ * See AGENT.md "Open Issues" for pending work.
  *
  * [2025-06-09 08:04 UTC] Sandbox update
  * by: codex
