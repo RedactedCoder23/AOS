@@ -434,3 +434,23 @@ by: codex
 - `clang-tidy` *(errors remain)*
 - `pre-commit run` *(failed: GitHub auth prompt)*
 - `make test` *(failed: linker cannot find gcc)*
+
+## [2025-06-09 13:18 UTC] repo cleanup [codex]
+### Changes
+- Fixed .gitignore merge leftovers.
+- Rebuilt generate_aos_mappings.py and formatted Python code.
+### Tests
+- `clang-format -n --Werror $(git ls-files *.c *.h)`
+- `flake8 $(git ls-files *.py)`
+- `pre-commit run` *(failed: GitHub auth prompt)*
+- `make test-unit` *(fails: duplicate main)*
+- `make test-integration` *(fails: linker cannot find gcc)*
+## [2025-06-09 13:33 UTC] hook fixes [codex]
+### Changes
+- Converted pre-commit config to local hooks.
+- Fixed Makefile test targets with proper tabs.
+- Documented setup in CONTRIBUTING.
+### Tests
+- `pre-commit run --all-files`
+- `make test-unit`
+- `make test-integration`

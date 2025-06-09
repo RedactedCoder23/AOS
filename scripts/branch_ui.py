@@ -29,7 +29,10 @@ class BranchUIHandler(http.server.SimpleHTTPRequestHandler):
             with open(METRICS_FILE, "rb") as f:
                 self.wfile.write(f.read())
         elif self.path == "/export":
-            path = BRANCHES_FILE if os.path.exists(BRANCHES_FILE) else GRAPH_FILE
+            if os.path.exists(BRANCHES_FILE):
+                path = BRANCHES_FILE
+            else:
+                path = GRAPH_FILE
             self.send_response(200)
             self.send_header("Content-Type", "application/json")
             self.end_headers()
