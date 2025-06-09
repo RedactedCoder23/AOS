@@ -283,17 +283,32 @@ Next agent must:
 - Cleaned merge markers from Makefile but left build logic unchanged.
 - Consolidated open tasks into Active Baton Passes section below.
 
+
+## [2025-06-09 13:06 UTC] clean baseline sweep [codex]
+- Verified docs and READMEs for broken links; none found.
+- Ran clang-format and clang-tidy (warnings remain).
+- Installed pre-commit but the configured llvm repo lacks hooks; `pre-commit run` fails with InvalidManifestError.
+- `make test` fails: missing `ai.h` and indentation errors in mapping generator.
+- Consolidated open issues and baton passes below.
+
 ## Active Baton Passes
 - Resolve clang-tidy warnings and restore failing builds (`host`, `branch-net`).
-- Expand ext2 filesystem backend and add persistence tests.
-- Flesh out device and security subsystem APIs and documentation.
-- Review network branch sync for race conditions and add tests.
-- Improve AI error handling and provide offline mock responses.
-- Integrate policy engine with network layer and credential storage plan.
-- Extend WASM runtime with capability enforcement.
-- Continue expanding subsystem READMEs and overall developer docs.
 - Verify pre-commit hooks run without authentication prompts in CI.
-- Keep ROADMAP.md updated as milestones progress.
+- Fix `make test` failures (missing headers and mapping generator errors).
+- Expand ext2 filesystem backend with directory operations and persistence tests.
+- Validate `branch_manager` JSON data and add locking.
+- Provide plugin path validation and extend sandbox hooks.
+- Review network branch sync for race conditions and add tests.
+- Implement graceful shutdown and authentication for network services.
+- Improve AI error handling and provide offline mock responses.
+- Flesh out device driver and security subsystem APIs; document kernel interface.
+- Integrate policy engine with network layer and persist policy files.
+- Add REPL history, input sanitisation and clean shutdown.
+- Investigate memory fragmentation under stress and integrate logging hooks.
+- Integrate web UI with live branch data and secure HTTP service.
+- Extend WASM runtime with capability enforcement.
+- Expand smoke tests with CI coverage and rollback support.
+- Continue expanding subsystem READMEs and developer docs; keep ROADMAP updated.
 
 ## Archive
 Previous baton passes and session notes kept above.
