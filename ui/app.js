@@ -1,3 +1,5 @@
+/* global d3 */
+
 async function loadGraph() {
   const resp = await fetch('/graph');
   return await resp.json();

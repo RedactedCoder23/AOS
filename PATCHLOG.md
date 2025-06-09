@@ -548,3 +548,22 @@ by: codex-agent-xyz
 - `pre-commit run --all-files`
 - `make test`
 - `clang-tidy src/*.c subsystems/*/*.c` *(fails: no compilation database)*
+## [2025-06-09 23:10 UTC] dependency cleanup and coverage [codex]
+### Changes
+- Removed dev-only packages from `requirements.txt`.
+- Added Node version to prerequisites and updated badges to use Codecov.
+- CI now installs `gcovr` and uploads coverage via Codecov action.
+- Fixed eslint globals and cleaned TODO comments.
+### Tests
+- `npm run lint`
+- `make test-unit`
+- `make test-integration`
+## [2025-06-09 23:19 UTC] badge and ci polish [codex]
+### Changes
+- Updated README clone URL to GitHub project.
+- Added Codecov slug/token and compile_commands generation in CI.
+- Ignored compile_commands.json via .gitignore.
+### Tests
+- `cd ui && npm install && npm run lint`
+- `make test-unit`
+- `make test-integration`

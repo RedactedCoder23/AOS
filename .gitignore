@@ -8,6 +8,7 @@ src/generated/
 # Build outputs
 build/
 packages
+compile_commands.json
 *.log
 AOS-CHECKLIST.log
 aos.iso
