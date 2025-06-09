@@ -131,3 +131,9 @@ Next agent must:
 - Persist policy configs and validate JSON input.
 - Integrate web UI with live branch data via IPC and secure the HTTP service with tests.
 AI error: missing OPENAI_API_KEY
+## [2025-06-09 08:35 UTC] — userland & apps bootstrap [agent-mem]
+by: codex
+- Implemented minimal app runtime and loader with new `app` command.
+- Added sample CLI apps `fileman` and `textedit` built via `make apps`.
+- Created simple installer script `aos` copying binaries to `packages/`.
+- Verified `app list` and `app run fileman ls` in host REPL.
