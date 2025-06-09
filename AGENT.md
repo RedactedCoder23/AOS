@@ -282,6 +282,13 @@ Next agent must:
 - `make test` failed: linker cannot find gcc and memory errors (see PATCHLOG).
 - Cleaned merge markers from Makefile but left build logic unchanged.
 - Consolidated open tasks into Active Baton Passes section below.
+## [2025-06-09 13:18 UTC] repo cleanup [codex]
+- Fixed merge artifacts in scripts and .gitignore.
+- Rewrote scripts/generate_aos_mappings.py from scratch.
+- Formatted Python sources with black and passed flake8.
+- Pre-commit failed due to GitHub auth prompt.
+- `make test-unit` and `test-integration` fail (duplicate symbols, missing gcc).
+
 
 ## Active Baton Passes
 - Resolve clang-tidy warnings and restore failing builds (`host`, `branch-net`).
@@ -297,3 +304,11 @@ Next agent must:
 
 ## Archive
 Previous baton passes and session notes kept above.
+
+
+## [2025-06-09 13:33 UTC] hook fixes [codex]
+- Replaced GitHub-based hooks with local ones in `.pre-commit-config.yaml`.
+- Installed `pre-commit` and `pre-commit-hooks` to run offline.
+- Restricted whitespace/yaml hooks to specific file types.
+- Fixed Makefile test targets and ensured unit/integration tests build.
+- Verified `pre-commit run --all-files`, `make test-unit`, and `make test-integration` all succeed.

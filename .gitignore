@@ -1,12 +1,11 @@
- codex/standardize-linting,-formatting,-and-dependencies
+# Generated sources
 command_map.c
 commands.c
 category_defs.h
-=======
 gen/
- main
 
-build
+# Build outputs
+build/
 packages
 *.log
 AOS-CHECKLIST.log

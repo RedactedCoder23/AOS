@@ -10,7 +10,9 @@ def main():
     if len(sys.argv) < 2:
         print(PROMPT_ERR, file=sys.stderr)
         return 1
-    key = os.environ.get("OPENAI_API_KEY") or os.environ.get("AOS_OPENAI_API_KEY")
+    key = os.environ.get("OPENAI_API_KEY")
+    if not key:
+        key = os.environ.get("AOS_OPENAI_API_KEY")
     if not key:
         print("missing OPENAI_API_KEY", file=sys.stderr)
         return 2
@@ -18,7 +20,8 @@ def main():
     prompt = sys.argv[1]
     try:
         resp = client.chat.completions.create(
-            model="gpt-3.5-turbo", messages=[{"role": "user", "content": prompt}]
+            model="gpt-3.5-turbo",
+            messages=[{"role": "user", "content": prompt}],
         )
         print(resp.choices[0].message.content.strip())
     except Exception as e:

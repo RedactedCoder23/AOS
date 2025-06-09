@@ -1,17 +1,28 @@
 repos:
-  - repo: https://github.com/pre-commit/mirrors-clang-format
-    rev: v16.0.6
+  - repo: local
     hooks:
       - id: clang-format
-        files: '\.(c|h)$'
-  - repo: https://github.com/pre-commit/black
-    rev: 25.1.0
-    hooks:
+        name: clang-format
+        entry: clang-format -i
+        language: system
+        files: '\\.(c|h)$'
       - id: black
-  - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v4.5.0
-    hooks:
+        name: black
+        entry: black
+        language: system
+        types: [python]
       - id: trailing-whitespace
+        name: trailing-whitespace
+        entry: trailing-whitespace-fixer
+        language: python
+        files: '\\.(py|c|h)$'
       - id: end-of-file-fixer
+        name: end-of-file-fixer
+        entry: end-of-file-fixer
+        language: python
+        files: '\\.(py|c|h|sh|md|txt)$'
       - id: check-yaml
-
+        name: check-yaml
+        entry: check-yaml
+        language: python
+        files: '\\.(yaml|yml)$'

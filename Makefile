@@ -223,25 +223,27 @@ test-net: net
 test-unit:
 	@echo "→ Running unit tests"
 	@mkdir -p build/tests
-	gcc --coverage -Isubsystems/memory -Iinclude tests/unit/test_memory.c \
-	gcc -Isubsystems/memory -Iinclude -Igen tests/unit/test_memory.c \
-	subsystems/memory/memory.c src/logging.c src/error.c -o build/tests/test_memory
+	gcc --coverage -Isubsystems/memory -Iinclude \
+	tests/unit/test_memory.c \
+	subsystems/memory/memory.c src/logging.c src/error.c \
+	-o build/tests/test_memory
 	@./build/tests/test_memory
 	@python3 -m unittest tests/python/test_generate_mappings.py
-
+	
 test-integration:
 	@echo "\u2192 Running integration tests"
 	@mkdir -p build/tests
 	gcc --coverage -Isubsystems/fs -Isubsystems/memory -Iinclude \
-	gcc -Isubsystems/fs -Isubsystems/memory -Iinclude -Igen \
 	tests/integration/test_fs_memory.c \
-	subsystems/fs/fs.c subsystems/memory/memory.c src/logging.c src/error.c -o build/tests/test_fs
+	subsystems/fs/fs.c subsystems/memory/memory.c src/logging.c src/error.c \
+	-o build/tests/test_fs
 	@./build/tests/test_fs
 	gcc --coverage -Isubsystems/fs -Isubsystems/memory -Iinclude \
 	tests/integration/test_persistence.c \
-	subsystems/fs/fs.c subsystems/memory/memory.c src/logging.c src/error.c -o build/tests/test_persistence
+	subsystems/fs/fs.c subsystems/memory/memory.c src/logging.c src/error.c \
+	-o build/tests/test_persistence
 	@./build/tests/test_persistence
-
+	
 test-fuzz:
 	@echo "\u2192 Running memory fuzz tests under ASan"
 	@mkdir -p build/tests
