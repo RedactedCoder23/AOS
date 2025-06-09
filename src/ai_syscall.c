@@ -18,8 +18,22 @@ void ai_service_monitor(int id) {
 }
 
 int ai_infer(const char *prompt, char *out, unsigned long outsz) {
-    (void)prompt;
-    if (!out || outsz == 0) return -1;
-    snprintf(out, outsz, "NOT IMPLEMENTED");
+    if (!prompt || !out || outsz == 0)
+        return -1;
+
+    char cmd[512];
+    /* call external Python backend with escaped prompt */
+    snprintf(cmd, sizeof(cmd), "scripts/ai_backend.py \"%s\"", prompt);
+
+    FILE *fp = popen(cmd, "r");
+    if (!fp) {
+        snprintf(out, outsz, "error: popen failed");
+        return -1;
+    }
+    size_t n = fread(out, 1, outsz - 1, fp);
+    out[n] = '\0';
+    int rc = pclose(fp);
+    if (rc != 0)
+        return -1;
     return 0;
 }
