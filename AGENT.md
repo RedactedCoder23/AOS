@@ -95,6 +95,7 @@ by: codex
 - Audit for fragmentation and add unit tests in memory.c
 - Design persistent storage backend or VFS integration in fs.c
 - Confirm usage/reconcile with new system in branch.c
+codex/integrate-ai-cli-with-llm-apis
 - ~~Replace AI stub with real backend and add retries in ai.c~~ (resolved 2025-06-09 07:51 UTC)
 
 ## [2025-06-09 07:51 UTC] — AI backend integration [agent-mem]
@@ -107,3 +108,17 @@ AI error: missing OPENAI_API_KEY
 AI latency 204 ms
 AI backend error rc=30720 output=Traceback (most recent call last):
   File "/workspace/AOS/scrip
+=======
+- Replace AI stub with real backend and add retries in ai.c
+
+## [2025-06-09 06:40 UTC] — policy engine & sandbox [agent-mem]
+by: codex
+- Implemented JSON-based policy rules with branch/app context.
+- Added `policy_check_ctx` API and integrated checks in FS commands.
+- Introduced `bm_current_name` helper for branch-aware enforcement.
+- Updated policy demo to exercise deny/allow via JSON.
+- Limitations: parser fragile, no persistent storage, enforcement covers only FS.
+Next agent must:
+- Extend sandbox hooks to memory, AI, and plugins.
+- Persist policy configs and validate JSON input.
+ main
