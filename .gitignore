@@ -1,6 +1,10 @@
+ codex/standardize-linting,-formatting,-and-dependencies
 command_map.c
 commands.c
 category_defs.h
+=======
+gen/
+ main
 
 build
 packages

@@ -389,6 +389,7 @@ by: codex
 ### Baton Pass
 - Address clang-tidy findings and fix failing build targets (`host`, `branch-net`).
 - Continue expanding subsystem docs and update ROADMAP accordingly.
+ codex/standardize-linting,-formatting,-and-dependencies
 
 ## [2025-06-09 11:44 UTC] style(ci) sweep [agent-mem]
 ### Changes
@@ -415,3 +416,13 @@ by: codex
 - `make test-unit`
 - `make test-integration`
 - `pre-commit run --files $(git ls-files *.py *.c *.h *.yaml)` *(fails: Username for https://github.com...)*
+=======
+## [2025-06-09 11:46 UTC] ci test integration [agent-mem]
+### Changes
+- Unified unit and integration tests via `make test`.
+- Added `test-fuzz` with ASan and coverage reporting.
+- Cleaned CI workflow and removed merge artifacts.
+### Tests
+- `make test`
+- `make test-fuzz`
+ main
