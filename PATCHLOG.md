@@ -455,6 +455,17 @@ by: codex
 - `make test-unit`
 - `make test-integration`
 
+ codex/prune-and-relocate-archive-directory
+## [2025-06-09 13:55 UTC] structure cleanup [agent-mem]
+by: codex-agent-xyz
+### Changes
+- Moved `archive/` to `docs/archive/`.
+- Added new `PROJECT_LAYOUT.md` describing top-level directories.
+- Updated docs/README to reference legacy archive location.
+### Tests
+- `make test-unit`
+- `make test-integration`
+=======
  codex/add-shields.io-badges,-prerequisites,-and-index.md
 ## [2025-06-09 22:18 UTC] docs onboarding update [codex-agent-xyz]
 ### Changes
