@@ -133,6 +133,7 @@ by: codex
 - `./examples/plugin_demo.sh`
 - `./examples/ai_service_demo.sh`
 - `echo "ai test\nexit" | ./build/host_test` *(fails: openai module missing)*
+ codex/implement-tcp/ip-stack-with-basic-services
 ## [2025-06-09 08:10 UTC] — extended TCP/IP stack [agent-mem]
 ### Changes
 - Added UDP helpers and updated net subsystem.
@@ -143,3 +144,13 @@ by: codex
 - `./examples/net_echo_demo.sh`
 - `make net-http`
 - `./examples/net_http_demo.sh`
+=======
+
+## [2025-06-09 08:30 UTC] — sandboxed plugin loader [agent-mem]
+### Changes
+- Added validation hook API and builtin path check.
+- Plugin init/exec/cleanup run under CPU/memory limits.
+### Tests
+- `make plugins`
+- `./examples/plugin_demo.sh`
+ main
