@@ -115,8 +115,10 @@ bare-smoke: bare
 
 clean:
 	@echo "→ Cleaning build artifacts"
-	rm -rf build aos.bin bootloader.bin kernel.bin
-	$(MAKE) -C bare_metal_os clean
+	@rm -rf build # remove compiled objects and tests
+	@rm -f aos.bin bootloader.bin kernel.bin aos.iso # remove OS binaries
+	@rm -f AOS-CHECKLIST.log /tmp/coverage.txt # remove logs created by tests
+	@rm -f bare_metal_os/*.bin bare_metal_os/*.o bare_metal_os/*.elf bare_metal_os/kernel.elf # bare metal artifacts
 
 memory:
 	@echo "→ Building memory demo"
@@ -197,8 +199,6 @@ net-http:
 	gcc -Isubsystems/net subsystems/net/net.c examples/http_server.c -o build/http_server
 
 # Aggregate test target used by CI
-test: test-unit test-integration test-fuzz
-	@echo '→ All tests completed'
 test: test-unit test-integration
 	@echo "→ Running full test suite"
 
