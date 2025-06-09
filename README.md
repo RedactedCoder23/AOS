@@ -104,6 +104,18 @@ Controls:
 Branch state is saved to `~/.aos/branches.json`, so any branches you create will
 persist between sessions.
 
+## Web Branch UI
+
+Launch a lightweight web visualizer:
+
+```bash
+python3 scripts/branch_ui.py
+```
+
+Then open `http://localhost:8000` in your browser. Drag nodes to rearrange the
+graph and double-click a branch to open a new tab pane. Right-click a tab to
+close it. The demo reads from `examples/graph_sample.json`.
+
 ## Hypervisor-Backed Branches
 
 ```bash

@@ -111,6 +111,17 @@ AI backend error rc=30720 output=Traceback (most recent call last):
 =======
 - Replace AI stub with real backend and add retries in ai.c
 
+ codex/build-graphical-branch-visualizer-ui
+## [2025-06-09 07:51 UTC] — graphical branch UI [agent-mem]
+by: codex
+- Implemented simple web UI served by `scripts/branch_ui.py` using D3.js.
+- Added drag/drop graph and tab panes for shell sessions.
+- Updated Makefile and README with `web-ui` target and usage notes.
+
+Baton pass:
+- Integrate UI with live branch data via IPC.
+- Secure HTTP service and add tests.
+=======
 ## [2025-06-09 06:40 UTC] — policy engine & sandbox [agent-mem]
 by: codex
 - Implemented JSON-based policy rules with branch/app context.
@@ -121,4 +132,5 @@ by: codex
 Next agent must:
 - Extend sandbox hooks to memory, AI, and plugins.
 - Persist policy configs and validate JSON input.
+ main
  main

@@ -74,6 +74,17 @@ by: codex
 - `./examples/plugin_demo.sh`
 - `./examples/ai_service_demo.sh`
 - `echo 'ai hello\nexit' | ./build/host_test` *(fails: openai module missing)*
+codex/build-graphical-branch-visualizer-ui
+## [2025-06-09 07:51 UTC] — graphical branch UI [agent-mem]
+### Changes
+- Added `scripts/branch_ui.py` HTTP server.
+- Created `webui/` with `index.html` and `app.js` using D3.js.
+- Added example data `examples/graph_sample.json`.
+- Updated README and Makefile with `web-ui` target.
+### Tests
+- `make host`
+- `make web-ui` *(manual run)*
+=======
 
 codex/integrate-ai-cli-with-llm-apis
 ## [2025-06-09 07:51 UTC] — AI backend integration [agent-mem]
@@ -94,4 +105,5 @@ codex/integrate-ai-cli-with-llm-apis
 ### Tests
 - `make policy`
 - `./examples/policy_demo.sh`
+main
 main
