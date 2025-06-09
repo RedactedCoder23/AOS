@@ -365,3 +365,27 @@ by: codex
 - `make host`
 - `make test-unit`
 - `make test-integration`
+## [2025-06-09 11:19 UTC] repo polish [agent-mem]
+### Changes
+- Ran clang-format on all C and header files.
+- Created README stubs with baton-pass notes for ui and subsystems.
+### Tests
+- `make test-unit`
+- `make test-integration`
+- `make memory`
+- `./build/memory_demo`
+- `make fs`
+- `./build/fs_demo`
+- `make ai` (warns missing OPENAI_API_KEY)
+- `make branch` and `./build/branch_demo`
+- `make plugins` and `./build/plugin_demo`
+- `make policy` and `./build/policy_demo`
+- `make ai-service` and `./build/ai_service_demo`
+- `make branch-vm` and `./build/branch_vm_demo`
+- `make aicell` and demos
+- `make net` (help option fails)
+- `make branch-net` *(fails: undefined reference to log_message)*
+
+### Baton Pass
+- Address clang-tidy findings and fix failing build targets (`host`, `branch-net`).
+- Continue expanding subsystem docs and update ROADMAP accordingly.
