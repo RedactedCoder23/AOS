@@ -60,6 +60,10 @@ make ai
 ```
 Uses libcurl to fetch a response from a demo service.
 
+The interactive REPL also supports an `ai` command which now
+executes `scripts/ai_backend.py`. Set `OPENAI_API_KEY` before running
+`make host` to enable real responses.
+
 ## Branch Manager Demo
 
 ```bash
@@ -75,8 +79,8 @@ AOS> MEM_ALLOC 128
 Allocated at 0x1f0a010
 AOS> FS_LS
 (no files)
-AOS> AI_PROMPT Hello
-Hi, I'm an AI stub...
+AOS> ai Hello
+Hello! (from LLM)
 AOS> BR_LIST
 0:main (running)
 ```
@@ -116,7 +120,7 @@ make plugins
 ./examples/plugin_demo.sh
 ```
 
-Loads a sample plugin built as a shared object.
+Loads and then unloads a sample plugin built as a shared object.
 
 ## Real Hardware Boot
 

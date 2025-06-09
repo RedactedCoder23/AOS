@@ -72,7 +72,7 @@ branch-vm:
 	@mkdir -p build
 	gcc -Iinclude src/branch_vm.c subsystems/branch/branch.c examples/branch_vm_demo.c -o build/branch_vm_demo
 
-	plugins:
+plugins:
 	@echo "→ Building plugins demo"
 	@mkdir -p build/plugins
 	gcc -fPIC -shared -o build/plugins/sample.so examples/sample_plugin.c

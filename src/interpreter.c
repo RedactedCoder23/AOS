@@ -323,6 +323,12 @@ void cmd_plugin_load_wrapper(int argc, char **argv) {
     plugin_load(argv[1]);
 }
 
+void cmd_plugin_unload_wrapper(int argc, char **argv) {
+    ensure_init();
+    if (argc < 2) { printf("usage: PLUGIN_UNLOAD <name>\n"); return; }
+    plugin_unload(argv[1]);
+}
+
 void cmd_br_peer_add_wrapper(int argc, char **argv) {
     ensure_init();
     if (argc < 2) { printf("usage: BR_PEER_ADD <addr>\n"); return; }

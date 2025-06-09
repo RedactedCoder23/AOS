@@ -30,6 +30,7 @@ void cmd_br_vm_stop_wrapper(int argc, char **argv);
 void cmd_plugin_install_wrapper(int argc, char **argv);
 void cmd_plugin_list_wrapper(int argc, char **argv);
 void cmd_plugin_load_wrapper(int argc, char **argv);
+void cmd_plugin_unload_wrapper(int argc, char **argv);
 void cmd_br_peer_add_wrapper(int argc, char **argv);
 void cmd_br_sync_wrapper(int argc, char **argv);
 void cmd_br_sync_all_wrapper(int argc, char **argv);

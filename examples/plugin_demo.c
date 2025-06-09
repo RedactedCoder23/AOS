@@ -7,5 +7,7 @@ int main(void){
     if (plugin_load("missing") != 0)
         printf("missing plugin handled\n");
     plugin_list();
+    plugin_unload("sample");
+    plugin_list();
     return 0;
 }
