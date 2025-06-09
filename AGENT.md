@@ -237,3 +237,13 @@ Next agent must:
 - Resolve clang-tidy warnings and restore `make host` build.
 - Implement TODOs described in subsystem READMEs (dev, security, branch, net, ai, fs, memory).
 - Address open issues listed above and keep ROADMAP updated.
+
+## [2025-06-09 12:06 UTC] security & UI cleanup [agent-mem]
+- Added safe CLI argument parsing helpers and `COMMAND_COUNT` constant.
+- Documented dev subsystem as dev-only; release builds exclude it.
+- Moved web UI under `src/` with Parcel and added build instructions.
+- Added coverage make target and updated README with testing notes.
+
+### Baton Pass
+- Extend coverage to other subsystems and integrate with CI.
+- Add pre-commit style checks.

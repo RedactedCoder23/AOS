@@ -96,6 +96,12 @@ make ai
 ```
 Uses OpenAI ChatCompletion via a helper script.
 
+Install Python dependencies first:
+
+```bash
+pip install -r requirements.txt
+```
+
 The interactive REPL also supports an `ai` command. Run `ai setup`
 once to configure your provider and store the API key securely in
 `~/.aos/ai.conf`. Environment variables still override the stored
@@ -239,6 +245,21 @@ make net-http
 ```
 
 Demonstrates TCP echo and a simple HTTP server.
+
+## Testing & Coverage
+
+Run unit and integration tests:
+
+```bash
+make test-unit
+make test-integration
+```
+
+Generate a coverage report (requires gcov):
+
+```bash
+make coverage
+```
 
 ## Updating
 

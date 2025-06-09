@@ -27,7 +27,7 @@ host: generate subsystems
 	            subsystems/branch/branch.c subsystems/net/net.c \
 	            $(NCURSES_LIBS) -ldl -lcurl -lm -o build/host_test
 	gcc -Wall -Werror -Iinclude $(NCURSES_CFLAGS) src/ui_graph.c src/branch_manager.c \
-            src/logging.c src/error.c src/ui_main.c $(NCURSES_LIBS) -lm -o build/ui_graph
+	     src/logging.c src/error.c src/ui_main.c $(NCURSES_LIBS) -lm -o build/ui_graph
 
 # 3. Build bare-metal components
 bootloader: generate
@@ -223,8 +223,19 @@ ui: host
 	@echo "UI built via host target"
 
 ui-check: ui
-	@echo "\u2192 Verifying UI binary"
-	@./build/ui_graph --help
+	 @echo "\u2192 Verifying UI binary"
+	 @./build/ui_graph --help
+
+coverage:
+	@echo "\u2192 Generating coverage report"
+	@mkdir -p build/coverage
+	gcc -Isubsystems/memory -Iinclude tests/unit/test_memory.c \
+	subsystems/memory/memory.c src/logging.c src/error.c \
+	--coverage -o build/coverage/test_memory
+	@./build/coverage/test_memory >/dev/null
+	@gcov -o build/coverage build/coverage/test_memory-memory.gcno >/dev/null
+	@mv *.gcov build/coverage/
+	@echo "Coverage data in build/coverage"
 
 web-ui:
 	@echo "\u2192 Launching web UI at http://localhost:8000"

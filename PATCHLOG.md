@@ -389,3 +389,17 @@ by: codex
 ### Baton Pass
 - Address clang-tidy findings and fix failing build targets (`host`, `branch-net`).
 - Continue expanding subsystem docs and update ROADMAP accordingly.
+
+## [2025-06-09 12:06 UTC] security and UI cleanup [agent-mem]
+### Changes
+- Added safer argument parsing helpers and `COMMAND_COUNT` constant.
+- Documented dev subsystem exclusion from release builds.
+- Moved web UI to Parcel project with package.json and lockfile.
+- Added `coverage` make target and new README sections.
+### Tests
+- `make test-unit`
+- `make test-integration`
+- `make coverage`
+- `npx -y parcel build src/index.html src/desktop.html --dist-dir dist`
+### Baton Pass
+- Expand coverage to more subsystems and integrate pre-commit style checks.
