@@ -140,6 +140,17 @@ Next agent must:
 - Persist policy configs and validate JSON input.
 - Integrate web UI with live branch data via IPC and secure the HTTP service with tests.
 AI error: missing OPENAI_API_KEY
+codex/implement-tcp/ip-stack-with-basic-services
+ codex/implement-tcp/ip-stack-with-basic-services
+## [2025-06-09 08:10 UTC] — extended TCP/IP stack [agent-mem]
+by: codex
+- Added UDP helpers in `subsystems/net` for sendto/recvfrom.
+- Implemented simple `http_server` example and build target.
+- Updated README with networking usage and added demo scripts.
+=======
+plugin validation failed build/plugins/missing.so
+ main
+=======
  codex/implement-persistent-disk-backed-branches-and-sync
 
 ## [2025-06-09 08:31 UTC] — persistent branches & federation [agent-mem]
@@ -232,4 +243,5 @@ main
  main
  main
  main
+main
 main

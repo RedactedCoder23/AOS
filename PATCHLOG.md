@@ -133,6 +133,19 @@ by: codex
 - `./examples/plugin_demo.sh`
 - `./examples/ai_service_demo.sh`
 - `echo "ai test\nexit" | ./build/host_test` *(fails: openai module missing)*
+codex/implement-tcp/ip-stack-with-basic-services
+ codex/implement-tcp/ip-stack-with-basic-services
+## [2025-06-09 08:10 UTC] — extended TCP/IP stack [agent-mem]
+### Changes
+- Added UDP helpers and updated net subsystem.
+- New `http_server` example with `net-http` build target.
+- Added demo scripts and README networking section.
+### Tests
+- `make net`
+- `./examples/net_echo_demo.sh`
+- `make net-http`
+- `./examples/net_http_demo.sh`
+=======
  codex/implement-persistent-disk-backed-branches-and-sync
 
 ## [2025-06-09 08:31 UTC] — persistence & federation [agent-mem]
@@ -189,6 +202,7 @@ codex/develop-graphical-desktop-and-ai-copilot
 - Host REPL updated to parse /etc/aos/config.json.
 ### Tests
 - `make boot` *(fails: qemu not installed)*
+ main
 =======
 
 ## [2025-06-09 08:30 UTC] — sandboxed plugin loader [agent-mem]
@@ -199,7 +213,10 @@ codex/develop-graphical-desktop-and-ai-copilot
 - `make plugins`
 - `./examples/plugin_demo.sh`
  main
+ codex/implement-tcp/ip-stack-with-basic-services
+=======
  main
  main
  main
  main
+main

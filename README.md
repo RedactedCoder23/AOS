@@ -179,6 +179,18 @@ make policy
 
 Loads a policy script and performs a check.
 
+## Networking
+
+```bash
+make net
+./build/net_echo --server --port 12345 &
+./build/net_echo --host 127.0.0.1 --port 12345
+make net-http
+./examples/net_http_demo.sh
+```
+
+Demonstrates TCP echo and a simple HTTP server.
+
 ## Checklist Log
 
 The build process writes warnings and errors to `AOS-CHECKLIST.log`.
