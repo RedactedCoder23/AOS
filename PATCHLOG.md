@@ -133,3 +133,16 @@ by: codex
 - `./examples/plugin_demo.sh`
 - `./examples/ai_service_demo.sh`
 - `echo "ai test\nexit" | ./build/host_test` *(fails: openai module missing)*
+
+## [2025-06-09 08:31 UTC] — smoke tests & audit CLI [agent-mem]
+### Changes
+- Added `test-*` Makefile targets running subsystem smoke scripts.
+- Created new smoke scripts for fs, branch, plugin, policy, and net subsystems.
+- Introduced `scripts/audit_cli.py` for log inspection and git rollback.
+### Tests
+- `make test-memory`
+- `make test-fs`
+- `make test-branch`
+- `make test-plugin`
+- `make test-policy`
+- `make test-net`

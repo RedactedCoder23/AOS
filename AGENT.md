@@ -131,3 +131,12 @@ Next agent must:
 - Persist policy configs and validate JSON input.
 - Integrate web UI with live branch data via IPC and secure the HTTP service with tests.
 AI error: missing OPENAI_API_KEY
+
+## [2025-06-09 08:31 UTC] — smoke tests & audit CLI [agent-mem]
+by: codex
+- Added `test-*` Makefile targets for subsystem smoke checks.
+- Created fs, branch, plugin, policy, and net smoke scripts.
+- Introduced Python `audit_cli.py` for log viewing and git rollback.
+Baton pass:
+- Expand smoke tests with CI coverage.
+- Harden rollback to snapshot branches.

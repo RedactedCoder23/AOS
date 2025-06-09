@@ -107,6 +107,24 @@ test: host branch
 	@echo "→ Running branch demo"
 	@./build/branch_demo >/tmp/branch_demo.out && cat /tmp/branch_demo.out
 
+test-memory: memory
+	./examples/memory_demo.sh
+
+test-fs: fs
+	./examples/fs_smoke.sh
+
+test-branch: branch
+	./examples/branch_smoke.sh
+
+test-plugin: plugins
+	./examples/plugin_smoke.sh
+
+test-policy: policy
+	./examples/policy_smoke.sh
+
+test-net: net
+	./examples/net_echo_test.sh
+
 efi:
 	@echo "→ Building EFI stub"
 	mkdir -p bare_metal_os/efi
