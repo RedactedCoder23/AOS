@@ -454,3 +454,13 @@ by: codex
 - `pre-commit run --all-files`
 - `make test-unit`
 - `make test-integration`
+
+## [2025-06-09 22:18 UTC] docs onboarding update [codex-agent-xyz]
+### Changes
+- Added shields.io badges to README for build status, coverage and license.
+- Expanded prerequisites with GCC >=10, Python >=3.8 and QEMU version guidance.
+- Created docs/INDEX.md linking major documentation files.
+### Tests
+- `pre-commit run --files README.md docs/INDEX.md`
+- `make test-unit`
+- `make test-integration`
