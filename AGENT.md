@@ -291,7 +291,7 @@ Next agent must:
 
 
 ## Active Baton Passes
-- Resolve clang-tidy warnings and restore failing builds (`host`, `branch-net`).
+- Provide compile_commands.json for clang-tidy, fix warnings and restore failing builds (`host`, `branch-net`).
 - Expand ext2 filesystem backend and add persistence tests.
 - Flesh out device and security subsystem APIs and documentation.
 - Review network branch sync for race conditions and add tests.
@@ -347,3 +347,19 @@ codex/expand-c-unit-tests-and-unify-error-handling
 Next agent must:
 - Verify fresh venv install covers all runtime scripts.
  main
+## [2025-06-09 22:34 UTC] repo hygiene sweep [codex]
+- Ran `pre-commit` after installing hooks and flake8; all checks pass.
+- Executed `clang-format` across sources.
+- `clang-tidy` fails with many warnings treated as errors (see /tmp/clang_tidy.log).
+- Verified `make test` succeeds running unit and integration suites.
+
+Next agent must:
+- Address `clang-tidy` errors and integrate compilation database.
+## [2025-06-09 22:39 UTC] repo hygiene sweep [codex]
+- Installed dev dependencies and ran `pre-commit` – all hooks pass.
+- Reapplied `clang-format` across sources.
+- `clang-tidy` still fails (no compilation database).
+- Executed `make test` successfully; removed Python `__pycache__`.
+
+Next agent must:
+- Provide a compile_commands.json for clang-tidy and fix reported issues.

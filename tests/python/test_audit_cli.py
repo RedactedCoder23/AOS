@@ -11,18 +11,24 @@ class AuditCliTest(unittest.TestCase):
             os.remove("AOS-CHECKLIST.log")
 
     def test_clear_and_show(self):
-        res = subprocess.run(["python3", SCRIPT, "clear"], capture_output=True, text=True)
+        res = subprocess.run(
+            ["python3", SCRIPT, "clear"], capture_output=True, text=True
+        )
         self.assertEqual(res.returncode, 0)
         res = subprocess.run(["python3", SCRIPT, "log"], capture_output=True, text=True)
         self.assertEqual(res.stdout.strip(), "")
 
     def test_rollback_invalid(self):
-        res = subprocess.run([
-            "python3",
-            SCRIPT,
-            "rollback",
-            "deadbeef",
-        ], capture_output=True, text=True)
+        res = subprocess.run(
+            [
+                "python3",
+                SCRIPT,
+                "rollback",
+                "deadbeef",
+            ],
+            capture_output=True,
+            text=True,
+        )
         self.assertNotEqual(res.returncode, 0)
         self.assertIn("rollback failed", res.stderr)
 

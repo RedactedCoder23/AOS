@@ -533,3 +533,18 @@ by: codex-agent-xyz
 - `python3 -m venv venv && source venv/bin/activate && pip install -r requirements.txt`
 - `pip install -r requirements-dev.txt && pytest --maxfail=1 --disable-warnings -q`
  main
+## [2025-06-09 22:34 UTC] repo hygiene sweep [codex]
+### Changes
+- Formatted sources via clang-format and black.
+- Adjusted tests/python/test_audit_cli.py formatting.
+### Tests
+- `pre-commit run --all-files`
+- `make test`
+## [2025-06-09 22:39 UTC] repo hygiene sweep [codex]
+### Changes
+- Re-ran `clang-format` and `pre-commit` after installing dev tools.
+- Removed stray Python `__pycache__` created during tests.
+### Tests
+- `pre-commit run --all-files`
+- `make test`
+- `clang-tidy src/*.c subsystems/*/*.c` *(fails: no compilation database)*
