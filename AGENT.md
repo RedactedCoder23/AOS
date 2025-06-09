@@ -247,3 +247,10 @@ Next agent must:
 ### Baton Pass
 - Extend coverage to other subsystems and integrate with CI.
 - Add pre-commit style checks.
+
+## [2025-06-09 12:07 UTC] merge cleanup [agent-mem]
+- Removed leftover merge markers from ci workflow and PATCHLOG.
+- Verified CI YAML validity and log continuity.
+
+### Baton Pass
+- Continue addressing clang-tidy warnings and ensure CI covers coverage target.

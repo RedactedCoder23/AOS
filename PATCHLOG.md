@@ -323,8 +323,6 @@ by: codex
 ### Tests
 - `make test-unit`
 - `make test-integration`
- codex/improve-project-hygiene-and-cross-platform-build
-
 ## [2025-06-09 10:51 UTC] — build hygiene and boot split [agent-mem]
 ### Changes
 - Added clang-format and clang-tidy configs with CI integration.
@@ -337,8 +335,6 @@ by: codex
 - `make bootloader`
 - `make kernel`
 - `make bare`
-=======
- codex/implement-buddy-allocator-and-vfs-with-ext2-plugin
 ## [2025-06-09 10:47 UTC] — memory/fs overhaul [agent-mem]
 ### Changes
 - Replaced freelist allocator with buddy allocator under subsystems/memory.
@@ -346,15 +342,12 @@ by: codex
 - Refactored fs subsystem into VFS with ramfs and ext2 plugins.
 - Updated subsystem READMEs.
 ### Tests
-=======
- codex/refactor-repl-core-and-language-mappings
 
 ## [2025-06-09 10:45 UTC] — repl refactor [agent-mem]
 ### Changes
 - Introduced `src/repl.c` with table-driven dispatcher and streamlined `main`.
 - Consolidated mapping text into `mappings.json` and rewrote generator.
 - Added unit tests for all command handlers and CI mapping validation.
-=======
 ## [2025-06-09 10:47 UTC] — aicell and checkpoint HAL [agent-mem]
 ### Changes
 - Added aicell shared-memory IPC and daemon/client demos.
