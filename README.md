@@ -147,7 +147,9 @@ python3 scripts/branch_ui.py
 
 Then open `http://localhost:8000` in your browser. Drag nodes to rearrange the
 graph and double-click a branch to open a new tab pane. Right-click a tab to
-close it. The demo reads from `examples/graph_sample.json`.
+close it. The demo reads from `examples/graph_sample.json` and serves files from
+the new `ui/` directory. A `/metrics` endpoint exposes runtime metrics for the
+dashboard, while `/export` and `/import` allow workspace sync via JSON.
 ## Graphical Desktop & AI Copilot
 
 Launch the desktop UI with live branch data and AI chat:
@@ -223,6 +225,11 @@ make net-http
 ```
 
 Demonstrates TCP echo and a simple HTTP server.
+
+## Updating
+
+Run `scripts/aos_updater.sh` to fetch the latest changes and regenerate
+`CHANGELOG.md` automatically.
 
 ## Troubleshooting
 

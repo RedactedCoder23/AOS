@@ -1,5 +1,7 @@
 #include "plugin.h"
 #include "logging.h"
+#include "plugin_supervisor.h"
+#include "wasm_runtime.h"
 /* [2025-06-09 06:07 UTC] Hot-swap plugin loader via dlopen
  * by: codex
  * Edge cases: minimal error handling and no security checks.
@@ -99,6 +101,18 @@ static void normalize_name(const char *path, char *out, size_t outsz) {
     if (dot) *dot = '\0';
 }
 
+static int check_manifest(const char *path) {
+    char manifest[160];
+    snprintf(manifest, sizeof(manifest), "%s.manifest", path);
+    FILE *f = fopen(manifest, "r");
+    if (!f) return 1; /* allow if missing */
+    char buf[256];
+    size_t n = fread(buf, 1, sizeof(buf)-1, f);
+    buf[n] = '\0';
+    fclose(f);
+    return strstr(buf, "allow") != NULL;
+}
+
 /* Load a plugin shared object and register it in the runtime.
  * @param file path or plugin name without extension
  * @return 0 on success, -1 on error
@@ -109,7 +123,10 @@ int plugin_load(const char *file) {
     if (strchr(file, '/'))
         snprintf(path, sizeof(path), "%s", file);
     else
-        snprintf(path, sizeof(path), "build/plugins/%s.so", file);
+        snprintf(path, sizeof(path), "build/plugins/%s", file);
+
+    const char *ext = strrchr(path, '.');
+    if (!ext) strcat(path, ".so");
 
     /* Run registered validation hooks before loading the plugin. */
     if (hook_count == 0) plugin_register_hook(builtin_hook);
@@ -119,6 +136,16 @@ int plugin_load(const char *file) {
             log_message(LOG_ERROR, "plugin validation failed %s", path);
             return -1;
         }
+
+    if (!check_manifest(path)) {
+        printf("manifest denied %s\n", path);
+        return -1;
+    }
+
+    if (ext && strcmp(ext, ".wasm") == 0) {
+        ps_load(path);
+        return 0;
+    }
 
     void *h = dlopen(path, RTLD_NOW);
     if (!h) {

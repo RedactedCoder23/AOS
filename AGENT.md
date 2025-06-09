@@ -170,3 +170,13 @@ Next agent must:
 
 Next agent must:
 - Continue filling out subsystem READMEs and ensure diagrams stay updated.
+
+## [2025-06-09 10:47 UTC] ui & ci sweep [agent-mem]
+- Moved web UI to `ui/` and updated server scripts.
+- Added metrics dashboard, workspace import/export and sample metrics JSON.
+- Introduced WASM runtime and plugin supervisor stubs with manifest checks.
+- Created nightly CI workflow and helper scripts for changelog generation and self-update.
+
+Next agent must:
+- Extend WASM runtime to execute real modules with capability enforcement.
+- Flesh out federation DHT logic and integrate secure onboarding.
