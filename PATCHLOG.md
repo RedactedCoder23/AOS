@@ -133,6 +133,7 @@ by: codex
 - `./examples/plugin_demo.sh`
 - `./examples/ai_service_demo.sh`
 - `echo "ai test\nexit" | ./build/host_test` *(fails: openai module missing)*
+ codex/implement-security-policy-engine-with-sandbox
 ## [2025-06-09 08:10 UTC] — policy engine sandbox v2 [agent-mem]
 ### Changes
 - Added YAML parser and file loader in policy engine.
@@ -142,3 +143,50 @@ by: codex
 ### Tests
 - `make policy`
 - `./examples/policy_demo.sh`
+=======
+codex/develop-graphical-desktop-and-ai-copilot
+## [2025-06-09 08:31 UTC] — graphical desktop and ai copilot [agent-mem]
+### Changes
+- Added `scripts/desktop_backend.py` serving desktop UI with /graph and /ai routes.
+- Created `webui/desktop.html` and `webui/desktop.js` for drag/drop graph and chat.
+- New `desktop-ui` Makefile target.
+- Updated README with desktop instructions.
+### Tests
+- `python3 scripts/desktop_backend.py --help` *(shows usage)*
+- `make desktop-ui` *(manual launch)*
+=======
+ codex/add-smoke-tests-and-observability-tools
+
+## [2025-06-09 08:31 UTC] — smoke tests & audit CLI [agent-mem]
+### Changes
+- Added `test-*` Makefile targets running subsystem smoke scripts.
+- Created new smoke scripts for fs, branch, plugin, policy, and net subsystems.
+- Introduced `scripts/audit_cli.py` for log inspection and git rollback.
+### Tests
+- `make test-memory`
+- `make test-fs`
+- `make test-branch`
+- `make test-plugin`
+- `make test-policy`
+- `make test-net`
+=======
+ codex/implement-bootloader-and-kernel-init
+## [2025-06-09 08:30 UTC] — boot init [agent-mem]
+- Added universal GRUB boot config and `make boot`.
+- Kernel initialization routine loads config securely.
+- Host REPL updated to parse /etc/aos/config.json.
+### Tests
+- `make boot` *(fails: qemu not installed)*
+=======
+
+## [2025-06-09 08:30 UTC] — sandboxed plugin loader [agent-mem]
+### Changes
+- Added validation hook API and builtin path check.
+- Plugin init/exec/cleanup run under CPU/memory limits.
+### Tests
+- `make plugins`
+- `./examples/plugin_demo.sh`
+ main
+ main
+ main
+ main
