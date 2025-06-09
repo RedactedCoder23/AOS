@@ -2,7 +2,7 @@
 /* [2025-06-09 06:06 UTC] HTTP echo based AI stub
  * by: codex
  * Edge cases: network errors not handled, insecure HTTP parameters.
- * Next agent must: replace with actual backend and add retries.
+ * Next agent must: see AGENT.md "UNRESOLVED ISSUES".
  */
 #include <stdio.h>
 #include <string.h>

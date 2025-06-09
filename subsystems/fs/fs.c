@@ -2,7 +2,7 @@
 /* [2025-06-09 06:06 UTC] In-memory FS subsystem
  * by: codex
  * Edge cases: lacks persistence and access control.
- * Next agent must: design persistent storage backend or integrate with VFS.
+ * Next agent must: see AGENT.md "UNRESOLVED ISSUES".
  */
 #include <string.h>
 #include <stdio.h>

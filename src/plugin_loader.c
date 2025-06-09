@@ -2,7 +2,7 @@
 /* [2025-06-09 06:07 UTC] Hot-swap plugin loader via dlopen
  * by: codex
  * Edge cases: minimal error handling and no security checks.
- * Next agent must: audit plugin paths and sandbox execution.
+ * Next agent must: see AGENT.md "UNRESOLVED ISSUES".
  */
 #include <stdio.h>
 #include <string.h>
