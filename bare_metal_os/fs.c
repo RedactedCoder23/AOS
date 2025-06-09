@@ -17,12 +17,16 @@ typedef struct {
     size_t pos;
     int used;
     int open;
+    int dir;
 } File;
 
 static File files[MAX_FILES];
 
 void fs_init(void) {
     mem_set(files, 0, sizeof(files));
+    str_ncpy(files[0].name, "/", MAX_NAME);
+    files[0].used = 1;
+    files[0].dir = 1;
 }
 
 static File *find_file(const char *name) {
@@ -34,6 +38,7 @@ static File *find_file(const char *name) {
 
 int fs_open(const char *name, const char *mode) {
     File *f = find_file(name);
+    if (f && f->dir) return -1;
     if (!f) {
         for (int i=0;i<MAX_FILES;i++)
             if (!files[i].used) { f=&files[i]; break; }
@@ -73,6 +78,20 @@ size_t fs_write(int fd, const char *buf, size_t n) {
 void fs_close(int fd) {
     if (fd<0 || fd>=MAX_FILES) return;
     files[fd].open=0;
+}
+
+int fs_mkdir(const char *name) {
+    if (find_file(name)) return -1;
+    for (int i=0;i<MAX_FILES;i++) {
+        if (!files[i].used) {
+            mem_set(&files[i],0,sizeof(File));
+            str_ncpy(files[i].name,name,MAX_NAME);
+            files[i].used=1;
+            files[i].dir=1;
+            return 0;
+        }
+    }
+    return -1;
 }
 
 void fs_ls(void) {

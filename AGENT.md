@@ -96,3 +96,11 @@ by: codex
 - Design persistent storage backend or VFS integration in fs.c
 - Confirm usage/reconcile with new system in branch.c
 - Replace AI stub with real backend and add retries in ai.c
+
+## [2025-06-09 07:54 UTC] — minimal FS mkdir & CLI [agent-mem]
+by: codex
+- Extended in-memory filesystem with directory support and `fs_mkdir` API.
+- Added FS CLI commands in host REPL for mkdir/open/write/read/close/ls.
+- Updated `fs_demo` example to showcase directory usage.
+- Generated new command mappings via `generate_aos_mappings.py`.
+- FS remains volatile with no persistence or access control.

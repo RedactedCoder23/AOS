@@ -50,7 +50,7 @@ The demo allocates and frees several blocks and prints their addresses.
 make fs
 ./build/fs_demo
 ```
-Demonstrates a tiny in-memory filesystem with open/read/write/close commands.
+Demonstrates a tiny in-memory filesystem with mkdir/open/read/write/close and listing commands.
 
 ## AI Demo
 

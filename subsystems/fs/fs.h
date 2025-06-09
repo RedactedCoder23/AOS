@@ -8,6 +8,7 @@ size_t fs_read(int fd, char *buf, size_t size);
 size_t fs_write(int fd, const char *buf, size_t size);
 void fs_close(int fd);
 void fs_ls(void);
+int fs_mkdir(const char *name);
 
 
 #endif

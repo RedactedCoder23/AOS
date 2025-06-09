@@ -116,6 +116,7 @@ static void print_help(void){
     serial_print("FS_OPEN <name> <mode>\n");
     serial_print("FS_WRITE <fd> <text>\n");
     serial_print("FS_READ <fd> <bytes>\n");
+    serial_print("FS_MKDIR <name>\n");
     serial_print("FS_LS\n");
     serial_print("BR_CREATE <name>\n");
     serial_print("BR_CLONE <id> <name>\n");
@@ -175,6 +176,10 @@ void repl(void){
             char buf[256];if(n>255)n=255;size_t r=fs_read(fd,buf,n);buf[r]=0;
             if(r==0)serial_print("Error\n");
             else{serial_print(buf);serial_print("\n");}
+        }else if(str_cmp(argv[0],"FS_MKDIR")==0){
+            if(argc<2){serial_print("Error\n");continue;}
+            int rc=fs_mkdir(argv[1]);
+            if(rc<0)serial_print("Error\n");
         }else if(str_cmp(argv[0],"FS_LS")==0){
             fs_ls();
         }else if(str_cmp(argv[0],"BR_CREATE")==0){
