@@ -2,6 +2,16 @@
 
 Minimal experimental OS used for interpreter tests.
 
+## Architecture Overview
+
+AOS is split into a small kernel and a set of host tools. The kernel boots via
+GRUB and initialises a handful of subsystems (memory, filesystem and branch
+manager). The host REPL links against the same subsystems to provide a
+lightweight command line environment. Each subsystem resides under
+`subsystems/` and exposes a header-only API.
+
+For deeper details see [docs/system_architecture.md](docs/system_architecture.md).
+
 ## Build
 
 ```bash
@@ -192,6 +202,13 @@ make net-http
 
 Demonstrates TCP echo and a simple HTTP server.
 
+## Troubleshooting
+
+If a build fails, check `AOS-CHECKLIST.log` for recorded errors. When running
+`make run` ensure QEMU is installed and accessible in your `PATH`. Missing
+dependencies for optional features such as the AI backend will result in
+warning messages but do not stop the REPL from launching.
+
 ## Checklist Log
 
 The build process writes warnings and errors to `AOS-CHECKLIST.log`.
@@ -204,3 +221,5 @@ cat AOS-CHECKLIST.log
 
 ## Contributing
 See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
+See [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md) for community standards.
+Additional developer documentation is available under the [docs/](docs/) directory.

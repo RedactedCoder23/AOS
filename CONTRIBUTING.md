@@ -8,4 +8,11 @@ Thank you for your interest in improving AOS. The project uses a simple Makefile
 3. Run smoke tests with `make test-memory`, `make test-fs`, `make test-branch`, `make test-plugin`, `make test-policy`, and `make test-net`.
 4. Please ensure `AOS-CHECKLIST.log` is empty before submitting a patch.
 
-Contributions should include updates to `AGENT.md` summarising major decisions or open issues.
+All commits must update `AGENT.md` and `PATCHLOG.md` with a timestamped summary
+and a "Next agent must" baton-pass. Follow the existing format when adding
+entries.
+
+### Style
+- Use tabs for Makefile recipes and spaces elsewhere.
+- Document complex logic with inline comments.
+- Run `make test-unit` and `make test-integration` before sending a pull request.

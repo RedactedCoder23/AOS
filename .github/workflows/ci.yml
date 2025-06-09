@@ -13,6 +13,10 @@ jobs:
           sudo apt-get install -y libncurses5-dev libncursesw5-dev pkg-config libcurl4-openssl-dev
       - name: Build host and demos
         run: make host
+      - name: Unit tests
+        run: make test-unit
+      - name: Integration tests
+        run: make test-integration
       - name: Test memory
         run: ./build/memory_demo
       - name: Test fs

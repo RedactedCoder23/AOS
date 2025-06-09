@@ -228,3 +228,59 @@ by: codex
 ### Tests
 - `make plugins`
 - `./examples/plugin_demo.sh`
+
+## [2025-06-09 09:30 UTC] — docs sweep [agent-mem]
+### Changes
+- Expanded README with architecture and troubleshooting information.
+- Added docs/getting_started.md and docs/system_architecture.md.
+### Tests
+- `cat README.md | grep Architecture`
+
+## [2025-06-09 09:31 UTC] — improved comments [agent-mem]
+### Changes
+- Added detailed documentation comments to memory.h and memory.c.
+- Added explanatory notes in branch_manager.c, plugin_loader.c and kernel.c.
+### Tests
+- `grep -n 'Allocate a block' -n subsystems/memory/memory.h`
+
+## [2025-06-09 09:32 UTC] — add tests [agent-mem]
+### Changes
+- Created unit and integration test sources under tests/.
+- Added build targets and CI steps to run them automatically.
+### Tests
+- `make test-unit`
+- `make test-integration`
+
+## [2025-06-09 09:32 UTC] — subsystem placeholders [agent-mem]
+### Changes
+- Added new directories subsystems/dev and subsystems/security with README stubs.
+### Tests
+- `test -f subsystems/dev/README.md`
+
+## [2025-06-09 09:35 UTC] — logging framework [agent-mem]
+### Changes
+- Introduced logging.c/h and error.c/h.
+- Integrated logging in memory subsystem, plugin loader, branch manager and REPL.
+- Updated build scripts for new sources.
+### Tests
+- `make host`
+
+## [2025-06-09 09:35 UTC] — roadmap [agent-mem]
+### Changes
+- Added ROADMAP.md documenting planned development phases.
+### Tests
+- `cat ROADMAP.md`
+
+## [2025-06-09 09:36 UTC] — contributor guidelines [agent-mem]
+### Changes
+- Updated CONTRIBUTING with style and testing notes.
+- Added CODE_OF_CONDUCT.md and updated README links.
+### Tests
+- `grep -q baton-pass CONTRIBUTING.md`
+
+## [2025-06-09 09:36 UTC] — profiler stub [agent-mem]
+### Changes
+- Added include/profiler.h and src/profiler.c.
+- Documented basic usage in docs/profiler_usage.md.
+### Tests
+- `grep profiler_start -n src/profiler.c`
