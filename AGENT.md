@@ -35,14 +35,6 @@ by: codex
 - Introduced time-stamped log format and baton-pass comments across core subsystems.
 - Added header comments noting open issues for memory, fs, ai, branches, plugins, and REPL.
 - No functional changes.
-Next agent must:
-
-- Preserve this log style for future updates.
-- Implement graceful shutdown for network service.
-- Add plugin path validation and sandboxing.
-- Replace AI stubs with real backend.
-- Add REPL history and clean shutdown.
-
 ### Step 5 — [2025-06-09 06:17 UTC] by codex
 - Implemented UDP peer discovery and sync in `branch_net.c` with `br_start_service`, `br_discover`, and `br_sync_peer` APIs.
 - Added REPL commands `peer ls` and `branch sync <peer>`.
@@ -87,23 +79,6 @@ by: codex
 - Added `net_echo` demo and build target.
 - Host build now links the new subsystem.
 
-## UNRESOLVED ISSUES
-- Network service lacks graceful shutdown and authentication.
-- Plugin loader needs path validation and sandboxing.
-- ai_backend requires openai module; real backend pending.
-- REPL lacks history and clean shutdown.
-- Branch manager JSON loading unvalidated and unlocked.
-## UNRESOLVED ISSUES (as of 2025-06-09 16:30 AEST)
-- Validate file contents and add locking strategy in branch_manager.c
-- Implement real inference backend and error reporting in ai_syscall.c
-- Add command history, sanitize input, handle clean shutdown in main.c
-- Audit plugin paths and sandbox execution in plugin_loader.c
-- Audit for fragmentation and add unit tests in memory.c
-- Design persistent storage backend or VFS integration in fs.c
-- Confirm usage/reconcile with new system in branch.c
-codex/integrate-ai-cli-with-llm-apis
-- ~~Replace AI stub with real backend and add retries in ai.c~~ (resolved 2025-06-09 07:51 UTC)
-
 ## [2025-06-09 07:51 UTC] — AI backend integration [agent-mem]
 by: codex
 - Replaced HTTP echo stub with call to `ai_infer` using OpenAI API.
@@ -113,11 +88,8 @@ AI error: missing OPENAI_API_KEY
 AI error: missing OPENAI_API_KEY
 AI latency 204 ms
 AI backend error rc=30720 output=Traceback (most recent call last):
-  File "/workspace/AOS/scrip
-=======
-- Replace AI stub with real backend and add retries in ai.c
+  ...
 
-codex/implement-minimal-filesystem-with-cli-support
 ## [2025-06-09 07:54 UTC] — minimal FS mkdir & CLI [agent-mem]
 by: codex
 - Extended in-memory filesystem with directory support and `fs_mkdir` API.
@@ -125,8 +97,6 @@ by: codex
 - Updated `fs_demo` example to showcase directory usage.
 - Generated new command mappings via `generate_aos_mappings.py`.
 - FS remains volatile with no persistence or access control.
-=======
- codex/build-graphical-branch-visualizer-ui
 ## [2025-06-09 07:51 UTC] — graphical branch UI [agent-mem]
 by: codex
 - Implemented simple web UI served by `scripts/branch_ui.py` using D3.js.
@@ -136,7 +106,6 @@ by: codex
 Baton pass:
 - Integrate UI with live branch data via IPC.
 - Secure HTTP service and add tests.
-=======
 ## [2025-06-09 06:40 UTC] — policy engine & sandbox [agent-mem]
 by: codex
 - Implemented JSON-based policy rules with branch/app context.
@@ -144,9 +113,21 @@ by: codex
 - Introduced `bm_current_name` helper for branch-aware enforcement.
 - Updated policy demo to exercise deny/allow via JSON.
 - Limitations: parser fragile, no persistent storage, enforcement covers only FS.
+## [2025-06-09 08:03 UTC] — integration sweep [agent-mem]
+by: codex
+- Cleaned merge artifacts and standardized meta logs.
+- Consolidated unresolved issue lists.
+- Smoke-tested build targets.
 Next agent must:
-- Extend sandbox hooks to memory, AI, and plugins.
+- Preserve this log style for future updates.
+- Implement graceful shutdown and authentication for the network service.
+- Add plugin path validation and sandboxing; extend sandbox hooks to memory, AI, and plugins.
+- Complete AI backend integration with error handling.
+- Add REPL history, sanitize input, and handle clean shutdown.
+- Validate branch_manager JSON data and add locking.
+- Confirm usage reconciliation with branch.c.
+- Audit memory subsystem for fragmentation and add unit tests.
+- Design persistent storage backend or VFS integration in fs.c.
 - Persist policy configs and validate JSON input.
- main
- main
- main
+- Integrate web UI with live branch data via IPC and secure the HTTP service with tests.
+AI error: missing OPENAI_API_KEY
