@@ -10,5 +10,6 @@ void memory_reset(void);
 /* convenience wrappers for host/bare usage */
 void *mem_alloc(size_t size);
 void mem_free(void *ptr);
+void mem_reset(void);
 
 #endif

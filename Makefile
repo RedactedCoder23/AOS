@@ -43,7 +43,7 @@ clean:
 memory:
 	@echo "→ Building memory demo"
 	@mkdir -p build
-	gcc -Isubsystems/memory subsystems/memory/memory.c examples/memory_demo.c -o build/memory_demo
+	gcc -Isubsystems/memory subsystems/memory/memory.c src/memory.c examples/memory_demo.c -o build/memory_demo
 
 fs:
 	@echo "→ Building fs demo"

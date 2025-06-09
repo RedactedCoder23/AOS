@@ -9,9 +9,11 @@ LDFLAGS = -T kernel.ld -m elf_i386 -z separate-code
 
 all: bootloader.bin aos.bin
 
-kernel.bin: kernel.c
-		$(CC) $(CFLAGS) -c $< -o kernel.o
-		$(LD) $(LDFLAGS) kernel.o -o kernel.elf
+kernel.bin: kernel.c memory.c fs.c
+	        $(CC) $(CFLAGS) -c kernel.c -o kernel.o
+	        $(CC) $(CFLAGS) -c memory.c -o memory.o
+	        $(CC) $(CFLAGS) -c fs.c -o fs.o
+	        $(LD) $(LDFLAGS) kernel.o memory.o fs.o -o kernel.elf
 		objcopy -O binary kernel.elf kernel.bin
 
 bootloader.bin: bootloader.asm kernel.bin
