@@ -26,9 +26,43 @@ int bm_create(const char *name) {
     return b->id;
 }
 
+int bm_clone(int id, const char *name){
+    if(id < 0 || id >= branch_count)
+        return BM_ERR_INVALID;
+    if(branch_count >= MAX_BRANCHES)
+        return BM_ERR_FULL;
+    Branch *src = &branches[id];
+    Branch *b = &branches[branch_count];
+    *b = *src;
+    b->id = branch_count;
+    if(name){
+        int i=0; for(; name[i] && i < (int)sizeof(b->name)-1; i++) b->name[i]=name[i];
+        b->name[i]='\0';
+    }
+    b->conn_count = 1;
+    b->connections[0] = id;
+    branch_count++;
+    return b->id;
+}
+
 int bm_list(Branch *out) {
     if (!out) return 0;
     for (int i=0; i<branch_count; i++) out[i] = branches[i];
+    return branch_count;
+}
+
+int bm_graph(BranchGraph *out){
+    if(!out) return BM_ERR_INVALID;
+    out->count = branch_count;
+    for(int i=0;i<branch_count;i++){
+        out->branches[i]=branches[i];
+        for(int j=0;j<branch_count;j++) out->adj[i][j]=0;
+        for(int k=0;k<branches[i].conn_count;k++){
+            int t = branches[i].connections[k];
+            if(t >=0 && t < branch_count)
+                out->adj[i][t] = 1;
+        }
+    }
     return branch_count;
 }
 

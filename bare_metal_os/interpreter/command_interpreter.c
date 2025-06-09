@@ -1,4 +1,5 @@
 #include "command_interpreter.h"
+#include "../include/branch.h"
 #include <stdint.h>
 #include <stddef.h>
 
@@ -117,6 +118,8 @@ static void print_help(void){
     serial_print("FS_READ <fd> <bytes>\n");
     serial_print("FS_LS\n");
     serial_print("BR_CREATE <name>\n");
+    serial_print("BR_CLONE <id> <name>\n");
+    serial_print("BR_LIST\n");
     serial_print("help\n");
     serial_print("exit\n");
 }
@@ -179,6 +182,14 @@ void repl(void){
             int id=bm_create(argv[1]);
             if(id<0)serial_print("Error\n");
             else{serial_print("Created ");print_uint(id);serial_print("\n");}
+        }else if(str_cmp(argv[0],"BR_CLONE")==0){
+            if(argc<3){serial_print("Error\n");continue;}
+            int id=bm_clone(str_to_uint(argv[1]), argv[2]);
+            if(id<0)serial_print("Error\n");
+            else{serial_print("Cloned ");print_uint(id);serial_print("\n");}
+        }else if(str_cmp(argv[0],"BR_LIST")==0){
+            BranchGraph g; bm_graph(&g);
+            for(int i=0;i<g.count;i++){serial_print("ID ");print_uint(g.branches[i].id);serial_print(": ");serial_print(g.branches[i].name);serial_print("\n");}
         }else{
             serial_print("Unknown command\n");
         }
