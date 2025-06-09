@@ -133,9 +133,20 @@ by: codex
 - `./examples/plugin_demo.sh`
 - `./examples/ai_service_demo.sh`
 - `echo "ai test\nexit" | ./build/host_test` *(fails: openai module missing)*
+ codex/implement-bootloader-and-kernel-init
 ## [2025-06-09 08:30 UTC] — boot init [agent-mem]
 - Added universal GRUB boot config and `make boot`.
 - Kernel initialization routine loads config securely.
 - Host REPL updated to parse /etc/aos/config.json.
 ### Tests
 - `make boot` *(fails: qemu not installed)*
+=======
+
+## [2025-06-09 08:30 UTC] — sandboxed plugin loader [agent-mem]
+### Changes
+- Added validation hook API and builtin path check.
+- Plugin init/exec/cleanup run under CPU/memory limits.
+### Tests
+- `make plugins`
+- `./examples/plugin_demo.sh`
+ main
