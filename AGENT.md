@@ -237,3 +237,8 @@ Next agent must:
 - Resolve clang-tidy warnings and restore `make host` build.
 - Implement TODOs described in subsystem READMEs (dev, security, branch, net, ai, fs, memory).
 - Address open issues listed above and keep ROADMAP updated.
+
+## [2025-06-09 11:46 UTC] ci test integration [agent-mem]
+- Integrated unit, integration and fuzz tests under unified `make test`.
+- Added ASan fuzz harness and simple coverage reporting.
+- Rewrote CI workflow to invoke new targets.

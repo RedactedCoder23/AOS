@@ -170,9 +170,9 @@ net-http:
 	@mkdir -p build
 	gcc -Isubsystems/net subsystems/net/net.c examples/http_server.c -o build/http_server
 
-test: host branch
-	@echo "→ Running branch demo"
-	@./build/branch_demo >/tmp/branch_demo.out && cat /tmp/branch_demo.out
+# Aggregate test target used by CI
+test: test-unit test-integration test-fuzz
+	@echo '→ All tests completed'
 
 test-memory: memory
 	./examples/memory_demo.sh
@@ -195,17 +195,35 @@ test-net: net
 test-unit:
 	@echo "→ Running unit tests"
 	@mkdir -p build/tests
-	gcc -Isubsystems/memory -Iinclude tests/unit/test_memory.c \
+	gcc --coverage -Isubsystems/memory -Iinclude tests/unit/test_memory.c \
 	subsystems/memory/memory.c src/logging.c src/error.c -o build/tests/test_memory
 	@./build/tests/test_memory
 
 test-integration:
-	@echo "→ Running integration tests"
+	@echo "\u2192 Running integration tests"
 	@mkdir -p build/tests
-	gcc -Isubsystems/fs -Isubsystems/memory -Iinclude \
+	gcc --coverage -Isubsystems/fs -Isubsystems/memory -Iinclude \
 	tests/integration/test_fs_memory.c \
 	subsystems/fs/fs.c subsystems/memory/memory.c src/logging.c src/error.c -o build/tests/test_fs
 	@./build/tests/test_fs
+	gcc --coverage -Isubsystems/fs -Isubsystems/memory -Iinclude \
+	tests/integration/test_persistence.c \
+	subsystems/fs/fs.c subsystems/memory/memory.c src/logging.c src/error.c -o build/tests/test_persistence
+	@./build/tests/test_persistence
+
+test-fuzz:
+	@echo "\u2192 Running memory fuzz tests under ASan"
+	@mkdir -p build/tests
+	gcc -fsanitize=address -g -Isubsystems/memory -Iinclude \
+	tests/unit/test_memory_fuzz.c \
+	subsystems/memory/memory.c src/logging.c src/error.c -o build/tests/test_memory_fuzz
+	@./build/tests/test_memory_fuzz
+
+# Generate simple coverage report
+coverage: test
+	@echo "\u2192 Generating coverage report"
+	@gcov -o build/tests $(shell find build/tests -name '*.gcno') >/tmp/coverage.txt || true
+	@cat /tmp/coverage.txt
 
 efi:
 	@echo "→ Building EFI stub"
@@ -215,7 +233,6 @@ efi:
 iso: efi
 	@echo "→ Creating aos.iso"
 	touch aos.iso
-
 subsystems: memory fs ai branch net
 
 ui: host
