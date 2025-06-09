@@ -170,6 +170,7 @@ Next agent must:
 
 Next agent must:
 - Continue filling out subsystem READMEs and ensure diagrams stay updated.
+ codex/refactor-repl-core-and-language-mappings
 
 ## [2025-06-09 10:45 UTC] repl refactor [agent-mem]
 - Added table-driven dispatcher in new `src/repl.c` and minimal main entry.
@@ -179,3 +180,27 @@ Next agent must:
 Next agent must:
 - Review networked branch sync for race conditions.
 AI error: missing OPENAI_API_KEY
+=======
+ codex/implement-ui,-plugins,-networking,-policy,-ci/cd-phases-6–10
+
+## [2025-06-09 10:47 UTC] ui & ci sweep [agent-mem]
+- Moved web UI to `ui/` and updated server scripts.
+- Added metrics dashboard, workspace import/export and sample metrics JSON.
+- Introduced WASM runtime and plugin supervisor stubs with manifest checks.
+- Created nightly CI workflow and helper scripts for changelog generation and self-update.
+
+Next agent must:
+- Extend WASM runtime to execute real modules with capability enforcement.
+- Flesh out federation DHT logic and integrate secure onboarding.
+=======
+## [2025-06-09 10:47 UTC] ai/branch integration [agent-mem]
+- Introduced aicell shared-memory service with ring buffer IPC.
+- Added checkpoint HAL stubs and CRIU invocation on Linux.
+- Kernel gains AI_TRIGGER syscall placeholder.
+- Added aos-modeld stub daemon for model tracking.
+- README documents checkpoint demo.
+
+Next agent must:
+- Expand checkpoint delta handling and integrate with branch state.
+ main
+ main

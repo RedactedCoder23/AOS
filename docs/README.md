@@ -6,5 +6,6 @@ This directory contains additional guides for AOS.
 - `system_architecture.md` – subsystem overview.
 - `profiler_usage.md` – profiler stub reference.
 - `command_flow.md` – REPL command dispatch diagram.
+- `ci_cd.md` – CI/CD automation overview.
 
 Refer to [../AGENT.md](../AGENT.md) and [../PATCHLOG.md](../PATCHLOG.md) for development history.

@@ -313,12 +313,21 @@ by: codex
 ### Tests
 - `make test-unit`
 - `make test-integration`
+ codex/refactor-repl-core-and-language-mappings
 
 ## [2025-06-09 10:45 UTC] — repl refactor [agent-mem]
 ### Changes
 - Introduced `src/repl.c` with table-driven dispatcher and streamlined `main`.
 - Consolidated mapping text into `mappings.json` and rewrote generator.
 - Added unit tests for all command handlers and CI mapping validation.
+=======
+## [2025-06-09 10:47 UTC] — aicell and checkpoint HAL [agent-mem]
+### Changes
+- Added aicell shared-memory IPC and daemon/client demos.
+- Implemented checkpoint.h with CRIU-based stubs.
+- Added aos-modeld stub and AI_TRIGGER syscall in kernel.
+- Updated Makefile and README with new demo targets.
+ main
 ### Tests
 - `make host`
 - `make test-unit`
