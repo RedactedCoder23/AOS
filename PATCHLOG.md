@@ -454,3 +454,15 @@ by: codex
 - `pre-commit run --all-files`
 - `make test-unit`
 - `make test-integration`
+## [2025-06-09 22:20 UTC] js tooling and script cleanup [agent-mem]
+### Changes
+- Added ui/package.json with parcel build and ESLint scripts
+- Created .eslintrc.js and updated CI to use Node
+- Converted scripts to Python package via pyproject.toml
+- Added docstrings and shebang checks across scripts
+- Hardened shell scripts with set -euo pipefail
+### Tests
+- `cd ui && npm install && npm run build`
+- `python3 -m build`
+- `pip install .`
+- `bash scripts/generate_changelog.sh`

@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+"""Backend server powering the desktop web UI."""
 import http.server
 import socketserver
 import json
