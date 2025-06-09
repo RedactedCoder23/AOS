@@ -14,7 +14,11 @@ NCURSES_LIBS := $(shell pkg-config --libs ncurses 2>/dev/null || echo -lncurses)
 host: generate subsystems
 	@echo "→ Building host binaries"
 	@mkdir -p build
+ codex/implement-ui,-plugins,-networking,-policy,-ci/cd-phases-6–10
+	gcc -rdynamic -Iinclude -Isubsystems/memory -Isubsystems/fs -Isubsystems/ai -Isubsystems/branch -Isubsystems/net $(NCURSES_CFLAGS) src/main.c src/interpreter.c src/branch_manager.c src/ui_graph.c src/branch_vm.c src/plugin_loader.c src/plugin_supervisor.c src/wasm_runtime.c src/branch_net.c src/ai_syscall.c src/policy.c src/memory.c src/app_runtime.c src/config.c src/logging.c src/error.c command_map.c commands.c subsystems/memory/memory.c subsystems/fs/fs.c subsystems/ai/ai.c subsystems/branch/branch.c subsystems/net/net.c $(NCURSES_LIBS) -ldl -lcurl -lm -o build/host_test
+=======
 	gcc -rdynamic -Iinclude -Isubsystems/memory -Isubsystems/fs -Isubsystems/ai -Isubsystems/branch -Isubsystems/net $(NCURSES_CFLAGS) src/main.c src/interpreter.c src/branch_manager.c src/ui_graph.c src/branch_vm.c src/plugin_loader.c src/branch_net.c src/ai_syscall.c src/aicell.c src/checkpoint.c src/policy.c src/memory.c src/app_runtime.c src/config.c src/logging.c src/error.c command_map.c commands.c subsystems/memory/memory.c subsystems/fs/fs.c subsystems/ai/ai.c subsystems/branch/branch.c subsystems/net/net.c $(NCURSES_LIBS) -ldl -lcurl -lm -o build/host_test
+ main
 	gcc -Iinclude $(NCURSES_CFLAGS) src/ui_graph.c src/branch_manager.c \
 	    src/logging.c src/error.c src/ui_main.c $(NCURSES_LIBS) -lm -o build/ui_graph
 
@@ -86,8 +90,8 @@ branch-vm:
 plugins:
 	@echo "→ Building plugins demo"
 	@mkdir -p build/plugins
-	gcc -fPIC -shared -o build/plugins/sample.so examples/sample_plugin.c
-	gcc -Iinclude src/plugin_loader.c examples/plugin_demo.c -ldl -o build/plugin_demo
+	@gcc -fPIC -shared -o build/plugins/sample.so examples/sample_plugin.c
+	@gcc -Iinclude src/plugin_loader.c src/plugin_supervisor.c src/wasm_runtime.c src/logging.c src/error.c examples/plugin_demo.c -ldl -o build/plugin_demo
 
 aos-cli:
 	@echo "→ Building aos CLI"
