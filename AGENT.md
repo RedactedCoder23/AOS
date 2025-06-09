@@ -313,7 +313,18 @@ Previous baton passes and session notes kept above.
 - Fixed Makefile test targets and ensured unit/integration tests build.
 - Verified `pre-commit run --all-files`, `make test-unit`, and `make test-integration` all succeed.
 
+ codex/add-sanitizer-build-and-coverage-badge
 ## [2025-06-09 22:18 UTC] ci coverage + sanitizer [codex]
 - Added `sanitize-build` job compiling with `-fsanitize=address,undefined`.
 - Integrated `gcovr` coverage reporting and Coveralls upload.
 - Inserted coverage badge into README.
+=======
+## [2025-06-09 14:15 UTC] dependency split [agent-mem]
+- Documented openai usage in `requirements.txt`.
+- Created `requirements-dev.txt` for dev tooling.
+- Added README Setup instructions for installing both requirement files.
+- Updated PATCHLOG with test commands.
+
+Next agent must:
+- Verify fresh venv install covers all runtime scripts.
+ main
