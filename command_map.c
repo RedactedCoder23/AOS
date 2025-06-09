@@ -4,4 +4,5 @@
 void init_command_map() {
   add_command("HELLO", cmd_hello_wrapper);
   add_command("BYE", cmd_bye_wrapper);
+  add_command("UI_GRAPH", cmd_ui_graph_wrapper);
 }

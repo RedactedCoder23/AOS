@@ -1,2 +1,3 @@
 add_command("HELLO", say_hello)
 add_command("BYE", say_bye)
+add_command("UI_GRAPH", ui_graph)

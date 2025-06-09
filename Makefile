@@ -8,10 +8,14 @@ generate:
 	@$(MAKE) -s checklist
 
 # 2. Build host-side test harness
+NCURSES_CFLAGS := $(shell pkg-config --cflags ncurses 2>/dev/null)
+NCURSES_LIBS := $(shell pkg-config --libs ncurses 2>/dev/null || echo -lncurses)
+
 host: generate
-	@echo "→ Building host_test harness"
+	@echo "→ Building host binaries"
 	@mkdir -p build
-	gcc -Iinclude src/*.c command_map.c commands.c -o build/host_test
+	gcc -Iinclude $(NCURSES_CFLAGS) src/main.c src/interpreter.c src/branch_manager.c src/ui_graph.c command_map.c commands.c $(NCURSES_LIBS) -lm -o build/host_test
+	gcc -Iinclude $(NCURSES_CFLAGS) src/ui_graph.c src/branch_manager.c src/ui_main.c $(NCURSES_LIBS) -lm -o build/ui_graph
 
 # 3. Build bare-metal image
 bare: generate
@@ -56,10 +60,8 @@ branch:
 	@mkdir -p build
 	gcc -Isubsystems/branch subsystems/branch/branch.c subsystems/branch/branch_main.c -o build/branch_demo
 
-ui:
-	@echo "→ Building ui demo"
-	@mkdir -p build
-	gcc -Isubsystems/ui subsystems/ui/ui.c subsystems/ui/ui_main.c -lncurses -o build/ui_demo
+ui: host
+	@echo "UI built via host target"
 
 checklist:
 	@if [ -s AOS-CHECKLIST.log ]; then \
