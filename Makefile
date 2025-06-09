@@ -14,7 +14,11 @@ NCURSES_LIBS := $(shell pkg-config --libs ncurses 2>/dev/null || echo -lncurses)
 host: generate subsystems
 	@echo "→ Building host binaries"
 	@mkdir -p build
+codex/implement-minimal-runtime-and-installer
+	gcc -rdynamic -Iinclude -Isubsystems/memory -Isubsystems/fs -Isubsystems/ai -Isubsystems/branch -Isubsystems/net $(NCURSES_CFLAGS) src/main.c src/interpreter.c src/branch_manager.c src/ui_graph.c src/branch_vm.c src/plugin_loader.c src/branch_net.c src/ai_syscall.c src/policy.c src/memory.c src/app_runtime.c command_map.c commands.c subsystems/memory/memory.c subsystems/fs/fs.c subsystems/ai/ai.c subsystems/branch/branch.c subsystems/net/net.c $(NCURSES_LIBS) -ldl -lcurl -lm -o build/host_test
+=======
 	gcc -Iinclude -Isubsystems/memory -Isubsystems/fs -Isubsystems/ai -Isubsystems/branch -Isubsystems/net $(NCURSES_CFLAGS) src/main.c src/interpreter.c src/branch_manager.c src/ui_graph.c src/branch_vm.c src/plugin_loader.c src/branch_net.c src/ai_syscall.c src/policy.c src/memory.c src/config.c command_map.c commands.c subsystems/memory/memory.c subsystems/fs/fs.c subsystems/ai/ai.c subsystems/branch/branch.c subsystems/net/net.c $(NCURSES_LIBS) -ldl -lcurl -lm -o build/host_test
+ main
 	gcc -Iinclude $(NCURSES_CFLAGS) src/ui_graph.c src/branch_manager.c src/ui_main.c $(NCURSES_LIBS) -lm -o build/ui_graph
 
 # 3. Build bare-metal image
@@ -109,6 +113,16 @@ policy:
 	gcc -Iinclude src/policy.c examples/policy_demo.c -o build/policy_demo
 
 net:
+codex/implement-minimal-runtime-and-installer
+	       @echo "→ Building net echo demo"
+	       @mkdir -p build
+	       gcc -Isubsystems/net subsystems/net/net.c examples/net_echo.c -o build/net_echo
+apps:
+	@echo "→ Building sample apps"
+	@mkdir -p build/apps
+	gcc apps_src/fileman.c -o build/apps/fileman
+	gcc apps_src/textedit.c -o build/apps/textedit
+=======
 	@echo "→ Building net echo demo"
 	@mkdir -p build
 	gcc -Isubsystems/net subsystems/net/net.c examples/net_echo.c -o build/net_echo
@@ -117,6 +131,7 @@ net-http:
 	@echo "→ Building http server demo"
 	@mkdir -p build
 	gcc -Isubsystems/net subsystems/net/net.c examples/http_server.c -o build/http_server
+main
 
 test: host branch
 	@echo "→ Running branch demo"

@@ -133,6 +133,19 @@ by: codex
 - `./examples/plugin_demo.sh`
 - `./examples/ai_service_demo.sh`
 - `echo "ai test\nexit" | ./build/host_test` *(fails: openai module missing)*
+codex/implement-minimal-runtime-and-installer
+## [2025-06-09 08:35 UTC] — userland & apps bootstrap [agent-mem]
+### Changes
+- Added `src/app_runtime.c` and `include/app_runtime.h` providing basic app loader.
+- Introduced `apps` build target compiling `apps_src/fileman.c` and `apps_src/textedit.c`.
+- Added installer script `aos` and new `app` commands in `src/main.c`.
+### Tests
+- `make apps`
+- `make host`
+- `./aos install build/apps/fileman build/apps/textedit`
+- `printf 'app list\nexit\n' | ./build/host_test`
+- `printf 'app run fileman ls\nexit\n' | ./build/host_test`
+=======
 codex/implement-tcp/ip-stack-with-basic-services
  codex/implement-tcp/ip-stack-with-basic-services
 ## [2025-06-09 08:10 UTC] — extended TCP/IP stack [agent-mem]
@@ -219,4 +232,5 @@ codex/develop-graphical-desktop-and-ai-copilot
  main
  main
  main
+main
 main

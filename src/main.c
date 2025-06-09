@@ -10,7 +10,11 @@
 #include "ai.h"
 #include "plugin.h"
 #include "fs.h"
+codex/implement-minimal-runtime-and-installer
+#include "app_runtime.h"
+=======
 #include "config.h"
+ main
 
 static void log_agent_error(const char *msg) {
     FILE *f = fopen("AGENT.md", "a");
@@ -176,6 +180,25 @@ int main(void) {
             } else {
                 printf("unknown subcommand %s\n", sub);
                 log_agent_error("plugin unknown subcommand");
+            }
+        } else if (strcmp(cmd, "app") == 0) {
+            char *sub = strtok(NULL, " ");
+            if (!sub) {
+                printf("usage: app <run|list> [name args...]\n");
+            } else if (strcmp(sub, "list") == 0) {
+                app_list();
+            } else if (strcmp(sub, "run") == 0) {
+                char *name = strtok(NULL, " ");
+                if (!name) { printf("usage: app run <name> [args]\n"); }
+                else {
+                    char *pargs[8];
+                    int n=0; char *a;
+                    while ((a = strtok(NULL, " ")) && n<8) pargs[n++]=a;
+                    pargs[n]=NULL;
+                    app_run(name, n, pargs);
+                }
+            } else {
+                printf("unknown subcommand %s\n", sub);
             }
         } else {
             printf("Unknown command\n");
