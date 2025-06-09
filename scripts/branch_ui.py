@@ -5,7 +5,9 @@ import os
 
 PORT = 8000
 BASE = os.path.dirname(os.path.abspath(__file__))
-WEB_DIR = os.path.join(BASE, '..', 'ui')
+WEB_DIR = os.path.join(BASE, '..', 'ui', 'dist')
+if not os.path.exists(WEB_DIR):
+    WEB_DIR = os.path.join(BASE, '..', 'ui', 'src')
 GRAPH_FILE = os.path.join(BASE, '..', 'examples', 'graph_sample.json')
 METRICS_FILE = os.path.join(BASE, '..', 'examples', 'metrics_sample.json')
 BRANCHES_FILE = os.path.expanduser('~/.aos/branches.json')

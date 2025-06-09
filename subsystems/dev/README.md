@@ -7,6 +7,9 @@ Planned features:
 - Basic PCI enumeration.
 - Interrupt handling stubs.
 
+This subsystem is for developer experimentation only and is not built in
+release targets.
+
 **Baton pass**: Device APIs remain unimplemented. Next agent should expand
 `driver_register()` semantics and document the kernel interface in
 `AGENT.md`.

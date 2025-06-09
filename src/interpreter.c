@@ -6,6 +6,7 @@
 #include "plugin.h"
 #include "policy.h"
 #include "ui_graph.h"
+#include <limits.h>
 #include <errno.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -56,6 +57,36 @@ static void log_checklist(const char *msg) {
     }
 }
 
+static int parse_int_safe(const char *s, int *out) {
+    char *end;
+    errno = 0;
+    long v = strtol(s, &end, 10);
+    if (*end || errno != 0 || v > INT_MAX || v < INT_MIN)
+        return -1;
+    *out = (int)v;
+    return 0;
+}
+
+static int parse_size_safe(const char *s, size_t *out) {
+    char *end;
+    errno = 0;
+    unsigned long v = strtoul(s, &end, 10);
+    if (*end || errno != 0)
+        return -1;
+    *out = v;
+    return 0;
+}
+
+static int parse_ull_safe(const char *s, unsigned long long *out) {
+    char *end;
+    errno = 0;
+    unsigned long long v = strtoull(s, &end, 0);
+    if (*end || errno != 0)
+        return -1;
+    *out = v;
+    return 0;
+}
+
 void cmd_mem_alloc_wrapper(int argc, char **argv) {
     ensure_init();
     if (argc < 2) {
@@ -63,10 +94,8 @@ void cmd_mem_alloc_wrapper(int argc, char **argv) {
         log_checklist("MEM_ALLOC missing arg");
         return;
     }
-    char *end;
-    errno = 0;
-    size_t sz = strtoul(argv[1], &end, 10);
-    if (*end || errno != 0) {
+    size_t sz;
+    if (parse_size_safe(argv[1], &sz) != 0 || sz > sizeof(mem_pool)) {
         printf("Error: invalid size '%s'\n", argv[1]);
         log_checklist("MEM_ALLOC invalid size");
         return;
@@ -87,10 +116,8 @@ void cmd_mem_free_wrapper(int argc, char **argv) {
         log_checklist("MEM_FREE missing arg");
         return;
     }
-    char *end;
-    errno = 0;
-    unsigned long long addr = strtoull(argv[1], &end, 0);
-    if (*end || errno != 0) {
+    unsigned long long addr;
+    if (parse_ull_safe(argv[1], &addr) != 0) {
         printf("Error: invalid pointer '%s'\n", argv[1]);
         log_checklist("MEM_FREE invalid pointer");
         return;
@@ -133,10 +160,8 @@ void cmd_fs_write_wrapper(int argc, char **argv) {
         log_checklist("FS_WRITE missing arg");
         return;
     }
-    char *end;
-    errno = 0;
-    int fd = strtol(argv[1], &end, 10);
-    if (*end || errno != 0) {
+    int fd;
+    if (parse_int_safe(argv[1], &fd) != 0) {
         printf("Error: invalid fd '%s'\n", argv[1]);
         log_checklist("FS_WRITE invalid fd");
         return;
@@ -162,17 +187,14 @@ void cmd_fs_read_wrapper(int argc, char **argv) {
         log_checklist("FS_READ missing arg");
         return;
     }
-    char *end;
-    errno = 0;
-    int fd = strtol(argv[1], &end, 10);
-    if (*end || errno != 0) {
+    int fd;
+    if (parse_int_safe(argv[1], &fd) != 0) {
         printf("Error: invalid fd '%s'\n", argv[1]);
         log_checklist("FS_READ invalid fd");
         return;
     }
-    errno = 0;
-    size_t n = strtoul(argv[2], &end, 10);
-    if (*end || errno != 0) {
+    size_t n;
+    if (parse_size_safe(argv[2], &n) != 0) {
         printf("Error: invalid byte count '%s'\n", argv[2]);
         log_checklist("FS_READ invalid count");
         return;
@@ -202,10 +224,8 @@ void cmd_fs_close_wrapper(int argc, char **argv) {
         log_checklist("FS_CLOSE missing arg");
         return;
     }
-    char *end;
-    errno = 0;
-    int fd = strtol(argv[1], &end, 10);
-    if (*end || errno != 0) {
+    int fd;
+    if (parse_int_safe(argv[1], &fd) != 0) {
         printf("Error: invalid fd '%s'\n", argv[1]);
         log_checklist("FS_CLOSE invalid fd");
         return;
@@ -294,7 +314,13 @@ void cmd_br_stop_wrapper(int argc, char **argv) {
         log_checklist("BR_STOP missing arg");
         return;
     }
-    int rc = bm_stop(atoi(argv[1]));
+    int id;
+    if (parse_int_safe(argv[1], &id) != 0) {
+        printf("Error: invalid branch id\n");
+        log_checklist("BR_STOP invalid id");
+        return;
+    }
+    int rc = bm_stop(id);
     if (rc != BM_SUCCESS) {
         printf("Error: invalid branch id\n");
         log_checklist("BR_STOP invalid id");
@@ -310,12 +336,18 @@ void cmd_br_delete_wrapper(int argc, char **argv) {
         log_checklist("BR_DELETE missing arg");
         return;
     }
-    int rc = bm_delete(atoi(argv[1]));
+    int id;
+    if (parse_int_safe(argv[1], &id) != 0) {
+        printf("Error: invalid branch id\n");
+        log_checklist("BR_DELETE invalid id");
+        return;
+    }
+    int rc = bm_delete(id);
     if (rc != BM_SUCCESS) {
         printf("Error: invalid branch id\n");
         log_checklist("BR_DELETE invalid id");
     } else {
-        printf("Deleted branch %s\n", argv[1]);
+        printf("Deleted branch %d\n", id);
     }
 }
 
@@ -323,8 +355,12 @@ void cmd_br_vm_create_wrapper(int argc, char **argv) {
     ensure_init();
     const char *name = argc > 1 ? argv[1] : "vm";
     const char *img = argc > 2 ? argv[2] : "img";
-    int mem = argc > 3 ? atoi(argv[3]) : 128;
-    int cpu = argc > 4 ? atoi(argv[4]) : 1;
+    int mem = 128;
+    int cpu = 1;
+    if (argc > 3)
+        parse_int_safe(argv[3], &mem);
+    if (argc > 4)
+        parse_int_safe(argv[4], &cpu);
     bm_vm_create(name, img, mem, cpu);
 }
 
@@ -341,7 +377,10 @@ void cmd_br_vm_switch_wrapper(int argc, char **argv) {
         printf("usage: BR_VM_SWITCH <id>\n");
         return;
     }
-    bm_vm_switch(atoi(argv[1]));
+    int id;
+    if (parse_int_safe(argv[1], &id) != 0)
+        return;
+    bm_vm_switch(id);
 }
 
 void cmd_br_vm_stop_wrapper(int argc, char **argv) {
@@ -350,7 +389,10 @@ void cmd_br_vm_stop_wrapper(int argc, char **argv) {
         printf("usage: BR_VM_STOP <id>\n");
         return;
     }
-    bm_vm_stop(atoi(argv[1]));
+    int id;
+    if (parse_int_safe(argv[1], &id) != 0)
+        return;
+    bm_vm_stop(id);
 }
 
 void cmd_plugin_install_wrapper(int argc, char **argv) {
@@ -438,7 +480,9 @@ void cmd_ai_service_create_wrapper(int argc, char **argv) {
 
 void cmd_ai_service_monitor_wrapper(int argc, char **argv) {
     ensure_init();
-    int id = argc > 1 ? atoi(argv[1]) : 0;
+    int id = 0;
+    if (argc > 1)
+        parse_int_safe(argv[1], &id);
     ai_service_monitor(id);
 }
 

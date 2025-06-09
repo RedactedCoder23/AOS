@@ -63,5 +63,7 @@ CommandDictionary commands[] = {
     {"POLICY_LOAD", "1000000000000000000000000000000000000000000000000000000000000000",
      cmd_policy_load_wrapper, CAT_BASIC_SYSTEM_COMMANDS},
     {"POLICY_CHECK", "1000000000000000000000000000000000000000000000000000000000000000",
-     cmd_policy_check_wrapper, CAT_BASIC_SYSTEM_COMMANDS},
+    cmd_policy_check_wrapper, CAT_BASIC_SYSTEM_COMMANDS},
     {NULL, NULL, NULL, 0}};
+
+const size_t COMMAND_COUNT = sizeof(commands) / sizeof(commands[0]) - 1;

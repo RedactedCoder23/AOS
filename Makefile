@@ -216,6 +216,7 @@ iso: efi
 	@echo "→ Creating aos.iso"
 	touch aos.iso
 
+# core subsystems built for release (dev subsystem is excluded)
 subsystems: memory fs ai branch net
 
 ui: host

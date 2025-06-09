@@ -12,4 +12,6 @@ typedef struct {
     uint8_t category;
 } CommandDictionary;
 
+extern const size_t COMMAND_COUNT;
+
 #endif

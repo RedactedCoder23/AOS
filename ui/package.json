@@ -1,0 +1,16 @@
+{
+  "name": "aos-ui",
+  "version": "1.0.0",
+  "description": "AOS web UI",
+  "private": true,
+  "scripts": {
+    "start": "parcel src/index.html --open",
+    "build": "parcel build src/index.html src/desktop.html --dist-dir dist"
+  },
+  "dependencies": {
+    "d3": "^7.8.5"
+  },
+  "devDependencies": {
+    "parcel": "^2.10.3"
+  }
+}

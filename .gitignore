@@ -8,3 +8,6 @@ aos.iso
 aos.bin
 bootloader.bin
 bare_metal_os/*.bin
+ui/node_modules
+ui/dist
+ui/.parcel-cache

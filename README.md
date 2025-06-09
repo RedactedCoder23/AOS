@@ -29,7 +29,7 @@ An overview of command dispatch can be found in
 
 - `bare_metal_os/` – kernel sources and boot files
 - `src/` – shared utilities and host code
-- `subsystems/` – memory, fs, branch and other core modules
+- `subsystems/` – memory, fs, branch and other core modules (the `dev` folder contains experimental drivers used only during development)
 - `include/` – public headers used across the project
 - `apps_src/` – sample applications
 - `docs/` – project documentation
@@ -159,9 +159,11 @@ python3 scripts/branch_ui.py
 
 Then open `http://localhost:8000` in your browser. Drag nodes to rearrange the
 graph and double-click a branch to open a new tab pane. Right-click a tab to
-close it. The demo reads from `examples/graph_sample.json` and serves files from
-the new `ui/` directory. A `/metrics` endpoint exposes runtime metrics for the
-dashboard, while `/export` and `/import` allow workspace sync via JSON.
+close it. The frontend lives under `ui/` and uses Parcel for bundling. Run
+`npm install` inside that directory and `npm run build` to produce the `dist/`
+files. The server serves from `dist/` if present and falls back to the source
+files. A `/metrics` endpoint exposes runtime metrics for the dashboard, while
+`/export` and `/import` allow workspace sync via JSON.
 ## Graphical Desktop & AI Copilot
 
 Launch the desktop UI with live branch data and AI chat:
