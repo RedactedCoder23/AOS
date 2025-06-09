@@ -454,3 +454,11 @@ by: codex
 - `pre-commit run --all-files`
 - `make test-unit`
 - `make test-integration`
+## [2025-06-09 22:19 UTC] makefile cleanup [agent-mem]
+by: codex-agent-xyz
+### Changes
+- Updated `clean` to purge build artifacts and logs.
+- Consolidated `test` target; removed obsolete fuzz reference.
+### Tests
+- `make clean`
+- `make test`
