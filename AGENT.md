@@ -237,3 +237,11 @@ Next agent must:
 - Resolve clang-tidy warnings and restore `make host` build.
 - Implement TODOs described in subsystem READMEs (dev, security, branch, net, ai, fs, memory).
 - Address open issues listed above and keep ROADMAP updated.
+
+## [2025-06-09 11:45 UTC] build refactor [agent-mem]
+- Replaced monolithic Makefile with pattern rules and parallel build flag.
+- Added dependency checks and modular boot targets.
+- Updated CI workflows to use `make all` and `make test`.
+
+Next agent must:
+- Monitor CI for stability and extend build scripts as features land.

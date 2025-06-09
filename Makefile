@@ -1,8 +1,22 @@
-.PHONY: all generate host bootloader kernel bare run clean ui ui-check web-ui branch-vm plugins iso efi branch-net desktop-ui ai-service aicell modeld policy net
-		
+.PHONY: all clean test install generate host bootloader kernel bare run ui ui-check web-ui branch-vm plugins iso efi branch-net desktop-ui ai-service aicell modeld policy net subsystems checklist
+
+MAKEFLAGS += -j$(shell nproc)
+
 CC_TARGET ?= x86_64
 
-all: host bare
+SUBSYSTEM_DIRS := subsystems/memory subsystems/fs subsystems/ai subsystems/branch subsystems/net
+HOST_SRCS := \
+src/main.c src/repl.c src/interpreter.c src/branch_manager.c src/ui_graph.c \
+src/branch_vm.c src/plugin_loader.c src/plugin_supervisor.c src/wasm_runtime.c \
+src/branch_net.c src/ai_syscall.c src/aicell.c src/checkpoint.c src/policy.c \
+src/memory.c src/app_runtime.c src/config.c src/logging.c src/error.c \
+command_map.c commands.c \
+subsystems/memory/memory.c subsystems/fs/fs.c subsystems/ai/ai.c \
+subsystems/branch/branch.c subsystems/net/net.c
+HOST_OBJS := $(patsubst %.c, build/obj/%.o, $(HOST_SRCS))
+CFLAGS := -Wall -Werror -Wno-format-truncation
+
+all: host
 
 # 1. Regenerate C sources from text masters
 generate:
@@ -11,38 +25,38 @@ generate:
 
 # 2. Build host-side test harness
 NCURSES_CFLAGS := $(shell pkg-config --cflags ncurses 2>/dev/null)
-NCURSES_LIBS := $(shell pkg-config --libs ncurses 2>/dev/null || echo -lncurses)
+NCURSES_LIBS := $(shell pkg-config --libs ncurses 2>/dev/null)
+CURL_LIBS := $(shell pkg-config --libs libcurl 2>/dev/null)
 
+check_deps:
+	@pkg-config --exists ncurses || (echo "Error: ncurses development files missing" && exit 1)
+	@pkg-config --exists libcurl || (echo "Error: libcurl development files missing" && exit 1)
 
-host: generate subsystems
+build/obj/%.o: %.c
+	@mkdir -p $(dir $@)
+	$(CC) $(CFLAGS) -Iinclude $(addprefix -I,$(SUBSYSTEM_DIRS)) $(NCURSES_CFLAGS) -c $< -o $@
+
+host: check_deps generate subsystems $(HOST_OBJS) build/obj/src/ui_main.o
 	@echo "→ Building host binaries"
-	@mkdir -p build
-	gcc -Wall -Werror -rdynamic -Iinclude -Isubsystems/memory -Isubsystems/fs -Isubsystems/ai -Isubsystems/branch -Isubsystems/net $(NCURSES_CFLAGS) \
-	            src/main.c src/repl.c src/interpreter.c src/branch_manager.c src/ui_graph.c \
-	            src/branch_vm.c src/plugin_loader.c src/plugin_supervisor.c src/wasm_runtime.c \
-	            src/branch_net.c src/ai_syscall.c src/aicell.c src/checkpoint.c src/policy.c \
-	            src/memory.c src/app_runtime.c src/config.c src/logging.c src/error.c \
-	            command_map.c commands.c \
-	            subsystems/memory/memory.c subsystems/fs/fs.c subsystems/ai/ai.c \
-	            subsystems/branch/branch.c subsystems/net/net.c \
-	            $(NCURSES_LIBS) -ldl -lcurl -lm -o build/host_test
-	gcc -Wall -Werror -Iinclude $(NCURSES_CFLAGS) src/ui_graph.c src/branch_manager.c \
-            src/logging.c src/error.c src/ui_main.c $(NCURSES_LIBS) -lm -o build/ui_graph
+	$(CC) -rdynamic $(HOST_OBJS) $(NCURSES_LIBS) $(CURL_LIBS) -ldl -lm -o build/host_test
+	$(CC) build/obj/src/ui_graph.o build/obj/src/branch_manager.o \
+build/obj/src/logging.o build/obj/src/error.o build/obj/src/ui_main.o \
+$(NCURSES_LIBS) -lm -o build/ui_graph
 
 # 3. Build bare-metal components
 bootloader: generate
-	       @echo "\u2192 Building bootloader"
-	       @cd bare_metal_os && make clean stage1.bin stage2.bin bootloader.bin ARCH=$(CC_TARGET)
-	       @cp bare_metal_os/bootloader.bin bootloader.bin
+	@echo "→ Building bootloader"
+	$(MAKE) -C bare_metal_os bootloader.bin ARCH=$(CC_TARGET)
+	cp bare_metal_os/bootloader.bin bootloader.bin
 
-	kernel: generate
-	       @echo "\u2192 Building kernel"
-	       @cd bare_metal_os && make kernel.bin ARCH=$(CC_TARGET)
+kernel: generate
+	@echo "→ Building kernel"
+	$(MAKE) -C bare_metal_os kernel.bin ARCH=$(CC_TARGET)
+	cp bare_metal_os/kernel.bin kernel.bin
 
-	bare: bootloader kernel
-	       @echo "\u2192 Creating aos.bin"
-	       @cd bare_metal_os && cat bootloader.bin kernel.bin > aos.bin
-	       @cp bare_metal_os/aos.bin aos.bin
+bare: bootloader kernel
+	@echo "→ Creating aos.bin"
+	cat bootloader.bin kernel.bin > aos.bin
 
 .PHONY: run
 
@@ -89,8 +103,8 @@ bare-smoke: bare
 
 clean:
 	@echo "→ Cleaning build artifacts"
-	rm -rf build aos.bin
-	@$(MAKE) -C bare_metal_os clean
+	rm -rf build aos.bin bootloader.bin kernel.bin
+	$(MAKE) -C bare_metal_os clean
 
 memory:
 	@echo "→ Building memory demo"
@@ -170,9 +184,8 @@ net-http:
 	@mkdir -p build
 	gcc -Isubsystems/net subsystems/net/net.c examples/http_server.c -o build/http_server
 
-test: host branch
-	@echo "→ Running branch demo"
-	@./build/branch_demo >/tmp/branch_demo.out && cat /tmp/branch_demo.out
+test: test-unit test-integration
+	@echo "→ Running full test suite"
 
 test-memory: memory
 	./examples/memory_demo.sh
@@ -232,6 +245,10 @@ web-ui:
 desktop-ui:
 	@echo "\u2192 Launching desktop UI at http://localhost:8000"
 	python3 scripts/desktop_backend.py
+
+install: host
+	@echo "→ Installing host binary to /usr/local/bin (requires sudo)"
+	install -m755 build/host_test /usr/local/bin/aos-host
 checklist:
 	@if [ -s AOS-CHECKLIST.log ]; then \
 	echo "Checklist has entries:"; cat AOS-CHECKLIST.log; exit 1; \
