@@ -5,6 +5,8 @@
 #include "fs.h"
 #include "ai.h"
 #include "branch.h"
+#include "plugin.h"
+#include "policy.h"
 #include <errno.h>
 #include <stdlib.h>
 #include <string.h>
@@ -276,4 +278,83 @@ void cmd_br_delete_wrapper(int argc, char **argv) {
     } else {
         printf("Deleted branch %s\n", argv[1]);
     }
+}
+
+void cmd_br_vm_create_wrapper(int argc, char **argv) {
+    ensure_init();
+    const char *name = argc > 1 ? argv[1] : "vm";
+    const char *img = argc > 2 ? argv[2] : "img";
+    int mem = argc > 3 ? atoi(argv[3]) : 128;
+    int cpu = argc > 4 ? atoi(argv[4]) : 1;
+    bm_vm_create(name, img, mem, cpu);
+}
+
+void cmd_br_vm_list_wrapper(int argc, char **argv) {
+    (void)argc; (void)argv; ensure_init();
+    bm_vm_list();
+}
+
+void cmd_br_vm_switch_wrapper(int argc, char **argv) {
+    ensure_init();
+    if (argc < 2) { printf("usage: BR_VM_SWITCH <id>\n"); return; }
+    bm_vm_switch(atoi(argv[1]));
+}
+
+void cmd_br_vm_stop_wrapper(int argc, char **argv) {
+    ensure_init();
+    if (argc < 2) { printf("usage: BR_VM_STOP <id>\n"); return; }
+    bm_vm_stop(atoi(argv[1]));
+}
+
+void cmd_plugin_install_wrapper(int argc, char **argv) {
+    ensure_init();
+    if (argc < 2) { printf("usage: PLUGIN_INSTALL <url>\n"); return; }
+    plugin_install(argv[1]);
+}
+
+void cmd_plugin_list_wrapper(int argc, char **argv) {
+    (void)argc; (void)argv; ensure_init();
+    plugin_list();
+}
+
+void cmd_plugin_load_wrapper(int argc, char **argv) {
+    ensure_init();
+    if (argc < 2) { printf("usage: PLUGIN_LOAD <name>\n"); return; }
+    plugin_load(argv[1]);
+}
+
+void cmd_br_peer_add_wrapper(int argc, char **argv) {
+    ensure_init();
+    if (argc < 2) { printf("usage: BR_PEER_ADD <addr>\n"); return; }
+    br_peer_add(argv[1]);
+}
+
+void cmd_br_sync_wrapper(int argc, char **argv) {
+    (void)argc; (void)argv; ensure_init();
+    br_sync();
+}
+
+void cmd_ai_service_create_wrapper(int argc, char **argv) {
+    ensure_init();
+    const char *type = argc > 1 ? argv[1] : "generic";
+    const char *params = argc > 2 ? argv[2] : "";
+    ai_service_create(type, params);
+}
+
+void cmd_ai_service_monitor_wrapper(int argc, char **argv) {
+    ensure_init();
+    int id = argc > 1 ? atoi(argv[1]) : 0;
+    ai_service_monitor(id);
+}
+
+void cmd_policy_load_wrapper(int argc, char **argv) {
+    ensure_init();
+    if (argc < 2) { printf("usage: POLICY_LOAD <script>\n"); return; }
+    policy_load(argv[1]);
+}
+
+void cmd_policy_check_wrapper(int argc, char **argv) {
+    ensure_init();
+    const char *act = argc > 1 ? argv[1] : "";
+    printf(policy_check(act) ? "allowed\n" : "denied\n");
 }

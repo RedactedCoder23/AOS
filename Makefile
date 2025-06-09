@@ -1,4 +1,4 @@
-.PHONY: all generate host bare run clean ui ui-check
+.PHONY: all generate host bare run clean ui ui-check branch-vm plugins iso efi branch-net ai-service policy
 
 all: host bare
 
@@ -14,7 +14,7 @@ NCURSES_LIBS := $(shell pkg-config --libs ncurses 2>/dev/null || echo -lncurses)
 host: generate subsystems
 	@echo "→ Building host binaries"
 	@mkdir -p build
-	gcc -Iinclude -Isubsystems/memory -Isubsystems/fs -Isubsystems/ai -Isubsystems/branch $(NCURSES_CFLAGS) src/main.c src/interpreter.c src/branch_manager.c src/ui_graph.c command_map.c commands.c subsystems/memory/memory.c subsystems/fs/fs.c subsystems/ai/ai.c subsystems/branch/branch.c $(NCURSES_LIBS) -lcurl -lm -o build/host_test
+	gcc -Iinclude -Isubsystems/memory -Isubsystems/fs -Isubsystems/ai -Isubsystems/branch $(NCURSES_CFLAGS) src/main.c src/interpreter.c src/branch_manager.c src/ui_graph.c src/branch_vm.c src/plugin_loader.c src/branch_net.c src/ai_syscall.c src/policy.c command_map.c commands.c subsystems/memory/memory.c subsystems/fs/fs.c subsystems/ai/ai.c subsystems/branch/branch.c $(NCURSES_LIBS) -ldl -lcurl -lm -o build/host_test
 	gcc -Iinclude $(NCURSES_CFLAGS) src/ui_graph.c src/branch_manager.c src/ui_main.c $(NCURSES_LIBS) -lm -o build/ui_graph
 
 # 3. Build bare-metal image
@@ -59,6 +59,41 @@ branch:
 	@echo "→ Building branch demo"
 	@mkdir -p build
 	gcc -Isubsystems/branch subsystems/branch/branch.c examples/branch_demo.c -o build/branch_demo
+
+branch-vm:
+	@echo "→ Building branch VM demo"
+	@mkdir -p build
+	gcc -Iinclude src/branch_vm.c subsystems/branch/branch.c examples/branch_vm_demo.c -o build/branch_vm_demo
+
+plugins:
+	@echo "→ Building plugins demo"
+	@mkdir -p build/plugins
+	gcc -fPIC -shared -o build/plugins/sample.so examples/sample_plugin.c
+	gcc -Iinclude src/plugin_loader.c examples/plugin_demo.c -ldl -o build/plugin_demo
+
+branch-net:
+	@echo "→ Building branch net demo"
+	@mkdir -p build
+	gcc -Iinclude src/branch_net.c examples/branch_fed_demo.c -o build/branch_fed_demo
+
+ai-service:
+	@echo "→ Building ai service demo"
+	@mkdir -p build
+	gcc -Iinclude -Isubsystems/ai src/ai_syscall.c examples/ai_service_demo.c subsystems/ai/ai.c -o build/ai_service_demo -lcurl
+
+policy:
+	@echo "→ Building policy demo"
+	@mkdir -p build
+	gcc -Iinclude src/policy.c examples/policy_demo.c -o build/policy_demo
+
+efi:
+	@echo "→ Building EFI stub"
+	mkdir -p bare_metal_os/efi
+	echo "stub" > bare_metal_os/efi/aos.efi
+	
+iso: efi
+	@echo "→ Creating aos.iso"
+	touch aos.iso
 
 subsystems: memory fs ai branch
 

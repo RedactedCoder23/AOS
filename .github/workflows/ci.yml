@@ -21,5 +21,17 @@ jobs:
         run: echo "hello" | ./build/ai_demo
       - name: Test branch
         run: ./build/branch_demo
+      - name: Test branch-vm
+        run: make branch-vm && ./build/branch_vm_demo
+      - name: Test plugins
+        run: make plugins && ./build/plugin_demo
+      - name: Test iso
+        run: make iso && test -f aos.iso
+      - name: Test branch-net
+        run: make branch-net && ./build/branch_fed_demo
+      - name: Test ai-service
+        run: make ai-service && ./build/ai_service_demo
+      - name: Test policy
+        run: make policy && ./build/policy_demo
       - name: Test ui
         run: make ui-check

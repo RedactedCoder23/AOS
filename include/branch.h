@@ -31,4 +31,14 @@ int bm_delete(int id);
 // Copy branch list into out array, returns count
 int bm_list(Branch *out);
 
+// VM management
+int bm_vm_create(const char *name, const char *image, int mem, int cpu);
+void bm_vm_list(void);
+int bm_vm_switch(int id);
+int bm_vm_stop(int id);
+
+// Networking
+int br_peer_add(const char *addr);
+int br_sync(void);
+
 #endif // BRANCH_H

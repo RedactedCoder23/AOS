@@ -18,4 +18,17 @@ void init_command_map() {
   add_command("BR_LIST", cmd_br_list_wrapper);
   add_command("BR_STOP", cmd_br_stop_wrapper);
   add_command("BR_DELETE", cmd_br_delete_wrapper);
+  add_command("BR_VM_CREATE", cmd_br_vm_create_wrapper);
+  add_command("BR_VM_LIST", cmd_br_vm_list_wrapper);
+  add_command("BR_VM_SWITCH", cmd_br_vm_switch_wrapper);
+  add_command("BR_VM_STOP", cmd_br_vm_stop_wrapper);
+  add_command("PLUGIN_INSTALL", cmd_plugin_install_wrapper);
+  add_command("PLUGIN_LIST", cmd_plugin_list_wrapper);
+  add_command("PLUGIN_LOAD", cmd_plugin_load_wrapper);
+  add_command("BR_PEER_ADD", cmd_br_peer_add_wrapper);
+  add_command("BR_SYNC", cmd_br_sync_wrapper);
+  add_command("AI_SERVICE_CREATE", cmd_ai_service_create_wrapper);
+  add_command("AI_SERVICE_MONITOR", cmd_ai_service_monitor_wrapper);
+  add_command("POLICY_LOAD", cmd_policy_load_wrapper);
+  add_command("POLICY_CHECK", cmd_policy_check_wrapper);
 }
