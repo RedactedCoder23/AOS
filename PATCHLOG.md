@@ -313,6 +313,15 @@ by: codex
 ### Tests
 - `make test-unit`
 - `make test-integration`
+ codex/implement-buddy-allocator-and-vfs-with-ext2-plugin
+## [2025-06-09 10:47 UTC] — memory/fs overhaul [agent-mem]
+### Changes
+- Replaced freelist allocator with buddy allocator under subsystems/memory.
+- Added fuzzing unit test and persistence integration test.
+- Refactored fs subsystem into VFS with ramfs and ext2 plugins.
+- Updated subsystem READMEs.
+### Tests
+=======
  codex/refactor-repl-core-and-language-mappings
 
 ## [2025-06-09 10:45 UTC] — repl refactor [agent-mem]
@@ -330,5 +339,6 @@ by: codex
  main
 ### Tests
 - `make host`
+ main
 - `make test-unit`
 - `make test-integration`

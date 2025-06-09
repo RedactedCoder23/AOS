@@ -170,6 +170,17 @@ Next agent must:
 
 Next agent must:
 - Continue filling out subsystem READMEs and ensure diagrams stay updated.
+ codex/implement-buddy-allocator-and-vfs-with-ext2-plugin
+
+## [2025-06-09 10:47 UTC] memory/fs overhaul [agent-mem]
+- Replaced freelist allocator with slab/buddy implementation.
+- Added fuzzing unit test and persistence integration test.
+- Introduced VFS layer with ramfs and ext2 backends.
+- Updated subsystem READMEs.
+
+Next agent must:
+- Expand ext2 backend feature coverage and add more VFS tests.
+=======
  codex/refactor-repl-core-and-language-mappings
 
 ## [2025-06-09 10:45 UTC] repl refactor [agent-mem]
@@ -202,5 +213,6 @@ Next agent must:
 
 Next agent must:
 - Expand checkpoint delta handling and integrate with branch state.
+ main
  main
  main
