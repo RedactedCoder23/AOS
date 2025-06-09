@@ -1,5 +1,19 @@
 #include "command_interpreter.h"
 #include <stdint.h>
+#include <stddef.h>
+
+/* bare-metal subsystem prototypes */
+void mem_init_bare(void);
+void *mem_alloc(size_t size);
+void mem_free(void *ptr);
+void fs_init(void);
+int fs_open(const char *name, const char *mode);
+size_t fs_write(int fd, const char *buf, size_t n);
+size_t fs_read(int fd, char *buf, size_t n);
+void fs_close(int fd);
+void fs_ls(void);
+void bm_init(void);
+int bm_create(const char *name);
 
 /* basic serial helpers */
 static inline void outb(uint16_t p, uint8_t v){asm volatile("outb %0,%1"::"a"(v),"Nd"(p));}
@@ -16,10 +30,38 @@ static void serial_init(void){
 static int serial_received(void){return inb(0x3F8+5)&1;}
 static char serial_read(void){while(!serial_received());return inb(0x3F8);}
 static int serial_empty(void){return inb(0x3F8+5)&0x20;}
-static void serial_write(char a){while(!serial_empty());outb(0x3F8,a);}
-static void serial_print(const char *s){while(*s)serial_write(*s++);}
+static void serial_write(char a){while(!serial_empty());outb(0x3F8,a);} 
+static void serial_print(const char *s){while(*s)serial_write(*s++);} 
 
+static size_t str_len(const char *s){size_t n=0;while(s[n])n++;return n;}
 static int str_cmp(const char *a,const char *b){while(*a&&*a==*b){a++;b++;}return (unsigned char)*a-(unsigned char)*b;}
+
+static unsigned int str_to_uint(const char *s){
+    unsigned int v=0;int base=10;
+    if(s[0]=='0' && s[1]=='x'){base=16;s+=2;}
+    while(*s){
+        char c=*s++;
+        if(c>='0'&&c<='9') v=v*base+(c-'0');
+        else if(base==16 && c>='a'&&c<='f') v=v*16+(c-'a'+10);
+        else if(base==16 && c>='A'&&c<='F') v=v*16+(c-'A'+10);
+        else break;
+    }
+    return v;
+}
+
+static void print_uint(unsigned int v){
+    char buf[16];int i=0;
+    if(v==0){serial_write('0');return;}
+    while(v>0 && i<16){buf[i++]='0'+(v%10);v/=10;}
+    while(i--) serial_write(buf[i]);
+}
+
+static void print_hex(unsigned int v){
+    char hex[8];int i=0;
+    serial_print("0x");
+    for(int j=0;j<8;j++){int d=(v>>((7-j)*4))&0xF;hex[j]=d<10?'0'+d:'a'+d-10;}
+    for(i=0;i<8;i++) serial_write(hex[i]);
+}
 
 /* command registration and stubs so generated tables link */
 void add_command(const char *name, command_handler handler){(void)name;(void)handler;}
@@ -67,16 +109,79 @@ static void readline(char *buf,int max){
     buf[i]=0;
 }
 
+static void print_help(void){
+    serial_print("MEM_ALLOC <bytes>\n");
+    serial_print("MEM_FREE <addr>\n");
+    serial_print("FS_OPEN <name> <mode>\n");
+    serial_print("FS_WRITE <fd> <text>\n");
+    serial_print("FS_READ <fd> <bytes>\n");
+    serial_print("FS_LS\n");
+    serial_print("BR_CREATE <name>\n");
+    serial_print("help\n");
+    serial_print("exit\n");
+}
+
 void repl(void){
     serial_init();
+    mem_init_bare();
+    fs_init();
+    bm_init();
     char line[128];
+    char *argv[4];
     while(1){
         serial_print("bare> ");
         readline(line,sizeof(line));
-        if(str_cmp(line,"exit")==0)break;
-        serial_print("ECHO: ");
-        serial_print(line);
-        serial_print("\n");
+        int argc=0;char *p=line;
+        while(*p&&argc<4){
+            while(*p==' ')p++;
+            if(!*p)break;
+            argv[argc++]=p;
+            while(*p&&*p!=' ')p++;
+            if(*p){*p=0;p++;}
+        }
+        if(argc==0)continue;
+        if(str_cmp(argv[0],"exit")==0)break;
+        else if(str_cmp(argv[0],"help")==0){print_help();continue;}
+        else if(str_cmp(argv[0],"MEM_ALLOC")==0){
+            if(argc<2){serial_print("Error\n");continue;}
+            unsigned int sz=str_to_uint(argv[1]);
+            void *p=mem_alloc(sz);
+            if(!p){serial_print("Error\n");continue;}
+            serial_print("Allocated ");print_uint(sz);serial_print(" at ");print_hex((unsigned int)(uintptr_t)p);serial_print("\n");
+        }else if(str_cmp(argv[0],"MEM_FREE")==0){
+            if(argc<2){serial_print("Error\n");continue;}
+            void *addr=(void*)(uintptr_t)str_to_uint(argv[1]);
+            mem_free(addr);
+            serial_print("Freed ");print_hex((unsigned int)(uintptr_t)addr);serial_print("\n");
+        }else if(str_cmp(argv[0],"FS_OPEN")==0){
+            if(argc<3){serial_print("Error\n");continue;}
+            int fd=fs_open(argv[1],argv[2]);
+            if(fd<0)serial_print("Error\n");
+            else{serial_print("fd=");print_uint(fd);serial_print("\n");}
+        }else if(str_cmp(argv[0],"FS_WRITE")==0){
+            if(argc<3){serial_print("Error\n");continue;}
+            int fd=str_to_uint(argv[1]);
+            size_t len=str_len(argv[2]);
+            size_t w=fs_write(fd,argv[2],len);
+            if(w==0)serial_print("Error\n");
+            else{serial_print("Wrote ");print_uint(w);serial_print(" bytes\n");}
+        }else if(str_cmp(argv[0],"FS_READ")==0){
+            if(argc<3){serial_print("Error\n");continue;}
+            int fd=str_to_uint(argv[1]);
+            unsigned int n=str_to_uint(argv[2]);
+            char buf[256];if(n>255)n=255;size_t r=fs_read(fd,buf,n);buf[r]=0;
+            if(r==0)serial_print("Error\n");
+            else{serial_print(buf);serial_print("\n");}
+        }else if(str_cmp(argv[0],"FS_LS")==0){
+            fs_ls();
+        }else if(str_cmp(argv[0],"BR_CREATE")==0){
+            if(argc<2){serial_print("Error\n");continue;}
+            int id=bm_create(argv[1]);
+            if(id<0)serial_print("Error\n");
+            else{serial_print("Created ");print_uint(id);serial_print("\n");}
+        }else{
+            serial_print("Unknown command\n");
+        }
     }
 }
 

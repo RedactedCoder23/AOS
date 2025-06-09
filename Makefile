@@ -35,6 +35,9 @@ run: bare
   fi; \
   $$EMU -nographic -drive format=raw,file=aos.bin $(RUN_OPTS)'
 
+bare-smoke: bare
+	examples/bare_repl_smoke.sh
+
 clean:
 	@echo "→ Cleaning build artifacts"
 	rm -rf build aos.bin
