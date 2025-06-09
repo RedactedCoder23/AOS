@@ -39,3 +39,14 @@ by: codex
 
 Next agent must:
 - Ensure all future patches maintain this style and expand documentation.
+
+## [2025-06-09 06:18 UTC] — plugin hot-swap MVP
+by: codex
+### Changes
+- Added plugin_unload implementation and plugin_exec API.
+- Extended REPL with `plugin` command.
+- Updated sample plugin and demo for full lifecycle.
+### Tests
+- `make host`
+- `make plugins`
+- `./examples/plugin_demo.sh`
