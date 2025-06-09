@@ -96,3 +96,14 @@ by: codex
 - Design persistent storage backend or VFS integration in fs.c
 - Confirm usage/reconcile with new system in branch.c
 - Replace AI stub with real backend and add retries in ai.c
+
+## [2025-06-09 06:40 UTC] — policy engine & sandbox [agent-mem]
+by: codex
+- Implemented JSON-based policy rules with branch/app context.
+- Added `policy_check_ctx` API and integrated checks in FS commands.
+- Introduced `bm_current_name` helper for branch-aware enforcement.
+- Updated policy demo to exercise deny/allow via JSON.
+- Limitations: parser fragile, no persistent storage, enforcement covers only FS.
+Next agent must:
+- Extend sandbox hooks to memory, AI, and plugins.
+- Persist policy configs and validate JSON input.
