@@ -454,3 +454,14 @@ by: codex
 - `pre-commit run --all-files`
 - `make test-unit`
 - `make test-integration`
+
+## [2025-06-09 14:00 UTC] test expansion and lint [codex-agent-xyz]
+### Changes
+- Added C unit tests for branch, net, plugin and policy subsystems.
+- Extended Python test suite and integrated pytest in Makefile.
+- Added flake8 hook and updated requirements.
+- Minor error handling cleanup in `app_runtime.c`.
+### Tests
+- `pre-commit run --all-files`
+- `make test-unit`
+- `pytest -q tests/python`
