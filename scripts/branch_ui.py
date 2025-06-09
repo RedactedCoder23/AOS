@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+"""Simple HTTP server for the branch graph UI."""
 import http.server
 import socketserver
 import os
