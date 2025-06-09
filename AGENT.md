@@ -81,6 +81,12 @@ by: codex
 - `./examples/ai_service_demo.sh`
 - `echo 'ai hello\nexit' | ./build/host_test` *(fails: openai module missing)*
 
+## [2025-06-09 07:51 UTC] — minimal network stack [agent-mem]
+by: codex
+- Introduced `net` subsystem with TCP wrappers (open, bind, listen, accept, connect, send, recv).
+- Added `net_echo` demo and build target.
+- Host build now links the new subsystem.
+
 ## UNRESOLVED ISSUES
 - Network service lacks graceful shutdown and authentication.
 - Plugin loader needs path validation and sandboxing.
@@ -95,8 +101,23 @@ by: codex
 - Audit for fragmentation and add unit tests in memory.c
 - Design persistent storage backend or VFS integration in fs.c
 - Confirm usage/reconcile with new system in branch.c
+codex/integrate-ai-cli-with-llm-apis
+- ~~Replace AI stub with real backend and add retries in ai.c~~ (resolved 2025-06-09 07:51 UTC)
+
+## [2025-06-09 07:51 UTC] — AI backend integration [agent-mem]
+by: codex
+- Replaced HTTP echo stub with call to `ai_infer` using OpenAI API.
+- Added env var check and latency logging in `ai_syscall.c`.
+- Updated README with new instructions.
+AI error: missing OPENAI_API_KEY
+AI error: missing OPENAI_API_KEY
+AI latency 204 ms
+AI backend error rc=30720 output=Traceback (most recent call last):
+  File "/workspace/AOS/scrip
+=======
 - Replace AI stub with real backend and add retries in ai.c
 
+codex/implement-minimal-filesystem-with-cli-support
 ## [2025-06-09 07:54 UTC] — minimal FS mkdir & CLI [agent-mem]
 by: codex
 - Extended in-memory filesystem with directory support and `fs_mkdir` API.
@@ -104,3 +125,28 @@ by: codex
 - Updated `fs_demo` example to showcase directory usage.
 - Generated new command mappings via `generate_aos_mappings.py`.
 - FS remains volatile with no persistence or access control.
+=======
+ codex/build-graphical-branch-visualizer-ui
+## [2025-06-09 07:51 UTC] — graphical branch UI [agent-mem]
+by: codex
+- Implemented simple web UI served by `scripts/branch_ui.py` using D3.js.
+- Added drag/drop graph and tab panes for shell sessions.
+- Updated Makefile and README with `web-ui` target and usage notes.
+
+Baton pass:
+- Integrate UI with live branch data via IPC.
+- Secure HTTP service and add tests.
+=======
+## [2025-06-09 06:40 UTC] — policy engine & sandbox [agent-mem]
+by: codex
+- Implemented JSON-based policy rules with branch/app context.
+- Added `policy_check_ctx` API and integrated checks in FS commands.
+- Introduced `bm_current_name` helper for branch-aware enforcement.
+- Updated policy demo to exercise deny/allow via JSON.
+- Limitations: parser fragile, no persistent storage, enforcement covers only FS.
+Next agent must:
+- Extend sandbox hooks to memory, AI, and plugins.
+- Persist policy configs and validate JSON input.
+ main
+ main
+ main

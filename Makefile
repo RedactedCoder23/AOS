@@ -1,4 +1,8 @@
-.PHONY: all generate host bare run clean ui ui-check branch-vm plugins iso efi branch-net ai-service policy
+ codex/implement-minimal-tcp/ip-or-udp-stack
+.PHONY: all generate host bare run clean ui ui-check branch-vm plugins iso efi branch-net ai-service policy net
+=======
+.PHONY: all generate host bare run clean ui ui-check web-ui branch-vm plugins iso efi branch-net ai-service policy
+ main
 
 all: host bare
 
@@ -14,7 +18,7 @@ NCURSES_LIBS := $(shell pkg-config --libs ncurses 2>/dev/null || echo -lncurses)
 host: generate subsystems
 	@echo "→ Building host binaries"
 	@mkdir -p build
-	gcc -Iinclude -Isubsystems/memory -Isubsystems/fs -Isubsystems/ai -Isubsystems/branch $(NCURSES_CFLAGS) src/main.c src/interpreter.c src/branch_manager.c src/ui_graph.c src/branch_vm.c src/plugin_loader.c src/branch_net.c src/ai_syscall.c src/policy.c src/memory.c command_map.c commands.c subsystems/memory/memory.c subsystems/fs/fs.c subsystems/ai/ai.c subsystems/branch/branch.c $(NCURSES_LIBS) -ldl -lcurl -lm -o build/host_test
+	gcc -Iinclude -Isubsystems/memory -Isubsystems/fs -Isubsystems/ai -Isubsystems/branch -Isubsystems/net $(NCURSES_CFLAGS) src/main.c src/interpreter.c src/branch_manager.c src/ui_graph.c src/branch_vm.c src/plugin_loader.c src/branch_net.c src/ai_syscall.c src/policy.c src/memory.c command_map.c commands.c subsystems/memory/memory.c subsystems/fs/fs.c subsystems/ai/ai.c subsystems/branch/branch.c subsystems/net/net.c $(NCURSES_LIBS) -ldl -lcurl -lm -o build/host_test
 	gcc -Iinclude $(NCURSES_CFLAGS) src/ui_graph.c src/branch_manager.c src/ui_main.c $(NCURSES_LIBS) -lm -o build/ui_graph
 
 # 3. Build bare-metal image
@@ -60,7 +64,7 @@ fs:
 ai:
 	@echo "→ Building ai demo"
 	@mkdir -p build
-	gcc -Isubsystems/ai subsystems/ai/ai.c examples/ai_demo.c -lcurl -o build/ai_demo
+	gcc -Isubsystems/ai -Iinclude subsystems/ai/ai.c src/ai_syscall.c examples/ai_demo.c -lcurl -o build/ai_demo
 
 branch:
 	@echo "→ Building branch demo"
@@ -98,6 +102,11 @@ policy:
 	@mkdir -p build
 	gcc -Iinclude src/policy.c examples/policy_demo.c -o build/policy_demo
 
+net:
+	       @echo "→ Building net echo demo"
+	       @mkdir -p build
+	       gcc -Isubsystems/net subsystems/net/net.c examples/net_echo.c -o build/net_echo
+
 test: host branch
 	@echo "→ Running branch demo"
 	@./build/branch_demo >/tmp/branch_demo.out && cat /tmp/branch_demo.out
@@ -111,7 +120,7 @@ iso: efi
 	@echo "→ Creating aos.iso"
 	touch aos.iso
 
-subsystems: memory fs ai branch
+subsystems: memory fs ai branch net
 
 ui: host
 	@echo "UI built via host target"
@@ -119,6 +128,10 @@ ui: host
 ui-check: ui
 	@echo "\u2192 Verifying UI binary"
 	@./build/ui_graph --help
+
+web-ui:
+	@echo "\u2192 Launching web UI at http://localhost:8000"
+	python3 scripts/branch_ui.py
 
 checklist:
 	@if [ -s AOS-CHECKLIST.log ]; then \
