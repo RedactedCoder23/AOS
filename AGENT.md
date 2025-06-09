@@ -85,6 +85,8 @@ by: codex
 - Added env var check and latency logging in `ai_syscall.c`.
 - Updated README with new instructions.
 AI error: missing OPENAI_API_KEY
+codex/implement-security-policy-engine-with-sandbox
+=======
 
 ## [2025-06-09 08:30 UTC] — sandboxed plugin loader [agent-mem]
 by: codex
@@ -92,6 +94,7 @@ by: codex
 - Introduced path validation and hook registration API.
 - Default hook ensures plugins load only from `build/plugins/`.
 AI error: missing OPENAI_API_KEY
+ main
 AI latency 204 ms
 AI backend error rc=30720 output=Traceback (most recent call last):
   ...
@@ -137,6 +140,15 @@ Next agent must:
 - Persist policy configs and validate JSON input.
 - Integrate web UI with live branch data via IPC and secure the HTTP service with tests.
 AI error: missing OPENAI_API_KEY
+ codex/implement-security-policy-engine-with-sandbox
+## [2025-06-09 08:10 UTC] — policy engine sandbox v2 [agent-mem]
+by: codex
+- Added YAML parser and file loader in policy engine.
+- Logged policy decisions to `AOS-AUDIT.log`.
+- Implemented per-branch FS sandbox using `bm_current_id`.
+- Updated policy demo to load `examples/policy_rules.yaml`.
+Baton pass: persist policy files and expand syscall coverage.
+=======
  codex/develop-graphical-desktop-and-ai-copilot
 ## [2025-06-09 08:31 UTC] — graphical desktop and ai copilot [agent-mem]
 by: codex
@@ -168,5 +180,6 @@ boot error: qemu not installed
 =======
 plugin validation failed build/plugins/missing.so
 main
+ main
  main
  main

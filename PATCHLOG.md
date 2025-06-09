@@ -133,6 +133,17 @@ by: codex
 - `./examples/plugin_demo.sh`
 - `./examples/ai_service_demo.sh`
 - `echo "ai test\nexit" | ./build/host_test` *(fails: openai module missing)*
+ codex/implement-security-policy-engine-with-sandbox
+## [2025-06-09 08:10 UTC] — policy engine sandbox v2 [agent-mem]
+### Changes
+- Added YAML parser and file loader in policy engine.
+- Logged decisions to `AOS-AUDIT.log`.
+- Implemented per-branch FS sandbox via `bm_current_id`.
+- Updated policy demo to load YAML rules.
+### Tests
+- `make policy`
+- `./examples/policy_demo.sh`
+=======
 codex/develop-graphical-desktop-and-ai-copilot
 ## [2025-06-09 08:31 UTC] — graphical desktop and ai copilot [agent-mem]
 ### Changes
@@ -175,6 +186,7 @@ codex/develop-graphical-desktop-and-ai-copilot
 ### Tests
 - `make plugins`
 - `./examples/plugin_demo.sh`
+ main
  main
  main
  main

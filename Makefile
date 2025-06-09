@@ -65,7 +65,7 @@ memory:
 fs:
 	@echo "→ Building fs demo"
 	@mkdir -p build
-	gcc -Isubsystems/fs subsystems/fs/fs.c examples/fs_demo.c -o build/fs_demo
+	gcc -Isubsystems/fs -Iinclude subsystems/fs/fs.c examples/fs_demo.c -o build/fs_demo
 
 ai:
 	@echo "→ Building ai demo"
