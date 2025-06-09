@@ -74,6 +74,17 @@ by: codex
 - `./examples/plugin_demo.sh`
 - `./examples/ai_service_demo.sh`
 - `echo 'ai hello\nexit' | ./build/host_test` *(fails: openai module missing)*
+ codex/implement-minimal-tcp/ip-or-udp-stack
+
+## [2025-06-09 07:51 UTC] — TCP stack demo [agent-mem]
+### Changes
+- Added `subsystems/net` with basic TCP wrappers.
+- New example `net_echo` and `make net` target.
+### Tests
+- `make net`
+- `./build/net_echo --server --port 12345 &`
+- `./build/net_echo --host 127.0.0.1 --port 12345`
+=======
 codex/build-graphical-branch-visualizer-ui
 ## [2025-06-09 07:51 UTC] — graphical branch UI [agent-mem]
 ### Changes
@@ -105,5 +116,6 @@ codex/integrate-ai-cli-with-llm-apis
 ### Tests
 - `make policy`
 - `./examples/policy_demo.sh`
+main
 main
 main
