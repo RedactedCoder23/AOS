@@ -334,6 +334,11 @@ void cmd_br_sync_wrapper(int argc, char **argv) {
     br_sync();
 }
 
+void cmd_br_sync_all_wrapper(int argc, char **argv) {
+    (void)argc; (void)argv; ensure_init();
+    bm_sync_all();
+}
+
 void cmd_ai_service_create_wrapper(int argc, char **argv) {
     ensure_init();
     const char *type = argc > 1 ? argv[1] : "generic";

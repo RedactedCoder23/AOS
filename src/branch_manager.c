@@ -18,6 +18,7 @@ static void save_state(void) {
     fprintf(f, "[\n");
     for (int i = 0; i < branch_count; i++) {
         Branch *b = &branches[i];
+        if (b->origin) continue; /* don't persist remote */
         fprintf(f,
             " {\"id\":%d,\"name\":\"%s\",\"created\":%ld,\"state\":\"%s\",\"connections\":[",
             b->id, b->name, b->created_ts, b->state);
@@ -55,6 +56,7 @@ static void load_state(void) {
                     conn++;
                 }
             }
+            b->origin = 0;
             branch_count++;
         }
     }
@@ -89,8 +91,15 @@ int bm_create(const char *name) {
     b->conn_count = 0;
     b->created_ts = time(NULL);
     strncpy(b->state, "running", sizeof(b->state) - 1);
+    b->origin = 0;
     int id = branch_count++;
     save_state();
+    return id;
+}
+
+int bm_create_remote(const char *name) {
+    int id = bm_create(name);
+    if (id >= 0) branches[id].origin = 1;
     return id;
 }
 

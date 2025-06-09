@@ -27,6 +27,7 @@ void init_command_map() {
   add_command("PLUGIN_LOAD", cmd_plugin_load_wrapper);
   add_command("BR_PEER_ADD", cmd_br_peer_add_wrapper);
   add_command("BR_SYNC", cmd_br_sync_wrapper);
+  add_command("BR_SYNC_ALL", cmd_br_sync_all_wrapper);
   add_command("AI_SERVICE_CREATE", cmd_ai_service_create_wrapper);
   add_command("AI_SERVICE_MONITOR", cmd_ai_service_monitor_wrapper);
   add_command("POLICY_LOAD", cmd_policy_load_wrapper);
