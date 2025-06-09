@@ -396,3 +396,14 @@ by: codex
 - `npx -y parcel build src/index.html src/desktop.html --dist-dir dist`
 ### Baton Pass
 - Expand coverage to more subsystems and integrate pre-commit style checks.
+## [2025-06-09 12:41 UTC] final meta sweep [agent-mem]
+### Changes
+- Consolidated baton pass lists in AGENT.md and archived old items.
+- Removed obsolete mapping text files.
+- Ran clang-format; clang-tidy reports numerous warnings (see /tmp/clang_tidy.log).
+### Tests
+- `make test-unit`
+- `make test-integration`
+- `make host` *(fails: format-truncation in bm_clone)*
+### Baton Pass
+- Review AGENT.md Active Baton Pass for pending tasks.

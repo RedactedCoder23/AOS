@@ -65,7 +65,7 @@ Initial repository had no AGENT log. `PATCHLOG.md` captured early development on
 ### [2025-06-09 08:35 UTC] boot init
 - GRUB config added; boot errors log to AGENT.md when QEMU missing.
 
-## Open Issues
+## Archived Open Issues
 - Add authentication and graceful shutdown to the network service.
 - Validate `branch_manager` JSON data and add locking.
 - Provide plugin path validation and extend sandbox hooks across subsystems.
@@ -137,7 +137,7 @@ Next agent must:
 Next agent must:
 - Extend profiler to collect multiple samples and integrate with logging.
 
-## Baton Pass
+## Archived Baton Pass
 - Continue expanding subsystem READMEs with usage notes.
 - Review remaining subsystems for missing comments.
 - Expand tests across subsystems.
@@ -254,3 +254,34 @@ Next agent must:
 
 ### Baton Pass
 - Continue addressing clang-tidy warnings and ensure CI covers coverage target.
+## [2025-06-09 12:41 UTC] meta sweep [agent-mem]
+- Ran clang-format across sources.
+- clang-tidy still reports many warnings and errors (see /tmp/clang_tidy.log).
+- `make test-unit` and `make test-integration` succeed.
+- `make host` and UI builds fail due to -Werror in `bm_clone`.
+- Removed obsolete mapping text files and cleared stray logs.
+
+## Active Baton Pass
+- Fix host build failure and address clang-tidy warnings.
+- Add authentication and graceful shutdown to the network service.
+- Validate branch_manager JSON data with locking.
+- Provide plugin path validation and expand sandbox hooks.
+- Improve AI backend error handling.
+- Persist policy files and extend syscall coverage.
+- Add REPL history, input sanitisation and clean shutdown.
+- Investigate memory fragmentation and add tests.
+- Extend ext2 backend and persistence tests.
+- Integrate web UI with live branch data and secure HTTP service.
+- Expand smoke tests and CI coverage with rollback support.
+- Continue filling out developer docs and subsystem READMEs; update diagrams.
+- Review subsystems for missing comments and use AosError consistently.
+- Flesh out dev and security subsystem APIs and implement README TODOs.
+- Review networked branch sync for race conditions.
+- Extend WASM runtime and federation DHT onboarding.
+- Expand checkpoint delta handling and integrate with branch state.
+- Extend profiler to gather multiple samples and integrate with logging.
+- Update ROADMAP as milestones land and monitor CODE_OF_CONDUCT compliance.
+- Add pre-commit style checks and ensure coverage reporting in CI.
+
+## Archive
+Previous Open Issues and Baton Pass lists retained above remain for historical context.
