@@ -7,12 +7,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: Install deps
-        run: sudo apt-get update && sudo apt-get install -y build-essential pkg-config libncurses-dev
-      - name: Build UI
-        run: make ui
-      - name: Run UI headless
+      - name: Install dependencies
         run: |
-          printf 'q' | script -q -c "./build/ui_graph" /tmp/ui.out || true
-          head -n 2 /tmp/ui.out
-          grep -E "move" /tmp/ui.out
+          sudo apt-get update
+          sudo apt-get install -y libncurses5-dev libncursesw5-dev pkg-config
+      - name: Build and test UI
+        run: make ui-check

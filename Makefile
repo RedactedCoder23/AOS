@@ -1,4 +1,4 @@
-.PHONY: all generate host bare run clean
+.PHONY: all generate host bare run clean ui ui-check
 
 all: host bare
 
@@ -62,6 +62,10 @@ branch:
 
 ui: host
 	@echo "UI built via host target"
+
+ui-check: ui
+	@echo "\u2192 Verifying UI binary"
+	@./build/ui_graph --help
 
 checklist:
 	@if [ -s AOS-CHECKLIST.log ]; then \
