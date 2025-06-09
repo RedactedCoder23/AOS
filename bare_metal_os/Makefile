@@ -9,12 +9,16 @@ LDFLAGS = -T kernel.ld -m elf_i386 -z separate-code
 
 all: bootloader.bin aos.bin
 
-kernel.bin: kernel.c memory.c fs.c
-	        $(CC) $(CFLAGS) -c kernel.c -o kernel.o
-	        $(CC) $(CFLAGS) -c memory.c -o memory.o
-	        $(CC) $(CFLAGS) -c fs.c -o fs.o
-	        $(LD) $(LDFLAGS) kernel.o memory.o fs.o -o kernel.elf
-		objcopy -O binary kernel.elf kernel.bin
+kernel.bin: kernel.c memory.c fs.c branch.c interpreter/command_interpreter.c ../commands.c ../command_map.c
+	$(CC) $(CFLAGS) -I.. -I../include -c kernel.c -o kernel.o
+	$(CC) $(CFLAGS) -I.. -I../include -c memory.c -o memory.o
+	$(CC) $(CFLAGS) -I.. -I../include -c fs.c -o fs.o
+	$(CC) $(CFLAGS) -I.. -I../include -c branch.c -o branch.o
+	$(CC) $(CFLAGS) -I.. -I../include -c interpreter/command_interpreter.c -o command_interpreter.o
+	$(CC) $(CFLAGS) -I.. -I../include -c ../commands.c -o commands.o
+	$(CC) $(CFLAGS) -I.. -I../include -c ../command_map.c -o command_map.o
+	$(LD) $(LDFLAGS) kernel.o memory.o fs.o branch.o command_interpreter.o commands.o command_map.o -o kernel.elf
+	objcopy -O binary kernel.elf kernel.bin
 
 bootloader.bin: bootloader.asm kernel.bin
 		@size=$$(wc -c < kernel.bin); \

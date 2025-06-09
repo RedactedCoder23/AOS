@@ -1,0 +1,4 @@
+MEM_ALLOC 16
+FS_OPEN foo.txt w
+BR_CREATE test
+exit

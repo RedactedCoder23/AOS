@@ -1,6 +1,10 @@
 #include "../subsystems/fs/fs.h"
-#include <string.h>
 #include <stddef.h>
+
+static void mem_set(void *d,int v,size_t n){unsigned char *p=d;for(size_t i=0;i<n;i++)p[i]=v;}
+static void mem_cpy(void *d,const void *s,size_t n){unsigned char *dd=d;const unsigned char *ss=s;for(size_t i=0;i<n;i++)dd[i]=ss[i];}
+static int str_cmp(const char *a,const char *b){while(*a&&*a==*b){a++;b++;}return (unsigned char)*a-(unsigned char)*b;}
+static void str_ncpy(char *d,const char *s,size_t n){size_t i=0;for(;i<n-1 && s[i];i++)d[i]=s[i];if(n) d[i]=0;}
 
 #define MAX_FILES 16
 #define MAX_NAME 32
@@ -18,12 +22,12 @@ typedef struct {
 static File files[MAX_FILES];
 
 void fs_init(void) {
-    memset(files, 0, sizeof(files));
+    mem_set(files, 0, sizeof(files));
 }
 
 static File *find_file(const char *name) {
     for (int i=0;i<MAX_FILES;i++)
-        if (files[i].used && strcmp(files[i].name, name)==0)
+        if (files[i].used && str_cmp(files[i].name, name)==0)
             return &files[i];
     return NULL;
 }
@@ -34,8 +38,8 @@ int fs_open(const char *name, const char *mode) {
         for (int i=0;i<MAX_FILES;i++)
             if (!files[i].used) { f=&files[i]; break; }
         if (!f) return -1;
-        memset(f,0,sizeof(File));
-        strncpy(f->name,name,MAX_NAME-1);
+        mem_set(f,0,sizeof(File));
+        str_ncpy(f->name,name,MAX_NAME);
         f->used=1;
     }
     f->pos=0;
@@ -50,7 +54,7 @@ size_t fs_read(int fd, char *buf, size_t n) {
     if (!f->open) return 0;
     size_t remain=f->size - f->pos;
     if (n>remain) n=remain;
-    memcpy(buf, f->content + f->pos, n);
+    mem_cpy(buf, f->content + f->pos, n);
     f->pos += n;
     return n;
 }
@@ -60,7 +64,7 @@ size_t fs_write(int fd, const char *buf, size_t n) {
     File *f=&files[fd];
     if (!f->open) return 0;
     if (f->pos + n > MAX_CONTENT) n = MAX_CONTENT - f->pos;
-    memcpy(f->content + f->pos, buf, n);
+    mem_cpy(f->content + f->pos, buf, n);
     f->pos += n;
     if (f->pos > f->size) f->size = f->pos;
     return n;
