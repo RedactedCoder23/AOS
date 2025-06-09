@@ -17,6 +17,7 @@ typedef struct Branch {
     long created_ts;
     char state[16];
     int origin; /* 0=local,1=remote */
+    int parent; /* -1 for root */
 } Branch;
 
 typedef struct BranchGraph {
@@ -40,6 +41,8 @@ int bm_delete(int id);
 // Copy branch list into out array, returns count
 int bm_list(Branch *out);
 int bm_graph(BranchGraph *out);
+void branch_save_all(void);
+void branch_load_all(void);
 
 // VM management
 int bm_vm_create(const char *name, const char *image, int mem, int cpu);

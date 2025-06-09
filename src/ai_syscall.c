@@ -12,7 +12,9 @@ void ai_service_monitor(int id) {
     printf("AI service %d running\n", id);
 }
 
-const char *ai_infer(const char *input) {
-    (void)input;
-    return "NOT IMPLEMENTED";
+int ai_infer(const char *prompt, char *out, unsigned long outsz) {
+    (void)prompt;
+    if (!out || outsz == 0) return -1;
+    snprintf(out, outsz, "NOT IMPLEMENTED");
+    return 0;
 }

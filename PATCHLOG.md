@@ -12,3 +12,17 @@
 - `make aos-cli`
 - `make test`
 - `make run` *(fails: qemu not installed)*
+
+### Session Start
+- Begin implementing persistence and REPL features
+
+- Implemented disk-backed save/load helpers
+
+- Added simple interactive REPL with branch commands
+
+- Implemented adjacency graph and updated tree output
+
+- Added ai_infer stub and ai command
+
+### Tests
+- `make test`
