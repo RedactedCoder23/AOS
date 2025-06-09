@@ -2,3 +2,6 @@ command_map.c commands.c category_defs.h
 
 build
 packages
+*.log
+AOS-CHECKLIST.log
+aos.iso

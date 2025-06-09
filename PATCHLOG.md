@@ -304,3 +304,12 @@ by: codex
 - `make host`
 - `make test-unit`
 - `make test-integration`
+## [2025-06-09 10:28 UTC] — docs sweep [agent-mem]
+### Changes
+- Added LICENSE, expanded CONTRIBUTING and CODE_OF_CONDUCT.
+- Removed committed log file and updated .gitignore.
+- Added docs/command_flow.md and linked it from README and docs index.
+- Updated README with Quickstart and directory overview.
+### Tests
+- `make test-unit`
+- `make test-integration`
