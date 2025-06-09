@@ -159,3 +159,14 @@ Next agent must:
 - Linked profiler stub from README.
 - Corrected bare_metal_os Makefile tabs so `make clean` works.
 - Consolidated baton pass list.
+
+## [2025-06-09 10:28 UTC] documentation sweep [agent-mem]
+- Added MIT `LICENSE` file.
+- Expanded `CONTRIBUTING.md` with workflow notes.
+- Rewrote `CODE_OF_CONDUCT.md` for clarity.
+- Added `docs/command_flow.md` with ASCII diagram and referenced it from `README` and docs index.
+- Updated README with Quickstart, directory map and command flow link.
+- Removed `AOS-CHECKLIST.log` from repository and updated `.gitignore` to exclude logs and build artifacts.
+
+Next agent must:
+- Continue filling out subsystem READMEs and ensure diagrams stay updated.

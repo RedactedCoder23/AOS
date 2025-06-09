@@ -18,6 +18,11 @@ This document provides an overview of the current design.
 3. Subsystems log operations to `AOS-CHECKLIST.log`.
 4. Persistent components write data under the user's home directory.
 
+```
+Kernel -> Subsystems -> Host REPL
+                   \-> Plugins
+```
+
 Diagrams describing the kernel boot sequence, subsystem interactions and data
 flow are referenced here but omitted from the repository. See the project wiki
 for sketches and further design notes.

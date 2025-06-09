@@ -2,6 +2,17 @@
 
 Minimal experimental OS used for interpreter tests.
 
+## Quickstart
+
+```bash
+git clone https://example.com/AOS.git
+cd AOS
+make host
+./build/host_test
+```
+
+This compiles the host REPL and launches an interactive session.
+
 ## Architecture Overview
 
 AOS is split into a small kernel and a set of host tools. The kernel boots via
@@ -11,6 +22,17 @@ lightweight command line environment. Each subsystem resides under
 `subsystems/` and exposes a header-only API.
 
 For deeper details see [docs/system_architecture.md](docs/system_architecture.md).
+An overview of command dispatch can be found in
+[docs/command_flow.md](docs/command_flow.md).
+
+## What's inside?
+
+- `bare_metal_os/` – kernel sources and boot files
+- `src/` – shared utilities and host code
+- `subsystems/` – memory, fs, branch and other core modules
+- `include/` – public headers used across the project
+- `apps_src/` – sample applications
+- `docs/` – project documentation
 
 ## Build
 
