@@ -85,7 +85,6 @@ by: codex
 - Added env var check and latency logging in `ai_syscall.c`.
 - Updated README with new instructions.
 AI error: missing OPENAI_API_KEY
-AI error: missing OPENAI_API_KEY
 AI latency 204 ms
 AI backend error rc=30720 output=Traceback (most recent call last):
   ...
@@ -131,3 +130,10 @@ Next agent must:
 - Persist policy configs and validate JSON input.
 - Integrate web UI with live branch data via IPC and secure the HTTP service with tests.
 AI error: missing OPENAI_API_KEY
+## [2025-06-09 08:10 UTC] — policy engine sandbox v2 [agent-mem]
+by: codex
+- Added YAML parser and file loader in policy engine.
+- Logged policy decisions to `AOS-AUDIT.log`.
+- Implemented per-branch FS sandbox using `bm_current_id`.
+- Updated policy demo to load `examples/policy_rules.yaml`.
+Baton pass: persist policy files and expand syscall coverage.
