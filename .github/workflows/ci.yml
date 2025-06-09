@@ -11,6 +11,8 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y libncurses5-dev libncursesw5-dev pkg-config libcurl4-openssl-dev
+      - name: Validate mappings
+        run: python3 generate_aos_mappings.py --validate
       - name: Build host and demos
         run: make host
       - name: Unit tests
