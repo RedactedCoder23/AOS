@@ -10,11 +10,8 @@
 #include "ai.h"
 #include "plugin.h"
 #include "fs.h"
-codex/implement-minimal-runtime-and-installer
 #include "app_runtime.h"
-=======
 #include "config.h"
- main
 
 static void log_agent_error(const char *msg) {
     FILE *f = fopen("AGENT.md", "a");

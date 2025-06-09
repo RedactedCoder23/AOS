@@ -133,7 +133,6 @@ by: codex
 - `./examples/plugin_demo.sh`
 - `./examples/ai_service_demo.sh`
 - `echo "ai test\nexit" | ./build/host_test` *(fails: openai module missing)*
- codex/setup-ai-integration-with-secure-config
 
 ## [2025-06-09 08:32 UTC] — provider selection and secure config [agent-mem]
 ### Changes
@@ -145,8 +144,6 @@ by: codex
 - `echo -e \"ai setup\nopenai\nkey\nexit\" | ./build/host_test`
 - `echo -e \"ai hello\nexit\" | ./build/host_test` *(fails: openai module missing)*
 
-=======
- codex/implement-modular-vfs-with-ramfs-and-ext2
 ## [2025-06-09 08:30 UTC] — persistent filesystem [agent-mem]
 ### Changes
 - Added modular VFS with RAM and disk backends.
@@ -155,8 +152,6 @@ by: codex
 ### Tests
 - `make fs`
 - `./build/fs_demo`
-=======
-codex/implement-minimal-runtime-and-installer
 ## [2025-06-09 08:35 UTC] — userland & apps bootstrap [agent-mem]
 ### Changes
 - Added `src/app_runtime.c` and `include/app_runtime.h` providing basic app loader.
@@ -168,9 +163,6 @@ codex/implement-minimal-runtime-and-installer
 - `./aos install build/apps/fileman build/apps/textedit`
 - `printf 'app list\nexit\n' | ./build/host_test`
 - `printf 'app run fileman ls\nexit\n' | ./build/host_test`
-=======
-codex/implement-tcp/ip-stack-with-basic-services
- codex/implement-tcp/ip-stack-with-basic-services
 ## [2025-06-09 08:10 UTC] — extended TCP/IP stack [agent-mem]
 ### Changes
 - Added UDP helpers and updated net subsystem.
@@ -181,8 +173,6 @@ codex/implement-tcp/ip-stack-with-basic-services
 - `./examples/net_echo_demo.sh`
 - `make net-http`
 - `./examples/net_http_demo.sh`
-=======
- codex/implement-persistent-disk-backed-branches-and-sync
 
 ## [2025-06-09 08:31 UTC] — persistence & federation [agent-mem]
 ### Changes
@@ -193,8 +183,6 @@ codex/implement-tcp/ip-stack-with-basic-services
 - `./examples/persist_restore_demo.sh`
 - `make branch-net`
 - `./examples/branch_fed_demo.sh`
-=======
- codex/implement-security-policy-engine-with-sandbox
 ## [2025-06-09 08:10 UTC] — policy engine sandbox v2 [agent-mem]
 ### Changes
 - Added YAML parser and file loader in policy engine.
@@ -204,8 +192,6 @@ codex/implement-tcp/ip-stack-with-basic-services
 ### Tests
 - `make policy`
 - `./examples/policy_demo.sh`
-=======
-codex/develop-graphical-desktop-and-ai-copilot
 ## [2025-06-09 08:31 UTC] — graphical desktop and ai copilot [agent-mem]
 ### Changes
 - Added `scripts/desktop_backend.py` serving desktop UI with /graph and /ai routes.
@@ -215,8 +201,6 @@ codex/develop-graphical-desktop-and-ai-copilot
 ### Tests
 - `python3 scripts/desktop_backend.py --help` *(shows usage)*
 - `make desktop-ui` *(manual launch)*
-=======
- codex/add-smoke-tests-and-observability-tools
 
 ## [2025-06-09 08:31 UTC] — smoke tests & audit CLI [agent-mem]
 ### Changes
@@ -230,16 +214,12 @@ codex/develop-graphical-desktop-and-ai-copilot
 - `make test-plugin`
 - `make test-policy`
 - `make test-net`
-=======
- codex/implement-bootloader-and-kernel-init
 ## [2025-06-09 08:30 UTC] — boot init [agent-mem]
 - Added universal GRUB boot config and `make boot`.
 - Kernel initialization routine loads config securely.
 - Host REPL updated to parse /etc/aos/config.json.
 ### Tests
 - `make boot` *(fails: qemu not installed)*
- main
-=======
 
 ## [2025-06-09 08:30 UTC] — sandboxed plugin loader [agent-mem]
 ### Changes
@@ -248,14 +228,3 @@ codex/develop-graphical-desktop-and-ai-copilot
 ### Tests
 - `make plugins`
 - `./examples/plugin_demo.sh`
- main
- codex/implement-tcp/ip-stack-with-basic-services
-=======
- main
- main
- main
- main
-main
-main
- main
- main
