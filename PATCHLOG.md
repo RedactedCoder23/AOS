@@ -389,6 +389,34 @@ by: codex
 ### Baton Pass
 - Address clang-tidy findings and fix failing build targets (`host`, `branch-net`).
 - Continue expanding subsystem docs and update ROADMAP accordingly.
+ codex/standardize-linting,-formatting,-and-dependencies
+
+## [2025-06-09 11:44 UTC] style(ci) sweep [agent-mem]
+### Changes
+- Added GitHub workflow for pre-commit, clang-format and clang-tidy.
+- Added `.pre-commit-config.yaml` and Python `requirements.txt`.
+- Reformatted Python scripts and unified import style.
+- Updated docs with dependency instructions.
+### Tests
+- `clang-format -n`
+- `clang-tidy` *(subset)*
+- `make test-unit`
+- `make test-integration`
+
+## [2025-06-09 11:57 UTC] repo hygiene fixes [agent-mem]
+### Changes
+- Moved generator script to scripts/ and updated references
+- Archived legacy mapping text files
+- Moved installer script to scripts/aos_install.sh and updated app demo
+- Rewrote CI workflow into separate format/tidy/build jobs
+- Added archive and pycache to .gitignore
+### Tests
+- `clang-format -n --Werror $(git ls-files *.c *.h)`
+- `clang-tidy $(git ls-files *.c | head -n 5) -- -Iinclude`
+- `make test-unit`
+- `make test-integration`
+- `pre-commit run --files $(git ls-files *.py *.c *.h *.yaml)` *(fails: Username for https://github.com...)*
+=======
 ## [2025-06-09 11:46 UTC] ci test integration [agent-mem]
 ### Changes
 - Unified unit and integration tests via `make test`.
@@ -397,3 +425,4 @@ by: codex
 ### Tests
 - `make test`
 - `make test-fuzz`
+ main
