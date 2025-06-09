@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+"""Generate and validate command mappings."""
 import argparse
 import json
 import os
@@ -96,7 +97,7 @@ def main() -> None:
     )
     parser.add_argument(
         "--outdir",
-        default="gen",
+        default="src/generated",
         help="directory to write generated files",
     )
     args = parser.parse_args()

@@ -1,3 +1,4 @@
+# Runtime dependency for `scripts/ai_backend.py`
 openai
 pre-commit
 flake8

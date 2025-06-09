@@ -1,5 +1,6 @@
 #!/bin/sh
-set -e
+set -euo pipefail
+# usage: ./qemu_smoke.sh <arch>
 ARCH=$1
 case "$ARCH" in
   x86_64) EMU=qemu-system-x86_64; OPT="-drive format=raw,file=aos.bin" ;;
