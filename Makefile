@@ -99,9 +99,14 @@ policy:
 	gcc -Iinclude src/policy.c examples/policy_demo.c -o build/policy_demo
 
 net:
-	       @echo "→ Building net echo demo"
-	       @mkdir -p build
-	       gcc -Isubsystems/net subsystems/net/net.c examples/net_echo.c -o build/net_echo
+	@echo "→ Building net echo demo"
+	@mkdir -p build
+	gcc -Isubsystems/net subsystems/net/net.c examples/net_echo.c -o build/net_echo
+
+net-http:
+	@echo "→ Building http server demo"
+	@mkdir -p build
+	gcc -Isubsystems/net subsystems/net/net.c examples/http_server.c -o build/http_server
 
 test: host branch
 	@echo "→ Running branch demo"

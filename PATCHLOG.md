@@ -133,3 +133,13 @@ by: codex
 - `./examples/plugin_demo.sh`
 - `./examples/ai_service_demo.sh`
 - `echo "ai test\nexit" | ./build/host_test` *(fails: openai module missing)*
+## [2025-06-09 08:10 UTC] — extended TCP/IP stack [agent-mem]
+### Changes
+- Added UDP helpers and updated net subsystem.
+- New `http_server` example with `net-http` build target.
+- Added demo scripts and README networking section.
+### Tests
+- `make net`
+- `./examples/net_echo_demo.sh`
+- `make net-http`
+- `./examples/net_http_demo.sh`

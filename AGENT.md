@@ -131,3 +131,8 @@ Next agent must:
 - Persist policy configs and validate JSON input.
 - Integrate web UI with live branch data via IPC and secure the HTTP service with tests.
 AI error: missing OPENAI_API_KEY
+## [2025-06-09 08:10 UTC] — extended TCP/IP stack [agent-mem]
+by: codex
+- Added UDP helpers in `subsystems/net` for sendto/recvfrom.
+- Implemented simple `http_server` example and build target.
+- Updated README with networking usage and added demo scripts.
