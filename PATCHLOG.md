@@ -389,3 +389,15 @@ by: codex
 ### Baton Pass
 - Address clang-tidy findings and fix failing build targets (`host`, `branch-net`).
 - Continue expanding subsystem docs and update ROADMAP accordingly.
+
+## [2025-06-09 11:44 UTC] style(ci) sweep [agent-mem]
+### Changes
+- Added GitHub workflow for pre-commit, clang-format and clang-tidy.
+- Added `.pre-commit-config.yaml` and Python `requirements.txt`.
+- Reformatted Python scripts and unified import style.
+- Updated docs with dependency instructions.
+### Tests
+- `clang-format -n`
+- `clang-tidy` *(subset)*
+- `make test-unit`
+- `make test-integration`

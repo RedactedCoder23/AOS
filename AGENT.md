@@ -237,3 +237,9 @@ Next agent must:
 - Resolve clang-tidy warnings and restore `make host` build.
 - Implement TODOs described in subsystem READMEs (dev, security, branch, net, ai, fs, memory).
 - Address open issues listed above and keep ROADMAP updated.
+
+## [2025-06-09 11:44 UTC] style(ci) sweep [agent-mem]
+- Added `.pre-commit-config.yaml` and `requirements.txt`.
+- Fixed Python imports and formatted scripts with `black`.
+- Rewrote `ci.yml` to run clang-format, clang-tidy and pre-commit.
+- Documented dependencies in `docs/getting_started.md`.
