@@ -85,6 +85,12 @@ by: codex
 - Added env var check and latency logging in `ai_syscall.c`.
 - Updated README with new instructions.
 AI error: missing OPENAI_API_KEY
+## [2025-06-09 08:30 UTC] — persistent filesystem [agent-mem]
+by: codex
+- Introduced VFS layer with RAM and disk backends.
+- Added persistent storage under `~/.aosfs`.
+- REPL supports `fs backend <ram|disk>` and `fs delete`.
+- Errors during mount log to AGENT.md and abort.
 AI error: missing OPENAI_API_KEY
 AI latency 204 ms
 AI backend error rc=30720 output=Traceback (most recent call last):

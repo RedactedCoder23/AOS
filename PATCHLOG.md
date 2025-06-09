@@ -133,3 +133,11 @@ by: codex
 - `./examples/plugin_demo.sh`
 - `./examples/ai_service_demo.sh`
 - `echo "ai test\nexit" | ./build/host_test` *(fails: openai module missing)*
+## [2025-06-09 08:30 UTC] — persistent filesystem [agent-mem]
+### Changes
+- Added modular VFS with RAM and disk backends.
+- New commands `fs backend` and `fs delete` in REPL.
+- Persistent files stored under `~/.aosfs`.
+### Tests
+- `make fs`
+- `./build/fs_demo`
