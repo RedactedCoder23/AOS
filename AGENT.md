@@ -85,6 +85,8 @@ by: codex
 - Added env var check and latency logging in `ai_syscall.c`.
 - Updated README with new instructions.
 AI error: missing OPENAI_API_KEY
+codex/implement-security-policy-engine-with-sandbox
+=======
 
 ## [2025-06-09 08:30 UTC] — sandboxed plugin loader [agent-mem]
 by: codex
@@ -92,6 +94,7 @@ by: codex
 - Introduced path validation and hook registration API.
 - Default hook ensures plugins load only from `build/plugins/`.
 AI error: missing OPENAI_API_KEY
+ main
 AI latency 204 ms
 AI backend error rc=30720 output=Traceback (most recent call last):
   ...
@@ -137,6 +140,7 @@ Next agent must:
 - Persist policy configs and validate JSON input.
 - Integrate web UI with live branch data via IPC and secure the HTTP service with tests.
 AI error: missing OPENAI_API_KEY
+codex/implement-tcp/ip-stack-with-basic-services
  codex/implement-tcp/ip-stack-with-basic-services
 ## [2025-06-09 08:10 UTC] — extended TCP/IP stack [agent-mem]
 by: codex
@@ -146,3 +150,98 @@ by: codex
 =======
 plugin validation failed build/plugins/missing.so
  main
+=======
+ codex/implement-persistent-disk-backed-branches-and-sync
+
+## [2025-06-09 08:31 UTC] — persistent branches & federation [agent-mem]
+by: codex
+- Added IO and network error logs.
+- Created persistence and federation demos.
+- Next agent must handle graceful shutdown and JSON validation.
+IO error: load_state fopen failed
+IO error: load_state fopen failed
+IO error: load_state parse error
+IO error: load_state parse error
+IO error: load_state parse error
+IO error: load_state parse error
+IO error: load_state parse error
+IO error: load_state parse error
+IO error: load_state parse error
+IO error: load_state parse error
+IO error: load_state fopen failed
+IO error: load_state fopen failed
+IO error: load_state parse error
+IO error: load_state parse error
+IO error: load_state parse error
+IO error: load_state parse error
+IO error: load_state parse error
+IO error: load_state parse error
+IO error: load_state fopen failed
+IO error: load_state fopen failed
+IO error: load_state parse error
+IO error: load_state parse error
+IO error: load_state parse error
+IO error: load_state parse error
+IO error: load_state fopen failed
+IO error: load_state fopen failed
+IO error: load_state parse error
+IO error: load_state parse error
+IO error: load_state parse error
+IO error: load_state parse error
+IO error: load_state fopen failed
+IO error: load_state fopen failed
+IO error: load_state parse error
+IO error: load_state parse error
+IO error: load_state parse error
+IO error: load_state parse error
+IO error: load_state parse error
+IO error: load_state parse error
+NET error: sync bind fail
+NET error: sync bind fail
+NET error: sync bind fail
+=======
+ codex/implement-security-policy-engine-with-sandbox
+## [2025-06-09 08:10 UTC] — policy engine sandbox v2 [agent-mem]
+by: codex
+- Added YAML parser and file loader in policy engine.
+- Logged policy decisions to `AOS-AUDIT.log`.
+- Implemented per-branch FS sandbox using `bm_current_id`.
+- Updated policy demo to load `examples/policy_rules.yaml`.
+Baton pass: persist policy files and expand syscall coverage.
+=======
+ codex/develop-graphical-desktop-and-ai-copilot
+## [2025-06-09 08:31 UTC] — graphical desktop and ai copilot [agent-mem]
+by: codex
+- Added desktop backend script serving graph JSON and AI endpoint via HTTP.
+- Introduced desktop HTML/JS with drag/drop graph and chat panel.
+- Makefile target `desktop-ui` launches the new service.
+- README updated with usage instructions.
+- Limitations: no authentication and minimal error handling.
+=======
+ codex/add-smoke-tests-and-observability-tools
+
+## [2025-06-09 08:31 UTC] — smoke tests & audit CLI [agent-mem]
+by: codex
+- Added `test-*` Makefile targets for subsystem smoke checks.
+- Created fs, branch, plugin, policy, and net smoke scripts.
+- Introduced Python `audit_cli.py` for log viewing and git rollback.
+Baton pass:
+- Expand smoke tests with CI coverage.
+- Harden rollback to snapshot branches.
+=======
+ codex/implement-bootloader-and-kernel-init
+## [2025-06-09 08:30 UTC] — boot init [agent-mem]
+by: codex
+- Added GRUB config and make boot target.
+- Kernel now calls init and loads config.
+- Host REPL loads /etc/aos/config.json at startup.
+- Boot errors log to AGENT.md and halt.
+boot error: qemu not installed
+=======
+plugin validation failed build/plugins/missing.so
+main
+ main
+ main
+ main
+main
+main

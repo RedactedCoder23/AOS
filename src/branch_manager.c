@@ -17,10 +17,15 @@ static char save_path[PATH_MAX];
 
 static void load_state(void);
 
+static void log_io_error(const char *msg) {
+    FILE *log = fopen("AGENT.md", "a");
+    if (log) { fprintf(log, "IO error: %s\n", msg); fclose(log); }
+}
+
 static void save_state(void) {
     if (!save_path[0]) return;
     FILE *f = fopen(save_path, "w");
-    if (!f) return;
+    if (!f) { log_io_error("save_state fopen failed"); return; }
     fprintf(f, "[\n");
     for (int i = 0; i < graph.count; i++) {
         Branch *b = &graph.branches[i];
@@ -49,7 +54,7 @@ void branch_load_all(void) {
 static void load_state(void) {
     if (!save_path[0]) return;
     FILE *f = fopen(save_path, "r");
-    if (!f) return;
+    if (!f) { log_io_error("load_state fopen failed"); return; }
     graph.count = 0;
     memset(graph.adj, 0, sizeof(graph.adj));
     char line[256];
@@ -79,6 +84,8 @@ static void load_state(void) {
                 graph.adj[cid][b->id] = 1;
             }
             graph.count++;
+        } else {
+            log_io_error("load_state parse error");
         }
     }
     fclose(f);
@@ -215,5 +222,9 @@ const char *bm_current_name(void) {
     if (current_branch >= 0 && current_branch < graph.count)
         return graph.branches[current_branch].name;
     return "default";
+}
+
+int bm_current_id(void) {
+    return current_branch;
 }
 

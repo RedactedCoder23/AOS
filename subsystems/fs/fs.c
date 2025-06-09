@@ -1,4 +1,5 @@
 #include "fs.h"
+#include "branch.h"
 /* [2025-06-09 06:06 UTC] In-memory FS subsystem
  * by: codex
  * Edge cases: lacks persistence and access control.
@@ -6,6 +7,8 @@
  */
 #include <string.h>
 #include <stdio.h>
+
+__attribute__((weak)) int bm_current_id(void) { return 0; }
 
 #define MAX_FILES 16
 #define MAX_NAME 32
@@ -21,30 +24,40 @@ typedef struct File {
     int dir; /* 1 if directory */
 } File;
 
-static File files[MAX_FILES];
+static File files[MAX_BRANCHES][MAX_FILES];
+
+static File *cur_files(void) {
+    int id = bm_current_id();
+    if (id < 0 || id >= MAX_BRANCHES) id = 0;
+    return files[id];
+}
 
 void fs_init(void) {
-    memset(files, 0, sizeof(files));
-    strncpy(files[0].name, "/", MAX_NAME-1);
-    files[0].used = 1;
-    files[0].dir = 1;
+    for (int b=0; b<MAX_BRANCHES; b++) {
+        memset(files[b], 0, sizeof(files[b]));
+        strncpy(files[b][0].name, "/", MAX_NAME-1);
+        files[b][0].used = 1;
+        files[b][0].dir = 1;
+    }
 }
 
 static File *find_file(const char *name) {
+    File *fs = cur_files();
     for (int i = 0; i < MAX_FILES; i++) {
-        if (files[i].used && strcmp(files[i].name, name) == 0)
-            return &files[i];
+        if (fs[i].used && strcmp(fs[i].name, name) == 0)
+            return &fs[i];
     }
     return NULL;
 }
 
 int fs_open(const char *name, const char *mode) {
+    File *fs = cur_files();
     File *f = find_file(name);
     if (f && f->dir)
         return -1; /* cannot open directory */
     if (!f) {
         for (int i = 0; i < MAX_FILES; i++) {
-            if (!files[i].used) { f = &files[i]; break; }
+            if (!fs[i].used) { f = &fs[i]; break; }
         }
         if (!f) return -1;
         memset(f, 0, sizeof(File));
@@ -54,12 +67,13 @@ int fs_open(const char *name, const char *mode) {
     f->pos = 0;
     f->open = 1;
     if (mode && mode[0] == 'w') f->size = 0;
-    return (int)(f - files);
+    return (int)(f - fs);
 }
 
 size_t fs_read(int fd, char *buf, size_t size) {
+    File *fs = cur_files();
     if (fd < 0 || fd >= MAX_FILES) return 0;
-    File *f = &files[fd];
+    File *f = &fs[fd];
     if (!f->open) return 0;
     size_t remain = f->size - f->pos;
     if (size > remain) size = remain;
@@ -69,8 +83,9 @@ size_t fs_read(int fd, char *buf, size_t size) {
 }
 
 size_t fs_write(int fd, const char *buf, size_t size) {
+    File *fs = cur_files();
     if (fd < 0 || fd >= MAX_FILES) return 0;
-    File *f = &files[fd];
+    File *f = &fs[fd];
     if (!f->open) return 0;
     if (f->pos + size > MAX_CONTENT) size = MAX_CONTENT - f->pos;
     memcpy(f->content + f->pos, buf, size);
@@ -80,18 +95,20 @@ size_t fs_write(int fd, const char *buf, size_t size) {
 }
 
 void fs_close(int fd) {
+    File *fs = cur_files();
     if (fd < 0 || fd >= MAX_FILES) return;
-    files[fd].open = 0;
+    fs[fd].open = 0;
 }
 
 int fs_mkdir(const char *name) {
+    File *fs = cur_files();
     if (find_file(name)) return -1;
     for (int i = 0; i < MAX_FILES; i++) {
-        if (!files[i].used) {
-            memset(&files[i], 0, sizeof(File));
-            strncpy(files[i].name, name, MAX_NAME-1);
-            files[i].used = 1;
-            files[i].dir = 1;
+        if (!fs[i].used) {
+            memset(&fs[i], 0, sizeof(File));
+            strncpy(fs[i].name, name, MAX_NAME-1);
+            fs[i].used = 1;
+            fs[i].dir = 1;
             return 0;
         }
     }
@@ -99,7 +116,8 @@ int fs_mkdir(const char *name) {
 }
 
 void fs_ls(void) {
+    File *fs = cur_files();
     for (int i = 1; i < MAX_FILES; i++)
-        if (files[i].used)
-            printf("%s%s\n", files[i].name, files[i].dir ? "/" : "");
+        if (fs[i].used)
+            printf("%s%s\n", fs[i].name, fs[i].dir ? "/" : "");
 }
