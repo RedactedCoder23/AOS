@@ -454,3 +454,13 @@ by: codex
 - `pre-commit run --all-files`
 - `make test-unit`
 - `make test-integration`
+
+## [2025-06-09 13:55 UTC] structure cleanup [agent-mem]
+by: codex-agent-xyz
+### Changes
+- Moved `archive/` to `docs/archive/`.
+- Added new `PROJECT_LAYOUT.md` describing top-level directories.
+- Updated docs/README to reference legacy archive location.
+### Tests
+- `make test-unit`
+- `make test-integration`
