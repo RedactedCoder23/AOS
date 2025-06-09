@@ -434,3 +434,15 @@ by: codex
 - `clang-tidy` *(errors remain)*
 - `pre-commit run` *(failed: GitHub auth prompt)*
 - `make test` *(failed: linker cannot find gcc)*
+## [2025-06-09 13:06 UTC] meta clean sweep [codex]
+### Changes
+- Reviewed docs and READMEs; no broken links found.
+- Ran clang-format and clang-tidy (warnings remain).
+- Installed pre-commit; run fails with InvalidManifestError from llvm repo.
+- `make test` fails due to missing ai.h and mapping generator indentation errors.
+- Consolidated baton passes in AGENT.md.
+### Tests
+- `clang-format -n $(git ls-files '*.c' '*.h')`
+- `clang-tidy $(git ls-files '*.c' | head -n 5) -- -Iinclude`
+- `pre-commit run --files $(git ls-files '*.py' '*.c' '*.h' '*.yaml')` *(fails: InvalidManifestError)*
+- `make test` *(fails: missing ai.h)*
