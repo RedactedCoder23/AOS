@@ -95,6 +95,20 @@ by: codex
 - Audit for fragmentation and add unit tests in memory.c
 - Design persistent storage backend or VFS integration in fs.c
 - Confirm usage/reconcile with new system in branch.c
+codex/integrate-ai-cli-with-llm-apis
+- ~~Replace AI stub with real backend and add retries in ai.c~~ (resolved 2025-06-09 07:51 UTC)
+
+## [2025-06-09 07:51 UTC] — AI backend integration [agent-mem]
+by: codex
+- Replaced HTTP echo stub with call to `ai_infer` using OpenAI API.
+- Added env var check and latency logging in `ai_syscall.c`.
+- Updated README with new instructions.
+AI error: missing OPENAI_API_KEY
+AI error: missing OPENAI_API_KEY
+AI latency 204 ms
+AI backend error rc=30720 output=Traceback (most recent call last):
+  File "/workspace/AOS/scrip
+=======
 - Replace AI stub with real backend and add retries in ai.c
 
 ## [2025-06-09 06:40 UTC] — policy engine & sandbox [agent-mem]
@@ -107,3 +121,4 @@ by: codex
 Next agent must:
 - Extend sandbox hooks to memory, AI, and plugins.
 - Persist policy configs and validate JSON input.
+ main
