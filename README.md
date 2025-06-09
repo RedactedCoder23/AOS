@@ -201,3 +201,6 @@ Check the file whenever a build fails:
 ```bash
 cat AOS-CHECKLIST.log
 ```
+
+## Contributing
+See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
