@@ -6,7 +6,7 @@ all: host bare
 
 # 1. Regenerate C sources from text masters
 generate:
-	python3 generate_aos_mappings.py
+	python3 scripts/generate_aos_mappings.py
 	@$(MAKE) -s checklist
 
 # 2. Build host-side test harness

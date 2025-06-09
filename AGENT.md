@@ -243,3 +243,12 @@ Next agent must:
 - Fixed Python imports and formatted scripts with `black`.
 - Rewrote `ci.yml` to run clang-format, clang-tidy and pre-commit.
 - Documented dependencies in `docs/getting_started.md`.
+
+## [2025-06-09 11:57 UTC] repo hygiene fixes [agent-mem]
+- Moved generator and installer scripts under scripts/
+- Archived old mapping text files
+- Separated CI jobs and fixed paths
+- Updated .gitignore and Makefile references
+
+Next agent must:
+- Verify pre-commit hooks install in CI and local runs without auth errors.

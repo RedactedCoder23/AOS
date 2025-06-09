@@ -1,4 +1,6 @@
-command_map.c commands.c category_defs.h
+command_map.c
+commands.c
+category_defs.h
 
 build
 packages
@@ -8,3 +10,4 @@ aos.iso
 aos.bin
 bootloader.bin
 bare_metal_os/*.bin
+scripts/__pycache__/

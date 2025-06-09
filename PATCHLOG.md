@@ -401,3 +401,17 @@ by: codex
 - `clang-tidy` *(subset)*
 - `make test-unit`
 - `make test-integration`
+
+## [2025-06-09 11:57 UTC] repo hygiene fixes [agent-mem]
+### Changes
+- Moved generator script to scripts/ and updated references
+- Archived legacy mapping text files
+- Moved installer script to scripts/aos_install.sh and updated app demo
+- Rewrote CI workflow into separate format/tidy/build jobs
+- Added archive and pycache to .gitignore
+### Tests
+- `clang-format -n --Werror $(git ls-files *.c *.h)`
+- `clang-tidy $(git ls-files *.c | head -n 5) -- -Iinclude`
+- `make test-unit`
+- `make test-integration`
+- `pre-commit run --files $(git ls-files *.py *.c *.h *.yaml)` *(fails: Username for https://github.com...)*

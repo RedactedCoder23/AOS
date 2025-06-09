@@ -3,8 +3,27 @@ name: ci
 on: [push, pull_request]
 
 jobs:
+  clang-format:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install clang-format
+        run: sudo apt-get update && sudo apt-get install -y clang-format
+      - name: format
+        run: clang-format -n --Werror $(git ls-files '*.c' '*.h')
+
+  clang-tidy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install clang-tidy
+        run: sudo apt-get update && sudo apt-get install -y clang-tidy
+      - name: tidy
+        run: clang-tidy $(git ls-files '*.c') -- -Iinclude
+
   build:
     runs-on: ubuntu-latest
+    needs: [clang-format, clang-tidy]
     strategy:
       matrix:
         arch: [x86_64, riscv64, arm]
@@ -12,29 +31,24 @@ jobs:
       CC_TARGET: ${{ matrix.arch }}
     steps:
       - uses: actions/checkout@v2
-      - name: Install dependencies
+      - name: Install deps
         run: |
           sudo apt-get update
-          sudo apt-get install -y libncurses5-dev libncursesw5-dev pkg-config libcurl4-openssl-dev clang clang-tidy clang-format qemu-system-x86 qemu-system-arm qemu-system-misc
+          sudo apt-get install -y libncurses5-dev libncursesw5-dev pkg-config libcurl4-openssl-dev qemu-system-x86 qemu-system-arm qemu-system-misc
           pip install pre-commit
-      - name: Pre-commit
+      - name: pre-commit
         run: pre-commit run --files $(git ls-files '*.py' '*.c' '*.h' '*.yaml')
-      - name: Clang format check
-        run: clang-format -n --Werror $(git ls-files '*.c' '*.h')
-      - name: Clang tidy
-        run: clang-tidy $(git ls-files '*.c') -- -Iinclude
-      - name: Validate mappings
-        run: python3 generate_aos_mappings.py --validate
-      - name: Build host and demos
+      - name: validate mappings
+        run: python3 scripts/generate_aos_mappings.py --validate
+      - name: build host
         run: make host
-      - name: Unit tests
+      - name: unit tests
         run: make test-unit
-      - name: Integration tests
+      - name: integration tests
         run: make test-integration
-      - name: Test ui
+      - name: ui tests
         run: make ui-check
-      - name: QEMU smoke
+      - name: qemu smoke
         run: |
           make boot CC_TARGET=${{ matrix.arch }}
           ./scripts/qemu_smoke.sh ${{ matrix.arch }}
-
