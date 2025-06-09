@@ -5,14 +5,31 @@ on: [push, pull_request]
 jobs:
   build:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        arch: [x86_64, riscv64, arm]
+    env:
+      CC_TARGET: ${{ matrix.arch }}
     steps:
       - uses: actions/checkout@v2
       - name: Install dependencies
         run: |
           sudo apt-get update
+ codex/improve-project-hygiene-and-cross-platform-build
+          sudo apt-get install -y libncurses5-dev libncursesw5-dev pkg-config libcurl4-openssl-dev clang clang-tidy clang-format qemu-system-x86 qemu-system-arm qemu-system-misc
+      - name: Format check
+        run: |
+          clang-format --version
+          files=$(git ls-files '*.c' '*.h')
+          clang-format -n --Werror $files
+      - name: Clang tidy
+        run: |
+          clang-tidy $(git ls-files '*.c') -- -Iinclude
+=======
           sudo apt-get install -y libncurses5-dev libncursesw5-dev pkg-config libcurl4-openssl-dev
       - name: Validate mappings
         run: python3 generate_aos_mappings.py --validate
+ main
       - name: Build host and demos
         run: make host
       - name: Unit tests
@@ -49,3 +66,7 @@ jobs:
         run: make policy && ./build/policy_demo
       - name: Test ui
         run: make ui-check
+      - name: QEMU smoke
+        run: |
+          make boot CC_TARGET=${{ matrix.arch }}
+          ./scripts/qemu_smoke.sh ${{ matrix.arch }}

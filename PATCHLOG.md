@@ -313,6 +313,21 @@ by: codex
 ### Tests
 - `make test-unit`
 - `make test-integration`
+ codex/improve-project-hygiene-and-cross-platform-build
+
+## [2025-06-09 10:51 UTC] — build hygiene and boot split [agent-mem]
+### Changes
+- Added clang-format and clang-tidy configs with CI integration.
+- Enforced -Wall -Werror for host and kernel builds.
+- Split bootloader into stage1/2 and exposed `bootloader`/`kernel` targets.
+- Introduced cross-arch `CC_TARGET` with QEMU smoke tests.
+- Updated README and Makefiles.
+### Tests
+- `make host`
+- `make bootloader`
+- `make kernel`
+- `make bare`
+=======
  codex/implement-buddy-allocator-and-vfs-with-ext2-plugin
 ## [2025-06-09 10:47 UTC] — memory/fs overhaul [agent-mem]
 ### Changes
@@ -342,3 +357,4 @@ by: codex
  main
 - `make test-unit`
 - `make test-integration`
+ main

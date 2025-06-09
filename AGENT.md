@@ -168,6 +168,15 @@ Next agent must:
 - Updated README with Quickstart, directory map and command flow link.
 - Removed `AOS-CHECKLIST.log` from repository and updated `.gitignore` to exclude logs and build artifacts.
 
+## [2025-06-09 10:51 UTC] build hygiene and boot split [agent-mem]
+- Introduced `.clang-format` and `.clang-tidy` configs.
+- CI now runs formatting and static analysis.
+- Added `bootloader` and `kernel` make targets with modular stages.
+- Bootloader split into `stage1` and `stage2`.
+- Cross-platform build variable `CC_TARGET` with QEMU smoke tests per arch.
+- Enforced `-Wall -Werror` on host and kernel builds.
+- Updated README for new build flow.
+
 Next agent must:
 - Continue filling out subsystem READMEs and ensure diagrams stay updated.
  codex/implement-buddy-allocator-and-vfs-with-ext2-plugin
