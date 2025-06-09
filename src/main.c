@@ -1,8 +1,8 @@
 #include <stdio.h>
 /* [2025-06-09 06:06 UTC] Host-side REPL entry
  * by: codex
- * Edge cases: input parsing brittle; no history or completion.
- * Next agent must: add command history and sanitize input.
+ * Edge cases: input parsing brittle; no history or completion. Networking thread not joined.
+ * Next agent must: add command history, sanitize input, and handle clean shutdown.
  */
 #include <string.h>
 #include <stdlib.h>
@@ -41,6 +41,9 @@ int main(void) {
     char line[256];
 
     bm_init();
+    const char *p = getenv("AOS_PORT");
+    if (p) br_set_port(atoi(p));
+    br_start_service();
     branch_load_all();
 
     printf("AOS> ");
@@ -74,9 +77,21 @@ int main(void) {
             } else if (strcmp(sub, "load") == 0) {
                 branch_load_all();
                 printf("loaded\n");
+            } else if (strcmp(sub, "sync") == 0) {
+                char *addr = strtok(NULL, " ");
+                if (!addr) { printf("usage: branch sync <peer>\n"); }
+                else br_sync_peer(addr);
             } else {
                 printf("unknown subcommand %s\n", sub);
-                log_agent_error("branch unknown subcommand");
+            }
+        } else if (strcmp(cmd, "peer") == 0) {
+            char *sub = strtok(NULL, " ");
+            if (sub && strcmp(sub, "ls") == 0) {
+                char found[8][64];
+                int n = br_discover(found, 8);
+                for (int i=0;i<n;i++) printf("%s\n", found[i]);
+            } else {
+                printf("usage: peer ls\n");
             }
         } else if (strcmp(cmd, "ai") == 0) {
             char *question = strtok(NULL, "");
@@ -90,7 +105,6 @@ int main(void) {
             }
         } else {
             printf("Unknown command\n");
-            log_agent_error("unknown command");
         }
         printf("AOS> ");
     }

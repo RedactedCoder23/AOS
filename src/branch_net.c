@@ -6,11 +6,60 @@
 #include <unistd.h>
 #include <stdlib.h>
 #include <sys/time.h>
+#include <pthread.h>
 
 #define MAX_PEERS 4
 static char peers[MAX_PEERS][64];
 static int peer_count;
 static int local_port = 9999;
+static int server_running;
+static pthread_t server_thread;
+
+static char *build_graph_json(void);
+static void merge_graph_json(const char *json);
+
+/* simple UDP responder for PING and DISCOVER */
+static void *server_loop(void *arg) {
+    int sock = socket(AF_INET, SOCK_DGRAM, 0);
+    if (sock < 0) return NULL;
+    int yes=1;
+    setsockopt(sock, SOL_SOCKET, SO_REUSEADDR, &yes, sizeof(yes));
+    struct sockaddr_in addr = {0};
+    addr.sin_family = AF_INET;
+    addr.sin_port = htons(local_port);
+    addr.sin_addr.s_addr = INADDR_ANY;
+    if (bind(sock, (struct sockaddr*)&addr, sizeof(addr)) < 0) {
+        close(sock); return NULL;
+    }
+    while (server_running) {
+        char buf[2048];
+        struct sockaddr_in cli; socklen_t slen = sizeof(cli);
+        int n = recvfrom(sock, buf, sizeof(buf)-1, 0, (struct sockaddr*)&cli, &slen);
+        if (n <= 0) continue;
+        buf[n] = '\0';
+        if (strcmp(buf, "PING") == 0) {
+            sendto(sock, "PONG", 4, 0, (struct sockaddr*)&cli, slen);
+            char *json = build_graph_json();
+            sendto(sock, json, strlen(json), 0, (struct sockaddr*)&cli, slen);
+            free(json);
+            n = recvfrom(sock, buf, sizeof(buf)-1, 0, (struct sockaddr*)&cli, &slen);
+            if (n > 0) { buf[n]='\0'; merge_graph_json(buf); }
+        } else if (strcmp(buf, "DISCOVER") == 0) {
+            sendto(sock, "HERE", 4, 0, (struct sockaddr*)&cli, slen);
+        } else if (buf[0] == '{') {
+            merge_graph_json(buf);
+        }
+    }
+    close(sock);
+    return NULL;
+}
+
+void br_start_service(void) {
+    if (server_running) return;
+    server_running = 1;
+    pthread_create(&server_thread, NULL, server_loop, NULL);
+    pthread_detach(server_thread);
+}
 
 static char *build_graph_json(void) {
     Branch b[MAX_BRANCHES];
@@ -78,12 +127,59 @@ int bm_sync_all(void) { return br_sync(); }
 
 void br_set_port(int p) { local_port = p; }
 
+/* broadcast discovery request and collect peers */
+int br_discover(char out[][64], int max) {
+    int sock = socket(AF_INET, SOCK_DGRAM, 0);
+    if (sock < 0) return -1;
+    int yes = 1;
+    setsockopt(sock, SOL_SOCKET, SO_BROADCAST, &yes, sizeof(yes));
+    struct sockaddr_in baddr = {0};
+    baddr.sin_family = AF_INET;
+    baddr.sin_port = htons(local_port);
+    baddr.sin_addr.s_addr = INADDR_BROADCAST;
+    sendto(sock, "DISCOVER", 8, 0, (struct sockaddr*)&baddr, sizeof(baddr));
+    struct timeval tv = {1, 0};
+    setsockopt(sock, SOL_SOCKET, SO_RCVTIMEO, &tv, sizeof(tv));
+    int count = 0;
+    while (count < max) {
+        struct sockaddr_in raddr; socklen_t slen = sizeof(raddr);
+        char buf[64];
+        int n = recvfrom(sock, buf, sizeof(buf)-1, 0, (struct sockaddr*)&raddr, &slen);
+        if (n <= 0) break;
+        buf[n]='\0';
+        if (strncmp(buf, "HERE", 4) == 0) {
+            snprintf(out[count], 64, "%s:%d", inet_ntoa(raddr.sin_addr), ntohs(raddr.sin_port));
+            count++;
+        }
+    }
+    close(sock);
+    return count;
+}
+
 int br_peer_add(const char *addr) {
     if (peer_count >= MAX_PEERS) return -1;
     strncpy(peers[peer_count], addr ? addr : "", 63);
     peers[peer_count][63] = '\0';
     printf("added peer %s\n", peers[peer_count]);
     peer_count++;
+    return 0;
+}
+
+static int sync_with_addr(int sock, struct sockaddr_in *addr) {
+    sendto(sock, "PING", 4, 0, (struct sockaddr*)addr, sizeof(*addr));
+    char buf[2048];
+    int n = recvfrom(sock, buf, sizeof(buf)-1, 0, NULL, NULL);
+    if (n <= 0) return -1;
+    buf[n]='\0';
+    if (strncmp(buf, "PONG", 4) == 0) {
+        char *json = build_graph_json();
+        sendto(sock, json, strlen(json), 0, (struct sockaddr*)addr, sizeof(*addr));
+        free(json);
+        n = recvfrom(sock, buf, sizeof(buf)-1, 0, NULL, NULL);
+        if (n > 0) { buf[n]='\0'; merge_graph_json(buf); }
+    } else if (buf[0]=='{') {
+        merge_graph_json(buf);
+    }
     return 0;
 }
 
@@ -117,26 +213,31 @@ int br_sync(void) {
             printf("invalid addr %s\n", peers[i]);
             continue;
         }
-        sendto(sock, "PING", 4, 0, (struct sockaddr*)&addr, sizeof(addr));
-        char buf[2048];
-        int n = recvfrom(sock, buf, sizeof(buf)-1, 0, NULL, NULL);
-        if (n <= 0) {
+        if (sync_with_addr(sock, &addr) < 0) {
             FILE *f = fopen("AOS-CHECKLIST.log", "a");
             if (f) { fprintf(f, "timeout to %s\n", peers[i]); fclose(f); }
             printf("no response from %s\n", peers[i]);
-            continue;
-        }
-        buf[n] = '\0';
-        if (strncmp(buf, "PONG", 4) == 0) {
-            char *json = build_graph_json();
-            sendto(sock, json, strlen(json), 0, (struct sockaddr*)&addr, sizeof(addr));
-            free(json);
-            n = recvfrom(sock, buf, sizeof(buf)-1, 0, NULL, NULL);
-            if (n > 0) { buf[n]='\0'; merge_graph_json(buf); }
-        } else if (buf[0]=='{') {
-            merge_graph_json(buf);
         }
     }
     close(sock);
     return 0;
+}
+
+int br_sync_peer(const char *addr_str) {
+    int sock = socket(AF_INET, SOCK_DGRAM, 0);
+    if (sock < 0) return -1;
+    struct timeval tv = {1, 0};
+    setsockopt(sock, SOL_SOCKET, SO_RCVTIMEO, &tv, sizeof(tv));
+    struct sockaddr_in addr = {0};
+    addr.sin_family = AF_INET;
+    int port = 9999;
+    char host[64];
+    strncpy(host, addr_str, sizeof(host));
+    char *colon = strchr(host, ':');
+    if (colon) { *colon = '\0'; port = atoi(colon + 1); }
+    addr.sin_port = htons(port);
+    if (inet_aton(host, &addr.sin_addr) == 0) { close(sock); return -1; }
+    int r = sync_with_addr(sock, &addr);
+    close(sock);
+    return r;
 }
