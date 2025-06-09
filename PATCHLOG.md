@@ -74,3 +74,12 @@ by: codex
 - `./examples/plugin_demo.sh`
 - `./examples/ai_service_demo.sh`
 - `echo 'ai hello\nexit' | ./build/host_test` *(fails: openai module missing)*
+
+## [2025-06-09 07:51 UTC] — AI backend integration [agent-mem]
+### Changes
+- ai_infer now checks for OPENAI_API_KEY, logs latency, and captures errors.
+- ai.c uses ai_infer for real LLM responses.
+- README updated with OpenAI instructions.
+### Tests
+- `make host`
+- `echo 'ai hello\nexit' | ./build/host_test`

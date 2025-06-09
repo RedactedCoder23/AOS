@@ -5,6 +5,8 @@
  * Next agent must: see AGENT.md "UNRESOLVED ISSUES".
  */
 #include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
 
 static int service_id;
 
@@ -21,18 +23,47 @@ int ai_infer(const char *prompt, char *out, unsigned long outsz) {
     if (!prompt || !out || outsz == 0)
         return -1;
 
+    const char *key = getenv("OPENAI_API_KEY");
+    if (!key) key = getenv("AOS_OPENAI_API_KEY");
+    if (!key) {
+        if (outsz > 0)
+            snprintf(out, outsz, "missing OPENAI_API_KEY");
+        FILE *log = fopen("AGENT.md", "a");
+        if (log) {
+            fprintf(log, "AI error: missing OPENAI_API_KEY\n");
+            fclose(log);
+        }
+        return -1;
+    }
+
     char cmd[512];
     /* call external Python backend with escaped prompt */
-    snprintf(cmd, sizeof(cmd), "scripts/ai_backend.py \"%s\"", prompt);
+    snprintf(cmd, sizeof(cmd), "scripts/ai_backend.py \"%s\" 2>&1", prompt);
 
+    struct timespec t0, t1;
+    clock_gettime(CLOCK_MONOTONIC, &t0);
     FILE *fp = popen(cmd, "r");
     if (!fp) {
         snprintf(out, outsz, "error: popen failed");
+        FILE *log = fopen("AGENT.md", "a");
+        if (log) {
+            fprintf(log, "AI error: popen failed\n");
+            fclose(log);
+        }
         return -1;
     }
     size_t n = fread(out, 1, outsz - 1, fp);
     out[n] = '\0';
     int rc = pclose(fp);
+    clock_gettime(CLOCK_MONOTONIC, &t1);
+    long ms = (t1.tv_sec - t0.tv_sec) * 1000 + (t1.tv_nsec - t0.tv_nsec) / 1000000;
+    FILE *log = fopen("AGENT.md", "a");
+    if (log) {
+        fprintf(log, "AI latency %ld ms\n", ms);
+        if (rc != 0)
+            fprintf(log, "AI backend error rc=%d output=%s\n", rc, out);
+        fclose(log);
+    }
     if (rc != 0)
         return -1;
     return 0;
