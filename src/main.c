@@ -105,7 +105,7 @@ int main(void) {
         } else if (strcmp(cmd, "fs") == 0) {
             char *sub = strtok(NULL, " ");
             if (!sub) {
-                printf("usage: fs <mkdir|open|write|read|close|ls> ...\n");
+                printf("usage: fs <mkdir|open|write|read|close|delete|backend|ls> ...\n");
             } else if (strcmp(sub, "mkdir") == 0) {
                 char *name = strtok(NULL, " ");
                 if (!name) printf("missing name\n");
@@ -147,6 +147,21 @@ int main(void) {
                 char *sfd = strtok(NULL, " ");
                 if (!sfd) printf("usage: fs close <fd>\n");
                 else fs_close(atoi(sfd));
+            } else if (strcmp(sub, "delete") == 0) {
+                char *name = strtok(NULL, " ");
+                if (!name) printf("usage: fs delete <name>\n");
+                else if (fs_delete(name) < 0) printf("delete error\n");
+            } else if (strcmp(sub, "backend") == 0) {
+                char *type = strtok(NULL, " ");
+                if (!type) {
+                    printf("usage: fs backend <ram|disk>\n");
+                } else if (strcmp(type, "ram") == 0) {
+                    fs_use_ramfs();
+                } else if (strcmp(type, "disk") == 0) {
+                    if (fs_use_persistent() != 0) printf("mount error\n");
+                } else {
+                    printf("unknown backend %s\n", type);
+                }
             } else if (strcmp(sub, "ls") == 0) {
                 fs_ls();
             } else {

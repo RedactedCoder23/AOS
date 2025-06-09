@@ -85,6 +85,14 @@ by: codex
 - Added env var check and latency logging in `ai_syscall.c`.
 - Updated README with new instructions.
 AI error: missing OPENAI_API_KEY
+ codex/implement-modular-vfs-with-ramfs-and-ext2
+## [2025-06-09 08:30 UTC] — persistent filesystem [agent-mem]
+by: codex
+- Introduced VFS layer with RAM and disk backends.
+- Added persistent storage under `~/.aosfs`.
+- REPL supports `fs backend <ram|disk>` and `fs delete`.
+- Errors during mount log to AGENT.md and abort.
+=======
 codex/implement-security-policy-engine-with-sandbox
 =======
 
@@ -93,6 +101,7 @@ by: codex
 - Added rlimit-based sandbox for plugin init/exec/cleanup.
 - Introduced path validation and hook registration API.
 - Default hook ensures plugins load only from `build/plugins/`.
+ main
 AI error: missing OPENAI_API_KEY
  main
 AI latency 204 ms
