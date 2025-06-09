@@ -345,6 +345,20 @@ void cmd_br_sync_all_wrapper(int argc, char **argv) {
     bm_sync_all();
 }
 
+void cmd_br_discover_wrapper(int argc, char **argv) {
+    (void)argc; (void)argv; ensure_init();
+    char found[8][64];
+    int n = br_discover(found, 8);
+    for (int i = 0; i < n; i++)
+        printf("%s\n", found[i]);
+}
+
+void cmd_br_sync_peer_wrapper(int argc, char **argv) {
+    ensure_init();
+    if (argc < 2) { printf("usage: BR_SYNC_PEER <addr>\n"); return; }
+    br_sync_peer(argv[1]);
+}
+
 void cmd_ai_service_create_wrapper(int argc, char **argv) {
     ensure_init();
     const char *type = argc > 1 ? argv[1] : "generic";

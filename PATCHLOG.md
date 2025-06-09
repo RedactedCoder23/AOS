@@ -39,6 +39,15 @@ by: codex
 
 Next agent must:
 - Ensure all future patches maintain this style and expand documentation.
+ codex/implement-udp-based-peer-discovery-and-branch-sync
+
+## [2025-06-09 06:17 UTC] — federation MVP
+by: codex
+- Added UDP peer discovery and branch sync service.
+- New CLI commands `peer ls` and `branch sync <peer>` in REPL.
+- Updated AGENT log and resolved previous unknown command issue.
+- Limitations documented; requires protocol refinement.
+=======
  codex/implement-plugin-loader-and-hot-swap-framework
 
 ## [2025-06-09 06:18 UTC] — plugin hot-swap MVP
@@ -56,4 +65,5 @@ by: codex
 - Added ai_backend Python helper calling OpenAI ChatCompletion.
 - ai_syscall.c spawns helper for `ai` REPL command.
 - Documented env var requirement in AGENT.md.
+ main
  main

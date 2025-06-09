@@ -54,6 +54,9 @@ int bm_vm_stop(int id);
 int br_peer_add(const char *addr);
 int br_sync(void);
 void br_set_port(int port);
+void br_start_service(void);
+int br_discover(char out[][64], int max);
+int br_sync_peer(const char *addr);
 int bm_sync_all(void);
 /*
 Graph JSON format:

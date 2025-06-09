@@ -30,6 +30,10 @@ Initial repository had no AGENT log. PATCHLOG.md notes prior work on branch CLI 
 - Fixed branch graph orientation bug. Clone now links parent->child for tree output.
 - Updated load_state to rebuild symmetric adjacency matrix.
 - Verified `branch tree` prints hierarchy correctly.
+ codex/implement-udp-based-peer-discovery-and-branch-sync
+RESOLVED: unknown command handled in REPL
+=======
+ main
 ## [2025-06-09 06:06 UTC] — meta sweep: repo agent-memory update
 by: codex
 - Introduced time-stamped log format and baton-pass comments across core subsystems.
@@ -38,6 +42,17 @@ by: codex
 
 Next agent must:
 - Follow the same log and comment style for all future updates.
+ codex/implement-udp-based-peer-discovery-and-branch-sync
+- Refine peer discovery protocol and implement graceful shutdown of network thread.
+
+### Step 5 — [2025-06-09 06:17 UTC] by codex
+- Implemented UDP peer discovery and sync in `branch_net.c` with `br_start_service`, `br_discover`, and `br_sync_peer` APIs.
+- Added REPL commands `peer ls` and `branch sync <peer>`.
+- Network server replies to `DISCOVER` and `PING` messages; simple broadcast used for discovery.
+- Removed error log for unknown commands, resolving previous UNRESOLVED entry.
+- Limitations: no authentication, blocking server thread, and fixed port 9999.
+
+=======
  codex/implement-plugin-loader-and-hot-swap-framework
 - Review plugin sandboxing and security.
 
@@ -57,3 +72,4 @@ by: codex
 - Requires `OPENAI_API_KEY` and network access.
 - Limited quoting, prompts with quotes may fail.
 main
+ main
