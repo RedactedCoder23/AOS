@@ -15,13 +15,18 @@ static int local_port = 9999;
 static int server_running;
 static pthread_t server_thread;
 
+static void log_net_error(const char *msg) {
+    FILE *log = fopen("AGENT.md", "a");
+    if (log) { fprintf(log, "NET error: %s\n", msg); fclose(log); }
+}
+
 static char *build_graph_json(void);
 static void merge_graph_json(const char *json);
 
 /* simple UDP responder for PING and DISCOVER */
 static void *server_loop(void *arg) {
     int sock = socket(AF_INET, SOCK_DGRAM, 0);
-    if (sock < 0) return NULL;
+    if (sock < 0) { log_net_error("server_loop socket fail"); return NULL; }
     int yes=1;
     setsockopt(sock, SOL_SOCKET, SO_REUSEADDR, &yes, sizeof(yes));
     struct sockaddr_in addr = {0};
@@ -29,6 +34,7 @@ static void *server_loop(void *arg) {
     addr.sin_port = htons(local_port);
     addr.sin_addr.s_addr = INADDR_ANY;
     if (bind(sock, (struct sockaddr*)&addr, sizeof(addr)) < 0) {
+        log_net_error("server_loop bind fail");
         close(sock); return NULL;
     }
     while (server_running) {
@@ -130,14 +136,15 @@ void br_set_port(int p) { local_port = p; }
 /* broadcast discovery request and collect peers */
 int br_discover(char out[][64], int max) {
     int sock = socket(AF_INET, SOCK_DGRAM, 0);
-    if (sock < 0) return -1;
+    if (sock < 0) { log_net_error("discover socket fail"); return -1; }
     int yes = 1;
     setsockopt(sock, SOL_SOCKET, SO_BROADCAST, &yes, sizeof(yes));
     struct sockaddr_in baddr = {0};
     baddr.sin_family = AF_INET;
     baddr.sin_port = htons(local_port);
     baddr.sin_addr.s_addr = INADDR_BROADCAST;
-    sendto(sock, "DISCOVER", 8, 0, (struct sockaddr*)&baddr, sizeof(baddr));
+    if (sendto(sock, "DISCOVER", 8, 0, (struct sockaddr*)&baddr, sizeof(baddr)) < 0)
+        log_net_error("discover sendto fail");
     struct timeval tv = {1, 0};
     setsockopt(sock, SOL_SOCKET, SO_RCVTIMEO, &tv, sizeof(tv));
     int count = 0;
@@ -166,10 +173,11 @@ int br_peer_add(const char *addr) {
 }
 
 static int sync_with_addr(int sock, struct sockaddr_in *addr) {
-    sendto(sock, "PING", 4, 0, (struct sockaddr*)addr, sizeof(*addr));
+    if (sendto(sock, "PING", 4, 0, (struct sockaddr*)addr, sizeof(*addr)) < 0)
+        log_net_error("sync send PING fail");
     char buf[2048];
     int n = recvfrom(sock, buf, sizeof(buf)-1, 0, NULL, NULL);
-    if (n <= 0) return -1;
+    if (n <= 0) { log_net_error("sync recv PONG fail"); return -1; }
     buf[n]='\0';
     if (strncmp(buf, "PONG", 4) == 0) {
         char *json = build_graph_json();
@@ -177,6 +185,7 @@ static int sync_with_addr(int sock, struct sockaddr_in *addr) {
         free(json);
         n = recvfrom(sock, buf, sizeof(buf)-1, 0, NULL, NULL);
         if (n > 0) { buf[n]='\0'; merge_graph_json(buf); }
+        else log_net_error("sync recv graph fail");
     } else if (buf[0]=='{') {
         merge_graph_json(buf);
     }
@@ -190,13 +199,15 @@ int br_sync(void) {
         perror("socket");
         FILE *f = fopen("AOS-CHECKLIST.log", "a");
         if (f) { fprintf(f, "socket error\n"); fclose(f); }
+        log_net_error("sync socket fail");
         return -1;
     }
     struct sockaddr_in laddr = {0};
     laddr.sin_family = AF_INET;
     laddr.sin_port = htons(local_port);
     laddr.sin_addr.s_addr = INADDR_ANY;
-    bind(sock, (struct sockaddr*)&laddr, sizeof(laddr));
+    if (bind(sock, (struct sockaddr*)&laddr, sizeof(laddr)) < 0)
+        log_net_error("sync bind fail");
 
     struct timeval tv = {1, 0};
     setsockopt(sock, SOL_SOCKET, SO_RCVTIMEO, &tv, sizeof(tv));
@@ -225,7 +236,7 @@ int br_sync(void) {
 
 int br_sync_peer(const char *addr_str) {
     int sock = socket(AF_INET, SOCK_DGRAM, 0);
-    if (sock < 0) return -1;
+    if (sock < 0) { log_net_error("sync_peer socket fail"); return -1; }
     struct timeval tv = {1, 0};
     setsockopt(sock, SOL_SOCKET, SO_RCVTIMEO, &tv, sizeof(tv));
     struct sockaddr_in addr = {0};
@@ -236,8 +247,12 @@ int br_sync_peer(const char *addr_str) {
     char *colon = strchr(host, ':');
     if (colon) { *colon = '\0'; port = atoi(colon + 1); }
     addr.sin_port = htons(port);
-    if (inet_aton(host, &addr.sin_addr) == 0) { close(sock); return -1; }
+    if (inet_aton(host, &addr.sin_addr) == 0) {
+        log_net_error("sync_peer inet_aton fail");
+        close(sock); return -1;
+    }
     int r = sync_with_addr(sock, &addr);
+    if (r < 0) log_net_error("sync_peer timeout");
     close(sock);
     return r;
 }

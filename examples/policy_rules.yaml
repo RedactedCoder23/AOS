@@ -1,0 +1,8 @@
+- branch: default
+  app: repl
+  syscall: FS_OPEN
+  allow: true
+- branch: default
+  app: repl
+  syscall: FS_WRITE
+  allow: false
