@@ -69,7 +69,7 @@ void cmd_mem_alloc_wrapper(int argc, char **argv) {
         log_checklist("MEM_ALLOC invalid size");
         return;
     }
-    void *p = memory_alloc(sz);
+    void *p = mem_alloc(sz);
     if (!p) {
         printf("Error: out of memory\n");
         log_checklist("MEM_ALLOC out of memory");
@@ -94,7 +94,7 @@ void cmd_mem_free_wrapper(int argc, char **argv) {
         return;
     }
     void *p = (void*)addr;
-    memory_free(p);
+    mem_free(p);
     printf("Freed %p\n", p);
 }
 
