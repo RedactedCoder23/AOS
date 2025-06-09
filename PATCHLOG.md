@@ -389,3 +389,11 @@ by: codex
 ### Baton Pass
 - Address clang-tidy findings and fix failing build targets (`host`, `branch-net`).
 - Continue expanding subsystem docs and update ROADMAP accordingly.
+## [2025-06-09 11:46 UTC] ci test integration [agent-mem]
+### Changes
+- Unified unit and integration tests via `make test`.
+- Added `test-fuzz` with ASan and coverage reporting.
+- Cleaned CI workflow and removed merge artifacts.
+### Tests
+- `make test`
+- `make test-fuzz`

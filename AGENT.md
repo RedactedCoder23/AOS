@@ -238,6 +238,12 @@ Next agent must:
 - Implement TODOs described in subsystem READMEs (dev, security, branch, net, ai, fs, memory).
 - Address open issues listed above and keep ROADMAP updated.
 
+ codex/integrate-tests-into-ci-with-github-actions
+## [2025-06-09 11:46 UTC] ci test integration [agent-mem]
+- Integrated unit, integration and fuzz tests under unified `make test`.
+- Added ASan fuzz harness and simple coverage reporting.
+- Rewrote CI workflow to invoke new targets.
+=======
 ## [2025-06-09 11:45 UTC] build refactor [agent-mem]
 - Replaced monolithic Makefile with pattern rules and parallel build flag.
 - Added dependency checks and modular boot targets.
@@ -245,3 +251,4 @@ Next agent must:
 
 Next agent must:
 - Monitor CI for stability and extend build scripts as features land.
+ main

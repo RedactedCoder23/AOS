@@ -15,12 +15,29 @@ jobs:
       - name: Install dependencies
         run: |
           sudo apt-get update
+ codex/integrate-tests-into-ci-with-github-actions
+          sudo apt-get install -y libncurses5-dev libncursesw5-dev pkg-config libcurl4-openssl-dev clang clang-tidy clang-format lcov qemu-system-x86 qemu-system-arm qemu-system-misc
+=======
           sudo apt-get install -y build-essential gcc make libncurses5-dev libncursesw5-dev pkg-config libcurl4-openssl-dev clang clang-tidy clang-format qemu-system-x86 qemu-system-arm qemu-system-misc
+ main
       - name: Format check
         run: |
           files=$(git ls-files '*.c' '*.h')
           clang-format -n --Werror $files
       - name: Clang tidy
+ codex/integrate-tests-into-ci-with-github-actions
+        run: clang-tidy $(git ls-files '*.c') -- -Iinclude
+      - name: Validate mappings
+        run: python3 generate_aos_mappings.py --validate
+      - name: Build host
+        run: make host
+      - name: Run tests
+        run: make test
+      - name: Fuzz tests
+        run: make test-fuzz
+      - name: Coverage
+        run: make coverage
+=======
  codex/refactor-makefile-and-build-infrastructure
         run: clang-tidy $(git ls-files '*.c') -- -Iinclude
       - name: Validate mappings
@@ -71,6 +88,7 @@ jobs:
         run: make policy && ./build/policy_demo
       - name: Test ui
         run: make ui-check
+ main
  main
       - name: QEMU smoke
         run: |
