@@ -15,3 +15,5 @@ aos.bin
 bootloader.bin
 bare_metal_os/*.bin
 scripts/__pycache__/
+ui/node_modules/
+ui/dist/

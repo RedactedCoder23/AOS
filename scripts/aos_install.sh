@@ -1,4 +1,6 @@
 #!/bin/sh
+set -euo pipefail
+# usage: ./aos_install.sh install <files...>
 cmd=$1
 shift
 case "$cmd" in

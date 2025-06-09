@@ -1,0 +1,17 @@
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "aos-scripts"
+version = "0.1.0"
+description = "Helper scripts for AOS"
+authors = [{name = "AOS Team"}]
+readme = "README.md"
+requires-python = ">=3.8"
+
+[tool.setuptools]
+packages = ["scripts"]
+
+[project.scripts]
+aos-audit = "scripts.audit_cli:main"

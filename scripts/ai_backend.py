@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+"""Backend helper to query OpenAI API."""
 import os
 import sys
 import openai

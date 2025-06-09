@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+"""Generate and validate command mappings."""
 import argparse
 import json
 import os
