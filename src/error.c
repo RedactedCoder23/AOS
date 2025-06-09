@@ -11,4 +11,4 @@ const char *aos_strerror(AosError err) {
     default: return "unknown";
     }
 }
-#include "error.h"\nAosError aos_last_error = AOS_OK;
+AosError aos_last_error = AOS_OK;

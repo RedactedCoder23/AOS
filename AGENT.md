@@ -76,7 +76,6 @@ Initial repository had no AGENT log. `PATCHLOG.md` captured early development on
 - Integrate persistent storage backend with the filesystem.
 - Integrate web UI with live branch data and secure HTTP service.
 - Expand smoke tests with CI coverage and rollback support.
-plugin validation failed build/plugins/missing.so
 
 ## [2025-06-09 09:30 UTC] documentation sweep [agent-mem]
 - Expanded README with architecture overview and troubleshooting notes.
@@ -137,3 +136,26 @@ Next agent must:
 
 Next agent must:
 - Extend profiler to collect multiple samples and integrate with logging.
+
+## Baton Pass
+- Continue expanding subsystem READMEs with usage notes.
+- Review remaining subsystems for missing comments.
+- Expand tests across subsystems.
+- Flesh out dev and security subsystem APIs.
+- Use AosError consistently.
+- Update ROADMAP.md as milestones land.
+- Monitor community channels for CODE_OF_CONDUCT compliance.
+- Extend profiler to gather multiple samples and hook into logging.
+
+## [2025-06-09 09:58 UTC] meta sweep [agent-mem]
+- Cleaned open issues and unified baton pass list.
+- Added docs/README and profiler docblocks.
+- Updated README with meta-log links.
+
+
+## [2025-06-09 10:12 UTC] meta polish [agent-mem]
+- Added README placeholders for remaining subsystems.
+- Fixed ui_graph build by linking logging sources.
+- Linked profiler stub from README.
+- Corrected bare_metal_os Makefile tabs so `make clean` works.
+- Consolidated baton pass list.

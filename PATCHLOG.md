@@ -284,3 +284,23 @@ by: codex
 - Documented basic usage in docs/profiler_usage.md.
 ### Tests
 - `grep profiler_start -n src/profiler.c`
+
+## [2025-06-09 09:58 UTC] — meta sweep [agent-mem]
+### Changes
+- Added docs/README.md and updated README links.
+- Inserted profiler documentation comments.
+- Consolidated AGENT.md open tasks.
+### Tests
+- `make test-unit`
+- `make test-integration`
+
+## [2025-06-09 10:12 UTC] — meta polish [agent-mem]
+### Changes
+- Added subsystem README placeholders and referenced profiler usage in README.
+- Fixed Makefile ui_graph target to link logging sources.
+- Corrected bare_metal_os Makefile tabs for clean target.
+- Updated baton pass list in AGENT.md.
+### Tests
+- `make host`
+- `make test-unit`
+- `make test-integration`

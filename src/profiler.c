@@ -1,3 +1,5 @@
+/* Profiler implementation stub. Measures elapsed time between start and report. TODO: integrate with logging subsystem. */
+
 #include "profiler.h"
 #include <time.h>
 #include <stdio.h>
