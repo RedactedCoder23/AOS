@@ -14,8 +14,9 @@ NCURSES_LIBS := $(shell pkg-config --libs ncurses 2>/dev/null || echo -lncurses)
 host: generate subsystems
 	@echo "→ Building host binaries"
 	@mkdir -p build
-        gcc -rdynamic -Iinclude -Isubsystems/memory -Isubsystems/fs -Isubsystems/ai -Isubsystems/branch -Isubsystems/net $(NCURSES_CFLAGS) src/main.c src/interpreter.c src/branch_manager.c src/ui_graph.c src/branch_vm.c src/plugin_loader.c src/branch_net.c src/ai_syscall.c src/policy.c src/memory.c src/app_runtime.c src/config.c src/logging.c src/error.c command_map.c commands.c subsystems/memory/memory.c subsystems/fs/fs.c subsystems/ai/ai.c subsystems/branch/branch.c subsystems/net/net.c $(NCURSES_LIBS) -ldl -lcurl -lm -o build/host_test
-	gcc -Iinclude $(NCURSES_CFLAGS) src/ui_graph.c src/branch_manager.c src/ui_main.c $(NCURSES_LIBS) -lm -o build/ui_graph
+	gcc -rdynamic -Iinclude -Isubsystems/memory -Isubsystems/fs -Isubsystems/ai -Isubsystems/branch -Isubsystems/net $(NCURSES_CFLAGS) src/main.c src/interpreter.c src/branch_manager.c src/ui_graph.c src/branch_vm.c src/plugin_loader.c src/branch_net.c src/ai_syscall.c src/policy.c src/memory.c src/app_runtime.c src/config.c src/logging.c src/error.c command_map.c commands.c subsystems/memory/memory.c subsystems/fs/fs.c subsystems/ai/ai.c subsystems/branch/branch.c subsystems/net/net.c $(NCURSES_LIBS) -ldl -lcurl -lm -o build/host_test
+	gcc -Iinclude $(NCURSES_CFLAGS) src/ui_graph.c src/branch_manager.c \
+	    src/logging.c src/error.c src/ui_main.c $(NCURSES_LIBS) -lm -o build/ui_graph
 
 # 3. Build bare-metal image
 bare: generate
@@ -60,7 +61,7 @@ clean:
 memory:
 	@echo "→ Building memory demo"
 	@mkdir -p build
-	gcc -Isubsystems/memory subsystems/memory/memory.c src/memory.c examples/memory_demo.c -o build/memory_demo
+	gcc -Isubsystems/memory -Iinclude subsystems/memory/memory.c src/memory.c examples/memory_demo.c src/logging.c src/error.c -o build/memory_demo
 
 fs:
 	@echo "→ Building fs demo"
@@ -143,22 +144,22 @@ test-policy: policy
 	./examples/policy_smoke.sh
 
 test-net: net
-        ./examples/net_echo_test.sh
+	./examples/net_echo_test.sh
 
 test-unit:
-@echo "→ Running unit tests"
-@mkdir -p build/tests
-gcc -Isubsystems/memory -Iinclude tests/unit/test_memory.c \
-subsystems/memory/memory.c -o build/tests/test_memory
-@./build/tests/test_memory
+	@echo "→ Running unit tests"
+	@mkdir -p build/tests
+	gcc -Isubsystems/memory -Iinclude tests/unit/test_memory.c \
+	subsystems/memory/memory.c src/logging.c src/error.c -o build/tests/test_memory
+	@./build/tests/test_memory
 
 test-integration:
-@echo "→ Running integration tests"
-@mkdir -p build/tests
-gcc -Isubsystems/fs -Isubsystems/memory -Iinclude \
-tests/integration/test_fs_memory.c \
-subsystems/fs/fs.c subsystems/memory/memory.c -o build/tests/test_fs
-@./build/tests/test_fs
+	@echo "→ Running integration tests"
+	@mkdir -p build/tests
+	gcc -Isubsystems/fs -Isubsystems/memory -Iinclude \
+	tests/integration/test_fs_memory.c \
+	subsystems/fs/fs.c subsystems/memory/memory.c src/logging.c src/error.c -o build/tests/test_fs
+	@./build/tests/test_fs
 
 efi:
 	@echo "→ Building EFI stub"

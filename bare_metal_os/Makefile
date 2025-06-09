@@ -17,10 +17,10 @@ kernel.bin: kernel.c memory.c fs.c branch.c interpreter/command_interpreter.c ..
 	$(CC) $(CFLAGS) -I.. -I../include -c interpreter/command_interpreter.c -o command_interpreter.o
 	$(CC) $(CFLAGS) -I.. -I../include -c ../commands.c -o commands.o
 	$(CC) $(CFLAGS) -I.. -I../include -c ../command_map.c -o command_map.o
-        $(CC) $(CFLAGS) -I.. -I../include -c config_stub.c -o config.o
-        $(CC) $(CFLAGS) -I.. -I../include -c ../logging.c -o logging.o
-        $(CC) $(CFLAGS) -I.. -I../include -c ../error.c -o error.o
-        $(LD) $(LDFLAGS) kernel.o memory.o fs.o branch.o command_interpreter.o commands.o command_map.o config.o logging.o error.o -o kernel.elf
+	$(CC) $(CFLAGS) -I.. -I../include -c config_stub.c -o config.o
+	$(CC) $(CFLAGS) -I.. -I../include -c ../logging.c -o logging.o
+	$(CC) $(CFLAGS) -I.. -I../include -c ../error.c -o error.o
+	$(LD) $(LDFLAGS) kernel.o memory.o fs.o branch.o command_interpreter.o commands.o command_map.o config.o logging.o error.o -o kernel.elf
 	objcopy -O binary kernel.elf kernel.bin
 
 bootloader.bin: bootloader.asm kernel.bin

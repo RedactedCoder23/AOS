@@ -223,3 +223,5 @@ cat AOS-CHECKLIST.log
 See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
 See [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md) for community standards.
 Additional developer documentation is available under the [docs/](docs/) directory.
+See [docs/profiler_usage.md](docs/profiler_usage.md) for the profiler stub.
+See [AGENT.md](AGENT.md) and [PATCHLOG.md](PATCHLOG.md) for development logs. The roadmap is maintained in [ROADMAP.md](ROADMAP.md).
