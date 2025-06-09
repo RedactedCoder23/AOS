@@ -454,3 +454,12 @@ by: codex
 - `pre-commit run --all-files`
 - `make test-unit`
 - `make test-integration`
+
+## [2025-06-09 14:15 UTC] dependency split [agent-mem]
+### Changes
+- Documented openai usage comment in `requirements.txt`.
+- Added `requirements-dev.txt` with pinned dev tools.
+- Added Setup section in README describing how to install both requirement files.
+### Tests
+- `python3 -m venv venv && source venv/bin/activate && pip install -r requirements.txt`
+- `pip install -r requirements-dev.txt && pytest --maxfail=1 --disable-warnings -q`

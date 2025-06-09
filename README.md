@@ -11,6 +11,15 @@ make host
 ./build/host_test
 ```
 
+## Setup
+
+Install runtime and development Python dependencies:
+
+```bash
+pip install -r requirements.txt
+pip install -r requirements-dev.txt
+```
+
 This compiles the host REPL and launches an interactive session.
 
 ## Architecture Overview
