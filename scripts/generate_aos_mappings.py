@@ -96,7 +96,7 @@ def main() -> None:
     )
     parser.add_argument(
         "--outdir",
-        default="gen",
+        default="src/generated",
         help="directory to write generated files",
     )
     args = parser.parse_args()

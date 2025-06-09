@@ -3,6 +3,7 @@ command_map.c
 commands.c
 category_defs.h
 gen/
+src/generated/
 
 # Build outputs
 build/

@@ -312,3 +312,7 @@ Previous baton passes and session notes kept above.
 - Restricted whitespace/yaml hooks to specific file types.
 - Fixed Makefile test targets and ensured unit/integration tests build.
 - Verified `pre-commit run --all-files`, `make test-unit`, and `make test-integration` all succeed.
+## [2025-06-09 22:25 UTC] generated code path update [codex-agent]
+- Moved generated sources to `src/generated/` and updated Makefiles.
+- Added `regenerate` rule invoking the mappings generator.
+- Updated docs and ignore file.
