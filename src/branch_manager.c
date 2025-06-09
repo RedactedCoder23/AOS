@@ -211,3 +211,9 @@ int bm_graph(BranchGraph *out) {
     return graph.count;
 }
 
+const char *bm_current_name(void) {
+    if (current_branch >= 0 && current_branch < graph.count)
+        return graph.branches[current_branch].name;
+    return "default";
+}
+
