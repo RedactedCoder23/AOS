@@ -26,3 +26,8 @@
 
 ### Tests
 - `make test`
+
+### Session 2
+- Fixed orientation of adjacency matrix so tree view shows child branches.
+- Updated load_state for symmetric edges.
+- Verified with `make host` and `./build/host_test`.

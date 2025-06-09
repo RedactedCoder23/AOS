@@ -25,3 +25,9 @@ Initial repository had no AGENT log. PATCHLOG.md notes prior work on branch CLI 
 
 ### Step 4
 - Added buffer-based ai_infer stub and integrated `ai` command in REPL.
+
+### Session 2
+- Fixed branch graph orientation bug. Clone now links parent->child for tree output.
+- Updated load_state to rebuild symmetric adjacency matrix.
+- Verified `branch tree` prints hierarchy correctly.
+UNRESOLVED: unknown command

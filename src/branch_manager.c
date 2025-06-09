@@ -68,8 +68,11 @@ static void load_state(void) {
             }
             b->origin = 0;
             b->parent = b->conn_count ? b->connections[0] : -1;
-            for (int j=0;j<b->conn_count;j++)
-                graph.adj[b->id][b->connections[j]] = 1;
+            for (int j=0;j<b->conn_count;j++) {
+                int cid = b->connections[j];
+                graph.adj[b->id][cid] = 1;
+                graph.adj[cid][b->id] = 1;
+            }
             graph.count++;
         }
     }
@@ -125,8 +128,10 @@ int bm_clone(int id, const char *name) {
         Branch *b = &graph.branches[nid];
         b->conn_count = 1;
         b->connections[0] = id;
-        graph.adj[nid][id] = 1;
         b->parent = id;
+        /* link parent->child and child->parent for graph traversal */
+        graph.adj[id][nid] = 1;
+        graph.adj[nid][id] = 1;
     }
     return nid;
 }
