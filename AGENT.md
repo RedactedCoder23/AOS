@@ -81,6 +81,12 @@ by: codex
 - `./examples/ai_service_demo.sh`
 - `echo 'ai hello\nexit' | ./build/host_test` *(fails: openai module missing)*
 
+## [2025-06-09 07:51 UTC] — minimal network stack [agent-mem]
+by: codex
+- Introduced `net` subsystem with TCP wrappers (open, bind, listen, accept, connect, send, recv).
+- Added `net_echo` demo and build target.
+- Host build now links the new subsystem.
+
 ## UNRESOLVED ISSUES
 - Network service lacks graceful shutdown and authentication.
 - Plugin loader needs path validation and sandboxing.

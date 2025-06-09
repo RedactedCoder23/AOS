@@ -74,3 +74,12 @@ by: codex
 - `./examples/plugin_demo.sh`
 - `./examples/ai_service_demo.sh`
 - `echo 'ai hello\nexit' | ./build/host_test` *(fails: openai module missing)*
+
+## [2025-06-09 07:51 UTC] — TCP stack demo [agent-mem]
+### Changes
+- Added `subsystems/net` with basic TCP wrappers.
+- New example `net_echo` and `make net` target.
+### Tests
+- `make net`
+- `./build/net_echo --server --port 12345 &`
+- `./build/net_echo --host 127.0.0.1 --port 12345`
