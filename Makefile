@@ -152,6 +152,9 @@ test-unit:
 	gcc -Isubsystems/memory -Iinclude tests/unit/test_memory.c \
 	subsystems/memory/memory.c src/logging.c src/error.c -o build/tests/test_memory
 	@./build/tests/test_memory
+	gcc -Isubsystems/memory -Iinclude tests/unit/test_memory_fuzz.c \
+	subsystems/memory/memory.c src/logging.c src/error.c -o build/tests/test_memory_fuzz
+	@./build/tests/test_memory_fuzz
 
 test-integration:
 	@echo "→ Running integration tests"
@@ -160,6 +163,10 @@ test-integration:
 	tests/integration/test_fs_memory.c \
 	subsystems/fs/fs.c subsystems/memory/memory.c src/logging.c src/error.c -o build/tests/test_fs
 	@./build/tests/test_fs
+	gcc -Isubsystems/fs -Isubsystems/memory -Iinclude \
+	tests/integration/test_persistence.c \
+	subsystems/fs/fs.c subsystems/memory/memory.c src/logging.c src/error.c -o build/tests/test_persist
+	@./build/tests/test_persist
 
 efi:
 	@echo "→ Building EFI stub"

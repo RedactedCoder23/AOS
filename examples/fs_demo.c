@@ -3,10 +3,7 @@
 
 int main(void) {
     fs_init();
-    if (fs_use_persistent() != 0) {
-        printf("persistent fs unavailable\n");
-        return 1;
-    }
+    fs_use_ext2("/tmp/aos_ext2_demo");
     fs_mkdir("docs");
     int fd = fs_open("docs/foo.txt", "w");
     fs_write(fd, "hello", 5);

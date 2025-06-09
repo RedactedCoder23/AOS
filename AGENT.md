@@ -170,3 +170,12 @@ Next agent must:
 
 Next agent must:
 - Continue filling out subsystem READMEs and ensure diagrams stay updated.
+
+## [2025-06-09 10:47 UTC] memory/fs overhaul [agent-mem]
+- Replaced freelist allocator with slab/buddy implementation.
+- Added fuzzing unit test and persistence integration test.
+- Introduced VFS layer with ramfs and ext2 backends.
+- Updated subsystem READMEs.
+
+Next agent must:
+- Expand ext2 backend feature coverage and add more VFS tests.
