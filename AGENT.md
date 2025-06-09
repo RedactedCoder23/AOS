@@ -170,3 +170,12 @@ Next agent must:
 
 Next agent must:
 - Continue filling out subsystem READMEs and ensure diagrams stay updated.
+## [2025-06-09 10:47 UTC] ai/branch integration [agent-mem]
+- Introduced aicell shared-memory service with ring buffer IPC.
+- Added checkpoint HAL stubs and CRIU invocation on Linux.
+- Kernel gains AI_TRIGGER syscall placeholder.
+- Added aos-modeld stub daemon for model tracking.
+- README documents checkpoint demo.
+
+Next agent must:
+- Expand checkpoint delta handling and integrate with branch state.
