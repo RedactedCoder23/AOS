@@ -20,7 +20,7 @@ all: host
 
 # 1. Regenerate C sources from text masters
 generate:
-	python3 generate_aos_mappings.py
+	python3 scripts/generate_aos_mappings.py
 	@$(MAKE) -s checklist
 
 # 2. Build host-side test harness
@@ -38,10 +38,25 @@ build/obj/%.o: %.c
 
 host: check_deps generate subsystems $(HOST_OBJS) build/obj/src/ui_main.o
 	@echo "→ Building host binaries"
+ codex/refactor-makefile-and-build-infrastructure
 	$(CC) -rdynamic $(HOST_OBJS) $(NCURSES_LIBS) $(CURL_LIBS) -ldl -lm -o build/host_test
 	$(CC) build/obj/src/ui_graph.o build/obj/src/branch_manager.o \
 build/obj/src/logging.o build/obj/src/error.o build/obj/src/ui_main.o \
 $(NCURSES_LIBS) -lm -o build/ui_graph
+=======
+	@mkdir -p build
+	gcc -Wall -Werror -rdynamic -Iinclude -Igen -Isubsystems/memory -Isubsystems/fs -Isubsystems/ai -Isubsystems/branch -Isubsystems/net $(NCURSES_CFLAGS) \
+	            src/main.c src/repl.c src/interpreter.c src/branch_manager.c src/ui_graph.c \
+	            src/branch_vm.c src/plugin_loader.c src/plugin_supervisor.c src/wasm_runtime.c \
+	            src/branch_net.c src/ai_syscall.c src/aicell.c src/checkpoint.c src/policy.c \
+	            src/memory.c src/app_runtime.c src/config.c src/logging.c src/error.c \
+	            gen/command_map.c gen/commands.c \
+	            subsystems/memory/memory.c subsystems/fs/fs.c subsystems/ai/ai.c \
+	            subsystems/branch/branch.c subsystems/net/net.c \
+	            $(NCURSES_LIBS) -ldl -lcurl -lm -o build/host_test
+	gcc -Wall -Werror -Iinclude -Igen $(NCURSES_CFLAGS) src/ui_graph.c src/branch_manager.c \
+            src/logging.c src/error.c src/ui_main.c $(NCURSES_LIBS) -lm -o build/ui_graph
+ main
 
 # 3. Build bare-metal components
 bootloader: generate
@@ -109,17 +124,17 @@ clean:
 memory:
 	@echo "→ Building memory demo"
 	@mkdir -p build
-	       gcc -Wall -Werror -Isubsystems/memory -Iinclude subsystems/memory/memory.c src/memory.c examples/memory_demo.c src/logging.c src/error.c -o build/memory_demo
+	       gcc -Wall -Werror -Isubsystems/memory -Iinclude -Igen subsystems/memory/memory.c src/memory.c examples/memory_demo.c src/logging.c src/error.c -o build/memory_demo
 
 fs:
 	@echo "→ Building fs demo"
 	@mkdir -p build
-	       gcc -Wall -Werror -Isubsystems/fs -Iinclude subsystems/fs/fs.c examples/fs_demo.c -o build/fs_demo
+	       gcc -Wall -Werror -Isubsystems/fs -Iinclude -Igen subsystems/fs/fs.c examples/fs_demo.c -o build/fs_demo
 
 ai:
 	@echo "→ Building ai demo"
 	@mkdir -p build
-	gcc -Isubsystems/ai -Iinclude subsystems/ai/ai.c src/ai_syscall.c examples/ai_demo.c -lcurl -o build/ai_demo
+	gcc -Isubsystems/ai -Iinclude -Igen subsystems/ai/ai.c src/ai_syscall.c examples/ai_demo.c -lcurl -o build/ai_demo
 
 branch:
 	@echo "→ Building branch demo"
@@ -129,13 +144,13 @@ branch:
 branch-vm:
 	@echo "→ Building branch VM demo"
 	@mkdir -p build
-	gcc -Iinclude src/branch_vm.c subsystems/branch/branch.c examples/branch_vm_demo.c -o build/branch_vm_demo
+	gcc -Iinclude -Igen src/branch_vm.c subsystems/branch/branch.c examples/branch_vm_demo.c -o build/branch_vm_demo
 
 plugins:
 	        @echo "→ Building plugins demo"
 	        @mkdir -p build/plugins
 	        gcc -fPIC -shared -o build/plugins/sample.so examples/sample_plugin.c
-	        gcc -Iinclude src/plugin_loader.c src/plugin_supervisor.c src/wasm_runtime.c \
+	        gcc -Iinclude -Igen src/plugin_loader.c src/plugin_supervisor.c src/wasm_runtime.c \
 	            src/logging.c src/error.c examples/plugin_demo.c -ldl -o build/plugin_demo
 
 aos-cli:
@@ -146,28 +161,28 @@ aos-cli:
 branch-net:
 	@echo "→ Building branch net demo"
 	@mkdir -p build
-	@gcc -Iinclude src/branch_net.c src/branch_manager.c examples/branch_fed_demo.c -pthread -lm -o build/branch_fed_demo
+	@gcc -Iinclude -Igen src/branch_net.c src/branch_manager.c examples/branch_fed_demo.c -pthread -lm -o build/branch_fed_demo
 
 ai-service:
 	@echo "→ Building ai service demo"
 	@mkdir -p build
-	        gcc -Iinclude -Isubsystems/ai src/ai_syscall.c examples/ai_service_demo.c subsystems/ai/ai.c -o build/ai_service_demo -lcurl
+	        gcc -Iinclude -Igen -Isubsystems/ai src/ai_syscall.c examples/ai_service_demo.c subsystems/ai/ai.c -o build/ai_service_demo -lcurl
 
 aicell:
 	@echo "→ Building aicell demo"
 	@mkdir -p build
-	        gcc -Iinclude src/aicell.c examples/aicell_daemon.c -o build/aicell_daemon -lrt
-	        gcc -Iinclude src/aicell.c examples/aicell_client.c -o build/aicell_client -lrt
+	        gcc -Iinclude -Igen src/aicell.c examples/aicell_daemon.c -o build/aicell_daemon -lrt
+	        gcc -Iinclude -Igen src/aicell.c examples/aicell_client.c -o build/aicell_client -lrt
 
 modeld:
 	@echo "→ Building aos-modeld"
 	@mkdir -p build
-	        gcc -Iinclude src/aicell.c src/modeld.c -o build/aos-modeld -lrt
+	        gcc -Iinclude -Igen src/aicell.c src/modeld.c -o build/aos-modeld -lrt
 
 policy:
 	@echo "→ Building policy demo"
 	@mkdir -p build
-	gcc -Iinclude src/policy.c examples/policy_demo.c -o build/policy_demo
+	gcc -Iinclude -Igen src/policy.c examples/policy_demo.c -o build/policy_demo
 
 net:
 	@echo "→ Building net echo demo"
@@ -208,14 +223,15 @@ test-net: net
 test-unit:
 	@echo "→ Running unit tests"
 	@mkdir -p build/tests
-	gcc -Isubsystems/memory -Iinclude tests/unit/test_memory.c \
+	gcc -Isubsystems/memory -Iinclude -Igen tests/unit/test_memory.c \
 	subsystems/memory/memory.c src/logging.c src/error.c -o build/tests/test_memory
 	@./build/tests/test_memory
+	@python3 -m unittest tests/python/test_generate_mappings.py
 
 test-integration:
 	@echo "→ Running integration tests"
 	@mkdir -p build/tests
-	gcc -Isubsystems/fs -Isubsystems/memory -Iinclude \
+	gcc -Isubsystems/fs -Isubsystems/memory -Iinclude -Igen \
 	tests/integration/test_fs_memory.c \
 	subsystems/fs/fs.c subsystems/memory/memory.c src/logging.c src/error.c -o build/tests/test_fs
 	@./build/tests/test_fs
@@ -229,7 +245,7 @@ iso: efi
 	@echo "→ Creating aos.iso"
 	touch aos.iso
 
-subsystems: memory fs ai branch net
+	subsystems: memory fs ai branch net
 
 ui: host
 	@echo "UI built via host target"
