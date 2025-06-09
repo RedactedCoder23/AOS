@@ -1,4 +1,5 @@
 #include "plugin.h"
+#include "logging.h"
 /* [2025-06-09 06:07 UTC] Hot-swap plugin loader via dlopen
  * by: codex
  * Edge cases: minimal error handling and no security checks.
@@ -47,6 +48,7 @@ static int path_is_safe(const char *path) {
 }
 
 static int builtin_hook(const char *path) {
+    /* Default validation simply checks the plugin path prefix. */
     return path_is_safe(path);
 }
 
@@ -97,6 +99,10 @@ static void normalize_name(const char *path, char *out, size_t outsz) {
     if (dot) *dot = '\0';
 }
 
+/* Load a plugin shared object and register it in the runtime.
+ * @param file path or plugin name without extension
+ * @return 0 on success, -1 on error
+ */
 int plugin_load(const char *file) {
     if (plugin_count >= MAX_PLUGINS) return -1;
     char path[128];
@@ -105,20 +111,19 @@ int plugin_load(const char *file) {
     else
         snprintf(path, sizeof(path), "build/plugins/%s.so", file);
 
+    /* Run registered validation hooks before loading the plugin. */
     if (hook_count == 0) plugin_register_hook(builtin_hook);
     for (int i=0;i<hook_count;i++)
         if (!hooks[i](path)) {
             printf("plugin validation failed for %s\n", path);
-            FILE *log = fopen("AGENT.md", "a");
-            if (log) { fprintf(log, "plugin validation failed %s\n", path); fclose(log); }
+            log_message(LOG_ERROR, "plugin validation failed %s", path);
             return -1;
         }
 
     void *h = dlopen(path, RTLD_NOW);
     if (!h) {
         printf("dlopen failed: %s\n", dlerror());
-        FILE *log = fopen("AGENT.md", "a");
-        if (log) { fprintf(log, "plugin dlopen failed %s\n", path); fclose(log); }
+        log_message(LOG_ERROR, "plugin dlopen failed %s", path);
         return -1;
     }
 
@@ -133,8 +138,7 @@ int plugin_load(const char *file) {
 
     if (run_with_limits_int(init) != 0) {
         printf("init failed\n");
-        FILE *log = fopen("AGENT.md", "a");
-        if (log) { fprintf(log, "plugin init failed %s\n", path); fclose(log); }
+        log_message(LOG_ERROR, "plugin init failed %s", path);
         dlclose(h);
         return -1;
     }
@@ -158,8 +162,7 @@ int plugin_exec(const char *name) {
             run_with_limits_void(plugins[i].exec);
             return 0;
         }
-    FILE *log = fopen("AGENT.md", "a");
-    if (log) { fprintf(log, "plugin exec not found %s\n", name); fclose(log); }
+    log_message(LOG_ERROR, "plugin exec not found %s", name);
     return -1;
 }
 

@@ -10,6 +10,7 @@
 #include <sys/stat.h>
 #include <limits.h>
 #include <time.h>
+#include "logging.h"
 
 static BranchGraph graph;
 static int current_branch = -1;
@@ -18,8 +19,7 @@ static char save_path[PATH_MAX];
 static void load_state(void);
 
 static void log_io_error(const char *msg) {
-    FILE *log = fopen("AGENT.md", "a");
-    if (log) { fprintf(log, "IO error: %s\n", msg); fclose(log); }
+    log_message(LOG_ERROR, "IO error: %s", msg);
 }
 
 static void save_state(void) {
@@ -195,15 +195,21 @@ int bm_stop(int id) {
     return BM_SUCCESS;
 }
 
+/* Delete a branch and update the adjacency matrix.
+ * @param id index of the branch to remove
+ * @return BM_SUCCESS on success or an error code
+ */
 int bm_delete(int id) {
     if (id < 0 || id >= graph.count)
         return BM_ERR_INVALID;
+    /* Compact branch array and shift adjacency matrix rows. */
     for (int i = id; i < graph.count - 1; i++) {
         graph.branches[i] = graph.branches[i + 1];
         graph.branches[i].id = i;
         for (int j=0;j<graph.count;j++)
             graph.adj[i][j] = graph.adj[i+1][j];
     }
+    /* Shift adjacency columns to keep matrix consistent. */
     for (int j = id; j < graph.count - 1; j++)
         for (int i=0;i<graph.count-1;i++)
             graph.adj[i][j] = graph.adj[i][j+1];

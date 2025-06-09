@@ -1,0 +1,18 @@
+#include <assert.h>
+#include <stdio.h>
+#include "memory.h"
+#include "fs.h"
+
+int main(void) {
+    unsigned char pool[256];
+    memory_init(pool, sizeof(pool));
+    fs_init();
+    assert(fs_mkdir("d") == 0);
+    int fd = fs_open("d/file", "w");
+    assert(fd >= 0);
+    size_t w = fs_write(fd, "ok", 2);
+    assert(w == 2);
+    fs_close(fd);
+    printf("fs integration tests passed\n");
+    return 0;
+}

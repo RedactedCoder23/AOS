@@ -12,10 +12,10 @@
 #include "fs.h"
 #include "app_runtime.h"
 #include "config.h"
+#include "logging.h"
 
 static void log_agent_error(const char *msg) {
-    FILE *f = fopen("AGENT.md", "a");
-    if (f) { fprintf(f, "UNRESOLVED: %s\n", msg); fclose(f); }
+    log_message(LOG_ERROR, "%s", msg);
 }
 
 static void print_list(void) {
@@ -43,6 +43,9 @@ static void print_tree(void) {
 
 int main(void) {
     char line[256];
+
+    FILE *logf = fopen("AOS-CHECKLIST.log", "a");
+    log_init(logf);
 
     bm_init();
     config_load_default();
@@ -222,5 +225,6 @@ int main(void) {
         }
         printf("AOS> ");
     }
+    if (logf) fclose(logf);
     return 0;
 }

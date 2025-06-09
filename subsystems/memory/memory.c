@@ -7,6 +7,8 @@
 #include <stdint.h>
 #include <string.h>
 #include <stdio.h>
+#include "logging.h"
+#include "error.h"
 
 typedef struct Block {
     size_t size;
@@ -19,8 +21,8 @@ static size_t heap_total;
 static Block *free_list;
 
 static void log_msg(const char *msg) {
-    FILE *f = fopen("AOS-CHECKLIST.log", "a");
-    if (f) { fprintf(f, "%s\n", msg); fclose(f); }
+    log_message(LOG_ERROR, "%s", msg);
+    aos_last_error = AOS_ERR_IO;
 }
 
 void memory_init(void *buffer, size_t size) {
@@ -33,6 +35,8 @@ void memory_init(void *buffer, size_t size) {
 }
 
 static void split_block(Block *b, size_t size) {
+    /* Only split if the remaining space can hold another block header
+       plus at least 8 bytes of payload to avoid fragmentation. */
     if (b->size >= size + sizeof(Block) + 8) {
         Block *n = (Block*)((uint8_t*)(b + 1) + size);
         n->size = b->size - size - sizeof(Block);
@@ -54,6 +58,7 @@ void *memory_alloc(size_t size) {
         }
     }
     log_msg("Out of memory");
+    aos_last_error = AOS_ERR_NOMEM;
     return NULL;
 }
 
@@ -73,8 +78,10 @@ static void coalesce(void) {
 void memory_free(void *ptr) {
     if (!ptr) return;
     Block *b = (Block*)ptr - 1;
+    /* Basic sanity check to guard against invalid frees. */
     if (b < heap_base || (uint8_t*)b >= (uint8_t*)heap_base + heap_total) {
         log_msg("Double free or invalid pointer");
+        aos_last_error = AOS_ERR_INVALID;
         return;
     }
     b->free = 1;
@@ -82,6 +89,7 @@ void memory_free(void *ptr) {
 }
 
 void memory_reset(void) {
+    /* Restore single large free block covering the entire pool. */
     heap_base->size = heap_total - sizeof(Block);
     heap_base->next = NULL;
     heap_base->free = 1;
