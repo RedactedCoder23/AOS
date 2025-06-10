@@ -627,3 +627,13 @@ by: codex-agent-xyz
 ### Tests
 - `pre-commit run --files $(git ls-files '*.py' '*.c' '*.h' '*.yml' 'Makefile')`
 - `make test`
+
+## [2025-06-10 03:10 UTC] ipc protocol fleshed out [agent-mem]
+### Changes
+- Expanded IPC structs and syscall IDs.
+- Reserved shared page in linker and mapped by ipc_host.
+- Added protocol documentation and smoke test.
+- Added coverage job to CI and marked roadmap progress.
+### Tests
+- `pre-commit run --files include/ipc.h src/ipc_host.c bare_metal_os/kernel.c bare_metal_os/kernel.ld docs/ipc_protocol.md .github/workflows/ci.yml ROADMAP.md tests/python/test_ipc_host.py`
+- `make test`

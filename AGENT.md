@@ -424,3 +424,14 @@ Next agent must:
 
 Next agent must:
 - Run final meta-sweep to verify skeleton deliverables.
+
+## [2025-06-10 03:10 UTC] ipc protocol fleshed out [agent-mem]
+- Expanded `include/ipc.h` with syscall arguments and IDs.
+- Reserved shared page in `kernel.ld` and mapped it in `ipc_host`.
+- Added stub dispatch using new structs in the kernel.
+- Documented protocol in `docs/ipc_protocol.md` and added smoke test.
+- CI workflow gains a dedicated coverage job.
+- Phase 1 marked in progress on the roadmap.
+
+Next agent must:
+- Implement real syscall handlers and extend tests.

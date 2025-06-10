@@ -12,10 +12,22 @@ void fs_init(void);
 void bm_init(void);
 
 /* Dispatch syscalls coming from the host interface */
-static int syscall_dispatch(SyscallID id, void *args) {
-    (void)id;
-    (void)args;
-    return -1; /* stub */
+extern char ipc_shared; /* linker symbol */
+static volatile IpcRing *ring = (volatile IpcRing *)&ipc_shared;
+
+static int syscall_dispatch(const SyscallRequest *req, SyscallResponse *resp) {
+    (void)req;
+    resp->retval = -1;
+    return -1;
+}
+
+static void process_ipc(void) {
+    while (ring->head != ring->tail) {
+        const SyscallRequest *req = &ring->req[ring->tail % IPC_RING_SIZE];
+        SyscallResponse *resp = &ring->resp[ring->tail % IPC_RING_SIZE];
+        syscall_dispatch(req, resp);
+        ring->tail++;
+    }
 }
 
 /* Initialise subsystems before entering the REPL. */
@@ -31,6 +43,7 @@ static void kernel_init(void) {
 void main(void) {
     /* Entry called by bootloader. Start subsystems and drop into REPL. */
     kernel_init();
+    process_ipc();
     repl();
 }
 
