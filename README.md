@@ -74,6 +74,22 @@ make bare         # create aos.bin for QEMU
 
 AOS uses BIOS INT 13h to load the 1 MiB kernel image.
 
+## Testing
+
+Run the linters and both test suites before sending patches:
+
+```bash
+pre-commit run --all-files
+make test-unit
+make test-integration
+```
+
+Generate `compile_commands.json` for clang-tidy with:
+
+```bash
+make compdb
+```
+
 ## Running AOS in QEMU
 
 **Prerequisite**: install QEMU—e.g., on Debian/Ubuntu:
@@ -288,6 +304,12 @@ Check the file whenever a build fails:
 ```bash
 cat AOS-CHECKLIST.log
 ```
+
+## Releases
+
+Stable snapshots are tagged in git. Check the
+[releases page](https://github.com/RedactedCoder23/AOS/releases)
+for downloadable archives and changelogs.
 
 ## Contributing
 See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.

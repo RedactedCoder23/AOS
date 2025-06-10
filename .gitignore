@@ -18,3 +18,12 @@ bare_metal_os/*.bin
 scripts/__pycache__/
 ui/node_modules/
 ui/dist/
+# Coverage and test artifacts
+coverage.lcov
+coverage/
+.pytest_cache/
+
+# Virtual environments
+venv/
+.venv/
+
