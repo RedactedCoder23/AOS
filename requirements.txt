@@ -2,10 +2,6 @@
 openai
 cbor2
 pytest-cov
-<<<<<< codex/implement-ai-credentials-vault-prototype
 cryptography
 keyring
-=======
-Flask
->>>>>> main
 

@@ -8,10 +8,11 @@ import unittest
 import importlib
 from unittest import mock
 
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "../..")))
+
+from scripts import merge_ai
+
 SCRIPT = os.path.join("scripts", "merge_ai.py")
-SCRIPT_DIR = os.path.join(os.getcwd(), "scripts")
-if SCRIPT_DIR not in sys.path:
-    sys.path.insert(0, SCRIPT_DIR)
 
 
 def init_repo():
@@ -58,7 +59,7 @@ class MergeAiTest(unittest.TestCase):
         write(repo, "f.txt", "a\nbranch\n")
         commit(repo, "branch")
 
-        mod = importlib.import_module("scripts.merge_ai")
+        mod = importlib.reload(merge_ai)
         with mock.patch.object(mod, "run_diff", side_effect=lambda b, r: git_diff(repo, b, r)), mock.patch.object(
             mod,
             "call_llm",
@@ -112,7 +113,7 @@ class MergeAiTest(unittest.TestCase):
             calls.append(prompt)
             return "merge"
 
-        mod = importlib.import_module("scripts.merge_ai")
+        mod = importlib.reload(merge_ai)
         with mock.patch.object(mod, "run_diff", side_effect=lambda b, r: git_diff(repo, b, r)), mock.patch.object(
             mod,
             "call_llm",
@@ -153,7 +154,7 @@ class MergeAiTest(unittest.TestCase):
         write(repo, "f.txt", "a\nbranch\n")
         commit(repo, "branch")
 
-        mod = importlib.import_module("scripts.merge_ai")
+        mod = importlib.reload(merge_ai)
         with mock.patch.object(mod, "run_diff", side_effect=lambda b, r: git_diff(repo, b, r)), mock.patch.object(
             mod,
             "call_llm",

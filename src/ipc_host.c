@@ -61,15 +61,12 @@ void ipc_host_handle(IpcRing *ring) {
             pos += snprintf(resp->data + pos, sizeof(resp->data) - pos, "] }");
         resp->retval = pos;
         break;
-<<<<<< codex/implement-sys_list_branches-binary-and-json-encoding
     }
-=======
     case SYS_SNAPSHOT_BRANCH:
         *(uint64_t *)resp->data =
             sys_snapshot_branch((unsigned int)req->branch_id);
         resp->retval = 0;
         break;
->>>>>> main
     case SYS_FORK_BRANCH:
     case SYS_DELETE_BRANCH:
     case SYS_LIST_BRANCH:

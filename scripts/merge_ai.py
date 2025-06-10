@@ -10,7 +10,7 @@ import subprocess
 import sys
 from typing import List
 
-from ai_cred_client import get_api_key
+from scripts.ai_cred_client import get_api_key
 
 try:
     import openai

@@ -103,22 +103,7 @@ structs but must keep the total size within one page.
   ```json
   {
     "branches": [
-<<<<<< codex/implement-sys_list_branches-binary-and-json-encoding
       { "branch_id": 1, "parent_id": 0, "status": 1, "last_snapshot_id": 0 }
-=======
-      {
-        "branch_id": 1,
-        "parent_id": 0,
-        "status": "CREATED",
-        "last_snapshot_id": 0
-      },
-      {
-        "branch_id": 2,
-        "parent_id": 1,
-        "status": "RUNNING",
-        "last_snapshot_id": 42
-      }
->>>>>> main
     ]
   }
   ```
