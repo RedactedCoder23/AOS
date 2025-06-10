@@ -34,6 +34,11 @@ void ipc_host_handle(IpcRing *ring) {
     case SYS_LIST_BRANCHES:
         resp->retval = sys_list_branches(resp->data, sizeof(resp->data));
         break;
+    case SYS_SNAPSHOT_BRANCH:
+        *(uint64_t *)resp->data =
+            sys_snapshot_branch((unsigned int)req->branch_id);
+        resp->retval = 0;
+        break;
     case SYS_FORK_BRANCH:
     case SYS_DELETE_BRANCH:
     case SYS_LIST_BRANCH:

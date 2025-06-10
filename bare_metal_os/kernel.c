@@ -32,6 +32,11 @@ static int syscall_dispatch(const SyscallRequest *req, SyscallResponse *resp) {
     case SYS_LIST_BRANCHES:
         resp->retval = sys_list_branches(resp->data, sizeof(resp->data));
         break;
+    case SYS_SNAPSHOT_BRANCH:
+        *(uint64_t *)resp->data =
+            sys_snapshot_branch((uint32_t)req->branch_id);
+        resp->retval = 0;
+        break;
     default:
         break;
     }

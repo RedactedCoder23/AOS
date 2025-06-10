@@ -219,6 +219,13 @@ test-fs: fs
 
 test-branch: branch
 	./examples/branch_smoke.sh
+	@mkdir -p build/tests
+	gcc -Iinclude -pthread \
+	tests/ipc_host_integration.c src/ipc_host.c src/branch_syscalls.c \
+	src/branch_manager.c subsystems/branch/branch.c \
+	src/logging.c src/error.c \
+	-DIPC_HOST_LIBRARY -o build/tests/ipc_host_integration
+	./build/tests/ipc_host_integration
 
 test-plugin: plugins
 	./examples/plugin_smoke.sh
