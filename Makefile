@@ -1,4 +1,4 @@
-.PHONY: all clean test install regenerate host bootloader kernel bare run ui ui-check web-ui branch-vm plugins iso efi branch-net desktop-ui ai-service aicell modeld ipc-host policy net subsystems checklist
+.PHONY: all clean test install regenerate host bootloader kernel bare run ui ui-check web-ui branch-vm plugins iso efi branch-net desktop-ui ai-service aicell modeld ipc-host branch-dashboard policy net subsystems checklist
 
 MAKEFLAGS += -j$(shell nproc)
 
@@ -8,6 +8,7 @@ SUBSYSTEM_DIRS := subsystems/memory subsystems/fs subsystems/ai subsystems/branc
 HOST_SRCS := \
 src/main.c src/repl.c src/interpreter.c src/branch_manager.c src/ui_graph.c \
 src/branch_vm.c src/plugin_loader.c src/plugin_supervisor.c src/wasm_runtime.c \
+src/lang_vm.c \
 src/branch_net.c src/ai_syscall.c src/aicell.c src/checkpoint.c src/policy.c \
 src/memory.c src/app_runtime.c src/config.c src/logging.c src/error.c \
 src/generated/command_map.c src/generated/commands.c \
@@ -173,7 +174,13 @@ modeld:
 ipc-host:
 	@echo "→ Building ipc host daemon"
 	@mkdir -p build
-	gcc -Iinclude -Isrc/generated src/ipc_host.c src/logging.c src/error.c -o build/ipc_host
+	gcc -Iinclude -Isrc/generated src/ipc_host.c src/branch_manager.c \
+	src/logging.c src/error.c -o build/ipc_host
+branch-dashboard:
+	@echo "→ Building branch dashboard"
+	@mkdir -p build
+	gcc -Iinclude -Isrc/generated ui/branch_dashboard.c src/logging.c src/error.c \
+-lncurses -o build/branch_dashboard
 
 policy:
 	@echo "→ Building policy demo"
@@ -272,11 +279,24 @@ tests/c/test_plugin.c src/plugin_loader.c src/plugin_supervisor.c src/wasm_runti
 	tests/c/test_wasm_runtime.c src/wasm_runtime.c subsystems/security/security.c src/logging.c src/error.c \
 	-o build/tests/test_wasm_runtime
 	@./build/tests/test_wasm_runtime
+	gcc --coverage -Isubsystems/memory -Iinclude \
+	tests/memory_test.c subsystems/memory/memory.c src/logging.c src/error.c \
+	-o build/tests/test_memory_paging
+	@./build/tests/test_memory_paging
 	gcc --coverage -Iinclude \
 	tests/c/test_ui.c src/logging.c src/error.c -lncurses \
 	-o build/tests/test_ui
 	@./build/tests/test_ui
+<<<<<< codex/wire-up-sys_ai_query-syscall-end-to-end
 	@python3 -m pytest -q tests/python
+=======
+	gcc --coverage -Iinclude -Isubsystems/ai \
+	tests/lang_test.c src/lang_vm.c src/branch_manager.c \
+	subsystems/ai/ai.c src/ai_syscall.c src/logging.c src/error.c -lcurl \
+	-o build/tests/test_lang
+	@./build/tests/test_lang
+	@python3 -m pytest --cov=./ -q tests/python
+>>>>>> main
 	
 test-integration:
 	@echo "\u2192 Running integration tests"

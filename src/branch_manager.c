@@ -242,3 +242,45 @@ const char *bm_current_name(void) {
 }
 
 int bm_current_id(void) { return current_branch; }
+
+/* Userland thread/branch manager stubs */
+#include "branch_manager.h"
+#include <stdio.h>
+#include <stdlib.h>
+
+branch_t *branch_create(void (*entry)(void *), void *arg) {
+    branch_t *b = malloc(sizeof(branch_t));
+    if (!b)
+        return NULL;
+    b->thread = malloc(sizeof(thread_t));
+    if (!b->thread) {
+        free(b);
+        return NULL;
+    }
+    b->parent = NULL;
+    (void)entry;
+    (void)arg;
+    printf("branch_create stub\n");
+    return b;
+}
+
+branch_t *branch_fork(branch_t *parent) {
+    if (!parent)
+        return NULL;
+    branch_t *b = malloc(sizeof(branch_t));
+    if (!b)
+        return NULL;
+    b->thread = NULL;
+    b->parent = parent;
+    printf("branch_fork stub\n");
+    return b;
+}
+
+void branch_join(branch_t *b) {
+    if (!b)
+        return;
+    printf("branch_join stub\n");
+    if (b->thread)
+        free(b->thread);
+    free(b);
+}

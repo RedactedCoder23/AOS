@@ -637,3 +637,25 @@ by: codex-agent-xyz
 ### Tests
 - `pre-commit run --files include/ipc.h src/ipc_host.c bare_metal_os/kernel.c bare_metal_os/kernel.ld docs/ipc_protocol.md .github/workflows/ci.yml ROADMAP.md tests/python/test_ipc_host.py`
 - `make test`
+
+<<<<<< codex/stub-branch-manager-functions-with-tests
+## [2025-06-10 04:26 UTC] branch thread stubs [codex]
+### Changes
+- Introduced thread_t and branch_t structs.
+- Implemented branch_create, branch_fork and branch_join stubs.
+- Added userland test invoking the new API.
+### Tests
+- `gcc --coverage -Iinclude tests/branch_test.c src/branch_manager.c src/logging.c src/error.c -o build/branch_test && ./build/branch_test`
+- `make test-unit` (fails: pytest arg error)
+=======
+## [2025-06-10 04:23 UTC] basic paging setup [codex]
+### Changes
+- Identity-mapped first 1 MiB and enabled paging in bare-metal kernel.
+- Added minimal IDT with page-fault vector.
+- Updated kernel initialisation and build rules.
+- New memory paging unit test.
+### Tests
+- `pre-commit run --all-files`
+- `make test-unit`
+- `make test-integration`
+>>>>>> main
