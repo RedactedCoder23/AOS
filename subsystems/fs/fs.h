@@ -24,5 +24,7 @@ int fs_mkdir(const char *name);
 int fs_delete(const char *name);
 void fs_use_ramfs(void);
 void fs_use_ext2(const char *root);
+int fs_checkpoint_save(const char *file);
+int fs_checkpoint_load(const char *file);
 
 #endif

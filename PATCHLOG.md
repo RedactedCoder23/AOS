@@ -638,6 +638,16 @@ by: codex-agent-xyz
 - `pre-commit run --files include/ipc.h src/ipc_host.c bare_metal_os/kernel.c bare_metal_os/kernel.ld docs/ipc_protocol.md .github/workflows/ci.yml ROADMAP.md tests/python/test_ipc_host.py`
 - `make test`
 
+<<<<<< codex/implement-in-ram-fs-with-cbor-checkpoint
+## [2025-06-10 04:27 UTC] ramfs checkpoint utility [codex]
+### Changes
+- Replaced fixed ramfs with dynamic tree-based implementation.
+- Added CBOR checkpoint script `aos_checkpoint.py`.
+- Introduced fs_checkpoint_save/load APIs and integration test.
+### Tests
+- `pre-commit run --files subsystems/fs/fs.c subsystems/fs/fs.h scripts/aos_checkpoint.py tests/fs_test.c Makefile requirements.txt`
+- `make test`
+=======
 <<<<<< codex/stub-branch-manager-functions-with-tests
 ## [2025-06-10 04:26 UTC] branch thread stubs [codex]
 ### Changes
@@ -658,4 +668,5 @@ by: codex-agent-xyz
 - `pre-commit run --all-files`
 - `make test-unit`
 - `make test-integration`
+>>>>>> main
 >>>>>> main
