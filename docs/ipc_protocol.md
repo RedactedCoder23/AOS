@@ -137,4 +137,5 @@ Errors follow the JSON form:
 ```json
 { "error": "branch not found", "code": 404 }
 { "error": "merge conflict", "code": 409 }
+{ "error": "invalid branch", "code": 22 }
 ```

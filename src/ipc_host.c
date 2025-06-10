@@ -29,9 +29,19 @@ void ipc_host_handle(IpcRing *ring) {
     case SYS_CREATE_BRANCH:
         resp->retval = sys_create_branch();
         break;
-    case SYS_MERGE_BRANCH:
-        resp->retval = sys_merge_branch(req->branch_id);
+    case SYS_MERGE_BRANCH: {
+        int rc = sys_merge_branch(req->branch_id);
+        if (rc < 0) {
+            snprintf(resp->data, sizeof(resp->data),
+                     "{ \"error\": \"invalid branch\", \"code\": %d }",
+                     -rc);
+            resp->retval = strlen(resp->data);
+        } else {
+            resp->retval = rc;
+            resp->data[0] = '\0';
+        }
         break;
+    }
     case SYS_LIST_BRANCHES: {
         char buf[128];
         int rc = sys_list_branches(buf, sizeof(buf));
