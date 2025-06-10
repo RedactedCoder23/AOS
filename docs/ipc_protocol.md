@@ -65,13 +65,51 @@ single integer and optional string. Future revisions may extend the
 structs but must keep the total size within one page.
 
 ### SYS_CREATE_BRANCH
-- **Request:** `{ /* empty */ }`
-- **Response:** `{ "branch_id": <uint32> }`
+- **Request:** `{}`
+- **Response:**
+  ```json
+  { "branch_id": 123 }
+  ```
 
 ### SYS_MERGE_BRANCH
-- **Request:** `{ "branch_id": <uint32> }`
-- **Response:** `{ "status": "ok" }`
+- **Request:**
+  ```json
+  { "branch_id": 123 }
+  ```
+- **Response:**
+  ```json
+  { "merge_job_id": 42, "status": "ENQUEUED" }
+  ```
 
 ### SYS_LIST_BRANCHES
-- **Request:** `{ /* empty */ }`
-- **Response:** `{ "branches": [] }`
+- **Request:** `{}`
+- **Response:**
+  ```json
+  {
+    "branches": [
+      { "branch_id": 1, "parent_id": 0, "status": "CREATED" },
+      { "branch_id": 2, "parent_id": 1, "status": "RUNNING" }
+    ]
+  }
+  ```
+
+### Examples
+
+```bash
+# create a new branch
+kernel-ipc create
+
+# list existing branches
+kernel-ipc list
+
+# merge a branch
+kernel-ipc merge 123
+```
+
+### Error Cases
+
+Errors follow the JSON form:
+```json
+{ "error": "branch not found", "code": 404 }
+{ "error": "merge conflict", "code": 409 }
+```
