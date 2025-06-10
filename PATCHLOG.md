@@ -567,3 +567,11 @@ by: codex-agent-xyz
 - `cd ui && npm install && npm run lint`
 - `make test-unit`
 - `make test-integration`
+## [2025-06-10 00:00 UTC] docs and build updates [codex]
+### Changes
+- Added MIT license overview to README.
+- Added `compdb` target in Makefile for compilation database generation.
+### Tests
+- `pre-commit run --all-files`
+- `make test-unit`
+- `make test-integration`

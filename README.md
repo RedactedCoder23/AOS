@@ -295,3 +295,8 @@ See [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md) for community standards.
 Additional developer documentation is available under the [docs/](docs/) directory.
 See [docs/profiler_usage.md](docs/profiler_usage.md) for the profiler stub.
 See [AGENT.md](AGENT.md) and [PATCHLOG.md](PATCHLOG.md) for development logs. The roadmap is maintained in [ROADMAP.md](ROADMAP.md).
+
+## License
+
+AOS is released under the [MIT License](LICENSE). This permits reuse, modification and distribution
+as long as the license notice is included. The project is provided **as is** without warranty.
