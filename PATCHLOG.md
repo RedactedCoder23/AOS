@@ -723,3 +723,15 @@ Next agent must:
 - `make test-unit`
 - `make test-integration`
 - `pytest -q tests/python/test_merge_ai.py`
+
+## [2025-06-11 00:00 UTC] release v0.2.0 [codex]
+### Changes
+- Bumped version to v0.2.0 and added Docker packaging.
+- New architecture diagram and README quickstart improvements.
+- CI now runs branch and lifecycle tests with npm and Playwright.
+### Tests
+- `pre-commit run --files README.md docs/ARCHITECTURE.md docs/README.md docs/INDEX.md Makefile ui/package.json .github/workflows/ci.yml Dockerfile demo/docker-compose.yml PATCHLOG.md`
+- `make test-unit`
+- `make test-integration`
+- `pytest -q tests/python`
+

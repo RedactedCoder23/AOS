@@ -11,8 +11,22 @@ Minimal experimental OS used for interpreter tests.
 ```bash
 git clone https://github.com/RedactedCoder23/AOS.git
 cd AOS
-make host
+make bootloader kernel host
 ./build/host_test
+```
+
+Launch the branch UI and React front-end:
+
+```bash
+python3 scripts/branch_ui.py &
+cd ui && npm install && npm start
+```
+
+Start the credential vault and inspect the audit log:
+
+```bash
+python3 scripts/ai_cred_manager.py daemon &
+python3 scripts/aos_audit.py show --file /var/log/aos-audit.log
 ```
 
 ## Setup

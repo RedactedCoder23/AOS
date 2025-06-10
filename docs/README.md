@@ -4,6 +4,7 @@ This directory contains additional guides for AOS.
 
 - `getting_started.md` – build and run instructions.
 - `system_architecture.md` – subsystem overview.
+- `ARCHITECTURE.md` – high level data flow diagram.
 - `profiler_usage.md` – profiler stub reference.
 - `command_flow.md` – REPL command dispatch diagram.
 - `ci_cd.md` – CI/CD automation overview.

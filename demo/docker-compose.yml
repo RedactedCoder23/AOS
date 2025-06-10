@@ -1,0 +1,7 @@
+version: '3'
+services:
+  aos:
+    build: ..
+    ports:
+      - "8000:8000"
+    command: python3 scripts/branch_ui.py
