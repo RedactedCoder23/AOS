@@ -427,6 +427,21 @@ void fs_use_ext2(const char *root) {
     fs_register(&ext2_backend);
 }
 
-int fs_checkpoint_save(const char *file) { return ram_cp_save(file); }
+static void mkdir_p_path(const char *path) {
+    char tmp[512];
+    strncpy(tmp, path, sizeof(tmp));
+    for (char *p = tmp + 1; *p; p++) {
+        if (*p == '/') {
+            *p = '\0';
+            mkdir(tmp, 0755);
+            *p = '/';
+        }
+    }
+}
+
+int fs_checkpoint_save(const char *file) {
+    mkdir_p_path(file);
+    return ram_cp_save(file);
+}
 
 int fs_checkpoint_load(const char *file) { return ram_cp_load(file); }
