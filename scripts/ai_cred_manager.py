@@ -4,24 +4,66 @@ import argparse
 import json
 import os
 import socket
+import struct
+import sys
 from cryptography.fernet import Fernet
 
+try:
+    import keyring
+except Exception:  # pragma: no cover - optional
+    keyring = None
+
 DB_PATH = os.environ.get("AICRED_DB", "/var/lib/ai-cred/creds.db")
-KEY_PATH = os.environ.get("AICRED_KEY", "/var/lib/ai-cred/key")
+KEY_PATH = os.environ.get("AICRED_KEY", "/etc/ai-cred/master.key")
 SOCK_PATH = os.environ.get("AICRED_SOCK", "/run/ai-cred.sock")
+DROP_USER = os.environ.get("AICRED_DROP_USER", "branch-manager")
+DROP_GROUP = os.environ.get("AICRED_DROP_GROUP", "branchd")
 
 
 def _fernet():
-    os.makedirs(os.path.dirname(KEY_PATH), exist_ok=True)
-    if not os.path.exists(KEY_PATH):
-        key = Fernet.generate_key()
-        with open(KEY_PATH, "wb") as fh:
-            os.chmod(KEY_PATH, 0o600)
-            fh.write(key)
-    else:
+    key = None
+    if keyring is not None:
+        try:
+            val = keyring.get_password("ai-cred", "master")
+            if val:
+                key = val.encode()
+        except Exception:  # pragma: no cover - keyring failures
+            pass
+
+    if key is None and os.path.exists(KEY_PATH):
         with open(KEY_PATH, "rb") as fh:
             key = fh.read()
+
+    if key is None:
+        key = Fernet.generate_key()
+        os.makedirs(os.path.dirname(KEY_PATH), exist_ok=True)
+        with open(KEY_PATH, "wb") as fh:
+            os.fchmod(fh.fileno(), 0o400)
+            fh.write(key)
+        if keyring is not None:
+            try:
+                keyring.set_password("ai-cred", "master", key.decode())
+            except Exception:
+                pass
+
     return Fernet(key)
+
+
+def _health_check():
+    ok = False
+    if keyring is not None:
+        try:
+            keyring.get_password("ai-cred", "master")
+            ok = True
+        except Exception:
+            pass
+    if not ok and os.path.exists(KEY_PATH) and os.access(KEY_PATH, os.R_OK):
+        ok = True
+    if not ok:
+        print(
+            "WARNING: master key not accessible; a new key will be generated",
+            file=sys.stderr,
+        )
 
 
 def _load(db_f):
@@ -64,25 +106,90 @@ def cmd_delete(args):
     _save(f, data)
 
 
+def cmd_rotate(_args):
+    old_f = _fernet()
+    data = _load(old_f)
+    new_key = Fernet.generate_key()
+    os.makedirs(os.path.dirname(KEY_PATH), exist_ok=True)
+    with open(KEY_PATH, "wb") as fh:
+        os.fchmod(fh.fileno(), 0o400)
+        fh.write(new_key)
+    if keyring is not None:
+        try:
+            keyring.set_password("ai-cred", "master", new_key.decode())
+        except Exception:
+            pass
+    new_f = Fernet(new_key)
+    _save(new_f, data)
+
+
 def cmd_daemon(_args):
+    _health_check()
     f = _fernet()
     os.makedirs(os.path.dirname(SOCK_PATH), exist_ok=True)
     if os.path.exists(SOCK_PATH):
         os.unlink(SOCK_PATH)
     with socket.socket(socket.AF_UNIX, socket.SOCK_STREAM) as s:
         s.bind(SOCK_PATH)
+        try:
+            import grp
+
+            gid = grp.getgrnam(DROP_GROUP).gr_gid
+        except Exception:
+            gid = os.getgid()
+        os.chown(SOCK_PATH, 0, gid)
         os.chmod(SOCK_PATH, 0o660)
+        if os.getuid() == 0:
+            try:
+                import pwd
+
+                uid = pwd.getpwnam(DROP_USER).pw_uid
+                os.setgid(gid)
+                os.setuid(uid)
+            except Exception:
+                pass
         s.listen()
         while True:
             conn, _ = s.accept()
             with conn:
-                data = conn.recv(1024)
+                try:
+                    creds = conn.getsockopt(
+                        socket.SOL_SOCKET, socket.SO_PEERCRED, struct.calcsize("3i")
+                    )
+                    _, uid, _ = struct.unpack("3i", creds)
+                except Exception:  # pragma: no cover - platform fallback
+                    uid = 0
+                allowed = {0}
+                try:
+                    import pwd
+
+                    allowed.add(pwd.getpwnam(DROP_USER).pw_uid)
+                except Exception:
+                    pass
+                data = conn.recv(4096)
+                if uid not in allowed:
+                    conn.sendall(json.dumps({"error": "Permission denied."}).encode())
+                    continue
                 try:
                     req = json.loads(data.decode())
-                    if req.get("method") == "get":
-                        d = _load(f)
-                        result = d.get(req["params"]["service"], "")
+                    method = req.get("method")
+                    params = req.get("params", {})
+                    store = _load(f)
+                    if method == "get":
+                        result = store.get(params.get("service", ""), "")
                         conn.sendall(json.dumps({"result": result}).encode())
+                    elif method == "set":
+                        store[params["service"]] = params["key"]
+                        _save(f, store)
+                        conn.sendall(json.dumps({"result": "ok"}).encode())
+                    elif method == "list":
+                        conn.sendall(
+                            json.dumps({"result": list(store.keys())}).encode()
+                        )
+                    elif method == "delete":
+                        store.pop(params.get("service"), None)
+                        _save(f, store)
+                        conn.sendall(json.dumps({"result": "ok"}).encode())
                     else:
                         conn.sendall(json.dumps({"error": "bad method"}).encode())
                 except Exception as e:  # pragma: no cover - error path
@@ -101,12 +208,14 @@ def main():
     g.add_argument("--service", required=True)
     g.set_defaults(func=cmd_get)
 
-    l = sub.add_parser("list")
-    l.set_defaults(func=cmd_list)
+    lp = sub.add_parser("list")
+    lp.set_defaults(func=cmd_list)
 
     d = sub.add_parser("delete")
     d.add_argument("--service", required=True)
     d.set_defaults(func=cmd_delete)
+
+    sub.add_parser("rotate").set_defaults(func=cmd_rotate)
 
     sub.add_parser("daemon").set_defaults(func=cmd_daemon)
 
