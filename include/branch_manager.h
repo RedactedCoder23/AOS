@@ -11,8 +11,8 @@ typedef struct branch_t {
     struct branch_t *parent;
 } branch_t;
 
-branch_t *branch_create(void (*entry)(void *), void *arg);
-branch_t *branch_fork(branch_t *parent);
-void branch_join(branch_t *b);
+branch_t *bm_branch_create(void (*entry)(void *), void *arg);
+branch_t *bm_branch_fork(branch_t *parent);
+void bm_branch_join(branch_t *b);
 
 #endif /* BRANCH_MANAGER_H */

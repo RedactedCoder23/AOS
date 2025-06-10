@@ -1,4 +1,5 @@
 # Runtime dependency for `scripts/ai_backend.py`
 openai
 cbor2
+pytest-cov
 

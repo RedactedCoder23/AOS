@@ -76,10 +76,12 @@ static RamHandle handles[MAX_HANDLES];
 static void free_node(RamNode *n) {
     if (!n)
         return;
-    while (n->child)
-        free_node(n->child);
-    if (n->sibling)
-        free_node(n->sibling);
+    RamNode *c = n->child;
+    while (c) {
+        RamNode *next = c->sibling;
+        free_node(c);
+        c = next;
+    }
     if (n->data)
         mem_free(n->data);
     if (n->name && n != &root_node)
@@ -272,49 +274,153 @@ static int ram_delete(const char *name) {
     return remove_child(n);
 }
 
-static void dump_node(FILE *f, RamNode *n, const char *prefix) {
+/* ---- CBOR checkpoint save ---- */
+#include <time.h>
+#include <stdint.h>
+
+typedef struct checkpoint_hdr {
+    uint32_t magic;
+    uint16_t version;
+    uint64_t branch_id;
+    uint64_t ts;
+    uint32_t payload_len;
+} __attribute__((packed)) checkpoint_hdr;
+
+typedef struct Buffer {
+    unsigned char *data;
+    size_t len;
+    size_t cap;
+} Buffer;
+
+static void buf_reserve(Buffer *b, size_t need) {
+    if (b->len + need <= b->cap)
+        return;
+    size_t nc = b->cap ? b->cap * 2 : 1024;
+    while (nc < b->len + need)
+        nc *= 2;
+    unsigned char *p = mem_alloc(nc);
+    if (b->data) {
+        memcpy(p, b->data, b->len);
+        mem_free(b->data);
+    }
+    b->data = p;
+    b->cap = nc;
+}
+
+static void buf_put(Buffer *b, const void *data, size_t n) {
+    buf_reserve(b, n);
+    memcpy(b->data + b->len, data, n);
+    b->len += n;
+}
+
+static void buf_put_byte(Buffer *b, unsigned char v) { buf_put(b, &v, 1); }
+
+static void cbor_uint(Buffer *b, int major, unsigned int val) {
+    if (val < 24) {
+        buf_put_byte(b, (major << 5) | val);
+    } else if (val < 256) {
+        unsigned char tmp[2] = {(major << 5) | 24, (unsigned char)val};
+        buf_put(b, tmp, 2);
+    } else if (val < 65536) {
+        unsigned char tmp[3] = {(major << 5) | 25, (unsigned char)(val >> 8),
+                                (unsigned char)val};
+        buf_put(b, tmp, 3);
+    } else {
+        unsigned char tmp[5] = {(major << 5) | 26, (unsigned char)(val >> 24),
+                                (unsigned char)(val >> 16),
+                                (unsigned char)(val >> 8), (unsigned char)val};
+        buf_put(b, tmp, 5);
+    }
+}
+
+static void cbor_text(Buffer *b, const char *s) {
+    size_t n = strlen(s);
+    cbor_uint(b, 3, n);
+    buf_put(b, s, n);
+}
+
+static void cbor_bytes(Buffer *b, const unsigned char *d, size_t n) {
+    cbor_uint(b, 2, n);
+    buf_put(b, d, n);
+}
+
+static void cbor_bool(Buffer *b, int val) { buf_put_byte(b, val ? 0xf5 : 0xf4); }
+
+static int count_entries(RamNode *n) {
+    int c = 0;
+    for (RamNode *child = n->child; child; child = child->sibling)
+        c += count_entries(child);
+    if (n != &root_node)
+        c += 1;
+    return c;
+}
+
+static void write_entries(Buffer *b, RamNode *n, const char *prefix) {
     char cur[256];
     if (n != &root_node) {
         snprintf(cur, sizeof(cur), "%s%s", prefix, n->name);
-        if (n->dir)
-            fprintf(f, "D %s\n", cur);
-        else {
-            fprintf(f, "F %s ", cur);
-            for (size_t i = 0; i < n->size; i++)
-                fprintf(f, "%02x", n->data[i]);
-            fprintf(f, "\n");
+        int pairs = n->dir ? 2 : 3;
+        cbor_uint(b, 5, pairs); /* map */
+        cbor_text(b, "path");
+        cbor_text(b, cur);
+        cbor_text(b, "dir");
+        cbor_bool(b, n->dir);
+        if (!n->dir) {
+            cbor_text(b, "data");
+            cbor_bytes(b, n->data, n->size);
         }
         snprintf(cur, sizeof(cur), "%s%s/", prefix, n->name);
     } else {
         strncpy(cur, prefix, sizeof(cur));
     }
     for (RamNode *c = n->child; c; c = c->sibling)
-        dump_node(f, c, cur);
+        write_entries(b, c, cur);
 }
 
-static int ram_cp_save(const char *file) {
-    char cmd[256];
-    snprintf(cmd, sizeof(cmd), "python3 scripts/aos_checkpoint.py write %s", file);
-    FILE *p = popen(cmd, "w");
-    if (!p)
+static int ram_cp_save(const char *path) {
+    Buffer buf = {0};
+    int total = count_entries(&root_node);
+    cbor_uint(&buf, 4, total); /* array */
+    write_entries(&buf, &root_node, "");
+
+    checkpoint_hdr hdr = {0x43484b50, 1, 0, (uint64_t)time(NULL), (uint32_t)buf.len};
+
+    printf("[fs] open %s\n", path);
+    fflush(stdout);
+    FILE *f = fopen(path, "wb");
+    if (!f) {
+        mem_free(buf.data);
         return -1;
-    dump_node(p, &root_node, "");
-    int rc = pclose(p);
-    return rc == 0 ? 0 : -1;
+    }
+    printf("[fs] write header\n");
+    fflush(stdout);
+    fwrite(&hdr, sizeof(hdr), 1, f);
+    printf("[fs] write payload %zu bytes\n", buf.len);
+    fflush(stdout);
+    fwrite(buf.data, 1, buf.len, f);
+    fclose(f);
+    mem_free(buf.data);
+    return 0;
 }
 
 static int ram_cp_load(const char *file) {
+    printf("[fs] load %s\n", file);
+    fflush(stdout);
     char cmd[256];
     snprintf(cmd, sizeof(cmd), "python3 scripts/aos_checkpoint.py read %s", file);
     FILE *p = popen(cmd, "r");
     if (!p)
         return -1;
+    printf("[fs] parse lines\n");
+    fflush(stdout);
     ramfs_init();
     char line[1024];
     while (fgets(line, sizeof(line), p)) {
         if (line[0] == 'D') {
             char *path = line + 2;
             path[strcspn(path, "\n")] = '\0';
+            printf("[fs] mkdir %s\n", path);
+            fflush(stdout);
             fs_mkdir(path);
         } else if (line[0] == 'F') {
             char *path = line + 2;
@@ -333,6 +439,8 @@ static int ram_cp_load(const char *file) {
                 sscanf(hex + 2 * i, "%02x", &v);
                 data[i] = v;
             }
+            printf("[fs] write %s (%zu bytes)\n", path, len);
+            fflush(stdout);
             int fd = fs_open(path, "w");
             if (fd >= 0) {
                 fs_write(fd, (char *)data, len);
@@ -341,7 +449,11 @@ static int ram_cp_load(const char *file) {
             mem_free(data);
         }
     }
+    printf("[fs] load complete, closing pipe\n");
+    fflush(stdout);
     int rc = pclose(p);
+    printf("[fs] pclose rc=%d\n", rc);
+    fflush(stdout);
     return rc == 0 ? 0 : -1;
 }
 
@@ -440,8 +552,13 @@ static void mkdir_p_path(const char *path) {
 }
 
 int fs_checkpoint_save(const char *file) {
+    printf("[fs] checkpoint_save to %s\n", file);
+    fflush(stdout);
     mkdir_p_path(file);
-    return ram_cp_save(file);
+    int rc = ram_cp_save(file);
+    printf("[fs] checkpoint_save done rc=%d\n", rc);
+    fflush(stdout);
+    return rc;
 }
 
 int fs_checkpoint_load(const char *file) { return ram_cp_load(file); }

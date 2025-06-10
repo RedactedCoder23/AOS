@@ -248,7 +248,7 @@ int bm_current_id(void) { return current_branch; }
 #include <stdio.h>
 #include <stdlib.h>
 
-branch_t *branch_create(void (*entry)(void *), void *arg) {
+static branch_t *bm_branch_create_impl(void (*entry)(void *), void *arg) {
     branch_t *b = malloc(sizeof(branch_t));
     if (!b)
         return NULL;
@@ -264,7 +264,7 @@ branch_t *branch_create(void (*entry)(void *), void *arg) {
     return b;
 }
 
-branch_t *branch_fork(branch_t *parent) {
+static branch_t *bm_branch_fork_impl(branch_t *parent) {
     if (!parent)
         return NULL;
     branch_t *b = malloc(sizeof(branch_t));
@@ -276,7 +276,7 @@ branch_t *branch_fork(branch_t *parent) {
     return b;
 }
 
-void branch_join(branch_t *b) {
+static void bm_branch_join_impl(branch_t *b) {
     if (!b)
         return;
     printf("branch_join stub\n");
@@ -284,3 +284,13 @@ void branch_join(branch_t *b) {
         free(b->thread);
     free(b);
 }
+
+branch_t *bm_branch_create(void (*entry)(void *), void *arg) {
+    return bm_branch_create_impl(entry, arg);
+}
+
+branch_t *bm_branch_fork(branch_t *parent) {
+    return bm_branch_fork_impl(parent);
+}
+
+void bm_branch_join(branch_t *b) { bm_branch_join_impl(b); }
