@@ -479,3 +479,13 @@ Next agent must:
 - Expand audit coverage across subsystems.
 ## [2025-06-10 09:00 UTC] merge hunk streamer [codex]
 - Added streaming merge_ai with hunk-based prompts and tests.
+
+## [2025-06-10 12:30 UTC] diff hunk merging [codex]
+- Added MAX_HUNK_SIZE limit and combined diff generation.
+- Hunks now split on file headers and @@ markers.
+- LLM failures mark hunks with CONFLICT blocks.
+- Added tests for hunk splitting and fallback.
+- Documented algorithm in docs/merge_ai.md.
+
+Next agent must:
+- Expand audit coverage across subsystems.
