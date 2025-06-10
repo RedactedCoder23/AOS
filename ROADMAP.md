@@ -30,3 +30,9 @@ Major milestones are tracked by version tags in git.
 - Extend ext2 tests for persistence.
 - Hook the security subsystem into the WASM runtime for capability checks.
 - Integrate checkpoint delta handling in branch management.
+- Implement IPC skeleton:
+  - `include/ipc.h` with ring buffer structure.
+  - `syscall_dispatch` stub in kernel.
+  - `ipc_host.c` daemon logging syscalls.
+- Add test stubs for branch, fs, ai, dev, plugin and wasm runtime.
+- Update CI to collect coverage and publish badge.

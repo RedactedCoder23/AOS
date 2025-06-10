@@ -1,4 +1,4 @@
-.PHONY: all clean test install regenerate host bootloader kernel bare run ui ui-check web-ui branch-vm plugins iso efi branch-net desktop-ui ai-service aicell modeld policy net subsystems checklist
+.PHONY: all clean test install regenerate host bootloader kernel bare run ui ui-check web-ui branch-vm plugins iso efi branch-net desktop-ui ai-service aicell modeld ipc-host policy net subsystems checklist
 
 MAKEFLAGS += -j$(shell nproc)
 
@@ -64,21 +64,21 @@ bare: bootloader kernel
 run: bare
 	        @echo "\u2192 Running AOS in QEMU"
 	        @sh -c '\
-		  case "$(CC_TARGET)" in \
-		    x86_64) EMU=qemu-system-x86_64 ;; \
-		    riscv64) EMU=qemu-system-riscv64 ;; \
-		    arm) EMU=qemu-system-arm ;; \
-		    *) EMU=qemu-system-x86_64 ;; \
-		  esac; \
-		  if ! which $$EMU >/dev/null 2>&1; then echo "Error: $$EMU not installed" && exit 1; fi; \
+	  case "$(CC_TARGET)" in \
+	    x86_64) EMU=qemu-system-x86_64 ;; \
+	    riscv64) EMU=qemu-system-riscv64 ;; \
+	    arm) EMU=qemu-system-arm ;; \
+	    *) EMU=qemu-system-x86_64 ;; \
+	  esac; \
+	  if ! which $$EMU >/dev/null 2>&1; then echo "Error: $$EMU not installed" && exit 1; fi; \
 	  if [ "$(CC_TARGET)" = "x86_64" ]; then \
-		$$EMU -nographic -drive format=raw,file=aos.bin $(RUN_OPTS); \
-		else \
-		$$EMU -nographic -kernel aos.bin $(RUN_OPTS); \
-		fi'
-		
-		boot: bare
-		@echo "\u2192 Booting AOS"
+	$$EMU -nographic -drive format=raw,file=aos.bin $(RUN_OPTS); \
+	else \
+	$$EMU -nographic -kernel aos.bin $(RUN_OPTS); \
+	fi'
+	
+	boot: bare
+	@echo "\u2192 Booting AOS"
 	       @if [ ! -f aos.bin ]; then echo "boot error: missing aos.bin" | tee -a AGENT.md; exit 1; fi
 	       @sh -c '\
 	  case "$(CC_TARGET)" in \
@@ -168,7 +168,12 @@ aicell:
 modeld:
 	@echo "→ Building aos-modeld"
 	@mkdir -p build
-	        gcc -Iinclude -Isrc/generated src/aicell.c src/modeld.c -o build/aos-modeld -lrt
+	gcc -Iinclude -Isrc/generated src/aicell.c src/modeld.c -o build/aos-modeld -lrt
+
+ipc-host:
+	@echo "→ Building ipc host daemon"
+	@mkdir -p build
+	gcc -Iinclude -Isrc/generated src/ipc_host.c src/logging.c src/error.c -o build/ipc_host
 
 policy:
 	@echo "→ Building policy demo"
@@ -250,18 +255,30 @@ tests/c/test_plugin.c src/plugin_loader.c src/plugin_supervisor.c src/wasm_runti
 	tests/c/test_security.c subsystems/security/security.c src/logging.c src/error.c \
 	-o build/tests/test_security
 	@./build/tests/test_security
+	gcc --coverage -Isubsystems/fs -Iinclude \
+	tests/c/test_fs.c subsystems/fs/fs.c src/logging.c src/error.c \
+	-o build/tests/test_fs_unit
+	@./build/tests/test_fs_unit
+	gcc --coverage -Isubsystems/ai -Iinclude \
+	tests/c/test_ai.c subsystems/ai/ai.c src/ai_syscall.c src/logging.c src/error.c -lcurl \
+	-o build/tests/test_ai
+	@./build/tests/test_ai
+	gcc --coverage -Iinclude -Isubsystems/security \
+	tests/c/test_wasm_runtime.c src/wasm_runtime.c subsystems/security/security.c src/logging.c src/error.c \
+	-o build/tests/test_wasm_runtime
+	@./build/tests/test_wasm_runtime
 	gcc --coverage -Iinclude \
 	tests/c/test_ui.c src/logging.c src/error.c -lncurses \
 	-o build/tests/test_ui
 	@./build/tests/test_ui
-	@python3 -m pytest -q tests/python
-		
+	@python3 -m pytest --cov=./ -q tests/python
+	
 test-integration:
 	@echo "\u2192 Running integration tests"
 	@mkdir -p build/tests
-		gcc --coverage -Isubsystems/fs -Isubsystems/memory -Iinclude \
-		tests/integration/test_fs_memory.c \
-		subsystems/fs/fs.c subsystems/memory/memory.c src/logging.c src/error.c \
+	gcc --coverage -Isubsystems/fs -Isubsystems/memory -Iinclude \
+	tests/integration/test_fs_memory.c \
+	subsystems/fs/fs.c subsystems/memory/memory.c src/logging.c src/error.c \
 	-o build/tests/test_fs
 	@./build/tests/test_fs
 	gcc --coverage -Isubsystems/fs -Isubsystems/memory -Iinclude \

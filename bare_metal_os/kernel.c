@@ -2,6 +2,7 @@
 #include "config.h"
 #include "error.h"
 #include "logging.h"
+#include "ipc.h"
 #include <stdint.h>
 
 /* Boot entry points provided by assembly stub. */
@@ -9,6 +10,13 @@ extern void repl(void);
 void mem_init_bare(void);
 void fs_init(void);
 void bm_init(void);
+
+/* Dispatch syscalls coming from the host interface */
+static int syscall_dispatch(SyscallID id, void *args) {
+    (void)id;
+    (void)args;
+    return -1; /* stub */
+}
 
 /* Initialise subsystems before entering the REPL. */
 static void kernel_init(void) {
