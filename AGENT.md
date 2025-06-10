@@ -486,3 +486,10 @@ Next agent must:
 - Added `ai-cred rotate` command for master key rotation.
 - Daemon now performs startup health check and warns if key source is missing.
 - Updated tests to verify rotation functionality.
+
+## [2025-06-10 11:16 UTC] audit log json lines [codex]
+- Converted audit logs to newline-delimited JSON and added aos-audit show CLI.
+- Documented format in docs/audit.md.
+
+Next agent must:
+- Expand audit coverage across subsystems.

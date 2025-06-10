@@ -10,7 +10,7 @@ src/main.c src/repl.c src/interpreter.c src/branch_manager.c src/ui_graph.c \
 src/branch_vm.c src/plugin_loader.c src/plugin_supervisor.c src/wasm_runtime.c \
 src/lang_vm.c \
 src/branch_net.c src/ai_syscall.c src/aicell.c src/checkpoint.c src/policy.c \
-src/memory.c src/app_runtime.c src/config.c src/logging.c src/error.c \
+src/memory.c src/app_runtime.c src/config.c src/logging.c src/audit.c src/error.c \
 src/branch_syscalls.c \
 src/generated/command_map.c src/generated/commands.c \
 subsystems/memory/memory.c subsystems/fs/fs.c subsystems/ai/ai.c \
@@ -256,7 +256,7 @@ tests/c/test_plugin.c src/plugin_loader.c src/plugin_supervisor.c src/wasm_runti
 	-o build/tests/test_plugin
 	@./build/tests/test_plugin
 	gcc -Iinclude \
-	tests/c/test_policy.c src/policy.c src/logging.c src/error.c \
+        tests/c/test_policy.c src/policy.c src/audit.c src/logging.c src/error.c \
 	-o build/tests/test_policy
 	@./build/tests/test_policy
 	gcc -Isubsystems/dev -Iinclude \

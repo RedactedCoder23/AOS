@@ -706,3 +706,14 @@ Next agent must:
 - `make test-unit`
 - `make test-integration`
 - `pytest -q tests/python scripts/tests/test_ai_cred_manager.py`
+
+## [2025-06-10 11:16 UTC] audit log json lines [codex]
+### Changes
+- Refactored audit logging to newline-delimited JSON.
+- Added `aos-audit show` CLI with filtering.
+- Updated policy engine to use new logging API.
+### Tests
+- `pre-commit run --files include/audit.h src/audit.c src/policy.c scripts/aos_audit.py tests/python/test_aos_audit.py docs/audit.md pyproject.toml AGENT.md PATCHLOG.md`
+- `make test-unit`
+- `make test-integration`
+- `pytest -q tests/python/test_aos_audit.py`
