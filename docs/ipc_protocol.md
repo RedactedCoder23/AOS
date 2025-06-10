@@ -31,6 +31,8 @@ struct SyscallRequest {
     int32_t   int_arg1;    // size, flags or secondary id
     char      str_arg0[64];  // pathname, query string, etc.
     char      str_arg1[64];  // optional second string
+    int32_t   branch_id;   // namespace for branch operations
+    char      payload[128]; // JSON or binary arguments
 };
 ```
 
@@ -61,3 +63,15 @@ address defined by `IPC_PHYS_ADDR`.
 Both sides log operations for debugging. The current protocol returns a
 single integer and optional string. Future revisions may extend the
 structs but must keep the total size within one page.
+
+### SYS_CREATE_BRANCH
+- **Request:** `{ /* empty */ }`
+- **Response:** `{ "branch_id": <uint32> }`
+
+### SYS_MERGE_BRANCH
+- **Request:** `{ "branch_id": <uint32> }`
+- **Response:** `{ "status": "ok" }`
+
+### SYS_LIST_BRANCHES
+- **Request:** `{ /* empty */ }`
+- **Response:** `{ "branches": [] }`

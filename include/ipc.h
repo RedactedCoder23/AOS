@@ -33,6 +33,8 @@ typedef struct {
     int32_t int_arg1;  /* size, flags or secondary id */
     char str_arg0[64]; /* pathname, query string, etc. */
     char str_arg1[64]; /* optional second string argument */
+    int32_t branch_id; /* branch identifier for namespaced calls */
+    char payload[128]; /* JSON or binary arguments */
 } SyscallRequest;
 
 /* Basic response structure returned to the caller */

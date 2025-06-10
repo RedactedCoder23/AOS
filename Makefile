@@ -11,6 +11,7 @@ src/branch_vm.c src/plugin_loader.c src/plugin_supervisor.c src/wasm_runtime.c \
 src/lang_vm.c \
 src/branch_net.c src/ai_syscall.c src/aicell.c src/checkpoint.c src/policy.c \
 src/memory.c src/app_runtime.c src/config.c src/logging.c src/error.c \
+src/branch_syscalls.c \
 src/generated/command_map.c src/generated/commands.c \
 subsystems/memory/memory.c subsystems/fs/fs.c subsystems/ai/ai.c \
 subsystems/branch/branch.c subsystems/net/net.c \
