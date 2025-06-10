@@ -3,9 +3,7 @@
 import http.server
 import socketserver
 import os
-import json
 import subprocess
-from sys import platform
 
 from scripts.ai_cred_client import get_api_key  # noqa: F401  # placeholder
 
@@ -49,7 +47,13 @@ class BranchUIHandler(http.server.SimpleHTTPRequestHandler):
             self.send_response(200)
             self.send_header("Content-Type", "application/json")
             self.end_headers()
-            data = subprocess.check_output(["./build/host_test", "--ipc", "list"], text=True) if os.path.exists("./build/host_test") else "[]"
+            data = (
+                subprocess.check_output(
+                    ["./build/host_test", "--ipc", "list"], text=True
+                )
+                if os.path.exists("./build/host_test")
+                else "[]"
+            )
             self.wfile.write(data.encode())
         else:
             if self.path == "/":
@@ -71,12 +75,12 @@ class BranchUIHandler(http.server.SimpleHTTPRequestHandler):
             self.send_header("Content-Type", "application/json")
             self.end_headers()
             # Placeholder create branch via kernel ipc
-            self.wfile.write(b"{\"branch_id\":0}")
+            self.wfile.write(b'{"branch_id":0}')
         elif self.path.startswith("/branches/") and self.path.endswith("/merge"):
             self.send_response(200)
             self.send_header("Content-Type", "application/json")
             self.end_headers()
-            self.wfile.write(b"{\"status\":\"ok\"}")
+            self.wfile.write(b'{"status":"ok"}')
         else:
             self.send_error(404)
 

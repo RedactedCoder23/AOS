@@ -3,6 +3,7 @@
 #include "error.h"
 #include "idt.h"
 #include "ipc.h"
+#include "ipc_protocol.h"
 #include "logging.h"
 #include "traps.h"
 #include "../include/syscalls.h"

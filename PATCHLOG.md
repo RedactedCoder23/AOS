@@ -683,3 +683,23 @@ by: codex-agent-xyz
 - `pytest -q tests/python`
 Next agent must:
 - Flesh out branch syscalls and micro-VM lifecycle
+## [2025-06-10 08:16 UTC] branch syscall implementation [codex]
+### Changes
+- Added ipc_protocol.h and payload_len to SyscallRequest.
+- Implemented branch table syscalls and updated host/kernel dispatch.
+- Created ipc_host_integration test and Makefile rule.
+### Tests
+- `pre-commit run --files include/ipc.h src/syscall.c src/branch_syscalls.c src/ipc_host.c bare_metal_os/kernel.c tests/ipc_host_integration.c Makefile AGENT.md PATCHLOG.md`
+- `make test-unit`
+- `make test-integration`
+
+## [2025-06-10 08:40 UTC] lint fix and negative tests [codex]
+### Changes
+- Installed flake8 via requirements-dev and ensured `pre-commit` passes
+- Added list-before-create case in `ipc_host_integration` test
+- Documented merge/list error codes in `docs/ipc_protocol.md`
+### Tests
+- `pre-commit run --all-files`
+- `make test-unit`
+- `make test-integration`
+

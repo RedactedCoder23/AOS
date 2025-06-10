@@ -71,7 +71,9 @@ structs but must keep the total size within one page.
 ### SYS_MERGE_BRANCH
 - **Request:** `{ "branch_id": <uint32> }`
 - **Response:** `{ "status": "ok" }`
+- **Errors:** `{ "error": "branch not found", "code": 404 }`
 
 ### SYS_LIST_BRANCHES
 - **Request:** `{ /* empty */ }`
 - **Response:** `{ "branches": [] }`
+- **Errors:** `{ "error": "invalid buffer", "code": 400 }`

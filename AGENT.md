@@ -473,3 +473,11 @@ Next agent must:
 
 Next agent must:
 - Implement real branch syscall logic and micro-VM integration.
+
+## [2025-06-10 08:16 UTC] branch syscall implementation [codex]
+- Implemented in-kernel branch table and sys_create/merge/list.
+- Added ipc_protocol.h message struct and updated host dispatch.
+- New ipc host integration test exercises branch syscalls.
+
+Next agent must:
+- Expand branch merging logic and snapshot metadata.

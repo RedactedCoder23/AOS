@@ -311,7 +311,9 @@ test-integration:
 	gcc -Isubsystems/fs -Isubsystems/memory -Iinclude tests/integration/test_persistence.c \
 	subsystems/fs/fs.c subsystems/memory/memory.c src/memory.c src/logging.c src/error.c -o build/tests/test_persistence
 	@./build/tests/test_persistence
-	        @[ -f aos.bin ] && ./scripts/qemu_smoke.sh $(CC_TARGET) || echo "aos.bin missing, skipping qemu"
+	gcc -Iinclude -DIPC_HOST_LIBRARY tests/ipc_host_integration.c src/ipc_host.c src/branch_syscalls.c src/branch_manager.c subsystems/branch/branch.c src/logging.c src/error.c -o build/tests/test_ipc_host_integration
+	@./build/tests/test_ipc_host_integration
+	@[ -f aos.bin ] && ./scripts/qemu_smoke.sh $(CC_TARGET) || echo "aos.bin missing, skipping qemu"
 	
 test-fuzz:
 	@echo "\u2192 Running memory fuzz tests under ASan"

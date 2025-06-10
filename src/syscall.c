@@ -26,6 +26,7 @@ int sys_ai_query(const char *prompt, char *out, size_t outsz) {
     req->str_arg0[sizeof(req->str_arg0) - 1] = '\0';
     req->str_arg1[0] = '\0';
     req->branch_id = 0;
+    req->payload_len = 0;
     req->payload[0] = '\0';
     ring->head++;
 
@@ -47,6 +48,7 @@ int sys_create_branch(void) {
     SyscallRequest *req = &ring->req[idx];
     memset(req, 0, sizeof(*req));
     req->id = SYS_CREATE_BRANCH;
+    req->payload_len = 0;
     ring->head++;
     while (ring->tail <= idx)
         usleep(1000);
@@ -61,6 +63,7 @@ int sys_merge_branch(int branch_id) {
     memset(req, 0, sizeof(*req));
     req->id = SYS_MERGE_BRANCH;
     req->branch_id = branch_id;
+    req->payload_len = 0;
     ring->head++;
     while (ring->tail <= idx)
         usleep(1000);
@@ -74,6 +77,7 @@ int sys_list_branches(char *out, size_t outsz) {
     SyscallRequest *req = &ring->req[idx];
     memset(req, 0, sizeof(*req));
     req->id = SYS_LIST_BRANCHES;
+    req->payload_len = 0;
     ring->head++;
     while (ring->tail <= idx)
         usleep(1000);

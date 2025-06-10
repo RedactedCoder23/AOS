@@ -1,6 +1,7 @@
 #include "ipc_host.h"
 #include "branch.h"
 #include "ipc.h"
+#include "ipc_protocol.h"
 #include "syscalls.h"
 #include "logging.h"
 #include <errno.h>
