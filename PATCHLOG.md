@@ -670,3 +670,16 @@ by: codex-agent-xyz
 - `make test-integration`
 >>>>>> main
 >>>>>> main
+## [2025-06-10 08:05 UTC] branch syscall and vault stubs [codex]
+### Changes
+- Added new SyscallRequest fields and branch syscall IDs.
+- Kernel and host dispatch now include stubs for branch creation/merge/list.
+- Introduced ai_cred_manager with encrypted store and socket RPC.
+- ai_backend now pulls credentials via ai_cred_client.
+- Added REST endpoints in branch_ui and JS helpers.
+### Tests
+- `make test-unit`
+- `make test-integration`
+- `pytest -q tests/python`
+Next agent must:
+- Flesh out branch syscalls and micro-VM lifecycle

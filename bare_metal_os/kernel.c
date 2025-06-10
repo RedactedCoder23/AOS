@@ -5,6 +5,8 @@
 #include "ipc.h"
 #include "logging.h"
 #include "traps.h"
+#include "../include/syscalls.h"
+#include <errno.h>
 #include <stdint.h>
 
 /* Boot entry points provided by assembly stub. */
@@ -19,9 +21,21 @@ extern char ipc_shared; /* linker symbol */
 static volatile IpcRing *ring = (volatile IpcRing *)&ipc_shared;
 
 static int syscall_dispatch(const SyscallRequest *req, SyscallResponse *resp) {
-    (void)req;
-    resp->retval = -1;
-    return -1;
+    resp->retval = -ENOSYS;
+    switch (req->id) {
+    case SYS_CREATE_BRANCH:
+        resp->retval = sys_create_branch();
+        break;
+    case SYS_MERGE_BRANCH:
+        resp->retval = sys_merge_branch(req->branch_id);
+        break;
+    case SYS_LIST_BRANCHES:
+        resp->retval = sys_list_branches(resp->data, sizeof(resp->data));
+        break;
+    default:
+        break;
+    }
+    return resp->retval;
 }
 
 static void process_ipc(void) {

@@ -465,3 +465,11 @@ Next agent must:
 - Extend paging to map the kernel heap.
 >>>>>> main
 >>>>>> main
+## [2025-06-10 08:05 UTC] branch syscall and vault stubs [codex]
+- Added placeholder branch syscalls and IPC fields.
+- Created ai_cred_manager daemon with encrypted storage and socket RPC.
+- Refactored ai_backend to fetch credentials via ai_cred_client.
+- Extended branch_ui REST API and React helpers.
+
+Next agent must:
+- Implement real branch syscall logic and micro-VM integration.

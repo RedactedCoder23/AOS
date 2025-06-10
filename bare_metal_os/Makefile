@@ -13,7 +13,7 @@ all: bootloader.bin kernel.bin aos.bin
 	
 
 kernel.bin: kernel.c memory.c fs.c branch.c ai_trigger.c idt.c traps.c interpreter/command_interpreter.c \
-    ../src/generated/commands.c ../src/generated/command_map.c config_stub.c ../src/logging.c ../src/error.c
+    ../src/generated/commands.c ../src/generated/command_map.c config_stub.c ../src/logging.c ../src/error.c ../src/branch_syscalls.c
 	$(CC) $(CFLAGS) -I.. -I../include -I../src/generated -c kernel.c -o kernel.o
 	$(CC) $(CFLAGS) -I.. -I../include -I../src/generated -c memory.c -o memory.o
 	$(CC) $(CFLAGS) -I.. -I../include -I../src/generated -c fs.c -o fs.o
@@ -26,8 +26,9 @@ kernel.bin: kernel.c memory.c fs.c branch.c ai_trigger.c idt.c traps.c interpret
 	$(CC) $(CFLAGS) -I.. -I../include -I../src/generated -c ../src/generated/command_map.c -o command_map.o
 	$(CC) $(CFLAGS) -I.. -I../include -I../src/generated -c config_stub.c -o config.o
 	$(CC) $(CFLAGS) -I.. -I../include -I../src/generated -c ../src/logging.c -o logging.o
-	$(CC) $(CFLAGS) -I.. -I../include -I../src/generated -c ../src/error.c -o error.o
-	$(LD) $(LDFLAGS) kernel.o memory.o fs.o branch.o ai_trigger.o idt.o traps.o command_interpreter.o commands.o command_map.o config.o logging.o error.o -o kernel.elf
+        $(CC) $(CFLAGS) -I.. -I../include -I../src/generated -c ../src/error.c -o error.o
+        $(CC) $(CFLAGS) -I.. -I../include -I../src/generated -c ../src/branch_syscalls.c -o branch_syscalls.o
+        $(LD) $(LDFLAGS) kernel.o memory.o fs.o branch.o ai_trigger.o idt.o traps.o command_interpreter.o commands.o command_map.o config.o logging.o error.o branch_syscalls.o -o kernel.elf
 	objcopy -O binary kernel.elf kernel.bin
 
 stage1.bin: stage1.asm

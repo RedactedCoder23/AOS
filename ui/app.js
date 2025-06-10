@@ -1,4 +1,5 @@
 /* global d3 */
+import {listBranches, createBranch, mergeBranch} from './api.js';
 
 async function loadGraph() {
   const resp = await fetch('/graph');
@@ -105,6 +106,11 @@ function setActive(tab, pane) {
   document.querySelectorAll('#tab-content .pane').forEach(p => p.classList.remove('active'));
   tab.classList.add('active');
   pane.classList.add('active');
+}
+
+async function refresh() {
+  const g = await listBranches();
+  setupGraph(g);
 }
 
 loadGraph().then(setupGraph);

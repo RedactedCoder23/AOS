@@ -1,7 +1,9 @@
 #include "ipc_host.h"
 #include "branch.h"
 #include "ipc.h"
+#include "syscalls.h"
 #include "logging.h"
+#include <errno.h>
 #include <fcntl.h>
 #include <stdint.h>
 #include <stdio.h>
@@ -23,27 +25,20 @@ void ipc_host_handle(IpcRing *ring) {
         snprintf(resp->data, sizeof(resp->data), "OK");
         resp->retval = strlen(resp->data);
         break;
-    case SYS_FORK_BRANCH:
-        resp->retval = bm_clone(req->int_arg0, req->str_arg0);
+    case SYS_CREATE_BRANCH:
+        resp->retval = sys_create_branch();
         break;
     case SYS_MERGE_BRANCH:
-        resp->retval = bm_connect(req->int_arg0, req->int_arg1);
+        resp->retval = sys_merge_branch(req->branch_id);
         break;
+    case SYS_LIST_BRANCHES:
+        resp->retval = sys_list_branches(resp->data, sizeof(resp->data));
+        break;
+    case SYS_FORK_BRANCH:
     case SYS_DELETE_BRANCH:
-        resp->retval = bm_delete(req->int_arg0);
+    case SYS_LIST_BRANCH:
+        resp->retval = -ENOSYS;
         break;
-    case SYS_LIST_BRANCH: {
-        Branch b[MAX_BRANCHES];
-        int c = bm_list(b);
-        resp->retval = c;
-        resp->data[0] = '\0';
-        for (int i = 0; i < c; i++) {
-            char tmp[40];
-            snprintf(tmp, sizeof(tmp), "%d:%s%s", b[i].id, b[i].name, i == c - 1 ? "" : ";");
-            strncat(resp->data, tmp, sizeof(resp->data) - strlen(resp->data) - 1);
-        }
-        break;
-    }
     default:
         resp->retval = -1;
     }

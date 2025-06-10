@@ -2,6 +2,7 @@
 """Backend helper to query OpenAI API."""
 import os
 import sys
+from ai_cred_client import get_api_key
 
 try:
     import openai
@@ -20,11 +21,9 @@ def main():
         print(f"[mock-ai] response to: {prompt}")
         return 0
 
-    key = os.environ.get("OPENAI_API_KEY")
+    key = get_api_key("openai")
     if not key:
-        key = os.environ.get("AOS_OPENAI_API_KEY")
-    if not key:
-        print("missing OPENAI_API_KEY", file=sys.stderr)
+        print("ERROR: no AI credential for 'openai' \u2014 run `ai-cred set --service=openai <key>`", file=sys.stderr)
         return 2
     if openai is None:
         print("openai package missing", file=sys.stderr)
