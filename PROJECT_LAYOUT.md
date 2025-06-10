@@ -2,18 +2,33 @@
 
 This document outlines the purpose of each top-level directory in the AOS repository.
 
-- `apps_src/` – sample applications built as part of the userland demos.
-- `bare_metal_os/` – minimal kernel sources and boot files for bare metal targets.
-- `boot/` – build artifacts and scripts related to bootloader construction.
-- `docs/` – project documentation. Legacy files are kept under `docs/archive/`.
-- `examples/` – small scripts and programs demonstrating subsystem usage.
-- `include/` – public C headers shared across host and kernel builds.
-- `scripts/` – utility scripts used during development and CI.
-- `src/` – host-side entry points and shared helpers.
-- `subsystems/` – core modules such as memory, filesystem and networking.
-- `tests/` – unit and integration tests run by the CI pipeline.
-- `ui/` – graphical and web user interfaces.
+| Path | Subsystem | Phase | Status |
+|------|-----------|-------|--------|
+| `apps_src/` | host | 6 | ✔ |
+| `bare_metal_os/` | kernel | 1 | ✔ |
+| `boot/` | kernel | 1 | ✔ |
+| `docs/` | tooling | 0 | ✔ |
+| `examples/` | host | 7 | ✔ |
+| `include/` | kernel | 1 | ✔ |
+| `scripts/` | tooling | 0 | ✔ |
+| `src/` | host | 3 | ✔ |
+| `subsystems/` | host | 2 | ✔ |
+| `tests/` | tooling | 0 | ✔ |
+| `ui/` | UI | 9 | ✔ |
+| `Makefile` | tooling | 0 | ✔ |
+| `AGENT.md` | tooling | 0 | ✔ |
+| `PATCHLOG.md` | tooling | 0 | ✔ |
+| `PROJECT_LAYOUT.md` | tooling | 0 | ✔ |
+| `ROADMAP.md` | tooling | 0 | ✔ |
+| `README.md` | tooling | 0 | ✔ |
+| `SECURITY.md` | tooling | 0 | ✔ |
+| `CODE_OF_CONDUCT.md` | tooling | 0 | ✔ |
+| `CONTRIBUTING.md` | tooling | 0 | ✔ |
+| `LICENSE` | tooling | 0 | ✔ |
+| `mappings.json` | tooling | 0 | ✔ |
+| `pyproject.toml` | tooling | 0 | ✔ |
+| `requirements.txt` | tooling | 0 | ✔ |
+| `requirements-dev.txt` | tooling | 0 | ✔ |
 
-Other files at the repository root include build configuration (`Makefile`),
-development logs (`AGENT.md`, `PATCHLOG.md`), and the `ROADMAP.md` describing
-planned work.
+Other files at the repository root include build artifacts under `build/` and
+generated logs such as `AOS-CHECKLIST.log`.

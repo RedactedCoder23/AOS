@@ -242,6 +242,18 @@ tests/c/test_plugin.c src/plugin_loader.c src/plugin_supervisor.c src/wasm_runti
 	tests/c/test_policy.c src/policy.c src/logging.c src/error.c \
 	-o build/tests/test_policy
 	@./build/tests/test_policy
+	gcc --coverage -Isubsystems/dev -Iinclude \
+	tests/c/test_dev.c subsystems/dev/dev.c src/logging.c src/error.c \
+	-o build/tests/test_dev
+	@./build/tests/test_dev
+	gcc --coverage -Isubsystems/security -Iinclude \
+	tests/c/test_security.c subsystems/security/security.c src/logging.c src/error.c \
+	-o build/tests/test_security
+	@./build/tests/test_security
+	gcc --coverage -Iinclude \
+	tests/c/test_ui.c src/logging.c src/error.c -lncurses \
+	-o build/tests/test_ui
+	@./build/tests/test_ui
 	@python3 -m pytest -q tests/python
 		
 test-integration:
