@@ -378,3 +378,9 @@ Next agent must:
 
 Next agent must:
 - Provide a compile_commands.json for clang-tidy and fix reported issues.
+## [2025-06-10 00:00 UTC] docs and build updates [codex]
+- Added MIT license summary to README.
+- Introduced 'compdb' Makefile target to generate compile_commands.json.
+
+Next agent must:
+- Use the new compdb rule and address clang-tidy warnings.

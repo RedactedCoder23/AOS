@@ -314,3 +314,7 @@ checklist:
 	fi
 
 generate: regenerate
+
+.PHONY: compdb
+compdb: regenerate
+	compiledb -n make host
