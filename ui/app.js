@@ -1,5 +1,5 @@
 /* global d3, React, ReactDOM */
-import { listBranches, createBranch, mergeBranch } from './api.js';
+import { listBranches, createBranch, mergeBranch, snapshotBranch, deleteBranch } from './api.js';
 
 // Simple toast queue managed via React
 function ToastContainer({ toasts }) {
@@ -139,10 +139,12 @@ function AgentPanel({ branchId }) {
       `${a.agent_id}: ${a.task} (${a.status})`)));
 }
 
-function BranchNode({ data, onMerge }) {
+function BranchNode({ data, onMerge, onSnapshot, onDelete }) {
   return React.createElement('div', { className: 'branch-node' },
     `${data.name} `,
+    React.createElement('button', { onClick: onSnapshot }, 'Checkpoint'),
     React.createElement('button', { onClick: onMerge }, 'Merge'),
+    React.createElement('button', { onClick: onDelete }, 'Delete'),
     React.createElement(AgentPanel, { branchId: data.id }));
 }
 
@@ -205,12 +207,40 @@ function App() {
     setLoading(false);
   }
 
+  async function handleSnapshot(id) {
+    if (loading) return;
+    setLoading(true);
+    try {
+      await snapshotBranch(id);
+      if (window.showToast) window.showToast('Checkpoint saved.');
+      await refresh();
+    } catch {
+      if (window.showToast) window.showToast('Snapshot failed.');
+    }
+    setLoading(false);
+  }
+
+  async function handleDelete(id) {
+    if (loading) return;
+    setLoading(true);
+    try {
+      await deleteBranch(id);
+      if (window.showToast) window.showToast('Branch deleted.');
+      await refresh();
+    } catch {
+      if (window.showToast) window.showToast('Delete failed.');
+    }
+    setLoading(false);
+  }
+
   return React.createElement(React.Fragment, null,
     React.createElement('button', { onClick: handleCreate, disabled: loading }, 'New Branch'),
     branches.map(b => React.createElement(BranchNode, {
       key: b.id,
       data: b,
       onMerge: () => handleMerge(b.id),
+      onSnapshot: () => handleSnapshot(b.id),
+      onDelete: () => handleDelete(b.id),
     })),
     React.createElement(ToastContainer, { toasts })
   );

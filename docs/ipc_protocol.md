@@ -118,6 +118,16 @@ structs but must keep the total size within one page.
   { "snapshot_id": 43 }
   ```
 
+### SYS_DELETE_BRANCH
+- **Request:**
+  ```json
+  { "branch_id": 2 }
+  ```
+- **Response:**
+  ```json
+  { "result": "ok" }
+  ```
+
 ### Examples
 
 ```bash
