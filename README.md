@@ -33,6 +33,13 @@ Then build the host REPL with `make host` and launch an interactive session.
 - Node.js **18** or newer ([install](https://nodejs.org/en/download/))
 - `make`, `pkg-config`, `libcurl-dev`, `libncurses-dev`
 
+### Prerequisites for `make bare`
+
+- GNU make, gcc, binutils
+- nasm (for assembling stage2.S)
+- grub-mkrescue, xorriso (to build ISOs)
+- qemu-system-x86_64 (for testing in QEMU)
+
 Install Python requirements and pre-commit hooks:
 
 ```bash
@@ -40,26 +47,7 @@ pip install -r requirements.txt
 pre-commit install
 ```
 
-## Architecture Overview
-
-AOS is split into a small kernel and a set of host tools. The kernel boots via
-GRUB and initialises a handful of subsystems (memory, filesystem and branch
-manager). The host REPL links against the same subsystems to provide a
-lightweight command line environment. Each subsystem resides under
-`subsystems/` and exposes a header-only API.
-
-For deeper details see [docs/system_architecture.md](docs/system_architecture.md).
-An overview of command dispatch can be found in
-[docs/command_flow.md](docs/command_flow.md).
-
-## What's inside?
-
-- `bare_metal_os/` – kernel sources and boot files
-- `src/` – shared utilities and host code
-- `subsystems/` – memory, fs, branch and other core modules
-- `include/` – public headers used across the project
-- `apps_src/` – sample applications
-- `docs/` – project documentation
+See [ARCHITECTURE.md](ARCHITECTURE.md) for a detailed overview of the system design.
 
 ## Build
 

@@ -45,7 +45,7 @@ void fs_ls(void) {
 
 int fs_mkdir(const char *name) { return current->mkdir ? current->mkdir(name) : -1; }
 
-int fs_delete(const char *name) { return current->delete ? current->delete (name) : -1; }
+int fs_delete(const char *name) { return current->delete ? current->delete(name) : -1; }
 
 /* --- ramfs backend rewritten to support directories and dynamic data --- */
 #include "memory.h"
@@ -275,8 +275,8 @@ static int ram_delete(const char *name) {
 }
 
 /* ---- CBOR checkpoint save ---- */
-#include <time.h>
 #include <stdint.h>
+#include <time.h>
 
 typedef struct checkpoint_hdr {
     uint32_t magic;
@@ -322,13 +322,12 @@ static void cbor_uint(Buffer *b, int major, unsigned int val) {
         unsigned char tmp[2] = {(major << 5) | 24, (unsigned char)val};
         buf_put(b, tmp, 2);
     } else if (val < 65536) {
-        unsigned char tmp[3] = {(major << 5) | 25, (unsigned char)(val >> 8),
-                                (unsigned char)val};
+        unsigned char tmp[3] = {(major << 5) | 25, (unsigned char)(val >> 8), (unsigned char)val};
         buf_put(b, tmp, 3);
     } else {
         unsigned char tmp[5] = {(major << 5) | 26, (unsigned char)(val >> 24),
-                                (unsigned char)(val >> 16),
-                                (unsigned char)(val >> 8), (unsigned char)val};
+                                (unsigned char)(val >> 16), (unsigned char)(val >> 8),
+                                (unsigned char)val};
         buf_put(b, tmp, 5);
     }
 }
@@ -457,7 +456,7 @@ static int ram_cp_load(const char *file) {
     return rc == 0 ? 0 : -1;
 }
 
-static FsBackend ram_backend = {ramfs_init,  ram_open, ram_read,  ram_write,
+static FsBackend ram_backend = {ramfs_init, ram_open, ram_read,  ram_write,
                                 ram_close,  ram_ls,   ram_mkdir, ram_delete};
 
 void fs_use_ramfs(void) { fs_register(&ram_backend); }
