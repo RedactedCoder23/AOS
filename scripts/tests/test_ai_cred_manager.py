@@ -9,6 +9,8 @@ import unittest
 import pwd
 import grp
 
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "../..")))
+
 BIN = os.path.join("scripts", "ai_cred_manager.py")
 
 

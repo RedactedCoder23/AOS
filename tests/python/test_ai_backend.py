@@ -5,17 +5,17 @@ from types import SimpleNamespace
 import unittest.mock
 import importlib
 
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "../..")))
+
+from scripts import ai_backend
+
 SCRIPT = os.path.join("scripts", "ai_backend.py")
 
 
 class AiBackendTest(unittest.TestCase):
-    def setUp(self):
-        path = os.path.join(os.getcwd(), "scripts")
-        if path not in sys.path:
-            sys.path.insert(0, path)
 
     def test_offline(self):
-        mod = importlib.reload(importlib.import_module("ai_backend"))
+        mod = importlib.reload(ai_backend)
         os.environ["AOS_AI_OFFLINE"] = "1"
         sys.argv = ["ai_backend.py", "hi"]
         try:
@@ -24,7 +24,7 @@ class AiBackendTest(unittest.TestCase):
             del os.environ["AOS_AI_OFFLINE"]
 
     def test_success(self):
-        mod = importlib.reload(importlib.import_module("ai_backend"))
+        mod = importlib.reload(ai_backend)
 
         def fake_get(_svc):
             return "k"
@@ -50,12 +50,12 @@ class AiBackendTest(unittest.TestCase):
             self.assertEqual(mod.main(), 0)
 
     def test_no_args(self):
-        mod = importlib.reload(importlib.import_module("ai_backend"))
+        mod = importlib.reload(ai_backend)
         sys.argv = ["ai_backend.py"]
         self.assertEqual(mod.main(), 1)
 
     def test_openai_missing(self):
-        mod = importlib.reload(importlib.import_module("ai_backend"))
+        mod = importlib.reload(ai_backend)
 
         def fake_get(_):
             return "k"
@@ -66,7 +66,7 @@ class AiBackendTest(unittest.TestCase):
             self.assertEqual(mod.main(), 2)
 
     def test_openai_error(self):
-        mod = importlib.reload(importlib.import_module("ai_backend"))
+        mod = importlib.reload(ai_backend)
 
         def fake_get(_svc):
             return "k"
@@ -90,7 +90,7 @@ class AiBackendTest(unittest.TestCase):
             self.assertEqual(mod.main(), 3)
 
     def test_missing_key(self):
-        mod = importlib.reload(importlib.import_module("ai_backend"))
+        mod = importlib.reload(ai_backend)
 
         def bad_get(_svc):
             raise KeyError("openai")

@@ -2,7 +2,7 @@
 """Backend helper to query OpenAI API."""
 import os
 import sys
-from ai_cred_client import get_api_key
+from scripts.ai_cred_client import get_api_key
 
 try:
     import openai

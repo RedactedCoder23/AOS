@@ -253,13 +253,11 @@ Next agent must:
 
 Next agent must:
 - Verify pre-commit hooks install in CI and local runs without auth errors.
-=======
  codex/integrate-tests-into-ci-with-github-actions
 ## [2025-06-09 11:46 UTC] ci test integration [agent-mem]
 - Integrated unit, integration and fuzz tests under unified `make test`.
 - Added ASan fuzz harness and simple coverage reporting.
 - Rewrote CI workflow to invoke new targets.
-=======
 ## [2025-06-09 11:45 UTC] build refactor [agent-mem]
 - Replaced monolithic Makefile with pattern rules and parallel build flag.
 - Added dependency checks and modular boot targets.
@@ -267,8 +265,6 @@ Next agent must:
 
 Next agent must:
 - Monitor CI for stability and extend build scripts as features land.
- main
- main
 
 ## [2025-06-09 12:18 UTC] ci workflow cleanup [codex]
 - Removed leftover conflict lines from `.github/workflows/ci.yml`.
@@ -312,20 +308,17 @@ codex/expand-c-unit-tests-and-unify-error-handling
 - `pre-commit run --all-files`
 - `make test-unit`
 - `pytest -q tests/python`
-=======
  codex/move-generated-c-files-and-update-makefile
 ## [2025-06-09 22:25 UTC] generated code path update [codex-agent]
 - Moved generated sources to `src/generated/` and updated Makefiles.
 - Added `regenerate` rule invoking the mappings generator.
 - Updated docs and ignore file.
-=======
 
  codex/add-sanitizer-build-and-coverage-badge
 ## [2025-06-09 22:18 UTC] ci coverage + sanitizer [codex]
 - Added `sanitize-build` job compiling with `-fsanitize=address,undefined`.
 - Integrated `gcovr` coverage reporting and Coveralls upload.
 - Inserted coverage badge into README.
-=======
 ## [2025-06-09 14:15 UTC] dependency split [agent-mem]
 - Documented openai usage in `requirements.txt`.
 - Created `requirements-dev.txt` for dev tooling.
@@ -334,7 +327,6 @@ codex/expand-c-unit-tests-and-unify-error-handling
 
 Next agent must:
 - Verify fresh venv install covers all runtime scripts.
- main
 ## [2025-06-09 22:34 UTC] repo hygiene sweep [codex]
 - Ran `pre-commit` after installing hooks and flake8; all checks pass.
 - Executed `clang-format` across sources.
@@ -370,7 +362,6 @@ Next agent must:
 - Added MIT license summary to README.
 - Introduced 'compdb' Makefile target to generate compile_commands.json.
 
-<<<<<< codex/perform-codebase-cleanup-and-reorganization
 
 ## [2025-06-10 00:10 UTC] meta sweep [codex]
 - Ran clang-format and black on sources.
@@ -380,7 +371,6 @@ Next agent must:
 - Installed npm packages and ran ESLint with no issues.
 - Removed `__pycache__` and npm lock file.
 
-=======
 Next agent must:
 - Use the new compdb rule and address clang-tidy warnings.
 ## [2025-06-10 00:11 UTC] docs and community prep [codex]
@@ -435,7 +425,6 @@ Next agent must:
 
 Next agent must:
 - Implement real syscall handlers and extend tests.
-<<<<<< codex/implement-in-ram-fs-with-cbor-checkpoint
 
 ## [2025-06-10 04:27 UTC] ramfs checkpoint utility [codex]
 - Added dynamic in-RAM filesystem with directory support.
@@ -444,8 +433,6 @@ Next agent must:
 
 Next agent must:
 - Harden filesystem error handling and expand checkpoint metadata.
-=======
-<<<<<< codex/stub-branch-manager-functions-with-tests
 ## [2025-06-10 04:26 UTC] branch thread stubs [codex]
 - Added prototype thread_t and branch_t in branch_manager.c.
 - Created stubs branch_create/fork/join with basic malloc.
@@ -453,7 +440,6 @@ Next agent must:
 
 Next agent must:
 - Expand thread manager to launch real pthreads.
-=======
 
 ## [2025-06-10 04:23 UTC] basic paging setup [codex]
 - Added identity-mapped page tables in `memory.c` and enabled paging bits.
@@ -463,8 +449,6 @@ Next agent must:
 
 Next agent must:
 - Extend paging to map the kernel heap.
->>>>>> main
->>>>>> main
 ## [2025-06-10 08:05 UTC] branch syscall and vault stubs [codex]
 - Added placeholder branch syscalls and IPC fields.
 - Created ai_cred_manager daemon with encrypted storage and socket RPC.
@@ -486,7 +470,6 @@ Next agent must:
 - Added `ai-cred rotate` command for master key rotation.
 - Daemon now performs startup health check and warns if key source is missing.
 - Updated tests to verify rotation functionality.
-<<<<<< codex/refactor-audit-logs-to-json-lines-format
 
 ## [2025-06-10 11:16 UTC] audit log json lines [codex]
 - Converted audit logs to newline-delimited JSON and added aos-audit show CLI.
@@ -494,7 +477,5 @@ Next agent must:
 
 Next agent must:
 - Expand audit coverage across subsystems.
-=======
 ## [2025-06-10 09:00 UTC] merge hunk streamer [codex]
 - Added streaming merge_ai with hunk-based prompts and tests.
->>>>>> main

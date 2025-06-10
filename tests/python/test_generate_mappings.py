@@ -1,7 +1,10 @@
 import os
 import subprocess
 import tempfile
+import sys
 import unittest
+
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "../..")))
 
 SCRIPT = os.path.join("scripts", "generate_aos_mappings.py")
 

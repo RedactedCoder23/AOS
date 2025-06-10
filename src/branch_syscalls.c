@@ -1,8 +1,5 @@
 #include "syscalls.h"
-<<<<<< codex/implement-sys_list_branches-binary-and-json-encoding
 #include "branch.h"
-=======
->>>>>> main
 #include "ipc_protocol.h"
 #include <errno.h>
 #include <string.h>
@@ -29,7 +26,6 @@ int sys_merge_branch(int branch_id) {
 }
 
 int sys_list_branches(char *out, size_t outsz) {
-<<<<<< codex/implement-sys_list_branches-binary-and-json-encoding
     if (!out)
         return -EFAULT;
 
@@ -56,16 +52,6 @@ int sys_list_branches(char *out, size_t outsz) {
         off += sizeof(bi);
     }
     return (int)off;
-=======
-    if (!out || outsz < sizeof(uint32_t))
-        return -EINVAL;
-    struct branch_list_resp *resp = (struct branch_list_resp *)out;
-    uint32_t capacity = (outsz - sizeof(uint32_t)) / sizeof(struct branch_info);
-    resp->count = branch_count < capacity ? branch_count : capacity;
-    for (uint32_t i = 0; i < resp->count; i++)
-        resp->branches[i] = branch_table[i];
-    return 0;
->>>>>> main
 }
 
 uint64_t sys_snapshot_branch(uint32_t branch_id) {
