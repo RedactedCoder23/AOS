@@ -1,4 +1,4 @@
-.PHONY: all clean test install regenerate host bootloader kernel bare run ui ui-check web-ui branch-vm plugins iso efi branch-net desktop-ui ai-service aicell modeld ipc-host policy net subsystems checklist
+.PHONY: all clean test install regenerate host bootloader kernel bare run ui ui-check web-ui branch-vm plugins iso efi branch-net desktop-ui ai-service aicell modeld ipc-host branch-dashboard policy net subsystems checklist
 
 MAKEFLAGS += -j$(shell nproc)
 
@@ -173,7 +173,13 @@ modeld:
 ipc-host:
 	@echo "→ Building ipc host daemon"
 	@mkdir -p build
-	gcc -Iinclude -Isrc/generated src/ipc_host.c src/logging.c src/error.c -o build/ipc_host
+	gcc -Iinclude -Isrc/generated src/ipc_host.c src/branch_manager.c \
+	src/logging.c src/error.c -o build/ipc_host
+branch-dashboard:
+	@echo "→ Building branch dashboard"
+	@mkdir -p build
+	gcc -Iinclude -Isrc/generated ui/branch_dashboard.c src/logging.c src/error.c \
+-lncurses -o build/branch_dashboard
 
 policy:
 	@echo "→ Building policy demo"
