@@ -5,6 +5,7 @@ import os
 import queue
 import subprocess
 from flask import Flask, Response, jsonify, request, send_from_directory
+from .agent_orchestrator import AgentOrchestrator
 
 PORT = 8000
 BASE = os.path.dirname(os.path.abspath(__file__))
@@ -111,6 +112,7 @@ class BranchService:
 flask_sse = _SSE()
 app = Flask(__name__, static_folder=WEB_DIR, static_url_path="")
 service = BranchService(app.logger)
+agent_orch = AgentOrchestrator(app.logger)
 
 
 @app.route("/graph")
@@ -161,6 +163,11 @@ def merge_branch(bid):
 @app.route("/events")
 def events():
     return flask_sse.stream()
+
+
+@app.route("/branches/<int:bid>/agents")
+def branch_agents(bid):
+    return agent_orch.stream(bid)
 
 
 @app.route("/<path:path>")
