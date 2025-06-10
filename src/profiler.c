@@ -10,8 +10,7 @@ static clock_t start_time;
 
 void profiler_start(void) { start_time = clock(); }
 
-void profiler_stop(void) { /* noop for now */
-}
+void profiler_stop(void) { /* noop for now */ }
 
 void profiler_report(const char *label) {
     clock_t end = clock();

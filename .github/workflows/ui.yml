@@ -6,13 +6,8 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-<<<<<< dependabot/github_actions/actions/checkout-4
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v3
-=======
       - uses: actions/checkout@v2
-      - uses: actions/setup-node@v4
->>>>>> main
+      - uses: actions/setup-node@v3
         with:
           node-version: 18
       - name: Build UI

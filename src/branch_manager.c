@@ -289,8 +289,6 @@ branch_t *bm_branch_create(void (*entry)(void *), void *arg) {
     return bm_branch_create_impl(entry, arg);
 }
 
-branch_t *bm_branch_fork(branch_t *parent) {
-    return bm_branch_fork_impl(parent);
-}
+branch_t *bm_branch_fork(branch_t *parent) { return bm_branch_fork_impl(parent); }
 
 void bm_branch_join(branch_t *b) { bm_branch_join_impl(b); }

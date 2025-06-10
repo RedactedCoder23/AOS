@@ -52,8 +52,9 @@ bootloader: regenerate
 
 kernel: regenerate
 	@echo "→ Building kernel"
-	$(MAKE) -C bare_metal_os kernel.bin ARCH=$(CC_TARGET)
+	$(MAKE) -C bare_metal_os stage2.bin kernel.bin ARCH=$(CC_TARGET)
 	cp bare_metal_os/kernel.bin kernel.bin
+	cp bare_metal_os/stage2.bin stage2.bin
 
 bare: bootloader kernel
 	@echo "→ Creating aos.bin"
@@ -275,10 +276,11 @@ src/memory.c src/logging.c src/error.c \
 	-o build/tests/test_ai
 	@./build/tests/test_ai
 	gcc -Iinclude -pthread \
-	tests/ai_test.c src/syscall.c src/ipc_host.c src/logging.c src/error.c \
-	-DIPC_HOST_LIBRARY \
-	-o build/tests/ai_test
-		@./build/tests/ai_test
+		tests/ai_test.c src/syscall.c src/ipc_host.c \
+		src/branch_manager.c subsystems/branch/branch.c \
+		src/logging.c src/error.c -DIPC_HOST_LIBRARY \
+		-o build/tests/ai_test
+			@./build/tests/ai_test
 	gcc -Iinclude -Isubsystems/security \
 	tests/c/test_wasm_runtime.c src/wasm_runtime.c subsystems/security/security.c src/logging.c src/error.c \
 	-o build/tests/test_wasm_runtime

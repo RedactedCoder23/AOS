@@ -2,11 +2,22 @@
 #include <stdint.h>
 
 static inline void outb(uint16_t p, uint8_t v) { asm volatile("outb %0,%1" ::"a"(v), "Nd"(p)); }
-static inline uint8_t inb(uint16_t p) { uint8_t r; asm volatile("inb %1,%0" : "=a"(r) : "Nd"(p)); return r; }
+static inline uint8_t inb(uint16_t p) {
+    uint8_t r;
+    asm volatile("inb %1,%0" : "=a"(r) : "Nd"(p));
+    return r;
+}
 
 static int serial_empty(void) { return inb(0x3F8 + 5) & 0x20; }
-static void serial_write(char a) { while (!serial_empty()) ; outb(0x3F8, a); }
-static void serial_print(const char *s) { while (*s) serial_write(*s++); }
+static void serial_write(char a) {
+    while (!serial_empty())
+        ;
+    outb(0x3F8, a);
+}
+static void serial_print(const char *s) {
+    while (*s)
+        serial_write(*s++);
+}
 
 static void print_hex(uint32_t v) {
     char hex[8];
@@ -31,4 +42,3 @@ void isr_default(registers_t *r) {
     for (;;)
         __asm__("hlt");
 }
-

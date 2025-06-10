@@ -1,13 +1,10 @@
 #include "command_interpreter.h"
 #include "config.h"
 #include "error.h"
-#include "ipc.h"
-<<<<<< codex/implement-default-trap/exception-handler
 #include "idt.h"
-#include "traps.h"
-=======
+#include "ipc.h"
 #include "logging.h"
->>>>>> main
+#include "traps.h"
 #include <stdint.h>
 
 /* Boot entry points provided by assembly stub. */
