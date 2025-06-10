@@ -575,3 +575,13 @@ by: codex-agent-xyz
 - `pre-commit run --all-files`
 - `make test-unit`
 - `make test-integration`
+## [2025-06-10 00:11 UTC] docs and community prep [codex]
+### Changes
+- Added testing and releases sections to README.
+- Improved CONTRIBUTING guidelines.
+- Created SECURITY.md and Dependabot configuration.
+- Expanded .gitignore for coverage and venv artifacts.
+### Tests
+- `pre-commit run --all-files`
+- `make test-unit`
+- `make test-integration`
