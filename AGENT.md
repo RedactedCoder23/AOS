@@ -435,3 +435,10 @@ Next agent must:
 
 Next agent must:
 - Implement real syscall handlers and extend tests.
+## [2025-06-10 04:26 UTC] branch thread stubs [codex]
+- Added prototype thread_t and branch_t in branch_manager.c.
+- Created stubs branch_create/fork/join with basic malloc.
+- Added standalone C test exercising the new API.
+
+Next agent must:
+- Expand thread manager to launch real pthreads.
