@@ -290,19 +290,6 @@ Next agent must:
 - `make test-unit` and `test-integration` fail (duplicate symbols, missing gcc).
 
 
-## Active Baton Passes
-- Generate `compile_commands.json` via `make compdb` and resolve clang-tidy warnings; ensure host and branch-net builds succeed.
-- Expand ext2 filesystem backend with persistence tests.
-- Flesh out device and security subsystem APIs and documentation; review subsystem comments.
-- Review network branch sync for race conditions and add tests.
-- Improve AI error handling and provide offline mock responses.
-- Integrate policy engine with the network layer and credential storage.
-- Extend WASM runtime with capability enforcement and expand checkpoint delta handling.
-- Expand tests across subsystems and verify pre-commit hooks run in CI without auth prompts; ensure fresh venv installs cover runtime scripts.
-- Address cppcheck warnings and integrate profiler with logging.
-- Monitor CODE_OF_CONDUCT compliance and overall CI stability.
-- Keep ROADMAP.md updated as milestones progress.
-
 ## Archive
 Previous baton passes and session notes kept above.
 
@@ -401,7 +388,20 @@ Next agent must:
 - Expanded CONTRIBUTING with commit and workflow guidance.
 - Created SECURITY.md and Dependabot config.
 - Updated .gitignore for coverage and virtualenv artifacts.
+## [2025-06-10 00:20 UTC] final consolidation [codex]
+- Installed development dependencies and `compiledb`.
+- Generated `compile_commands.json` via `make compdb`.
+- Ran `pre-commit`, unit and integration tests and pytest – all pass.
+- Executed `clang-tidy`; 85 warnings and 4 errors remain.
+- Cleaned merge markers from PATCHLOG and summarised unresolved tasks below.
 
-Next agent must:
-- Review Dependabot PRs and ensure CI remains green.
->>>>>> main
+## Remaining Issues
+- Resolve clang-tidy warnings and ensure `make host` and `make branch-net` succeed.
+- Expand ext2 persistence tests and flesh out device/security subsystem APIs.
+- Review network branch sync races and add coverage.
+- Improve AI error handling and offline mocks.
+- Integrate policy engine with network credentials.
+- Add capability enforcement to the WASM runtime and checkpoint deltas.
+- Broaden tests across subsystems; run pre-commit in CI with fresh venvs.
+- Address cppcheck warnings and connect profiler with logging.
+- Monitor community channels and CI stability; keep ROADMAP updated.
