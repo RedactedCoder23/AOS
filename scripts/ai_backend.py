@@ -23,7 +23,10 @@ def main():
 
     key = get_api_key("openai")
     if not key:
-        print("ERROR: no AI credential for 'openai' \u2014 run `ai-cred set --service=openai <key>`", file=sys.stderr)
+        print(
+            "ERROR: no AI credential for 'openai' \u2014 run `ai-cred set --service=openai <key>`",
+            file=sys.stderr,
+        )
         return 2
     if openai is None:
         print("openai package missing", file=sys.stderr)

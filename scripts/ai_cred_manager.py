@@ -101,8 +101,8 @@ def main():
     g.add_argument("--service", required=True)
     g.set_defaults(func=cmd_get)
 
-    l = sub.add_parser("list")
-    l.set_defaults(func=cmd_list)
+    list_parser = sub.add_parser("list")
+    list_parser.set_defaults(func=cmd_list)
 
     d = sub.add_parser("delete")
     d.add_argument("--service", required=True)

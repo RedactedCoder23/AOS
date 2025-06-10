@@ -34,6 +34,7 @@ typedef struct {
     char str_arg0[64]; /* pathname, query string, etc. */
     char str_arg1[64]; /* optional second string argument */
     int32_t branch_id; /* branch identifier for namespaced calls */
+    uint32_t payload_len; /* length of payload in bytes */
     char payload[128]; /* JSON or binary arguments */
 } SyscallRequest;
 
