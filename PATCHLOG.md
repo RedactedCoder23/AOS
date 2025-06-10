@@ -410,7 +410,6 @@ by: codex
 - `make test-unit`
 - `make test-integration`
 - `pre-commit run --files $(git ls-files *.py *.c *.h *.yaml)` *(fails: Username for https://github.com...)*
-=======
 ## [2025-06-09 11:46 UTC] ci test integration [agent-mem]
 ### Changes
 - Unified unit and integration tests via `make test`.
@@ -466,7 +465,6 @@ by: codex
 - `pre-commit run --all-files`
 - `make test-unit`
 - `pytest -q tests/python`
-=======
  codex/move-generated-c-files-and-update-makefile
 ## [2025-06-09 22:25 UTC] generated code refactor [codex-agent]
 ### Changes
@@ -476,7 +474,6 @@ by: codex
 ### Tests
 - `make regenerate`
 - `make host`
-=======
 = codex/initialize-js-tooling-and-standardize-python-scripts
 ## [2025-06-09 22:20 UTC] js tooling and script cleanup [agent-mem]
 ### Changes
@@ -490,7 +487,6 @@ by: codex
 - `python3 -m build`
 - `pip install .`
 - `bash scripts/generate_changelog.sh`
-=======
  codex/implement-clean-target-and-unify-test-target-in-makefile
 ## [2025-06-09 22:19 UTC] makefile cleanup [agent-mem]
 by: codex-agent-xyz
@@ -500,7 +496,6 @@ by: codex-agent-xyz
 ### Tests
 - `make clean`
 - `make test`
-=======
 
  codex/prune-and-relocate-archive-directory
 ## [2025-06-09 13:55 UTC] structure cleanup [agent-mem]
@@ -512,7 +507,6 @@ by: codex-agent-xyz
 ### Tests
 - `make test-unit`
 - `make test-integration`
-=======
  codex/add-shields.io-badges,-prerequisites,-and-index.md
 ## [2025-06-09 22:18 UTC] docs onboarding update [codex-agent-xyz]
 ### Changes
@@ -523,7 +517,6 @@ by: codex-agent-xyz
 - `pre-commit run --files README.md docs/INDEX.md`
 - `make test-unit`
 - `make test-integration`
-=======
 ## [2025-06-09 14:15 UTC] dependency split [agent-mem]
 ### Changes
 - Documented openai usage comment in `requirements.txt`.
@@ -575,7 +568,6 @@ by: codex-agent-xyz
 - `pre-commit run --all-files`
 - `make test-unit`
 - `make test-integration`
-<<<<<< codex/perform-codebase-cleanup-and-reorganization
 
 ## [2025-06-10 00:10 UTC] meta sweep [codex]
 ### Changes
@@ -583,20 +575,22 @@ by: codex-agent-xyz
 - Generated compile_commands.json via make compdb.
 - No lint errors; clang-tidy still fails.
 - Updated AGENT.md baton list.
-=======
 ## [2025-06-10 00:11 UTC] docs and community prep [codex]
 ### Changes
 - Added testing and releases sections to README.
 - Improved CONTRIBUTING guidelines.
 - Created SECURITY.md and Dependabot configuration.
 - Expanded .gitignore for coverage and venv artifacts.
->>>>>> main
 ### Tests
 - `pre-commit run --all-files`
 - `make test-unit`
 - `make test-integration`
-<<<<<< codex/perform-codebase-cleanup-and-reorganization
 - `pytest -q tests/python`
 
-=======
->>>>> main
+## [2025-06-10 00:20 UTC] final consolidation [codex]
+### Changes
+- Installed dev dependencies and compiledb.
+- Generated compile_commands.json via `make compdb`.
+- Ran `pre-commit`, `make test-unit`, `make test-integration`, and `pytest` successfully.
+- Ran `clang-tidy src/*.c` (85 warnings, 4 errors remain).
+- Cleaned merge markers in PATCHLOG and updated baton list.
