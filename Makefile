@@ -8,6 +8,7 @@ SUBSYSTEM_DIRS := subsystems/memory subsystems/fs subsystems/ai subsystems/branc
 HOST_SRCS := \
 src/main.c src/repl.c src/interpreter.c src/branch_manager.c src/ui_graph.c \
 src/branch_vm.c src/plugin_loader.c src/plugin_supervisor.c src/wasm_runtime.c \
+src/lang_vm.c \
 src/branch_net.c src/ai_syscall.c src/aicell.c src/checkpoint.c src/policy.c \
 src/memory.c src/app_runtime.c src/config.c src/logging.c src/error.c \
 src/generated/command_map.c src/generated/commands.c \
@@ -267,10 +268,19 @@ tests/c/test_plugin.c src/plugin_loader.c src/plugin_supervisor.c src/wasm_runti
 	tests/c/test_wasm_runtime.c src/wasm_runtime.c subsystems/security/security.c src/logging.c src/error.c \
 	-o build/tests/test_wasm_runtime
 	@./build/tests/test_wasm_runtime
+	gcc --coverage -Isubsystems/memory -Iinclude \
+	tests/memory_test.c subsystems/memory/memory.c src/logging.c src/error.c \
+	-o build/tests/test_memory_paging
+	@./build/tests/test_memory_paging
 	gcc --coverage -Iinclude \
 	tests/c/test_ui.c src/logging.c src/error.c -lncurses \
 	-o build/tests/test_ui
 	@./build/tests/test_ui
+	gcc --coverage -Iinclude -Isubsystems/ai \
+	tests/lang_test.c src/lang_vm.c src/branch_manager.c \
+	subsystems/ai/ai.c src/ai_syscall.c src/logging.c src/error.c -lcurl \
+	-o build/tests/test_lang
+	@./build/tests/test_lang
 	@python3 -m pytest --cov=./ -q tests/python
 	
 test-integration:

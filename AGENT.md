@@ -435,6 +435,7 @@ Next agent must:
 
 Next agent must:
 - Implement real syscall handlers and extend tests.
+<<<<<< codex/stub-branch-manager-functions-with-tests
 ## [2025-06-10 04:26 UTC] branch thread stubs [codex]
 - Added prototype thread_t and branch_t in branch_manager.c.
 - Created stubs branch_create/fork/join with basic malloc.
@@ -442,3 +443,14 @@ Next agent must:
 
 Next agent must:
 - Expand thread manager to launch real pthreads.
+=======
+
+## [2025-06-10 04:23 UTC] basic paging setup [codex]
+- Added identity-mapped page tables in `memory.c` and enabled paging bits.
+- Introduced minimal IDT with page-fault handler.
+- Kernel initialisation now sets up the IDT and paging.
+- Created unit test exercising a fault trap under paging.
+
+Next agent must:
+- Extend paging to map the kernel heap.
+>>>>>> main
