@@ -486,3 +486,5 @@ Next agent must:
 - Added `ai-cred rotate` command for master key rotation.
 - Daemon now performs startup health check and warns if key source is missing.
 - Updated tests to verify rotation functionality.
+## [2025-06-10 09:00 UTC] merge hunk streamer [codex]
+- Added streaming merge_ai with hunk-based prompts and tests.
