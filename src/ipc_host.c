@@ -2,6 +2,7 @@
 #include "branch.h"
 #include "ipc.h"
 #include "syscalls.h"
+#include "ipc_protocol.h"
 #include "logging.h"
 #include <errno.h>
 #include <fcntl.h>
@@ -31,9 +32,36 @@ void ipc_host_handle(IpcRing *ring) {
     case SYS_MERGE_BRANCH:
         resp->retval = sys_merge_branch(req->branch_id);
         break;
-    case SYS_LIST_BRANCHES:
-        resp->retval = sys_list_branches(resp->data, sizeof(resp->data));
+    case SYS_LIST_BRANCHES: {
+        char buf[128];
+        int rc = sys_list_branches(buf, sizeof(buf));
+        if (rc < 0) {
+            resp->retval = rc;
+            resp->data[0] = '\0';
+            break;
+        }
+        uint32_t count;
+        memcpy(&count, buf, sizeof(count));
+        size_t off = sizeof(count);
+        int pos = snprintf(resp->data, sizeof(resp->data), "{ \"branches\": [");
+        for (uint32_t i = 0; i < count && pos < (int)sizeof(resp->data); i++) {
+            if (i)
+                pos += snprintf(resp->data + pos, sizeof(resp->data) - pos, ", ");
+            struct branch_info bi;
+            if (off + sizeof(bi) > sizeof(buf))
+                break;
+            memcpy(&bi, buf + off, sizeof(bi));
+            off += sizeof(bi);
+            pos += snprintf(resp->data + pos, sizeof(resp->data) - pos,
+                            "{ \"branch_id\": %u, \"parent_id\": %u, \"status\": %u, \"last_snapshot_id\": %llu }",
+                            bi.branch_id, bi.parent_id, bi.status,
+                            (unsigned long long)bi.last_snapshot_id);
+        }
+        if (pos < (int)sizeof(resp->data))
+            pos += snprintf(resp->data + pos, sizeof(resp->data) - pos, "] }");
+        resp->retval = pos;
         break;
+    }
     case SYS_FORK_BRANCH:
     case SYS_DELETE_BRANCH:
     case SYS_LIST_BRANCH:
