@@ -575,13 +575,28 @@ by: codex-agent-xyz
 - `pre-commit run --all-files`
 - `make test-unit`
 - `make test-integration`
+<<<<<< codex/perform-codebase-cleanup-and-reorganization
+
+## [2025-06-10 00:10 UTC] meta sweep [codex]
+### Changes
+- Ran clang-format and black across sources.
+- Generated compile_commands.json via make compdb.
+- No lint errors; clang-tidy still fails.
+- Updated AGENT.md baton list.
+=======
 ## [2025-06-10 00:11 UTC] docs and community prep [codex]
 ### Changes
 - Added testing and releases sections to README.
 - Improved CONTRIBUTING guidelines.
 - Created SECURITY.md and Dependabot configuration.
 - Expanded .gitignore for coverage and venv artifacts.
+>>>>>> main
 ### Tests
 - `pre-commit run --all-files`
 - `make test-unit`
 - `make test-integration`
+<<<<<< codex/perform-codebase-cleanup-and-reorganization
+- `pytest -q tests/python`
+
+=======
+>>>>> main
