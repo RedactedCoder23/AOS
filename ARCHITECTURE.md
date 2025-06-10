@@ -50,3 +50,20 @@ make test-integration
 ```
 
 Integration tests require `aos.bin` to be present so build `bare` first when running under QEMU.
+
+## ACLs and Audit Trail
+
+Credential storage and branch operations enforce per-user and group access controls.
+The file `/etc/ai-cred/acl.json` defines allowed user and group IDs for each
+action. Branch table entries store the creating user's UID and syscalls reject
+requests from other users.
+
+All security relevant actions emit newline-delimited JSON records to the audit
+log at `/var/log/aos-audit.log`:
+
+```
+{ "timestamp": "2025-06-10T12:23:45Z", "user": "alice",
+  "action": "branch_create", "resource": "branch:42", "result": "success" }
+```
+
+Use `aos-audit show --filter=action:branch_create` to inspect entries.

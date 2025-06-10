@@ -2,6 +2,7 @@ import os
 import sys
 import json
 import unittest
+import tempfile
 from unittest import mock
 from flask import Response
 
@@ -16,6 +17,11 @@ class BranchUITest(unittest.TestCase):
         branch_ui.app.config["TESTING"] = True
         self.client = branch_ui.app.test_client()
         branch_ui.service.branches.clear()
+        self.audit = tempfile.NamedTemporaryFile(delete=False)
+        os.environ["AOS_AUDIT_LOG"] = self.audit.name
+
+    def tearDown(self):
+        os.unlink(self.audit.name)
 
     @mock.patch("scripts.branch_ui.flask_sse.publish")
     @mock.patch("scripts.branch_ui.app.logger.info")
@@ -81,6 +87,20 @@ class BranchUITest(unittest.TestCase):
         data = json.loads(res.data)
         self.assertEqual(len(data), 0)
         publish.assert_called_with({"branch_id": 1}, event="branch-deleted")
+
+    @mock.patch("scripts.branch_ui.os.getuid", return_value=9999)
+    def test_permission_denied(self, fake_uid):
+        branch_ui.service.branches[1] = {
+            "pid": 1,
+            "sock": "s",
+            "status": "RUNNING",
+            "owner_uid": 0,
+        }
+        res = self.client.post("/branches/1/snapshot")
+        self.assertIn("permission", res.get_data(as_text=True))
+        with open(self.audit.name) as fh:
+            log = fh.read()
+        self.assertIn("denied", log)
 
     @mock.patch("scripts.branch_ui.kernel_ipc", return_value=-22)
     def test_invalid_snapshot(self, ipc):
