@@ -267,6 +267,10 @@ tests/c/test_plugin.c src/plugin_loader.c src/plugin_supervisor.c src/wasm_runti
 	tests/c/test_wasm_runtime.c src/wasm_runtime.c subsystems/security/security.c src/logging.c src/error.c \
 	-o build/tests/test_wasm_runtime
 	@./build/tests/test_wasm_runtime
+	gcc --coverage -Isubsystems/memory -Iinclude \
+	tests/memory_test.c subsystems/memory/memory.c src/logging.c src/error.c \
+	-o build/tests/test_memory_paging
+	@./build/tests/test_memory_paging
 	gcc --coverage -Iinclude \
 	tests/c/test_ui.c src/logging.c src/error.c -lncurses \
 	-o build/tests/test_ui

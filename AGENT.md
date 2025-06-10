@@ -435,3 +435,12 @@ Next agent must:
 
 Next agent must:
 - Implement real syscall handlers and extend tests.
+
+## [2025-06-10 04:23 UTC] basic paging setup [codex]
+- Added identity-mapped page tables in `memory.c` and enabled paging bits.
+- Introduced minimal IDT with page-fault handler.
+- Kernel initialisation now sets up the IDT and paging.
+- Created unit test exercising a fault trap under paging.
+
+Next agent must:
+- Extend paging to map the kernel heap.

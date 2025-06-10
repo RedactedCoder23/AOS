@@ -12,6 +12,41 @@ static Block *heap_base;
 static Block *free_list;
 static size_t heap_total;
 
+/* simple paging structures - only map first 1 MiB */
+static uint64_t pml4[512] __attribute__((aligned(4096)));
+static uint64_t pdpt[512] __attribute__((aligned(4096)));
+static uint64_t pd[512] __attribute__((aligned(4096)));
+static uint64_t pt[512] __attribute__((aligned(4096)));
+
+static void paging_init(void) {
+    for (int i = 0; i < 256; i++)
+        pt[i] = (uint64_t)(i * 0x1000) | 0x3; /* RW + present */
+    for (int i = 256; i < 512; i++)
+        pt[i] = 0;
+    pd[0] = (uint64_t)pt | 0x3;
+    for (int i = 1; i < 512; i++)
+        pd[i] = 0;
+    pdpt[0] = (uint64_t)pd | 0x3;
+    for (int i = 1; i < 512; i++)
+        pdpt[i] = 0;
+    pml4[0] = (uint64_t)pdpt | 0x3;
+    for (int i = 1; i < 512; i++)
+        pml4[i] = 0;
+
+    uint32_t cr4;
+    __asm__("mov %%cr4, %0" : "=r"(cr4));
+    cr4 |= (1 << 5); /* PAE */
+    __asm__("mov %0, %%cr4" : : "r"(cr4));
+
+    uint32_t cr3 = (uint32_t)pml4;
+    __asm__("mov %0, %%cr3" : : "r"(cr3));
+
+    uint32_t cr0;
+    __asm__("mov %%cr0, %0" : "=r"(cr0));
+    cr0 |= 0x80000000u; /* enable paging */
+    __asm__("mov %0, %%cr0" : : "r"(cr0));
+}
+
 void mem_init_bare(void) {
     heap_base = (Block *)heap_area;
     heap_total = sizeof(heap_area);
@@ -19,6 +54,7 @@ void mem_init_bare(void) {
     heap_base->next = NULL;
     heap_base->free = 1;
     free_list = heap_base;
+    paging_init();
 }
 
 static void split_block(Block *b, size_t size) {
