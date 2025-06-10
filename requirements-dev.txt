@@ -14,5 +14,9 @@ pre-commit==4.2.0
 =======
 >>>>>> main
 pre-commit==3.5.0
->>>>>> main
+<<<<<< dependabot/pip/pre-commit-hooks-5.0.0
+pre-commit-hooks==5.0.0
+=======
+>>>>> main
 pre-commit-hooks==4.5.0
+>>>>>> main
