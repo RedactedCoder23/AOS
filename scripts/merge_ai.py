@@ -8,6 +8,8 @@ import json
 import os
 import subprocess
 import sys
+import time
+import logging
 from typing import List
 
 from scripts.ai_cred_client import get_api_key
@@ -17,29 +19,33 @@ try:
 except Exception:  # pragma: no cover - optional dependency
     openai = None
 
-SIZE_LIMIT = 4096
+MAX_HUNK_SIZE = 4096
 
 
-def run_diff(base: str, ref: str) -> str:
-    """Return unified diff text for ``base``..``ref`` without prefixes."""
+def run_diff(base: str, main: str, branch: str) -> str:
+    """Return combined diff text for ``MAIN`` and ``BRANCH`` relative to ``BASE``."""
     return subprocess.check_output(
-        ["git", "diff", "--no-prefix", "--unified=0", f"{base}..{ref}"],
+        ["git", "diff", "--no-prefix", "--unified=0", base, main, branch],
         text=True,
     )
 
 
 def split_hunks(patch: str) -> List[str]:
-    """Split *patch* into hunks no larger than :data:`SIZE_LIMIT`."""
+    """Split *patch* into hunks respecting :data:`MAX_HUNK_SIZE`."""
     hunks: List[str] = []
     current = ""
     for line in patch.splitlines(keepends=True):
-        if line.startswith("@@"):
-            if "@@" in current:
+        if line.startswith("diff --git"):
+            if current:
                 hunks.append(current)
                 current = ""
             current += line
             continue
-        if len(current) + len(line) > SIZE_LIMIT and current:
+        if line.startswith("@@") and current and "@@" in current:
+            hunks.append(current)
+            current = line
+            continue
+        if len(current) + len(line) > MAX_HUNK_SIZE and current:
             hunks.append(current)
             current = line
             continue
@@ -67,6 +73,14 @@ def call_llm(prompt: str) -> str:
     return resp.choices[0].message.content.strip()
 
 
+def valid_patch(patch: str) -> bool:
+    """Return ``True`` if *patch* applies cleanly."""
+    proc = subprocess.run(
+        ["git", "apply", "--check", "-"], input=patch, text=True, capture_output=True
+    )
+    return proc.returncode == 0
+
+
 def main(argv: List[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description="merge using an LLM")
     parser.add_argument("--main", required=True)
@@ -74,36 +88,30 @@ def main(argv: List[str] | None = None) -> int:
     parser.add_argument("--base", required=True)
     args = parser.parse_args(argv)
 
-    main_patch = run_diff(args.base, args.main)
-    branch_patch = run_diff(args.base, args.branch)
+    logging.basicConfig(level=logging.INFO)
 
-    main_hunks = split_hunks(main_patch)
-    branch_hunks = split_hunks(branch_patch)
+    patch_text = run_diff(args.base, args.main, args.branch)
+    hunks = split_hunks(patch_text)
 
     merged: List[str] = []
     conflicts: List[int] = []
-    for idx in range(max(len(main_hunks), len(branch_hunks))):
-        mh = main_hunks[idx] if idx < len(main_hunks) else ""
-        bh = branch_hunks[idx] if idx < len(branch_hunks) else ""
+    for idx, hunk in enumerate(hunks):
+        logging.info("hunk %d size %d", idx, len(hunk))
         prompt = (
-            "Resolve this conflict hunk between MAIN, BRANCH, and BASE:\n"
-            "<<<<<<< MAIN\n"
-            f"{mh}"
-            "=======\n"
-            f"{bh}"
-            ">>>>>>> BRANCH\n"
-            "Return only the merged patch fragment without commentary."
+            "Resolve this diff hunk between MAIN, BASE, and BRANCH. Return a valid patch snippet.\n"
+            f"{hunk}"
         )
+        start = time.perf_counter()
         try:
             frag = call_llm(prompt)
         except Exception:  # pragma: no cover - API failures
             frag = ""
-        if frag:
+        elapsed = time.perf_counter() - start
+        logging.info("hunk %d took %.2fs", idx, elapsed)
+        if frag and valid_patch(frag):
             merged.append(frag.rstrip("\n") + "\n")
         else:
-            merged.append(
-                "<<<<<<< MAIN\n" + mh + "=======\n" + bh + ">>>>>>> BRANCH\n"
-            )
+            merged.append("<<<<< CONFLICT\n" + hunk + ">>>>>\n")
             conflicts.append(idx)
 
     patch = "".join(merged)

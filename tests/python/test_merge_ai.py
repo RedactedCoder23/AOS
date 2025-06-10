@@ -8,9 +8,11 @@ import unittest
 import importlib
 from unittest import mock
 
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "../..")))
+sys.path.insert(
+    0, os.path.abspath(os.path.join(os.path.dirname(__file__), "../.."))
+)  # noqa: E402
 
-from scripts import merge_ai
+from scripts import merge_ai  # noqa: E402
 
 SCRIPT = os.path.join("scripts", "merge_ai.py")
 
@@ -34,9 +36,9 @@ def commit(repo, msg):
     subprocess.run(["git", "commit", "-m", msg], cwd=repo, check=True)
 
 
-def git_diff(repo, base, ref):
+def git_diff(repo, base, main, branch):
     return subprocess.check_output(
-        ["git", "diff", "--no-prefix", "--unified=0", f"{base}..{ref}"],
+        ["git", "diff", "--no-prefix", "--unified=0", base, main, branch],
         cwd=repo,
         text=True,
     )
@@ -60,10 +62,16 @@ class MergeAiTest(unittest.TestCase):
         commit(repo, "branch")
 
         mod = importlib.reload(merge_ai)
-        with mock.patch.object(mod, "run_diff", side_effect=lambda b, r: git_diff(repo, b, r)), mock.patch.object(
+        with mock.patch.object(
+            mod, "run_diff", side_effect=lambda b, m, br: git_diff(repo, b, m, br)
+        ), mock.patch.object(
             mod,
             "call_llm",
             return_value="merged",
+        ), mock.patch.object(
+            mod,
+            "valid_patch",
+            return_value=True,
         ), mock.patch(
             "sys.argv",
             [
@@ -86,7 +94,7 @@ class MergeAiTest(unittest.TestCase):
 
     def test_large_segmentation(self):
         tmp, repo = init_repo()
-        lines = "".join(f"line-{i:03}.........................\n" for i in range(200))
+        lines = "".join(f"line-{i:04}.........................\n" for i in range(400))
         write(repo, "f.txt", lines)
         commit(repo, "base")
         base = (
@@ -97,13 +105,17 @@ class MergeAiTest(unittest.TestCase):
         subprocess.run(["git", "checkout", "-b", "main"], cwd=repo, check=True)
         write(repo, "f.txt", lines.replace("line-", "main-"))
         commit(repo, "main")
-        subprocess.run([
-            "git",
-            "checkout",
-            "-b",
-            "branch",
-            base,
-        ], cwd=repo, check=True)
+        subprocess.run(
+            [
+                "git",
+                "checkout",
+                "-b",
+                "branch",
+                base,
+            ],
+            cwd=repo,
+            check=True,
+        )
         write(repo, "f.txt", lines.replace("line-", "branch-"))
         commit(repo, "branch")
 
@@ -114,10 +126,16 @@ class MergeAiTest(unittest.TestCase):
             return "merge"
 
         mod = importlib.reload(merge_ai)
-        with mock.patch.object(mod, "run_diff", side_effect=lambda b, r: git_diff(repo, b, r)), mock.patch.object(
+        with mock.patch.object(
+            mod, "run_diff", side_effect=lambda b, m, br: git_diff(repo, b, m, br)
+        ), mock.patch.object(
             mod,
             "call_llm",
             side_effect=fake,
+        ), mock.patch.object(
+            mod,
+            "valid_patch",
+            return_value=True,
         ), mock.patch(
             "sys.argv",
             [
@@ -134,13 +152,17 @@ class MergeAiTest(unittest.TestCase):
             with mock.patch("sys.stdout", buf):
                 mod.main()
             data = json.loads(buf.getvalue())
+        patch = git_diff(repo, base, "main", "branch")
+        hunks = mod.split_hunks(patch)
+        self.assertGreaterEqual(len(hunks), 3)
         self.assertGreater(len(calls), 1)
         self.assertEqual(len(data["conflicts"]), 0)
         tmp.cleanup()
 
     def test_llm_failure(self):
         tmp, repo = init_repo()
-        write(repo, "f.txt", "a\nbase\n")
+        lines = "".join(f"line-{i:04}.........................\n" for i in range(400))
+        write(repo, "f.txt", lines)
         commit(repo, "base")
         base = (
             subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=repo)
@@ -148,17 +170,30 @@ class MergeAiTest(unittest.TestCase):
             .strip()
         )
         subprocess.run(["git", "checkout", "-b", "main"], cwd=repo, check=True)
-        write(repo, "f.txt", "a\nmain\n")
+        write(repo, "f.txt", lines.replace("line-", "main-"))
         commit(repo, "main")
         subprocess.run(["git", "checkout", "-b", "branch", base], cwd=repo, check=True)
-        write(repo, "f.txt", "a\nbranch\n")
+        write(repo, "f.txt", lines.replace("line-", "branch-"))
         commit(repo, "branch")
 
         mod = importlib.reload(merge_ai)
-        with mock.patch.object(mod, "run_diff", side_effect=lambda b, r: git_diff(repo, b, r)), mock.patch.object(
+        calls = []
+
+        def fake_llm(_):
+            idx = len(calls)
+            calls.append(idx)
+            return "" if idx == 1 else "merged"
+
+        with mock.patch.object(
+            mod, "run_diff", side_effect=lambda b, m, br: git_diff(repo, b, m, br)
+        ), mock.patch.object(
             mod,
             "call_llm",
-            return_value="",
+            side_effect=fake_llm,
+        ), mock.patch.object(
+            mod,
+            "valid_patch",
+            return_value=True,
         ), mock.patch(
             "sys.argv",
             [
@@ -175,8 +210,8 @@ class MergeAiTest(unittest.TestCase):
             with mock.patch("sys.stdout", buf):
                 mod.main()
             data = json.loads(buf.getvalue())
-        self.assertIn("<<<<<<< MAIN", data["patch"])
-        self.assertEqual(data["conflicts"], [0])
+        self.assertIn("<<<<< CONFLICT", data["patch"])
+        self.assertEqual(data["conflicts"], [1])
         tmp.cleanup()
 
 

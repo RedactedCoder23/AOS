@@ -711,3 +711,15 @@ Next agent must:
 - `make test-unit`
 - `make test-integration`
 - `pytest -q tests/python/test_aos_audit.py`
+
+## [2025-06-10 12:30 UTC] diff hunk merging [codex]
+### Changes
+- Added MAX_HUNK_SIZE and 3-way diff support in merge_ai.py.
+- Split hunks by file headers and markers with logging.
+- Conflicts are wrapped when the LLM fails.
+- Added docs/merge_ai.md and updated docs index.
+### Tests
+- `pre-commit run --files scripts/merge_ai.py tests/python/test_merge_ai.py docs/merge_ai.md docs/README.md AGENT.md PATCHLOG.md`
+- `make test-unit`
+- `make test-integration`
+- `pytest -q tests/python/test_merge_ai.py`
