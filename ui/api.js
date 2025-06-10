@@ -15,3 +15,15 @@ export async function mergeBranch(id) {
   if (!resp.ok) throw new Error('failed to merge branch');
   return await resp.json();
 }
+
+export async function snapshotBranch(id) {
+  const resp = await fetch(`/branches/${id}/snapshot`, { method: 'POST' });
+  if (!resp.ok) throw new Error('failed to snapshot branch');
+  return await resp.json();
+}
+
+export async function deleteBranch(id) {
+  const resp = await fetch(`/branches/${id}`, { method: 'DELETE' });
+  if (!resp.ok) throw new Error('failed to delete branch');
+  return await resp.json();
+}

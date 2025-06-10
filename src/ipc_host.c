@@ -77,8 +77,20 @@ void ipc_host_handle(IpcRing *ring) {
             sys_snapshot_branch((unsigned int)req->branch_id);
         resp->retval = 0;
         break;
+    case SYS_DELETE_BRANCH: {
+        int rc = sys_delete_branch((unsigned int)req->branch_id);
+        if (rc < 0) {
+            snprintf(resp->data, sizeof(resp->data),
+                     "{ \"error\": \"invalid branch\", \"code\": %d }",
+                     -rc);
+            resp->retval = strlen(resp->data);
+        } else {
+            resp->retval = 0;
+            resp->data[0] = '\0';
+        }
+        break;
+    }
     case SYS_FORK_BRANCH:
-    case SYS_DELETE_BRANCH:
     case SYS_LIST_BRANCH:
         resp->retval = -ENOSYS;
         break;

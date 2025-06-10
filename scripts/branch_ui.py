@@ -55,6 +55,10 @@ def kernel_ipc(cmd, payload=None):
             return out
     if cmd == "create":
         return 1 + len(service.branches)
+    if cmd == "snapshot":
+        return len(service.branches) + 10
+    if cmd == "delete":
+        return 0
     return 0
 
 
@@ -82,13 +86,18 @@ class BranchService:
             "pid": proc.pid,
             "sock": f"/tmp/fc-{branch_id}.sock",
             "status": "RUNNING",
+            "last_snapshot_id": 0,
         }
         flask_sse.publish({"branch_id": branch_id}, event="branch-created")
         return branch_id
 
     def list(self):
         return [
-            {"branch_id": bid, "status": info["status"]}
+            {
+                "branch_id": bid,
+                "status": info["status"],
+                "last_snapshot_id": info.get("last_snapshot_id", 0),
+            }
             for bid, info in self.branches.items()
         ]
 
@@ -107,6 +116,25 @@ class BranchService:
             return {"merged": rc == 0, "detail": out}
         except subprocess.CalledProcessError as e:
             return {"error": e.output.strip()}
+
+    def snapshot(self, bid):
+        sid = kernel_ipc("snapshot", {"branch_id": bid})
+        if isinstance(sid, int) and sid < 0:
+            return {"error": "invalid branch"}
+        if bid in self.branches:
+            self.branches[bid]["last_snapshot_id"] = sid
+        flask_sse.publish(
+            {"branch_id": bid, "snapshot_id": sid}, event="branch-snapshot"
+        )
+        return {"snapshot_id": sid}
+
+    def delete(self, bid):
+        rc = kernel_ipc("delete", {"branch_id": bid})
+        if isinstance(rc, int) and rc < 0:
+            return {"error": "invalid branch"}
+        self.branches.pop(bid, None)
+        flask_sse.publish({"branch_id": bid}, event="branch-deleted")
+        return {"success": True}
 
 
 flask_sse = _SSE()
@@ -158,6 +186,22 @@ def list_branches():
 @app.route("/branches/<int:bid>/merge", methods=["POST"])
 def merge_branch(bid):
     return jsonify(service.merge(bid))
+
+
+@app.route("/branches/<int:bid>/snapshot", methods=["POST"])
+def snapshot_branch(bid):
+    res = service.snapshot(bid)
+    if "error" in res:
+        return jsonify(res), 400
+    return jsonify(res)
+
+
+@app.route("/branches/<int:bid>", methods=["DELETE"])
+def delete_branch(bid):
+    res = service.delete(bid)
+    if "error" in res:
+        return jsonify(res), 400
+    return jsonify(res)
 
 
 @app.route("/events")

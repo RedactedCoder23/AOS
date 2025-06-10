@@ -1,7 +1,9 @@
 #include "syscalls.h"
 #include "branch.h"
 #include "ipc_protocol.h"
+#include "audit.h"
 #include <errno.h>
+#include <stdio.h>
 #include <string.h>
 #include <stdint.h>
 
@@ -89,5 +91,18 @@ uint64_t sys_snapshot_branch(uint32_t branch_id) {
         return (uint64_t)-EINVAL;
     uint64_t sid = next_snapshot_id++;
     branch_table[branch_id].last_snapshot_id = sid;
+    char res[32];
+    snprintf(res, sizeof(res), "branch:%u", branch_id);
+    audit_log_entry("", "branch_snapshot", res, "success");
     return sid;
+}
+
+int sys_delete_branch(uint32_t branch_id) {
+    if (branch_id >= branch_count || branch_table[branch_id].status == 0)
+        return -EINVAL;
+    branch_free(branch_id);
+    char res[32];
+    snprintf(res, sizeof(res), "branch:%u", branch_id);
+    audit_log_entry("", "branch_delete", res, "success");
+    return 0;
 }
