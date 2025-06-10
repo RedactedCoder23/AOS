@@ -1,4 +1,5 @@
 #include "wasm_runtime.h"
+#include "security.h"
 #include <stdio.h>
 
 static int initialised;
@@ -19,6 +20,10 @@ int wasm_load_module(const char *path) {
 int wasm_invoke(const char *func) {
     if (!initialised)
         return -1;
+    if (check_capability("wasm_exec") != 0) {
+        fprintf(stderr, "capability denied\n");
+        return -1;
+    }
     printf("invoke %s\n", func);
     return 0;
 }

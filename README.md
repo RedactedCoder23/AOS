@@ -141,6 +141,9 @@ make ai
 ```
 Uses OpenAI ChatCompletion via a helper script.
 
+Set `AOS_AI_OFFLINE=1` to use the bundled mock backend instead of contacting the
+OpenAI service.
+
 The interactive REPL also supports an `ai` command. Run `ai setup`
 once to configure your provider and store the API key securely in
 `~/.aos/ai.conf`. Environment variables still override the stored

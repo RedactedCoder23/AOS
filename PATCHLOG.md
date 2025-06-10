@@ -418,7 +418,6 @@ by: codex
 ### Tests
 - `make test`
 - `make test-fuzz`
- main
 
 ## [2025-06-09 12:18 UTC] ci workflow cleanup [codex]
 ### Changes
@@ -525,7 +524,6 @@ by: codex-agent-xyz
 ### Tests
 - `python3 -m venv venv && source venv/bin/activate && pip install -r requirements.txt`
 - `pip install -r requirements-dev.txt && pytest --maxfail=1 --disable-warnings -q`
- main
 ## [2025-06-09 22:34 UTC] repo hygiene sweep [codex]
 ### Changes
 - Formatted sources via clang-format and black.
@@ -594,3 +592,18 @@ by: codex-agent-xyz
 - Ran `pre-commit`, `make test-unit`, `make test-integration`, and `pytest` successfully.
 - Ran `clang-tidy src/*.c` (85 warnings, 4 errors remain).
 - Cleaned merge markers in PATCHLOG and updated baton list.
+
+## [2025-06-10 00:48 UTC] offline helpers and docs [codex]
+### Changes
+- Added `scripts/ai_backend_mock.py` and `AOS_AI_OFFLINE` support.
+- Linked profiler output to logging.
+- Created stub device/security subsystems and logging unit test.
+- Updated CI/CD and CONTRIBUTING docs and enhanced SECURITY policy.
+- Removed large archive files and stray `main` lines from PATCHLOG.
+### Tests
+- `pre-commit run --all-files`
+- `make compdb`
+- `make host`
+- `make branch-net`
+- `make test-unit`
+- `make test-integration`
