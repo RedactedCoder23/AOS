@@ -7,6 +7,9 @@ import socket
 import struct
 import sys
 from cryptography.fernet import Fernet
+import pwd
+
+from scripts.aos_audit import log_entry
 
 try:
     import keyring
@@ -18,6 +21,35 @@ KEY_PATH = os.environ.get("AICRED_KEY", "/etc/ai-cred/master.key")
 SOCK_PATH = os.environ.get("AICRED_SOCK", "/run/ai-cred.sock")
 DROP_USER = os.environ.get("AICRED_DROP_USER", "branch-manager")
 DROP_GROUP = os.environ.get("AICRED_DROP_GROUP", "branchd")
+ACL_PATH = os.environ.get("AICRED_ACL", "/etc/ai-cred/acl.json")
+
+
+def _load_acl():
+    if not os.path.exists(ACL_PATH):
+        return {}
+    try:
+        with open(ACL_PATH, "r") as fh:
+            return json.load(fh)
+    except Exception:
+        return {}
+
+
+def _check_acl(action: str, uid: int | None = None) -> bool:
+    """Return True if uid is allowed for action."""
+    acl = _load_acl()
+    rule = acl.get(action, {})
+    uid = uid if uid is not None else os.getuid()
+    gids = []
+    try:
+        user = pwd.getpwuid(uid)
+        gids = os.getgrouplist(user.pw_name, user.pw_gid)
+    except Exception:
+        pass
+    if uid in rule.get("users", []):
+        return True
+    if any(g in rule.get("groups", []) for g in gids):
+        return True
+    return False
 
 
 def _fernet():
@@ -81,29 +113,52 @@ def _save(db_f, data):
 
 
 def cmd_set(args):
+    if not _check_acl("set"):
+        log_entry(pwd.getpwuid(os.getuid()).pw_name, "cred_set", args.service, "denied")
+        print("Permission denied")
+        return
     f = _fernet()
     data = _load(f)
     data[args.service] = args.key
     _save(f, data)
+    log_entry(pwd.getpwuid(os.getuid()).pw_name, "cred_set", args.service, "success")
 
 
 def cmd_get(args):
+    if not _check_acl("get"):
+        log_entry(pwd.getpwuid(os.getuid()).pw_name, "cred_get", args.service, "denied")
+        print("Permission denied")
+        return
     f = _fernet()
     data = _load(f)
-    print(data.get(args.service, ""))
+    val = data.get(args.service, "")
+    print(val)
+    log_entry(pwd.getpwuid(os.getuid()).pw_name, "cred_get", args.service, "success")
 
 
 def cmd_list(args):
+    if not _check_acl("list"):
+        log_entry(pwd.getpwuid(os.getuid()).pw_name, "cred_list", "*", "denied")
+        print("Permission denied")
+        return
     f = _fernet()
     data = _load(f)
     print(" ".join(data.keys()))
+    log_entry(pwd.getpwuid(os.getuid()).pw_name, "cred_list", "*", "success")
 
 
 def cmd_delete(args):
+    if not _check_acl("delete"):
+        log_entry(
+            pwd.getpwuid(os.getuid()).pw_name, "cred_delete", args.service, "denied"
+        )
+        print("Permission denied")
+        return
     f = _fernet()
     data = _load(f)
     data.pop(args.service, None)
     _save(f, data)
+    log_entry(pwd.getpwuid(os.getuid()).pw_name, "cred_delete", args.service, "success")
 
 
 def cmd_rotate(_args):
@@ -121,6 +176,7 @@ def cmd_rotate(_args):
             pass
     new_f = Fernet(new_key)
     _save(new_f, data)
+    log_entry(pwd.getpwuid(os.getuid()).pw_name, "cred_rotate", "*", "success")
 
 
 def cmd_daemon(_args):
@@ -132,9 +188,9 @@ def cmd_daemon(_args):
     with socket.socket(socket.AF_UNIX, socket.SOCK_STREAM) as s:
         s.bind(SOCK_PATH)
         try:
-            import grp
+            import grp as grp_mod
 
-            gid = grp.getgrnam(DROP_GROUP).gr_gid
+            gid = grp_mod.getgrnam(DROP_GROUP).gr_gid
         except Exception:
             gid = os.getgid()
         os.chown(SOCK_PATH, 0, gid)
@@ -159,16 +215,10 @@ def cmd_daemon(_args):
                     _, uid, _ = struct.unpack("3i", creds)
                 except Exception:  # pragma: no cover - platform fallback
                     uid = 0
-                allowed = {0}
-                try:
-                    import pwd
-
-                    allowed.add(pwd.getpwnam(DROP_USER).pw_uid)
-                except Exception:
-                    pass
                 data = conn.recv(4096)
-                if uid not in allowed:
+                if not _check_acl("rpc", uid):
                     conn.sendall(json.dumps({"error": "Permission denied."}).encode())
+                    log_entry(pwd.getpwuid(uid).pw_name, "cred_rpc", "*", "denied")
                     continue
                 try:
                     req = json.loads(data.decode())
@@ -176,20 +226,86 @@ def cmd_daemon(_args):
                     params = req.get("params", {})
                     store = _load(f)
                     if method == "get":
-                        result = store.get(params.get("service", ""), "")
-                        conn.sendall(json.dumps({"result": result}).encode())
+                        allowed = _check_acl("get", uid)
+                        if allowed:
+                            result = store.get(params.get("service", ""), "")
+                            conn.sendall(json.dumps({"result": result}).encode())
+                            log_entry(
+                                pwd.getpwuid(uid).pw_name,
+                                "cred_get",
+                                params.get("service", ""),
+                                "success",
+                            )
+                        else:
+                            conn.sendall(
+                                json.dumps({"error": "Permission denied."}).encode()
+                            )
+                            log_entry(
+                                pwd.getpwuid(uid).pw_name,
+                                "cred_get",
+                                params.get("service", ""),
+                                "denied",
+                            )
                     elif method == "set":
-                        store[params["service"]] = params["key"]
-                        _save(f, store)
-                        conn.sendall(json.dumps({"result": "ok"}).encode())
+                        allowed = _check_acl("set", uid)
+                        if allowed:
+                            store[params["service"]] = params["key"]
+                            _save(f, store)
+                            conn.sendall(json.dumps({"result": "ok"}).encode())
+                            log_entry(
+                                pwd.getpwuid(uid).pw_name,
+                                "cred_set",
+                                params.get("service"),
+                                "success",
+                            )
+                        else:
+                            conn.sendall(
+                                json.dumps({"error": "Permission denied."}).encode()
+                            )
+                            log_entry(
+                                pwd.getpwuid(uid).pw_name,
+                                "cred_set",
+                                params.get("service"),
+                                "denied",
+                            )
                     elif method == "list":
-                        conn.sendall(
-                            json.dumps({"result": list(store.keys())}).encode()
-                        )
+                        allowed = _check_acl("list", uid)
+                        if allowed:
+                            conn.sendall(
+                                json.dumps({"result": list(store.keys())}).encode()
+                            )
+                            log_entry(
+                                pwd.getpwuid(uid).pw_name, "cred_list", "*", "success"
+                            )
+                        else:
+                            conn.sendall(
+                                json.dumps({"error": "Permission denied."}).encode()
+                            )
+                            log_entry(
+                                pwd.getpwuid(uid).pw_name, "cred_list", "*", "denied"
+                            )
                     elif method == "delete":
-                        store.pop(params.get("service"), None)
-                        _save(f, store)
-                        conn.sendall(json.dumps({"result": "ok"}).encode())
+                        allowed = _check_acl("delete", uid)
+                        if allowed:
+                            store.pop(params.get("service"), None)
+                            _save(f, store)
+                            conn.sendall(json.dumps({"result": "ok"}).encode())
+                            log_entry(
+                                pwd.getpwuid(uid).pw_name,
+                                "cred_delete",
+                                params.get("service"),
+                                "success",
+                            )
+                        else:
+                            conn.sendall(
+                                json.dumps({"error": "Permission denied."}).encode()
+                            )
+                            log_entry(
+                                pwd.getpwuid(uid).pw_name,
+                                "cred_delete",
+                                params.get("service"),
+                                "denied",
+                            )
                     else:
                         conn.sendall(json.dumps({"error": "bad method"}).encode())
                 except Exception as e:  # pragma: no cover - error path

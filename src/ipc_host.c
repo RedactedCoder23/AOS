@@ -63,9 +63,9 @@ void ipc_host_handle(IpcRing *ring) {
             memcpy(&bi, buf + off, sizeof(bi));
             off += sizeof(bi);
             pos += snprintf(resp->data + pos, sizeof(resp->data) - pos,
-                            "{ \"branch_id\": %u, \"parent_id\": %u, \"status\": %u, \"last_snapshot_id\": %llu }",
+                            "{ \"branch_id\": %u, \"parent_id\": %u, \"status\": %u, \"last_snapshot_id\": %llu, \"owner_uid\": %u }",
                             bi.branch_id, bi.parent_id, bi.status,
-                            (unsigned long long)bi.last_snapshot_id);
+                            (unsigned long long)bi.last_snapshot_id, bi.owner_uid);
         }
         if (pos < (int)sizeof(resp->data))
             pos += snprintf(resp->data + pos, sizeof(resp->data) - pos, "] }");

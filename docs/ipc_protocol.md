@@ -97,13 +97,14 @@ structs but must keep the total size within one page.
       uint32_t parent_id;
       uint32_t status;
       uint64_t last_snapshot_id;
+      uint32_t owner_uid;
   } __attribute__((packed));
   ```
 - **Host JSON conversion:**
   ```json
   {
     "branches": [
-      { "branch_id": 1, "parent_id": 0, "status": 1, "last_snapshot_id": 0 }
+      { "branch_id": 1, "parent_id": 0, "status": 1, "last_snapshot_id": 0, "owner_uid": 1000 }
     ]
   }
   ```

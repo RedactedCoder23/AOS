@@ -23,6 +23,18 @@ class CredManagerTest(unittest.TestCase):
         self.env["AICRED_SOCK"] = os.path.join(self.tmp.name, "sock")
         self.env["AICRED_DROP_USER"] = pwd.getpwuid(os.getuid()).pw_name
         self.env["AICRED_DROP_GROUP"] = grp.getgrgid(os.getgid()).gr_name
+        self.audit_log = os.path.join(self.tmp.name, "audit.log")
+        self.env["AOS_AUDIT_LOG"] = self.audit_log
+        acl = {
+            "get": {"users": [os.getuid()]},
+            "set": {"users": [os.getuid()]},
+            "list": {"users": [os.getuid()]},
+            "delete": {"users": [os.getuid()]},
+            "rpc": {"users": [os.getuid()]},
+        }
+        self.env["AICRED_ACL"] = os.path.join(self.tmp.name, "acl.json")
+        with open(self.env["AICRED_ACL"], "w") as fh:
+            json.dump(acl, fh)
 
     def tearDown(self):
         self.tmp.cleanup()
@@ -39,6 +51,9 @@ class CredManagerTest(unittest.TestCase):
         self.run_cmd(["delete", "--service", "openai"])
         out = self.run_cmd(["list"]).decode().strip()
         self.assertEqual(out, "")
+        with open(self.audit_log) as fh:
+            log = fh.read()
+        self.assertIn("cred_set", log)
 
     def test_rotate(self):
         self.run_cmd(["set", "--service", "anthropic", "--key", "KEY"])
@@ -107,6 +122,9 @@ class CredManagerTest(unittest.TestCase):
         self.assertTrue(
             "Permission denied" in res.stdout or "PermissionError" in res.stdout
         )
+        with open(self.audit_log) as fh:
+            log = fh.read()
+        self.assertIn("denied", log)
 
 
 if __name__ == "__main__":

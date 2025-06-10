@@ -7,6 +7,7 @@ struct branch_info {
     uint32_t parent_id;
     uint32_t status;
     uint64_t last_snapshot_id; /* 0 if none */
+    uint32_t owner_uid;
 } __attribute__((packed));
 
 #define IPC_MAX_BRANCHES 16
