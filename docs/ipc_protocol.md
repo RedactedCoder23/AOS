@@ -83,10 +83,29 @@ structs but must keep the total size within one page.
 
 ### SYS_LIST_BRANCHES
 - **Request:** `{}`
-- **Response:**
+- **Kernel Response (binary):**
+  ```c
+  struct {
+      uint32_t count;
+      struct branch_info entries[count];
+  };
+  ```
+  where `branch_info` is:
+  ```c
+  struct branch_info {
+      uint32_t branch_id;
+      uint32_t parent_id;
+      uint32_t status;
+      uint64_t last_snapshot_id;
+  } __attribute__((packed));
+  ```
+- **Host JSON conversion:**
   ```json
   {
     "branches": [
+<<<<<< codex/implement-sys_list_branches-binary-and-json-encoding
+      { "branch_id": 1, "parent_id": 0, "status": 1, "last_snapshot_id": 0 }
+=======
       {
         "branch_id": 1,
         "parent_id": 0,
@@ -99,6 +118,7 @@ structs but must keep the total size within one page.
         "status": "RUNNING",
         "last_snapshot_id": 42
       }
+>>>>>> main
     ]
   }
   ```
