@@ -21,12 +21,16 @@ def main():
         print(f"[mock-ai] response to: {prompt}")
         return 0
 
-    key = get_api_key("openai")
-    if not key:
-        print("ERROR: no AI credential for 'openai' \u2014 run `ai-cred set --service=openai <key>`", file=sys.stderr)
-        return 2
+    try:
+        key = get_api_key("openai")
+    except KeyError:
+        print(
+            "ERROR: no AI credential for 'openai' \u2014 run `ai-cred set --service=openai <key>`",
+            file=sys.stderr,
+        )
+        return 1
     if openai is None:
-        print("openai package missing", file=sys.stderr)
+        print("ERROR: openai package missing", file=sys.stderr)
         return 2
     client = openai.OpenAI(api_key=key)
     prompt = sys.argv[1]
@@ -37,7 +41,7 @@ def main():
         )
         print(resp.choices[0].message.content.strip())
     except Exception as e:
-        print(f"error: {e}", file=sys.stderr)
+        print(f"ERROR: {e}", file=sys.stderr)
         return 3
     return 0
 
