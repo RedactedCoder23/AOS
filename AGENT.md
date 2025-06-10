@@ -473,3 +473,16 @@ Next agent must:
 
 Next agent must:
 - Implement real branch syscall logic and micro-VM integration.
+
+## [2025-06-10 08:15 UTC] ai cred vault hardening [codex]
+- Added master key retrieval via `keyring` or `/etc/ai-cred/master.key`.
+- Expanded daemon to support full JSON-RPC and permission checks.
+- Created integration tests covering socket access and denial for other users.
+
+Next agent must:
+- Review privilege drop logic across daemons
+
+## [2025-06-10 08:35 UTC] ai cred vault improvements [codex]
+- Added `ai-cred rotate` command for master key rotation.
+- Daemon now performs startup health check and warns if key source is missing.
+- Updated tests to verify rotation functionality.

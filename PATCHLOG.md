@@ -683,3 +683,26 @@ by: codex-agent-xyz
 - `pytest -q tests/python`
 Next agent must:
 - Flesh out branch syscalls and micro-VM lifecycle
+
+## [2025-06-10 08:15 UTC] ai cred vault hardening [codex]
+### Changes
+- Vault now loads master key from OS keyring or `/etc/ai-cred/master.key`.
+- Socket daemon supports set/list/delete and enforces peer UID checks.
+- Added requirement for cryptography and keyring packages.
+- Extended tests for socket operations and permission denial.
+### Tests
+- `pre-commit run --files scripts/ai_cred_manager.py scripts/tests/test_ai_cred_manager.py requirements.txt AGENT.md PATCHLOG.md`
+- `make test-unit`
+- `make test-integration`
+- `pytest -q tests/python scripts/tests/test_ai_cred_manager.py`
+
+## [2025-06-10 08:35 UTC] ai cred vault improvements [codex]
+### Changes
+- Added `ai-cred rotate` command to re-encrypt credentials with a new master key.
+- Daemon performs a startup health check warning if key storage is missing.
+- Added tests covering rotation logic.
+### Tests
+- `pre-commit run --files scripts/ai_cred_manager.py scripts/tests/test_ai_cred_manager.py AGENT.md PATCHLOG.md`
+- `make test-unit`
+- `make test-integration`
+- `pytest -q tests/python scripts/tests/test_ai_cred_manager.py`
