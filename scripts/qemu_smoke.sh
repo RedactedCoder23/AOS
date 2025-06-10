@@ -12,6 +12,9 @@ if ! command -v "$EMU" >/dev/null; then
   echo "$EMU not installed"; exit 1
 fi
 $EMU -serial stdio $OPT -no-reboot -d guest_errors -snapshot &
-PID=$!
+QPID=$!
+./build/ipc_host &
+HPID=$!
 sleep 3
-kill $PID || true
+kill $QPID || true
+kill $HPID || true

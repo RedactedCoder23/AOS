@@ -15,7 +15,7 @@ Major milestones are tracked by version tags in git.
 | Phase | Description | Status |
 |-------|-------------|-------|
 | 0 | Repo inventory, docs, coverage baseline | ✔ |
-| 1 | Kernel–host boundary and IPC | ⚪ |
+| 1 | Kernel–host boundary and IPC | ⚙ |
 | 2 | Memory management and snapshotting | ⚪ |
 | 3 | Branch & process table | ⚪ |
 | 4 | Filesystem & devices | ⚪ |
@@ -36,3 +36,4 @@ Major milestones are tracked by version tags in git.
   - `ipc_host.c` daemon logging syscalls.
 - Add test stubs for branch, fs, ai, dev, plugin and wasm runtime.
 - Update CI to collect coverage and publish badge.
+- [2025-06-10] Phase 1: IPC protocol, mapping, and tests underway.

@@ -11,4 +11,7 @@ SECTIONS {
   .rodata : { *(.rodata) } :text
   .data : { *(.data) } :data
   .bss : { __bss_start = .; *(.bss); __bss_end = .; } :data
+  . = ALIGN(0x1000);
+  ipc_shared = .;
+  . += 0x1000; /* reserve one page for IPC ring */
 }
