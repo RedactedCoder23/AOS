@@ -255,8 +255,9 @@ tests/c/test_plugin.c src/plugin_loader.c src/plugin_supervisor.c src/wasm_runti
 	tests/c/test_security.c subsystems/security/security.c src/logging.c src/error.c \
 	-o build/tests/test_security
 	@./build/tests/test_security
-	gcc --coverage -Isubsystems/fs -Iinclude \
-	tests/c/test_fs.c subsystems/fs/fs.c src/logging.c src/error.c \
+	gcc --coverage -Isubsystems/fs -Isubsystems/memory -Iinclude \
+tests/c/test_fs.c subsystems/fs/fs.c subsystems/memory/memory.c \
+src/memory.c src/logging.c src/error.c \
 	-o build/tests/test_fs_unit
 	@./build/tests/test_fs_unit
 	gcc --coverage -Isubsystems/ai -Iinclude \
@@ -278,15 +279,21 @@ test-integration:
 	@mkdir -p build/tests
 	gcc --coverage -Isubsystems/fs -Isubsystems/memory -Iinclude \
 	tests/integration/test_fs_memory.c \
-	subsystems/fs/fs.c subsystems/memory/memory.c src/logging.c src/error.c \
+subsystems/fs/fs.c subsystems/memory/memory.c src/memory.c src/logging.c src/error.c \
 	-o build/tests/test_fs
 	@./build/tests/test_fs
-	gcc --coverage -Isubsystems/fs -Isubsystems/memory -Iinclude \
+		gcc --coverage -Isubsystems/fs -Isubsystems/memory -Iinclude \
 	tests/integration/test_persistence.c \
-	subsystems/fs/fs.c subsystems/memory/memory.c src/logging.c src/error.c \
+	subsystems/fs/fs.c subsystems/memory/memory.c src/memory.c \
+	src/logging.c src/error.c \
 	-o build/tests/test_persistence
 	@./build/tests/test_persistence
-	
+				gcc --coverage -Isubsystems/fs -Isubsystems/memory -Iinclude \
+		tests/fs_test.c \
+		subsystems/fs/fs.c subsystems/memory/memory.c src/memory.c src/logging.c src/error.c \
+				-o build/tests/test_fs_cp
+			@./build/tests/test_fs_cp
+		
 test-fuzz:
 	@echo "\u2192 Running memory fuzz tests under ASan"
 	@mkdir -p build/tests

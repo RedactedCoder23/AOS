@@ -435,3 +435,11 @@ Next agent must:
 
 Next agent must:
 - Implement real syscall handlers and extend tests.
+
+## [2025-06-10 04:27 UTC] ramfs checkpoint utility [codex]
+- Added dynamic in-RAM filesystem with directory support.
+- Created checkpoint save/load helpers invoking `aos_checkpoint.py`.
+- Added CBOR checkpoint tool and integration test.
+
+Next agent must:
+- Harden filesystem error handling and expand checkpoint metadata.
