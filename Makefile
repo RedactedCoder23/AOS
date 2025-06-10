@@ -4,7 +4,7 @@ MAKEFLAGS += -j$(shell nproc)
 
 CC_TARGET ?= x86_64
 
-SUBSYSTEM_DIRS := subsystems/memory subsystems/fs subsystems/ai subsystems/branch subsystems/net
+SUBSYSTEM_DIRS := subsystems/memory subsystems/fs subsystems/ai subsystems/branch subsystems/net subsystems/dev subsystems/security
 HOST_SRCS := \
 src/main.c src/repl.c src/interpreter.c src/branch_manager.c src/ui_graph.c \
 src/branch_vm.c src/plugin_loader.c src/plugin_supervisor.c src/wasm_runtime.c \
@@ -12,7 +12,8 @@ src/branch_net.c src/ai_syscall.c src/aicell.c src/checkpoint.c src/policy.c \
 src/memory.c src/app_runtime.c src/config.c src/logging.c src/error.c \
 src/generated/command_map.c src/generated/commands.c \
 subsystems/memory/memory.c subsystems/fs/fs.c subsystems/ai/ai.c \
-subsystems/branch/branch.c subsystems/net/net.c
+subsystems/branch/branch.c subsystems/net/net.c \
+subsystems/dev/dev.c subsystems/security/security.c
 HOST_OBJS := $(patsubst %.c, build/obj/%.o, $(HOST_SRCS))
 CFLAGS := -Wall -Werror -Wno-format-truncation
 
@@ -224,14 +225,37 @@ test-policy: policy
 test-net: net
 	./examples/net_echo_test.sh
 
+
+
+
 test-unit:
-	@echo "→ Running unit tests"
-	@mkdir -p build/tests build/plugins
-	gcc --coverage -Isubsystems/memory -Iinclude \
-	tests/unit/test_memory.c \
-	subsystems/memory/memory.c src/logging.c src/error.c \
-	-o build/tests/test_memory
-	@./build/tests/test_memory
+@echo "→ Running unit tests"
+@mkdir -p build/tests build/plugins
+gcc --coverage -Isubsystems/memory -Iinclude \
+tests/unit/test_memory.c \
+subsystems/memory/memory.c src/logging.c src/error.c \
+-o build/tests/test_memory
+@./build/tests/test_memory
+gcc --coverage -Isubsystems/branch -Iinclude \
+tests/c/test_branch.c \
+subsystems/branch/branch.c src/logging.c src/error.c \
+-o build/tests/test_branch
+@./build/tests/test_branch
+gcc --coverage -Isubsystems/net -Iinclude \
+tests/c/test_net.c \
+subsystems/net/net.c src/logging.c src/error.c \
+-o build/tests/test_net
+@./build/tests/test_net
+gcc -fPIC -shared -o build/plugins/sample.so examples/sample_plugin.c
+gcc --coverage -Iinclude \
+tests/c/test_plugin.c src/plugin_loader.c src/plugin_supervisor.c src/wasm_runtime.c src/logging.c src/error.c -ldl \
+-o build/tests/test_plugin
+@./build/tests/test_plugin
+gcc --coverage -Iinclude \
+tests/c/test_policy.c src/policy.c src/logging.c src/error.c \
+-o build/tests/test_policy
+@./build/tests/test_policy
+@python3 -m pytest -q tests/python
 	gcc --coverage -Isubsystems/branch -Iinclude \
 	tests/c/test_branch.c \
 	subsystems/branch/branch.c src/logging.c src/error.c \

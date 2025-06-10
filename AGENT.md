@@ -405,3 +405,11 @@ Next agent must:
 - Broaden tests across subsystems; run pre-commit in CI with fresh venvs.
 - Address cppcheck warnings and connect profiler with logging.
 - Monitor community channels and CI stability; keep ROADMAP updated.
+
+## [2025-06-10 00:48 UTC] offline helpers and docs [codex]
+- Added mock AI backend and environment flag `AOS_AI_OFFLINE`.
+- Integrated profiler output with logging subsystem.
+- Created stubs for device and security subsystems.
+- Added logging unit test and updated Makefile.
+- Removed archive bloat and stray `main` lines from PATCHLOG.
+- Expanded CI/CD and CONTRIBUTING docs and updated SECURITY policy.

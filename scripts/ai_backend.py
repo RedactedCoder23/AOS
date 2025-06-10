@@ -2,7 +2,10 @@
 """Backend helper to query OpenAI API."""
 import os
 import sys
-import openai
+try:
+    import openai
+except Exception:  # pragma: no cover - optional dependency
+    openai = None
 
 PROMPT_ERR = "usage: ai_backend.py <prompt>"
 
@@ -11,11 +14,19 @@ def main():
     if len(sys.argv) < 2:
         print(PROMPT_ERR, file=sys.stderr)
         return 1
+    if os.environ.get("AOS_AI_OFFLINE"):
+        prompt = sys.argv[1]
+        print(f"[mock-ai] response to: {prompt}")
+        return 0
+
     key = os.environ.get("OPENAI_API_KEY")
     if not key:
         key = os.environ.get("AOS_OPENAI_API_KEY")
     if not key:
         print("missing OPENAI_API_KEY", file=sys.stderr)
+        return 2
+    if openai is None:
+        print("openai package missing", file=sys.stderr)
         return 2
     client = openai.OpenAI(api_key=key)
     prompt = sys.argv[1]
