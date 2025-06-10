@@ -3,7 +3,7 @@
 Thank you for your interest in improving AOS. The project uses a simple Makefile based build.
 
 ## Getting Started
-1. Install build dependencies: `gcc`, `make`, `pkg-config`, `libcurl-dev`, and `libncurses-dev`.
+1. Run `./scripts/bootstrap.sh` to install all required packages.
 2. Build the host tools with `make host`.
 3. Run smoke tests with `make test-memory`, `make test-fs`, `make test-branch`, `make test-plugin`, `make test-policy`, and `make test-net`.
 4. Please ensure `AOS-CHECKLIST.log` is empty before submitting a patch.

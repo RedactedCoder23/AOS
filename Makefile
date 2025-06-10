@@ -41,21 +41,8 @@ host: check_deps regenerate subsystems $(HOST_OBJS) build/obj/src/ui_main.o
 	@echo "→ Building host binaries"
 	$(CC) -rdynamic $(HOST_OBJS) $(NCURSES_LIBS) $(CURL_LIBS) -ldl -lm -o build/host_test
 	$(CC) build/obj/src/ui_graph.o build/obj/src/branch_manager.o \
-build/obj/src/logging.o build/obj/src/error.o build/obj/src/ui_main.o \
-$(NCURSES_LIBS) -lm -o build/ui_graph
-	@mkdir -p build
-	gcc -Wall -Werror -rdynamic -Iinclude -Isrc/generated -Isubsystems/memory -Isubsystems/fs -Isubsystems/ai -Isubsystems/branch -Isubsystems/net $(NCURSES_CFLAGS) \
-	            src/main.c src/repl.c src/interpreter.c src/branch_manager.c src/ui_graph.c \
-	            src/branch_vm.c src/plugin_loader.c src/plugin_supervisor.c src/wasm_runtime.c \
-	            src/branch_net.c src/ai_syscall.c src/aicell.c src/checkpoint.c src/policy.c \
-	            src/memory.c src/app_runtime.c src/config.c src/logging.c src/error.c \
-	            src/generated/command_map.c src/generated/commands.c \
-	            subsystems/memory/memory.c subsystems/fs/fs.c subsystems/ai/ai.c \
-	            subsystems/branch/branch.c subsystems/net/net.c \
-	            $(NCURSES_LIBS) -ldl -lcurl -lm -o build/host_test
-	gcc -Wall -Werror -Iinclude -Isrc/generated $(NCURSES_CFLAGS) src/ui_graph.c src/branch_manager.c \
-	     src/logging.c src/error.c src/ui_main.c $(NCURSES_LIBS) -lm -o build/ui_graph
-
+	build/obj/src/logging.o build/obj/src/error.o build/obj/src/ui_main.o \
+	$(NCURSES_LIBS) -lm -o build/ui_graph
 # 3. Build bare-metal components
 bootloader: regenerate
 	@echo "→ Building bootloader"
@@ -229,33 +216,13 @@ test-net: net
 
 
 test-unit:
-@echo "→ Running unit tests"
-@mkdir -p build/tests build/plugins
-gcc --coverage -Isubsystems/memory -Iinclude \
-tests/unit/test_memory.c \
-subsystems/memory/memory.c src/logging.c src/error.c \
--o build/tests/test_memory
-@./build/tests/test_memory
-gcc --coverage -Isubsystems/branch -Iinclude \
-tests/c/test_branch.c \
-subsystems/branch/branch.c src/logging.c src/error.c \
--o build/tests/test_branch
-@./build/tests/test_branch
-gcc --coverage -Isubsystems/net -Iinclude \
-tests/c/test_net.c \
-subsystems/net/net.c src/logging.c src/error.c \
--o build/tests/test_net
-@./build/tests/test_net
-gcc -fPIC -shared -o build/plugins/sample.so examples/sample_plugin.c
-gcc --coverage -Iinclude \
-tests/c/test_plugin.c src/plugin_loader.c src/plugin_supervisor.c src/wasm_runtime.c src/logging.c src/error.c -ldl \
--o build/tests/test_plugin
-@./build/tests/test_plugin
-gcc --coverage -Iinclude \
-tests/c/test_policy.c src/policy.c src/logging.c src/error.c \
--o build/tests/test_policy
-@./build/tests/test_policy
-@python3 -m pytest -q tests/python
+	@echo "→ Running unit tests"
+	@mkdir -p build/tests build/plugins
+	gcc --coverage -Isubsystems/memory -Iinclude \
+	tests/unit/test_memory.c \
+	subsystems/memory/memory.c src/logging.c src/error.c \
+	-o build/tests/test_memory
+	@./build/tests/test_memory
 	gcc --coverage -Isubsystems/branch -Iinclude \
 	tests/c/test_branch.c \
 	subsystems/branch/branch.c src/logging.c src/error.c \
@@ -267,8 +234,8 @@ tests/c/test_policy.c src/policy.c src/logging.c src/error.c \
 	-o build/tests/test_net
 	@./build/tests/test_net
 	gcc -fPIC -shared -o build/plugins/sample.so examples/sample_plugin.c
-	gcc --coverage -Iinclude \
-	tests/c/test_plugin.c src/plugin_loader.c src/plugin_supervisor.c src/wasm_runtime.c src/logging.c src/error.c -ldl \
+	gcc --coverage -Iinclude -Isubsystems/security -Isubsystems/dev \
+tests/c/test_plugin.c src/plugin_loader.c src/plugin_supervisor.c src/wasm_runtime.c subsystems/security/security.c src/logging.c src/error.c -ldl \
 	-o build/tests/test_plugin
 	@./build/tests/test_plugin
 	gcc --coverage -Iinclude \

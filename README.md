@@ -18,14 +18,13 @@ make host
 
 ## Setup
 
-Install runtime and development Python dependencies:
+Run the bootstrap script to install all build dependencies:
 
 ```bash
-pip install -r requirements.txt
-pip install -r requirements-dev.txt
+./scripts/bootstrap.sh
 ```
 
-This compiles the host REPL and launches an interactive session.
+Then build the host REPL with `make host` and launch an interactive session.
 
 ## Prerequisites
 

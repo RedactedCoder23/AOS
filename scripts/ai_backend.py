@@ -2,6 +2,7 @@
 """Backend helper to query OpenAI API."""
 import os
 import sys
+
 try:
     import openai
 except Exception:  # pragma: no cover - optional dependency

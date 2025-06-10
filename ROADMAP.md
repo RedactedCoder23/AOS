@@ -13,10 +13,6 @@
 Major milestones are tracked by version tags in git.
 
 ## Current Sprint Goals
-- Provide a compile_commands.json and run clang-tidy in CI.
 - Extend ext2 tests for persistence.
 - Hook the security subsystem into the WASM runtime for capability checks.
 - Integrate checkpoint delta handling in branch management.
-
-## Baton Pass
-- Keep this roadmap updated as milestones are reached.

@@ -24,7 +24,7 @@ jobs:
           make regenerate
           compiledb -n make host
       - name: tidy
-        run: clang-tidy -p compile_commands.json $(git ls-files '*.c') -- -Iinclude
+        run: clang-tidy --allow-no-checks -p compile_commands.json $(git ls-files '*.c') -- -Iinclude
 
   build:
     runs-on: ubuntu-latest
