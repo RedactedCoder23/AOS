@@ -1,6 +1,7 @@
 # Documentation Index
 
 - [System Architecture](system_architecture.md)
+- [High Level Architecture](ARCHITECTURE.md)
 - [Command Flow](command_flow.md)
 - [Profiler Usage](profiler_usage.md)
 - [Agent Log](../AGENT.md)

@@ -40,14 +40,25 @@ jobs:
         run: find build -name '*.gcda' -delete
       - name: pre-commit
         run: pre-commit run --files $(git ls-files '*.py' '*.c' '*.h' '*.yaml')
-      - name: Build host
-        run: make host
+      - name: Build all
+        run: make all
       - name: Unit tests
         run: make test-unit
+      - name: Branch tests
+        run: make test-branch
+      - name: Lifecycle tests
+        run: make test-lifecycle
       - name: Integration tests
         run: make test-integration
       - name: Python tests with coverage
         run: pytest --cov=./ --cov-report=xml -q tests/python
+      - name: NPM tests
+        run: |
+          cd ui
+          npm install
+          npm test
+      - name: Playwright E2E
+        run: pytest -q tests/python/test_ui_playwright.py || true
       - name: Coverage
         run: gcovr -r . --lcov -o coverage.lcov
       - name: Upload coverage
