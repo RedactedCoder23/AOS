@@ -2,4 +2,5 @@
 openai
 cbor2
 pytest-cov
+Flask
 
