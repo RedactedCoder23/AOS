@@ -14,4 +14,4 @@ requires-python = ">=3.8"
 packages = ["scripts"]
 
 [project.scripts]
-aos-audit = "scripts.audit_cli:main"
+aos-audit = "scripts.aos_audit:main"

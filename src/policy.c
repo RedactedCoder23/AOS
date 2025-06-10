@@ -1,4 +1,5 @@
 #include "policy.h"
+#include "audit.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -138,11 +139,8 @@ int policy_check_ctx(const char *branch, const char *app, const char *action) {
     for (int i = 0; i < rule_count; i++) {
         PolicyRule *r = &rules[i];
         if (match(r->branch, branch) && match(r->app, app) && strcmp(r->action, action) == 0) {
-            FILE *audit = fopen("AOS-AUDIT.log", "a");
-            if (audit) {
-                fprintf(audit, "%s:%s %s %s\n", branch, app, action, r->allow ? "ALLOW" : "DENY");
-                fclose(audit);
-            }
+            audit_log_entry(app ? app : "", action, branch ? branch : "",
+                            r->allow ? "ALLOW" : "DENY");
             if (!r->allow) {
                 FILE *f = fopen("AOS-CHECKLIST.log", "a");
                 if (f) {
@@ -153,11 +151,7 @@ int policy_check_ctx(const char *branch, const char *app, const char *action) {
             return r->allow;
         }
     }
-    FILE *audit = fopen("AOS-AUDIT.log", "a");
-    if (audit) {
-        fprintf(audit, "%s:%s %s ALLOW\n", branch, app, action);
-        fclose(audit);
-    }
+    audit_log_entry(app ? app : "", action, branch ? branch : "", "ALLOW");
     return 1; /* default allow */
 }
 
