@@ -2,7 +2,12 @@
 #include "config.h"
 #include "error.h"
 #include "ipc.h"
+<<<<<< codex/implement-default-trap/exception-handler
+#include "idt.h"
+#include "traps.h"
+=======
 #include "logging.h"
+>>>>>> main
 #include <stdint.h>
 
 /* Boot entry points provided by assembly stub. */
@@ -42,12 +47,14 @@ static void kernel_init(void) {
     config_load_default();
 }
 
-void main(void) {
-    /* Entry called by bootloader. Start subsystems and drop into REPL. */
+static void kernel_main(void) {
+    idt_init();
     kernel_init();
     process_ipc();
     repl();
 }
+
+void main(void) { kernel_main(); }
 
 void _start(void) {
     /* Minimal bootstrap that calls main and halts when it returns. */
