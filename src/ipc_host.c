@@ -1,11 +1,33 @@
 #include "ipc.h"
+#include "ipc_host.h"
 #include "logging.h"
 #include <fcntl.h>
 #include <stdio.h>
 #include <sys/mman.h>
+#include <string.h>
 #include <unistd.h>
 
 /* Stub host daemon polling the IPC ring and logging requests */
+void ipc_host_handle(IpcRing *ring) {
+    if (ring->head == ring->tail)
+        return;
+    SyscallRequest *req = &ring->req[ring->tail % IPC_RING_SIZE];
+    SyscallResponse *resp = &ring->resp[ring->tail % IPC_RING_SIZE];
+    switch (req->id) {
+    case SYS_AI_QUERY:
+        log_message(LOG_INFO, "ai prompt %s", req->str_arg0);
+        snprintf(resp->data, sizeof(resp->data), "OK");
+        resp->retval = strlen(resp->data);
+        break;
+    default:
+        resp->retval = -1;
+        snprintf(resp->data, sizeof(resp->data), "unknown");
+        break;
+    }
+    ring->tail++;
+}
+
+#ifndef IPC_HOST_LIBRARY
 int main(void) {
     int fd = open("/dev/mem", O_RDWR | O_SYNC);
     if (fd < 0) {
@@ -20,16 +42,9 @@ int main(void) {
     }
     log_message(LOG_INFO, "ipc_host mapped ring at %p", ring);
     while (1) {
-        if (ring->head != ring->tail) {
-            SyscallRequest *req = &ring->req[ring->tail % IPC_RING_SIZE];
-            log_message(LOG_INFO, "syscall %d int0=%d str0=%s", req->id,
-                        req->int_arg0, req->str_arg0);
-            SyscallResponse *resp = &ring->resp[ring->tail % IPC_RING_SIZE];
-            resp->retval = 0;
-            snprintf(resp->data, sizeof(resp->data), "ok");
-            ring->tail++;
-        }
+        ipc_host_handle(ring);
         usleep(1000);
     }
     return 0;
 }
+#endif

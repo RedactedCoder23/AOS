@@ -2,6 +2,7 @@
 #define IPC_H
 
 #include <stddef.h>
+#include <stdint.h>
 
 #define IPC_RING_SIZE 64
 #define IPC_PHYS_ADDR 0x00F00000 /* physical address of shared page */

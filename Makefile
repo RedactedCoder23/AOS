@@ -263,6 +263,11 @@ tests/c/test_plugin.c src/plugin_loader.c src/plugin_supervisor.c src/wasm_runti
 	tests/c/test_ai.c subsystems/ai/ai.c src/ai_syscall.c src/logging.c src/error.c -lcurl \
 	-o build/tests/test_ai
 	@./build/tests/test_ai
+	gcc --coverage -Iinclude -pthread \
+	tests/ai_test.c src/syscall.c src/ipc_host.c src/logging.c src/error.c \
+	-DIPC_HOST_LIBRARY \
+	-o build/tests/ai_test
+		@./build/tests/ai_test
 	gcc --coverage -Iinclude -Isubsystems/security \
 	tests/c/test_wasm_runtime.c src/wasm_runtime.c subsystems/security/security.c src/logging.c src/error.c \
 	-o build/tests/test_wasm_runtime
@@ -271,7 +276,7 @@ tests/c/test_plugin.c src/plugin_loader.c src/plugin_supervisor.c src/wasm_runti
 	tests/c/test_ui.c src/logging.c src/error.c -lncurses \
 	-o build/tests/test_ui
 	@./build/tests/test_ui
-	@python3 -m pytest --cov=./ -q tests/python
+	@python3 -m pytest -q tests/python
 	
 test-integration:
 	@echo "\u2192 Running integration tests"
