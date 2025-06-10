@@ -291,15 +291,16 @@ Next agent must:
 
 
 ## Active Baton Passes
-- Provide compile_commands.json for clang-tidy, fix warnings and restore failing builds (`host`, `branch-net`).
-- Expand ext2 filesystem backend and add persistence tests.
-- Flesh out device and security subsystem APIs and documentation.
+- Generate `compile_commands.json` via `make compdb` and resolve clang-tidy warnings; ensure host and branch-net builds succeed.
+- Expand ext2 filesystem backend with persistence tests.
+- Flesh out device and security subsystem APIs and documentation; review subsystem comments.
 - Review network branch sync for race conditions and add tests.
 - Improve AI error handling and provide offline mock responses.
-- Integrate policy engine with network layer and credential storage plan.
-- Extend WASM runtime with capability enforcement.
-- Continue expanding subsystem READMEs and overall developer docs.
-- Verify pre-commit hooks run without authentication prompts in CI.
+- Integrate policy engine with the network layer and credential storage.
+- Extend WASM runtime with capability enforcement and expand checkpoint delta handling.
+- Expand tests across subsystems and verify pre-commit hooks run in CI without auth prompts; ensure fresh venv installs cover runtime scripts.
+- Address cppcheck warnings and integrate profiler with logging.
+- Monitor CODE_OF_CONDUCT compliance and overall CI stability.
 - Keep ROADMAP.md updated as milestones progress.
 
 ## Archive
@@ -382,5 +383,12 @@ Next agent must:
 - Added MIT license summary to README.
 - Introduced 'compdb' Makefile target to generate compile_commands.json.
 
-Next agent must:
-- Use the new compdb rule and address clang-tidy warnings.
+
+## [2025-06-10 00:10 UTC] meta sweep [codex]
+- Ran clang-format and black on sources.
+- Generated compile_commands.json via `make compdb`.
+- clang-tidy still reports many warnings and errors (see /tmp/clang_tidy.log).
+- Executed `make test-unit`, `make test-integration`, and `pytest -q tests/python` successfully.
+- Installed npm packages and ran ESLint with no issues.
+- Removed `__pycache__` and npm lock file.
+

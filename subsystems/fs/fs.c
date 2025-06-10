@@ -45,7 +45,7 @@ void fs_ls(void) {
 
 int fs_mkdir(const char *name) { return current->mkdir ? current->mkdir(name) : -1; }
 
-int fs_delete(const char *name) { return current->delete ? current->delete(name) : -1; }
+int fs_delete(const char *name) { return current->delete ? current->delete (name) : -1; }
 
 /* --- ramfs backend (existing in-memory demo) --- */
 #define MAX_FILES 16

@@ -575,3 +575,16 @@ by: codex-agent-xyz
 - `pre-commit run --all-files`
 - `make test-unit`
 - `make test-integration`
+
+## [2025-06-10 00:10 UTC] meta sweep [codex]
+### Changes
+- Ran clang-format and black across sources.
+- Generated compile_commands.json via make compdb.
+- No lint errors; clang-tidy still fails.
+- Updated AGENT.md baton list.
+### Tests
+- `pre-commit run --all-files`
+- `make test-unit`
+- `make test-integration`
+- `pytest -q tests/python`
+
