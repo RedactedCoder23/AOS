@@ -1,8 +1,13 @@
 #include "command_interpreter.h"
 #include "config.h"
 #include "error.h"
-#include "logging.h"
 #include "ipc.h"
+<<<<<< codex/implement-default-trap/exception-handler
+#include "idt.h"
+#include "traps.h"
+=======
+#include "logging.h"
+>>>>>> main
 #include <stdint.h>
 
 /* Boot entry points provided by assembly stub. */
@@ -10,6 +15,7 @@ extern void repl(void);
 void mem_init_bare(void);
 void fs_init(void);
 void bm_init(void);
+void idt_init(void);
 
 /* Dispatch syscalls coming from the host interface */
 extern char ipc_shared; /* linker symbol */
@@ -34,18 +40,21 @@ static void process_ipc(void) {
 static void kernel_init(void) {
     log_init(NULL);
     log_message(LOG_INFO, "Hello from AOS");
+    idt_init();
     mem_init_bare();
     fs_init();
     bm_init();
     config_load_default();
 }
 
-void main(void) {
-    /* Entry called by bootloader. Start subsystems and drop into REPL. */
+static void kernel_main(void) {
+    idt_init();
     kernel_init();
     process_ipc();
     repl();
 }
+
+void main(void) { kernel_main(); }
 
 void _start(void) {
     /* Minimal bootstrap that calls main and halts when it returns. */
