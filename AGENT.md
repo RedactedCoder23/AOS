@@ -486,6 +486,7 @@ Next agent must:
 - Added `ai-cred rotate` command for master key rotation.
 - Daemon now performs startup health check and warns if key source is missing.
 - Updated tests to verify rotation functionality.
+<<<<<< codex/refactor-audit-logs-to-json-lines-format
 
 ## [2025-06-10 11:16 UTC] audit log json lines [codex]
 - Converted audit logs to newline-delimited JSON and added aos-audit show CLI.
@@ -493,3 +494,7 @@ Next agent must:
 
 Next agent must:
 - Expand audit coverage across subsystems.
+=======
+## [2025-06-10 09:00 UTC] merge hunk streamer [codex]
+- Added streaming merge_ai with hunk-based prompts and tests.
+>>>>>> main

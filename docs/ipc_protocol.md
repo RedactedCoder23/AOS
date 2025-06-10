@@ -87,10 +87,30 @@ structs but must keep the total size within one page.
   ```json
   {
     "branches": [
-      { "branch_id": 1, "parent_id": 0, "status": "CREATED" },
-      { "branch_id": 2, "parent_id": 1, "status": "RUNNING" }
+      {
+        "branch_id": 1,
+        "parent_id": 0,
+        "status": "CREATED",
+        "last_snapshot_id": 0
+      },
+      {
+        "branch_id": 2,
+        "parent_id": 1,
+        "status": "RUNNING",
+        "last_snapshot_id": 42
+      }
     ]
   }
+  ```
+
+### SYS_SNAPSHOT_BRANCH
+- **Request:**
+  ```json
+  { "branch_id": 2 }
+  ```
+- **Response:**
+  ```json
+  { "snapshot_id": 43 }
   ```
 
 ### Examples
