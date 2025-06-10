@@ -35,7 +35,9 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y libncurses5-dev libncursesw5-dev pkg-config libcurl4-openssl-dev clang lcov
-          pip install pre-commit gcovr
+          pip install -r requirements.txt pre-commit gcovr pytest-cov
+      - name: Clean gcov data
+        run: find . -name '*.gcda' -delete
       - name: pre-commit
         run: pre-commit run --files $(git ls-files '*.py' '*.c' '*.h' '*.yaml')
       - name: Build host
@@ -61,7 +63,11 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Install deps
-        run: sudo apt-get update && sudo apt-get install -y clang
+        run: |
+          sudo apt-get update && sudo apt-get install -y clang
+          pip install -r requirements.txt pytest-cov
+      - name: Clean gcov data
+        run: find . -name '*.gcda' -delete
       - name: Build with sanitizers
         run: CFLAGS='-fsanitize=address,undefined -g' make host
       - name: Unit tests with sanitizers
