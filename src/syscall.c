@@ -84,3 +84,17 @@ int sys_list_branches(char *out, size_t outsz) {
     }
     return resp->retval;
 }
+
+uint64_t sys_snapshot_branch(unsigned int branch_id) {
+    if (!ring)
+        return (uint64_t)-1;
+    size_t idx = ring->head % IPC_RING_SIZE;
+    SyscallRequest *req = &ring->req[idx];
+    memset(req, 0, sizeof(*req));
+    req->id = SYS_SNAPSHOT_BRANCH;
+    req->branch_id = (int32_t)branch_id;
+    ring->head++;
+    while (ring->tail <= idx)
+        usleep(1000);
+    return *(uint64_t *)ring->resp[idx].data;
+}
