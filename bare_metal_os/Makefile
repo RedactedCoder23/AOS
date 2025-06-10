@@ -10,9 +10,10 @@ LDFLAGS = -T kernel.ld -m elf_i386 -z separate-code
 
 all: bootloader.bin kernel.bin aos.bin
 	
-kernel.bin: kernel.c memory.c fs.c branch.c ai_trigger.c interpreter/command_interpreter.c ../src/generated/commands.c ../src/generated/command_map.c config_stub.c ../logging.c ../error.c
+kernel.bin: kernel.c memory.c idt.c fs.c branch.c ai_trigger.c interpreter/command_interpreter.c ../src/generated/commands.c ../src/generated/command_map.c config_stub.c ../logging.c ../error.c
        $(CC) $(CFLAGS) -I.. -I../include -I../src/generated -c kernel.c -o kernel.o
        $(CC) $(CFLAGS) -I.. -I../include -I../src/generated -c memory.c -o memory.o
+       $(CC) $(CFLAGS) -I.. -I../include -I../src/generated -c idt.c -o idt.o
        $(CC) $(CFLAGS) -I.. -I../include -I../src/generated -c fs.c -o fs.o
        $(CC) $(CFLAGS) -I.. -I../include -I../src/generated -c branch.c -o branch.o
        $(CC) $(CFLAGS) -I.. -I../include -I../src/generated -c ai_trigger.c -o ai_trigger.o
@@ -22,7 +23,7 @@ kernel.bin: kernel.c memory.c fs.c branch.c ai_trigger.c interpreter/command_int
        $(CC) $(CFLAGS) -I.. -I../include -I../src/generated -c config_stub.c -o config.o
        $(CC) $(CFLAGS) -I.. -I../include -I../src/generated -c ../logging.c -o logging.o
        $(CC) $(CFLAGS) -I.. -I../include -I../src/generated -c ../error.c -o error.o
-       $(LD) $(LDFLAGS) kernel.o memory.o fs.o branch.o ai_trigger.o command_interpreter.o commands.o command_map.o config.o logging.o error.o -o kernel.elf
+       $(LD) $(LDFLAGS) kernel.o memory.o idt.o fs.o branch.o ai_trigger.o command_interpreter.o commands.o command_map.o config.o logging.o error.o -o kernel.elf
 	objcopy -O binary kernel.elf kernel.bin
 
 
