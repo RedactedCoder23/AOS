@@ -384,3 +384,11 @@ Next agent must:
 
 Next agent must:
 - Use the new compdb rule and address clang-tidy warnings.
+## [2025-06-10 00:11 UTC] docs and community prep [codex]
+- Added testing and releases sections to README.
+- Expanded CONTRIBUTING with commit and workflow guidance.
+- Created SECURITY.md and Dependabot config.
+- Updated .gitignore for coverage and virtualenv artifacts.
+
+Next agent must:
+- Review Dependabot PRs and ensure CI remains green.
