@@ -53,7 +53,7 @@ $(NCURSES_LIBS) -lm -o build/ui_graph
 	            subsystems/branch/branch.c subsystems/net/net.c \
 	            $(NCURSES_LIBS) -ldl -lcurl -lm -o build/host_test
 	gcc -Wall -Werror -Iinclude -Isrc/generated $(NCURSES_CFLAGS) src/ui_graph.c src/branch_manager.c \
-            src/logging.c src/error.c src/ui_main.c $(NCURSES_LIBS) -lm -o build/ui_graph
+	     src/logging.c src/error.c src/ui_main.c $(NCURSES_LIBS) -lm -o build/ui_graph
 
 # 3. Build bare-metal components
 bootloader: regenerate
@@ -160,7 +160,11 @@ aos-cli:
 branch-net:
 	@echo "→ Building branch net demo"
 	@mkdir -p build
-	@gcc -Iinclude -Isrc/generated src/branch_net.c src/branch_manager.c examples/branch_fed_demo.c -pthread -lm -o build/branch_fed_demo
+	@gcc -Iinclude -Isrc/generated \
+	        src/branch_net.c src/branch_manager.c \
+	        src/logging.c src/error.c \
+	        examples/branch_fed_demo.c \
+	        -pthread -lm -o build/branch_fed_demo
 
 ai-service:
 	@echo "→ Building ai service demo"
