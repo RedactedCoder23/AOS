@@ -117,7 +117,10 @@ memory:
 fs:
 	@echo "→ Building fs demo"
 	@mkdir -p build
-	       gcc -Wall -Werror -Isubsystems/fs -Iinclude -Isrc/generated subsystems/fs/fs.c examples/fs_demo.c -o build/fs_demo
+	gcc -Wall -Werror -Isubsystems/fs -Isubsystems/memory -Iinclude -Isrc/generated \
+	subsystems/fs/fs.c subsystems/memory/memory.c src/memory.c \
+	src/logging.c src/error.c examples/fs_demo.c \
+-o build/fs_demo
 
 ai:
 	@echo "→ Building ai demo"
@@ -294,7 +297,7 @@ src/memory.c src/logging.c src/error.c \
 	-o build/tests/test_lang
 	@./build/tests/test_lang
 	@pip install -r requirements.txt
-	@python3 -m pytest -q tests/python
+	@python3 -m pytest --cov=./ -q tests/python
 test-integration:
 	@echo "\u2192 Running integration tests"
 	@pip install -r requirements.txt
@@ -305,7 +308,7 @@ test-integration:
 	gcc -Isubsystems/fs -Isubsystems/memory -Iinclude tests/integration/test_persistence.c \
 	subsystems/fs/fs.c subsystems/memory/memory.c src/memory.c src/logging.c src/error.c -o build/tests/test_persistence
 	@./build/tests/test_persistence
-        # fs checkpoint test temporarily disabled
+	        @[ -f aos.bin ] && ./scripts/qemu_smoke.sh $(CC_TARGET) || echo "aos.bin missing, skipping qemu"
 	
 test-fuzz:
 	@echo "\u2192 Running memory fuzz tests under ASan"

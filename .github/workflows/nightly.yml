@@ -16,4 +16,5 @@ jobs:
       - name: Build and test
         run: |
           make all
-          make test
+          make test-unit
+          make test-integration
