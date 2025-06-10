@@ -413,3 +413,14 @@ Next agent must:
 
 Next agent must:
 - Expand device and security subsystem coverage.
+
+## [2025-06-10 02:36 UTC] IPC skeleton and coverage [agent-mem]
+- Added `include/ipc.h` with ring buffer structs.
+- Inserted `syscall_dispatch` stub in `kernel.c`.
+- Created `ipc_host.c` daemon skeleton.
+- Added new unit test stubs for fs, ai and wasm runtime and updated Makefile.
+- CI workflow now runs `pytest --cov` and gcovr; coverage badge refreshed.
+- Roadmap updated with Phase 1 deliverables.
+
+Next agent must:
+- Run final meta-sweep to verify skeleton deliverables.

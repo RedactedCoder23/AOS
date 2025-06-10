@@ -44,6 +44,8 @@ jobs:
         run: make test-unit
       - name: Integration tests
         run: make test-integration
+      - name: Python tests with coverage
+        run: pytest --cov=./ --cov-report=xml -q tests/python
       - name: Coverage
         run: gcovr -r . --lcov -o coverage.lcov
       - name: Upload coverage

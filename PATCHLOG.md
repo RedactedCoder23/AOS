@@ -616,3 +616,14 @@ by: codex-agent-xyz
 - `make host`
 - `make test-unit`
 - `pytest -q tests/python`
+
+## [2025-06-10 02:36 UTC] IPC skeleton and coverage [agent-mem]
+### Changes
+- Added IPC headers and stubs.
+- Introduced ipc_host daemon and build rule.
+- Created new unit test skeletons and integrated with Makefile.
+- Updated CI workflow for pytest coverage and refreshed README badge.
+- Documented deliverables in ROADMAP.
+### Tests
+- `pre-commit run --files $(git ls-files '*.py' '*.c' '*.h' '*.yml' 'Makefile')`
+- `make test`

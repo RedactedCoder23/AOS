@@ -1,8 +1,7 @@
+[![Coverage](https://codecov.io/gh/RedactedCoder23/AOS/branch/main/graph/badge.svg)](https://codecov.io/gh/RedactedCoder23/AOS)
 # AOS
-[![Coverage Status](https://codecov.io/gh/RedactedCoder23/AOS/branch/main/graph/badge.svg)](https://codecov.io/gh/RedactedCoder23/AOS)
 
 [![Build Status](https://img.shields.io/github/actions/workflow/status/RedactedCoder23/AOS/ci.yml?branch=main)](https://github.com/RedactedCoder23/AOS/actions)
-[![Coverage](https://img.shields.io/codecov/c/github/RedactedCoder23/AOS)](https://codecov.io/gh/RedactedCoder23/AOS)
 [![License](https://img.shields.io/github/license/RedactedCoder23/AOS)](LICENSE)
 
 Minimal experimental OS used for interpreter tests.
