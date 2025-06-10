@@ -9,6 +9,10 @@ pytest==8.4.0
 =======
 >>>>> main
 pytest==8.2.0
+<<<<<< dependabot/pip/pre-commit-4.2.0
+pre-commit==4.2.0
+=======
 >>>>>> main
 pre-commit==3.5.0
+>>>>>> main
 pre-commit-hooks==4.5.0
