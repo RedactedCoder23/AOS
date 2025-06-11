@@ -164,8 +164,44 @@ def _run_agent(
     return result
 
 
+def _run_quality(branch_id: int) -> float:
+    """Run lint, tests and coverage for *branch_id* returning coverage %."""
+    cmd = (
+        "flake8 src/ && pytest --maxfail=1 --disable-warnings -q && "
+        "coverage run -m pytest && coverage json -o coverage.json"
+    )
+    base = os.path.join("branches", str(branch_id))
+    subprocess.run(cmd, shell=True, cwd=base)
+    cov_file = os.path.join(base, "coverage.json")
+    percent = 0.0
+    if os.path.exists(cov_file):
+        with open(cov_file, "r", encoding="utf-8") as fh:
+            try:
+                data = json.load(fh)
+                percent = float(data.get("totals", {}).get("percent_covered", 0))
+            except Exception:
+                percent = 0.0
+    hist_path = os.path.join(base, "history.json")
+    history = []
+    if os.path.exists(hist_path):
+        try:
+            with open(hist_path, "r", encoding="utf-8") as fh:
+                history = json.load(fh)
+        except Exception:
+            history = []
+    history.append(percent)
+    with open(hist_path, "w", encoding="utf-8") as fh:
+        json.dump(history, fh)
+    return percent
+
+
 def run_tasks(branch_id: int) -> Iterable[Dict[str, str]]:
     """Run all tasks for *branch_id* yielding result dicts."""
+<<<<<< codex/implement-quality/coverage-insights-and-ui-optimizations
+    for task in _load_spec(branch_id):
+        yield _run_agent(branch_id, task)
+    _run_quality(branch_id)
+=======
     tasks = _load_spec(branch_id)
     results: Dict[str, Dict[str, str]] = {}
     waiting = {t["agent_id"]: t for t in tasks if t.get("depends_on")}
@@ -258,6 +294,7 @@ def run_tasks(branch_id: int) -> Iterable[Dict[str, str]]:
 
     while not res_queue.empty():
         yield res_queue.get()
+>>>>>> main
 
 
 def main(branch_id: int) -> None:
