@@ -217,3 +217,42 @@ class MergeAiTest(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+def test_hunk_splitting():
+    small = (
+        "diff --git a/a.txt b/a.txt\n"
+        "--- a/a.txt\n"
+        "+++ b/a.txt\n"
+        "@@\n"
+        "-old\n"
+        "+new\n"
+    )
+    diff_text = small * 2000
+    hunks = merge_ai.split_hunks(diff_text)
+    assert len(hunks) >= 3
+
+
+def test_conflict_fallback(monkeypatch):
+    diff = (
+        "diff --git a/a.txt b/a.txt\n"
+        "--- a/a.txt\n"
+        "+++ b/a.txt\n"
+        "@@\n"
+        "-a\n"
+        "+b\n"
+        "@@\n"
+        "-c\n"
+        "+d\n"
+    )
+
+    monkeypatch.setattr(merge_ai, "run_diff", lambda b, m, br: diff)
+    monkeypatch.setattr(merge_ai, "call_llm", lambda *_: "")
+    monkeypatch.setattr(merge_ai, "valid_patch", lambda *_: False)
+
+    argv = ["merge_ai.py", "--main", "main", "--branch", "br", "--base", "base"]
+    monkeypatch.setattr(sys, "argv", argv)
+    buf = io.StringIO()
+    monkeypatch.setattr(sys, "stdout", buf)
+    merge_ai.main()
+    data = json.loads(buf.getvalue())
+    assert "<<<<< CONFLICT" in data["patch"]

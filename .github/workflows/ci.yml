@@ -50,6 +50,12 @@ jobs:
         run: make test-lifecycle
       - name: Integration tests
         run: make test-integration
+      - name: Run Merge-AI tests
+        run: make test-merge-ai
+      - name: Run Lifecycle tests
+        run: make test-lifecycle
+      - name: Run Negative-Path tests
+        run: make test-negative
       - name: Python tests with coverage
         run: pytest --cov=./ --cov-report=xml -q tests/python
       - name: NPM tests

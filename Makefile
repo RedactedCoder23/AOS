@@ -230,12 +230,19 @@ test-policy: policy
 
 test-net: net
 	./examples/net_echo_test.sh
-
-
+test-merge-ai:
+	pytest -q tests/python/test_merge_ai.py
 
 test-lifecycle:
-	@echo "→ Running lifecycle tests"
-	@python3 -m pytest -q tests/python/test_ai_cred_client.py tests/python/test_aos_audit.py
+	pytest -q scripts/tests/test_branch_lifecycle.py
+
+test-negative:
+	pytest -q tests/python/test_negative_paths.py
+
+test-all: test-unit test-integration test-merge-ai test-lifecycle test-negative
+
+
+
 
 test-unit:
 	@echo "→ Running unit tests"

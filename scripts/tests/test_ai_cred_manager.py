@@ -25,6 +25,9 @@ class CredManagerTest(unittest.TestCase):
         self.env["AICRED_DROP_GROUP"] = grp.getgrgid(os.getgid()).gr_name
         self.audit_log = os.path.join(self.tmp.name, "audit.log")
         self.env["AOS_AUDIT_LOG"] = self.audit_log
+        # Ensure subprocesses can import the local 'scripts' package
+        repo_root = os.path.abspath(os.path.join(os.path.dirname(__file__), "../.."))
+        self.env["PYTHONPATH"] = repo_root
         acl = {
             "get": {"users": [os.getuid()]},
             "set": {"users": [os.getuid()]},
