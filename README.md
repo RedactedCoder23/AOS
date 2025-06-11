@@ -10,27 +10,23 @@ Minimal experimental OS used for interpreter tests. The latest release adds a
 task orchestrator with plugin-based AI providers, coverage tracking and live UI
 previews.
 
+## v0.3.0 Preview
+
+Milestone&nbsp;1 introduces:
+- persistent branches with federation support
+- plugin hot-swap with basic sandboxing
+- AI provider integration and web branch UI
+- a `verify_all.sh` script for one-shot build and tests
+
 ## Quickstart
 
 ```bash
 git clone https://github.com/RedactedCoder23/AOS.git
 cd AOS
-make bootloader kernel host
-./build/host_test
-```
+./verify_all.sh
 
-Launch the branch UI and React front-end:
-
-```bash
-python3 scripts/branch_ui.py &
-cd ui && npm install && npm start
-```
-
-Start the credential vault and inspect the audit log:
-
-```bash
-python3 scripts/ai_cred_manager.py daemon &
-python3 scripts/aos_audit.py show --file /var/log/aos-audit.log
+# Or run the demo container
+docker-compose -f demo/docker-compose.yml up --build
 ```
 
 ## Setup
@@ -93,15 +89,6 @@ Generate `compile_commands.json` for clang-tidy with:
 ```bash
 make compdb
 ```
-
-## One-shot verify
-
-Run the full build, tests and demo smoke tests:
-
-```bash
-./verify_all.sh
-```
-
 
 ## Running AOS in QEMU
 
@@ -332,14 +319,3 @@ See [AGENT.md](AGENT.md) and [PATCHLOG.md](PATCHLOG.md) for development logs. Th
 AOS is released under the [MIT License](LICENSE). This permits reuse, modification and distribution
 as long as the license notice is included. The project is provided **as is** without warranty.
 
-## Demo Quickstart
-
-```bash
-git clone https://…/AOS-main.git
-cd AOS-main
-docker-compose up --build
-```
-
-Visit http://localhost:8080 for the UI.
-
-The Flask API runs on http://localhost:5000.

@@ -19,8 +19,3 @@ All commits must update `AGENT.md` and `PATCHLOG.md` with a timestamped summary 
 - Run `make test-unit` and `make test-integration` before sending a pull request.
  - Format C sources with `clang-format` and Python with `black`.
 
-### Workflow
-* Fork the repository and create topic branches from `main`.
-* Use descriptive commit messages following the "type: message" style (e.g. `docs: update readme`).
-* Ensure your branch is rebased on the latest `main` before opening a pull request.
-* Link relevant issues and briefly describe testing steps in the PR body.
