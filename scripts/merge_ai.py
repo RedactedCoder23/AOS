@@ -13,27 +13,15 @@ import logging
 from typing import List
 import importlib
 
+from scripts.ai_providers import loader
 from scripts.ai_providers.base import AIProvider
 
-PROVIDERS: dict[str, AIProvider] = {}
+PROVIDERS: dict[str, AIProvider] = loader.PROVIDERS
 
 
 def _load_providers() -> None:
-    if PROVIDERS:
-        return
-    cfg = os.path.join(os.path.dirname(os.path.dirname(__file__)), "providers.json")
-    try:
-        with open(cfg, "r", encoding="utf-8") as fh:
-            data = json.load(fh)
-    except Exception:
-        data = {}
-    for name, info in data.items():
-        try:
-            mod = importlib.import_module(f"scripts.ai_providers.{info['module']}")
-            cls = getattr(mod, info["class"])
-            PROVIDERS[name] = cls(name)
-        except Exception:
-            continue
+    """Compatibility wrapper around :func:`loader.load_providers`."""
+    loader.load_providers()
 
 
 MAX_HUNK_SIZE = 4096

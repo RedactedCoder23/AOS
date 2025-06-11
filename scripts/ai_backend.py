@@ -1,38 +1,20 @@
 #!/usr/bin/env python3
 """Backend helper to query AI provider plugins."""
-import importlib
-import json
 import os
 import sys
+from scripts.ai_providers import loader
 from scripts.ai_providers.base import AIProvider
 
-PROVIDERS: dict[str, AIProvider] = {}
+PROVIDERS: dict[str, AIProvider] = loader.PROVIDERS
 
 
 def _load_providers() -> None:
-    """Load provider plugins from ``providers.json``."""
-    if PROVIDERS:
-        return
-    cfg_path = os.path.join(
-        os.path.dirname(os.path.dirname(__file__)), "providers.json"
-    )
-    try:
-        with open(cfg_path, "r", encoding="utf-8") as fh:
-            data = json.load(fh)
-    except Exception:  # pragma: no cover - config missing
-        data = {}
-    for name, info in data.items():
-        try:
-            mod = importlib.import_module(f"scripts.ai_providers.{info['module']}")
-            cls = getattr(mod, info["class"])
-            PROVIDERS[name] = cls(name)
-        except Exception:  # pragma: no cover - plugin errors
-            continue
+    """Compatibility wrapper around :func:`loader.load_providers`."""
+    loader.load_providers()
 
 
 def _get_provider(name: str):
-    _load_providers()
-    return PROVIDERS.get(name)
+    return loader.get_provider(name)
 
 
 PROMPT_ERR = "usage: ai_backend.py <prompt>"

@@ -11,6 +11,7 @@ from typing import Iterable, Dict, List
 import importlib
 
 from src.api import events
+from .ai_providers import loader
 from .ai_providers.base import AIProvider
 from src.branch.task_definitions import Task
 
@@ -26,7 +27,7 @@ class LoadStats:
 MAX_AGENTS = int(os.environ.get("MAX_AGENTS", "4"))
 TASKS_PER_AGENT = int(os.environ.get("TASKS_PER_AGENT", "3"))
 METRICS: Dict[int, Dict[str, float]] = {}
-PROVIDERS: Dict[str, AIProvider] = {}
+PROVIDERS: Dict[str, AIProvider] = loader.PROVIDERS
 
 try:
     import yaml  # type: ignore
@@ -89,21 +90,8 @@ def calc_desired_agents(stats: LoadStats) -> int:
 
 
 def _load_providers() -> None:
-    if PROVIDERS:
-        return
-    cfg = os.path.join(os.path.dirname(os.path.dirname(__file__)), "providers.json")
-    try:
-        with open(cfg, "r", encoding="utf-8") as fh:
-            data = json.load(fh)
-    except Exception:  # pragma: no cover - missing config
-        data = {}
-    for name, info in data.items():
-        try:
-            mod = importlib.import_module(f"scripts.ai_providers.{info['module']}")
-            cls = getattr(mod, info["class"])
-            PROVIDERS[name] = cls(name)
-        except Exception:  # pragma: no cover - plugin errors
-            continue
+    """Compatibility wrapper around :func:`loader.load_providers`."""
+    loader.load_providers()
 
 
 def _load_spec(branch_id: int) -> List[Task]:
@@ -157,7 +145,7 @@ def _run_agent(
         attempts += 1
         try:
             if provider:
-                prov = PROVIDERS.get(provider)
+                prov = loader.get_provider(provider)
                 if prov is None:
                     raise RuntimeError(f"provider {provider} not found")
                 out = prov.generate(task.command)
