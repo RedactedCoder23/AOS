@@ -25,6 +25,18 @@ class BranchUITest(unittest.TestCase):
             page.wait_for_selector("text=Merge succeeded.")
             browser.close()
 
+    def test_run_agents(self):
+        if sync_playwright is None:
+            self.skipTest("playwright not installed")
+        with sync_playwright() as p:
+            browser = p.chromium.launch()
+            page = browser.new_page()
+            page.goto("http://localhost:8000")
+            page.click("text=Run Agents")
+            page.wait_for_selector("text=success")
+            page.wait_for_selector("text=failed")
+            browser.close()
+
 
 if __name__ == "__main__":
     unittest.main()

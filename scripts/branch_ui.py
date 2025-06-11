@@ -6,7 +6,7 @@ import queue
 import subprocess
 import sys
 from flask import Flask, Response, jsonify, request, send_from_directory
-from .agent_orchestrator import AgentOrchestrator
+from . import agent_orchestrator
 from .aos_audit import log_entry
 
 PORT = 8000
@@ -175,7 +175,6 @@ class BranchService:
 flask_sse = _SSE()
 app = Flask(__name__, static_folder=WEB_DIR, static_url_path="")
 service = BranchService(app.logger)
-agent_orch = AgentOrchestrator(app.logger)
 
 
 @app.route("/graph")
@@ -251,9 +250,14 @@ def events():
     return flask_sse.stream()
 
 
-@app.route("/branches/<int:bid>/agents")
-def branch_agents(bid):
-    return agent_orch.stream(bid)
+
+@app.route("/branches/<int:branch_id>/agents/stream")
+def stream_agents(branch_id: int):
+    def gen():
+        for res in agent_orchestrator.run_tasks(branch_id):
+            yield f"event: agent-status\ndata: {json.dumps(res)}\n\n"
+
+    return Response(gen(), mimetype="text/event-stream")
 
 
 @app.route("/<path:path>")
