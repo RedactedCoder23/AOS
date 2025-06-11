@@ -17,7 +17,8 @@ class AuthLoginTest(unittest.TestCase):
         )
         self.assertEqual(res.status_code, 200)
         data = res.get_json()
-        self.assertIn("token", data)
+        self.assertIn("access", data)
+        self.assertIn("refresh", data)
 
 
 if __name__ == "__main__":
