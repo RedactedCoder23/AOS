@@ -65,6 +65,8 @@ jobs:
           npm test
       - name: Playwright E2E
         run: pytest -q tests/python/test_ui_playwright.py || true
+      - name: Demo smoke test
+        run: make demo-test
       - name: Coverage
         run: gcovr -r . --lcov -o coverage.lcov
       - name: Upload coverage

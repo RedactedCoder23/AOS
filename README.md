@@ -327,9 +327,13 @@ AOS is released under the [MIT License](LICENSE). This permits reuse, modificati
 as long as the license notice is included. The project is provided **as is** without warranty.
 
 ## Demo Quickstart
+
 ```bash
-git clone …
+git clone https://…/AOS-main.git
 cd AOS-main
 docker-compose up --build
 ```
-Open http://localhost:8080 in your browser
+
+Visit http://localhost:8080 for the UI.
+
+The Flask API runs on http://localhost:5000.

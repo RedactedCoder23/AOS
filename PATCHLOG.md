@@ -746,3 +746,11 @@ Next agent must:
 - `pytest -q tests/python/test_negative_paths.py`
 - `make test-all`
 
+## [2025-06-11 00:20 UTC] docker demo packaging [codex]
+### Changes
+- Added Dockerfile using Ubuntu 24.04 with build steps.
+- Created demo/docker-compose.yml and demo_test.sh.
+- Updated README quickstart and CI with demo-test target.
+### Tests
+- `pre-commit run --files Dockerfile demo/docker-compose.yml demo/demo_test.sh README.md Makefile .github/workflows/ci.yml AGENT.md PATCHLOG.md`
+- `make demo-test`
