@@ -16,9 +16,34 @@ _queue = Queue(connection=_redis)
 
 
 def enqueue_provider_job(branch_id: str, provider: str, prompt: str) -> str:
+    """Enqueue provider job and persist parameters."""
     job = _queue.enqueue(tasks.provider_job, provider, prompt, branch_id)
     tasks.update_status(branch_id, "QUEUED", job.id)
+    path = os.path.expanduser(
+        os.path.join("~/.aos/branches", str(branch_id), "status.json")
+    )
+    data: dict[str, str] = {}
+    if os.path.exists(path):
+        try:
+            with open(path, "r", encoding="utf-8") as fh:
+                data = json.load(fh)
+        except Exception:
+            data = {}
+    data["provider"] = provider
+    data["prompt"] = prompt
+    with open(path, "w", encoding="utf-8") as fh:
+        json.dump(data, fh)
     return job.id
+
+
+def job_params(branch_id: str) -> tuple[str, str] | None:
+    """Return stored provider and prompt for *branch_id* if present."""
+    info = load_status(branch_id)
+    provider = info.get("provider")
+    prompt = info.get("prompt")
+    if provider and prompt:
+        return str(provider), str(prompt)
+    return None
 
 
 def load_status(branch_id: str) -> dict:
