@@ -2,11 +2,13 @@ import glob
 import json
 import os
 from fastapi import FastAPI, Response
+from src.service.security import apply_security_headers
 import yaml
 from scripts import aos_audit as audit
 from src.service.queue import load_status
 
 app = FastAPI()
+apply_security_headers(app)
 
 
 def _load_threshold() -> float:

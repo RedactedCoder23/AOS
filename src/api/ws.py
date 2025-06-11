@@ -2,9 +2,11 @@ import asyncio
 import json
 import redis
 from fastapi import FastAPI, WebSocket
+from src.service.security import apply_security_headers
 from src.service.queue import load_status
 
 app = FastAPI()
+apply_security_headers(app)
 
 
 @app.websocket("/ws/branches/{id}")
