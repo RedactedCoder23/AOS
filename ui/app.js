@@ -117,26 +117,33 @@ function showMenu(event, d) {
 
 function AgentPanel({ branchId }) {
   const [agents, setAgents] = React.useState([]);
-  const [loading, setLoading] = React.useState(true);
-  React.useEffect(() => {
-    const es = new EventSource(`/branches/${branchId}/agents`);
+  const [running, setRunning] = React.useState(false);
+  const start = React.useCallback(() => {
+    if (running) return;
+    const es = new EventSource(`/branches/${branchId}/agents/stream`);
+    setRunning(true);
     es.onmessage = (e) => {
       try {
         const data = JSON.parse(e.data);
         setAgents((a) => [...a.filter(x => x.agent_id !== data.agent_id), data]);
-        setLoading(false);
       } catch {
-        // ignore parse errors
+        // ignore
       }
     };
-    return () => es.close();
-  }, [branchId]);
-  if (loading) {
-    return React.createElement('div', null, 'Loading...');
-  }
-  return React.createElement('ul', null,
-    agents.map(a => React.createElement('li', { key: a.agent_id },
-      `${a.agent_id}: ${a.task} (${a.status})`)));
+    es.onerror = () => es.close();
+  }, [branchId, running]);
+
+  return React.createElement('div', null,
+    React.createElement('button', { onClick: start, disabled: running }, 'Run Agents'),
+    React.createElement('table', null,
+      React.createElement('tbody', null,
+        agents.map(a => React.createElement('tr', { key: a.agent_id },
+          React.createElement('td', null, a.agent_id),
+          React.createElement('td', null, a.status)
+        ))
+      )
+    )
+  );
 }
 
 function BranchNode({ data, onMerge, onSnapshot, onDelete }) {

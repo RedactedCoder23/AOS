@@ -4,4 +4,6 @@ cbor2
 pytest-cov
 cryptography
 keyring
+flask
+PyYAML
 
