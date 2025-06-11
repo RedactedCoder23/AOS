@@ -10,6 +10,7 @@ from cryptography.fernet import Fernet
 import pwd
 import grp
 
+from scripts import aos_audit
 from scripts.aos_audit import log_entry
 
 try:
@@ -23,6 +24,11 @@ SOCK_PATH = os.environ.get("AICRED_SOCK", "/run/ai-cred.sock")
 DROP_USER = os.environ.get("AICRED_DROP_USER", "branch-manager")
 DROP_GROUP = os.environ.get("AICRED_DROP_GROUP", "branchd")
 ACL_PATH = os.environ.get("AICRED_ACL", "/etc/ai-cred/acl.json")
+
+
+class CredentialsUnavailableError(RuntimeError):
+    """Raised when the credential store cannot be found."""
+
 
 
 def _load_acl():
@@ -113,7 +119,8 @@ def _health_check():
 
 def _load(db_f):
     if not os.path.exists(DB_PATH):
-        return {}
+        aos_audit.warn("credential store missing")
+        raise CredentialsUnavailableError("credential store missing")
     with open(DB_PATH, "rb") as fh:
         data = db_f.decrypt(fh.read())
         return json.loads(data.decode())
