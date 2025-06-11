@@ -4,8 +4,6 @@ import json
 import os
 import sys
 from scripts.ai_providers import loader
-from scripts.ai_providers.base import AIProvider
-import importlib
 
 
 class ProviderValidationTest(unittest.TestCase):
@@ -13,7 +11,11 @@ class ProviderValidationTest(unittest.TestCase):
         tmp = tempfile.TemporaryDirectory()
         sys.path.insert(0, tmp.name)
         with open(os.path.join(tmp.name, "badprov.py"), "w") as fh:
-            fh.write("from scripts.ai_providers.base import AIProvider\nclass Bad(AIProvider):\n    pass\n")
+            fh.write(
+                "from scripts.ai_providers.base import AIProvider\n"
+                "class Bad(AIProvider):\n"
+                "    pass\n"
+            )
         cfg = os.path.join(tmp.name, "providers.json")
         with open(cfg, "w") as fh:
             json.dump({"bad": "badprov.Bad"}, fh)

@@ -6,7 +6,6 @@ from fastapi.testclient import TestClient
 from src.api.metrics import app as metrics_app
 from src.api.coverage import app as coverage_app
 from src.api.branches import app as branches_app
-from scripts import aos_audit
 from scripts import agent_orchestrator
 
 
@@ -35,7 +34,7 @@ class AuditActionsTest(unittest.TestCase):
 
     def _read_log(self):
         with open(self.tmp.name) as fh:
-            return [json.loads(l) for l in fh if l.strip()]
+            return [json.loads(line) for line in fh if line.strip()]
 
     def test_audit_entries(self):
         TestClient(metrics_app).get("/branches/1/metrics")

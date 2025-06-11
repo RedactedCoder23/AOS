@@ -8,8 +8,10 @@ from .base import AIProvider
 
 class ProviderImplementationError(RuntimeError):
     """Raised when a provider fails to implement required methods."""
+
     def __init__(self, alias: str):
         super().__init__(f"Provider {alias} does not override generate()")
+
 
 _ROOT = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
 _CFG = os.path.join(_ROOT, "providers.json")

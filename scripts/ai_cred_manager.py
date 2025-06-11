@@ -30,7 +30,6 @@ class CredentialsUnavailableError(RuntimeError):
     """Raised when the credential store cannot be found."""
 
 
-
 def _load_acl():
     if not os.path.exists(ACL_PATH):
         return {}

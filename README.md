@@ -69,6 +69,12 @@ pip freeze | grep -E 'openai|cbor2|pytest-cov|cryptography|keyring|flask|PyYAML|
 pip freeze | grep -E 'black|flake8|pytest|pre-commit|pre-commit-hooks|playwright' > requirements-dev.txt
 ```
 
+Dependency bumps: rerun the dev install after pulling changes:
+
+```bash
+pip install -r requirements-dev.txt -U
+```
+
 See [ARCHITECTURE.md](ARCHITECTURE.md) for a detailed overview of the system design.
 
 ## Build

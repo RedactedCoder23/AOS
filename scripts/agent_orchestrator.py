@@ -37,6 +37,7 @@ def get_stats(branch_id: str) -> Dict | None:
         data = branch_stats.get(str(branch_id))
         return json.loads(json.dumps(data)) if data else None
 
+
 try:
     psutil = importlib.import_module("psutil") if importlib.util.find_spec("psutil") else None
 except Exception:  # pragma: no cover - optional dependency

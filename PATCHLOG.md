@@ -831,3 +831,8 @@ Next agent must:
 - Moved resolved baton passes to History (done). Updated docs/REMAINING.md.
 >>>>>> main
 
+### [2025-06-12 01:00 UTC] ci hardening & lint restore [agent-mem]
+- Replaced docker build steps with buildx action and caching.
+- Removed flake8 ignore in ci-fast and added setup.cfg.
+- Pinned mypy and pytest-cov in dev requirements and documented bump note.
+
