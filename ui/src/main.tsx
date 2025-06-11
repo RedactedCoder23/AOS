@@ -1,12 +1,12 @@
-import React from "react";
-import ReactDOM from "react-dom/client";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import BranchList from "./pages/BranchList";
-import BranchDetail from "./pages/BranchDetail";
-import AdminPage from "./pages/AdminPage";
-import RoleGuard from "./RoleGuard";
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import BranchList from './pages/BranchList';
+import BranchDetail from './pages/BranchDetail';
+import AdminPage from './pages/AdminPage';
+import RoleGuard from './RoleGuard';
 
-ReactDOM.createRoot(document.getElementById("root")!).render(
+ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <BrowserRouter>
       <Routes>
@@ -22,5 +22,5 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
         />
       </Routes>
     </BrowserRouter>
-  </React.StrictMode>,
+  </React.StrictMode>
 );

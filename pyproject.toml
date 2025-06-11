@@ -15,5 +15,6 @@ packages = ["scripts"]
 
 [project.scripts]
 aos-audit = "scripts.aos_audit:main"
+aos = "scripts.aos:main"
 [project.entry-points."flake8.extension"]
 PG001 = "scripts.flake8_provider:ProviderGenerateChecker"

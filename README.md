@@ -4,6 +4,8 @@
 
 [![Build Status](https://img.shields.io/github/actions/workflow/status/RedactedCoder23/AOS/ci.yml?branch=main)](https://github.com/RedactedCoder23/AOS/actions)
 [![License](https://img.shields.io/github/license/RedactedCoder23/AOS)](LICENSE)
+[![Style](https://img.shields.io/badge/code%20style-prettier-ff69b4)](https://prettier.io)
+[![Node](https://img.shields.io/badge/node-%3E%3D18-brightgreen)](https://nodejs.org)
 
 Current Version: **v0.3.0**
 
@@ -115,6 +117,14 @@ provider used by `merge_ai.py`.
 
 ```bash
 python3 scripts/agent_runner.py --provider echo "<cmd>" hb.json result.json
+```
+
+### CLI Demo
+
+Run the wrapper to see completion in action, then enable bash completion with:
+
+```bash
+eval "$(register-python-argcomplete aos)"
 ```
 
 ## Running AOS in QEMU
