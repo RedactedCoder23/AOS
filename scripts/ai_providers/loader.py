@@ -43,14 +43,24 @@ def _load_providers() -> None:
         try:
             if isinstance(info, str):
                 module_path, cls_name = info.rsplit(".", 1)
+                mod = importlib.import_module(module_path)
+                cls = getattr(mod, cls_name)
+                if cls.generate == AIProvider.generate:
+                    raise ProviderImplementationError(name)
+                inst = cls(name)
             else:
-                module_path = f"scripts.ai_providers.{info['module']}"
-                cls_name = info["class"]
-            mod = importlib.import_module(module_path)
-            cls = getattr(mod, cls_name)
-            if cls.generate == AIProvider.generate:
-                raise ProviderImplementationError(name)
-            inst = cls(name)
+                if "image" in info:
+                    from .plugin_runner import PluginRunner
+
+                    inst = PluginRunner(name, info["image"], info["entry"])
+                else:
+                    module_path = f"scripts.ai_providers.{info['module']}"
+                    cls_name = info["class"]
+                    mod = importlib.import_module(module_path)
+                    cls = getattr(mod, cls_name)
+                    if cls.generate == AIProvider.generate:
+                        raise ProviderImplementationError(name)
+                    inst = cls(name)
             PROVIDERS[name] = inst
         except ProviderImplementationError:
             raise

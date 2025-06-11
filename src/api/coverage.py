@@ -4,6 +4,7 @@ import os
 from fastapi import FastAPI, Response
 import yaml
 from scripts import aos_audit as audit
+from src.service.queue import load_status
 
 app = FastAPI()
 
@@ -42,5 +43,9 @@ def get_coverage(id: str, response: Response):
     threshold = _load_threshold()
     if hist and threshold and hist[-1]["lines"] < threshold:
         response.headers["X-Coverage-Below-Threshold"] = "true"
+    status = load_status(id).get("status")
     audit.log("get_coverage", branch=id, user="api")
-    return {"coverage": hist, "threshold": threshold}
+    data = {"coverage": hist, "threshold": threshold}
+    if status is not None:
+        data["status"] = status
+    return data

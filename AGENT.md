@@ -556,10 +556,17 @@ Next agent must:
 - Restored flake8 failure on CI and pinned dev dependencies.
 - Documented dependency bumps note in README.
 
+<<<<<< codex/implement-provider-contract-guard-and-failure-path-resilienc
 ## [2025-06-12 02:00 UTC] provider safety & secrets [agent-mem]
 - Added flake8 plugin and pytest warning for missing provider generate().
 - Implemented metrics circuit breaker with cached data fallback.
 - Added Vault-backed secrets CLI with .env fallback.
+=======
+## [2025-06-12 02:00 UTC] web dashboard scaffold [agent-mem]
+- Added React+Vite SPA under `ui/src` with BranchList and BranchDetail pages.
+- WebSocket metrics relay via SSE; orchestrator emits CPU and coverage stats.
+- New `/auth/login` issues JWT and `/api/branches` supports paging.
+>>>>>> main
 
 ## Open Tasks
 - Expand developer documentation and keep diagrams updated.

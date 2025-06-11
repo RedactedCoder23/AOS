@@ -339,6 +339,14 @@ def run_tasks(branch_id: int) -> Iterable[Dict[str, str]]:
             )
             if len(rec["history"]) > 20:
                 rec["history"].pop(0)
+        events.emit(
+            {
+                "type": "stats",
+                "branch_id": branch_id,
+                "cpu_pct": cpu_val,
+                "mem_pct": mem_val,
+            }
+        )
         desired = calc_desired_agents(stats)
         if desired != desired_prev:
             events.emit({"type": "scaling", "desired": desired, "active": len(workers)})
@@ -379,7 +387,14 @@ def run_tasks(branch_id: int) -> Iterable[Dict[str, str]]:
         ),
     }
 
-    _run_quality(branch_id)
+    coverage_pct = _run_quality(branch_id)
+    events.emit(
+        {
+            "type": "stats",
+            "branch_id": branch_id,
+            "coverage": coverage_pct,
+        }
+    )
 
     while not res_queue.empty():
         yield res_queue.get()

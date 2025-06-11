@@ -2,6 +2,7 @@ from fastapi import FastAPI, HTTPException
 from scripts.agent_orchestrator import get_stats, get_cached_stats
 from scripts import aos_audit as audit
 from fastapi.responses import JSONResponse
+from src.service.queue import load_status
 
 app = FastAPI()
 
@@ -21,5 +22,8 @@ def get_metrics(id: str):
         )
     if data is None:
         raise HTTPException(status_code=404, detail="branch not found")
+    status = load_status(id).get("status")
+    if status is not None:
+        data["status"] = status
     audit.log("get_metrics", branch=id, user="api")
     return data
