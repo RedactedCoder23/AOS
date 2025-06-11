@@ -11,6 +11,11 @@ from typing import Iterable, Dict, List
 from scripts.ai_providers.loader import get_provider
 
 from src.api import events
+<<<<<< codex/implement-plugin-loader-hot-reload
+from .ai_providers import loader
+from .ai_providers.base import AIProvider
+=======
+>>>>>> main
 from src.branch.task_definitions import Task
 
 
@@ -25,6 +30,10 @@ class LoadStats:
 MAX_AGENTS = int(os.environ.get("MAX_AGENTS", "4"))
 TASKS_PER_AGENT = int(os.environ.get("TASKS_PER_AGENT", "3"))
 METRICS: Dict[int, Dict[str, float]] = {}
+<<<<<< codex/implement-plugin-loader-hot-reload
+PROVIDERS: Dict[str, AIProvider] = loader.PROVIDERS
+=======
+>>>>>> main
 
 try:
     import yaml  # type: ignore
@@ -86,6 +95,12 @@ def calc_desired_agents(stats: LoadStats) -> int:
     return desired
 
 
+<<<<<< codex/implement-plugin-loader-hot-reload
+def _load_providers() -> None:
+    """Compatibility wrapper around :func:`loader.load_providers`."""
+    loader.load_providers()
+=======
+>>>>>> main
 
 
 def _load_spec(branch_id: int) -> List[Task]:
@@ -138,7 +153,13 @@ def _run_agent(
         attempts += 1
         try:
             if provider:
+<<<<<< codex/implement-plugin-loader-hot-reload
+                prov = loader.get_provider(provider)
+                if prov is None:
+                    raise RuntimeError(f"provider {provider} not found")
+=======
                 prov = get_provider(provider)
+>>>>>> main
                 out = prov.generate(task.command)
                 err = ""
                 status = "success"

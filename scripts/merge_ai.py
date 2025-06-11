@@ -11,7 +11,21 @@ import sys
 import time
 import logging
 from typing import List
+<<<<<< codex/implement-plugin-loader-hot-reload
+import importlib
+
+from scripts.ai_providers import loader
+from scripts.ai_providers.base import AIProvider
+
+PROVIDERS: dict[str, AIProvider] = loader.PROVIDERS
+
+
+def _load_providers() -> None:
+    """Compatibility wrapper around :func:`loader.load_providers`."""
+    loader.load_providers()
+=======
 from scripts.ai_providers.loader import get_provider
+>>>>>> main
 
 
 MAX_HUNK_SIZE = 4096

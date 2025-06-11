@@ -36,6 +36,13 @@ repository root:
 }
 ```
 
+<<<<<< codex/implement-plugin-loader-hot-reload
+Plugins can be hot-swapped at runtime in tests by reloading the provider loader.
+The loader monitors ``providers.json`` and re-reads it whenever the file
+modification time changes.  New providers become available to running
+processes automatically on the next call to ``get_provider()``.  Errors while
+loading are ignored so malformed entries do not interrupt execution.
+=======
 `scripts.ai_backend` and other helpers load this file on demand.  Plugins can be
 hot-swapped in tests by reloading the loader module.
 
@@ -78,4 +85,5 @@ hot-swapped in tests by reloading the loader module.
    ```
 
 See `scripts.ai_backend._get_provider()` for the loader implementation.
->>>>>> main
+>>>>> main
+>>>>> main

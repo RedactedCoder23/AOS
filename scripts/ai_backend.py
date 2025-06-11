@@ -2,7 +2,23 @@
 """Backend helper to query AI provider plugins."""
 import os
 import sys
+<<<<<< codex/implement-plugin-loader-hot-reload
+from scripts.ai_providers import loader
+from scripts.ai_providers.base import AIProvider
+
+PROVIDERS: dict[str, AIProvider] = loader.PROVIDERS
+
+
+def _load_providers() -> None:
+    """Compatibility wrapper around :func:`loader.load_providers`."""
+    loader.load_providers()
+
+
+def _get_provider(name: str):
+    return loader.get_provider(name)
+=======
 from scripts.ai_providers.loader import get_provider
+>>>>>> main
 
 
 PROMPT_ERR = "usage: ai_backend.py <prompt>"
