@@ -153,6 +153,7 @@ function AgentPanel({ branchId }) {
   );
 }
 
+<<<<<< codex/implement-quality/coverage-insights-and-ui-optimizations
 function CoverageChart({ branchId }) {
   const [data, setData] = React.useState([]);
   React.useEffect(() => {
@@ -164,6 +165,18 @@ function CoverageChart({ branchId }) {
   return React.createElement(Recharts.LineChart, { width: 100, height: 40, data },
     React.createElement(Recharts.Line, { type: 'monotone', dataKey: 'v', stroke: '#8884d8', dot: false })
   );
+=======
+function MetricsPanel({ branchId }) {
+  const [metrics, setMetrics] = React.useState(null);
+  React.useEffect(() => {
+    fetch(`/branches/${branchId}/metrics`).then(r => r.json()).then(setMetrics).catch(() => {});
+  }, [branchId]);
+  if (!metrics) return React.createElement('div', null, 'Loading metrics...');
+  return React.createElement('div', { className: 'metrics-panel' },
+    React.createElement('div', null, `Agents: ${metrics.agents_spawned}`),
+    React.createElement('div', null, `Success: ${Math.round(metrics.success_rate * 100)}%`),
+    React.createElement('div', null, `Avg time: ${metrics.avg_runtime.toFixed(2)}s`));
+>>>>>> main
 }
 
 function BranchNode({ data, onMerge, onSnapshot, onDelete }) {
@@ -173,8 +186,13 @@ function BranchNode({ data, onMerge, onSnapshot, onDelete }) {
     React.createElement('button', { onClick: onSnapshot }, 'Checkpoint'),
     React.createElement('button', { onClick: onMerge }, 'Merge'),
     React.createElement('button', { onClick: onDelete }, 'Delete'),
+<<<<<< codex/implement-quality/coverage-insights-and-ui-optimizations
     React.createElement(CoverageChart, { branchId: data.id }),
     React.createElement(AgentPanel, { branchId: data.id }));
+=======
+    React.createElement(AgentPanel, { branchId: data.id }),
+    React.createElement(MetricsPanel, { branchId: data.id }));
+>>>>>> main
 }
 
 function App() {
