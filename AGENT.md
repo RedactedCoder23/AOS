@@ -527,7 +527,6 @@ Next agent must:
 
 
 
-<<<<<< codex/stabilize-dev-environment-and-ci-pipeline
 ## [2025-06-11 06:08 UTC] dev container and ci split [codex]
 - Added Dockerfile.dev and .devcontainer.json for slim setup.
 - Moved verify_all.sh to scripts/ci-full.sh and created ci-fast.sh.
@@ -556,17 +555,14 @@ Next agent must:
 - Restored flake8 failure on CI and pinned dev dependencies.
 - Documented dependency bumps note in README.
 
-<<<<<< codex/implement-provider-contract-guard-and-failure-path-resilienc
 ## [2025-06-12 02:00 UTC] provider safety & secrets [agent-mem]
 - Added flake8 plugin and pytest warning for missing provider generate().
 - Implemented metrics circuit breaker with cached data fallback.
 - Added Vault-backed secrets CLI with .env fallback.
-=======
 ## [2025-06-12 02:00 UTC] web dashboard scaffold [agent-mem]
 - Added React+Vite SPA under `ui/src` with BranchList and BranchDetail pages.
 - WebSocket metrics relay via SSE; orchestrator emits CPU and coverage stats.
 - New `/auth/login` issues JWT and `/api/branches` supports paging.
->>>>>> main
 
 ### [2025-06-12 03:00 UTC] docker nightly & cleanup [agent-mem]
 - Added buildx and caching to nightly workflow to build Dockerfile.dev.
