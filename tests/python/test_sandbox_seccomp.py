@@ -1,9 +1,5 @@
-import os
-import sys
 import unittest
 from pathlib import Path
-
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "../..")))
 
 import docker
 
@@ -17,7 +13,9 @@ class SandboxSeccompTest(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.client = docker.from_env()
-        cls.client.images.build(path=str(FIXTURE), dockerfile="Dockerfile.sandbox", tag=IMAGE)
+        cls.client.images.build(
+            path=str(FIXTURE), dockerfile="Dockerfile.sandbox", tag=IMAGE
+        )
 
     def test_syscall_blocked(self):
         cmd = ["python", "-c", "import os, signal; os.kill(os.getpid(), 0)"]

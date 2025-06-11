@@ -18,7 +18,7 @@ test("blocks viewer", () => {
           }
         />
       </Routes>
-    </BrowserRouter>
+    </BrowserRouter>,
   );
   expect(screen.getByText(/forbidden/i)).toBeInTheDocument();
 });
@@ -37,7 +37,7 @@ test("allows admin", () => {
           }
         />
       </Routes>
-    </BrowserRouter>
+    </BrowserRouter>,
   );
   expect(screen.getByText(/Admin/i)).toBeInTheDocument();
 });

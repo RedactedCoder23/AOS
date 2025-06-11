@@ -13,7 +13,9 @@ class AuthFlowTest(unittest.TestCase):
         self.client = branch_ui.app.test_client()
 
     def login(self, user="test", pwd="test"):
-        return self.client.post("/auth/login", json={"username": user, "password": pwd}).get_json()
+        return self.client.post(
+            "/auth/login", json={"username": user, "password": pwd}
+        ).get_json()
 
     def test_refresh(self):
         data = self.login("test", "test")
@@ -22,7 +24,9 @@ class AuthFlowTest(unittest.TestCase):
         new_data = res.get_json()
         self.assertIn("access", new_data)
         self.assertNotEqual(data["access"], new_data["access"])
-        payload = jwt.decode(new_data["access"], branch_ui.JWT_SECRET, algorithms=["HS256"])
+        payload = jwt.decode(
+            new_data["access"], branch_ui.JWT_SECRET, algorithms=["HS256"]
+        )
         self.assertEqual(payload["role"], "admin")
 
     def test_plugin_install_rbac(self):

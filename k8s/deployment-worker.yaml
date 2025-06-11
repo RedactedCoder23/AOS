@@ -13,18 +13,18 @@ spec:
         app: aos-worker
     spec:
       containers:
-      - name: worker
-        image: aos-worker:latest
-        command: ["python", "scripts/jobqueue/worker.py"]
-        readinessProbe:
-          httpGet:
-            path: /health/ready
-            port: 8000
-          initialDelaySeconds: 5
-          periodSeconds: 10
-        livenessProbe:
-          httpGet:
-            path: /health/live
-            port: 8000
-          initialDelaySeconds: 5
-          periodSeconds: 10
+        - name: worker
+          image: aos-worker:latest
+          command: ["python", "scripts/jobqueue/worker.py"]
+          readinessProbe:
+            httpGet:
+              path: /health/ready
+              port: 8000
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /health/live
+              port: 8000
+            initialDelaySeconds: 5
+            periodSeconds: 10

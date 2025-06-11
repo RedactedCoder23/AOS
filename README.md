@@ -1,4 +1,5 @@
 [![Coverage](https://codecov.io/gh/RedactedCoder23/AOS/branch/main/graph/badge.svg)](https://codecov.io/gh/RedactedCoder23/AOS)
+
 # AOS
 
 [![Build Status](https://img.shields.io/github/actions/workflow/status/RedactedCoder23/AOS/ci.yml?branch=main)](https://github.com/RedactedCoder23/AOS/actions)
@@ -13,6 +14,7 @@ previews.
 ## v0.3.0 Preview
 
 Milestone&nbsp;1 introduces:
+
 - persistent branches with federation support
 - plugin hot-swap with basic sandboxing
 - AI provider integration and web branch UI
@@ -148,6 +150,7 @@ Run the memory allocator demo which showcases the free-list allocator:
 make memory
 ./build/memory_demo
 ```
+
 The demo allocates and frees several blocks and prints their addresses.
 
 ## Filesystem Demo
@@ -156,6 +159,7 @@ The demo allocates and frees several blocks and prints their addresses.
 make fs
 ./build/fs_demo
 ```
+
 Demonstrates a tiny in-memory filesystem with mkdir/open/read/write/close and listing commands.
 
 ## AI Demo
@@ -164,6 +168,7 @@ Demonstrates a tiny in-memory filesystem with mkdir/open/read/write/close and li
 make ai
 ./build/ai_demo
 ```
+
 Uses OpenAI ChatCompletion via a helper script.
 
 Set `AOS_AI_OFFLINE=1` to use the bundled mock backend instead of contacting the
@@ -180,6 +185,7 @@ value when present.
 make aicell
 ./examples/aicell_demo.sh
 ```
+
 Demonstrates the new aicell daemon and checkpoint API.
 
 ## Sample REPL Session
@@ -198,6 +204,7 @@ AOS> BR_LIST
 ## Branch Graph UI
 
 Build and run:
+
 ```bash
 make ui
 ./build/ui_graph
@@ -205,11 +212,11 @@ make ui
 
 Controls:
 
-* Arrows / h,j,k,l: move selection
-* Enter: switch branch
-* n: create new branch
-* c: connect to another branch
-* q: quit
+- Arrows / h,j,k,l: move selection
+- Enter: switch branch
+- n: create new branch
+- c: connect to another branch
+- q: quit
 
 Branch state is saved to `~/.aos/branches.json`, so any branches you create will
 persist between sessions.
@@ -228,6 +235,7 @@ close it. The demo reads from `examples/graph_sample.json` and serves files from
 the new `ui/` directory. A `/metrics` endpoint exposes runtime metrics for the
 dashboard, while `/export` and `/import` allow workspace sync via JSON. Each
 branch panel now shows coverage trends and task metrics.
+
 ## Graphical Desktop & AI Copilot
 
 Launch the desktop UI with live branch data and AI chat:
@@ -237,7 +245,6 @@ make desktop-ui
 ```
 
 Then open `http://localhost:8000` to view the graph and chat with the embedded copilot.
-
 
 ## Hypervisor-Backed Branches
 
@@ -333,6 +340,7 @@ Stable snapshots are tagged in git. Check the
 for downloadable archives and changelogs.
 
 ## Contributing
+
 See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
 See [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md) for community standards.
 Additional developer documentation is available under the [docs/](docs/) directory.
@@ -344,4 +352,3 @@ See [AGENT.md](AGENT.md) and [PATCHLOG.md](PATCHLOG.md) for development logs. Th
 
 AOS is released under the [MIT License](LICENSE). This permits reuse, modification and distribution
 as long as the license notice is included. The project is provided **as is** without warranty.
-

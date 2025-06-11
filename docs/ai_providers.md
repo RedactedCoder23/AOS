@@ -6,8 +6,8 @@ Example `providers.json`:
 
 ```json
 {
-  "openai": {"module": "openai_provider", "class": "OpenAIProvider"},
-  "local-llama": {"module": "mock_provider", "class": "MockProvider"},
+  "openai": { "module": "openai_provider", "class": "OpenAIProvider" },
+  "local-llama": { "module": "mock_provider", "class": "MockProvider" },
   "echo": "scripts.ai_providers.echo_provider.EchoProvider"
 }
 ```
@@ -38,7 +38,7 @@ The loader monitors the configuration file and reloads plugins when it changes s
 
    ```json
    {
-     "my-provider": {"module": "my_provider", "class": "MyProvider"}
+     "my-provider": { "module": "my_provider", "class": "MyProvider" }
    }
    ```
 
@@ -58,4 +58,3 @@ AOS_AI_PROVIDER=my-provider ./scripts/ai_backend.py "Hello"
 > **Warning**
 > Provider classes must override `generate`. The loader raises
 > `ProviderImplementationError` if this method is missing.
-
