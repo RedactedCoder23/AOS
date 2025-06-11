@@ -11,6 +11,7 @@ import sys
 import time
 import logging
 from typing import List
+<<<<<< codex/implement-plugin-loader-hot-reload
 import importlib
 
 from scripts.ai_providers import loader
@@ -22,6 +23,9 @@ PROVIDERS: dict[str, AIProvider] = loader.PROVIDERS
 def _load_providers() -> None:
     """Compatibility wrapper around :func:`loader.load_providers`."""
     loader.load_providers()
+=======
+from scripts.ai_providers.loader import get_provider
+>>>>>> main
 
 
 MAX_HUNK_SIZE = 4096
@@ -64,12 +68,20 @@ def call_llm(prompt: str, provider_name: str | None = None) -> str:
     """Send *prompt* to an AI provider and return the response."""
     if os.environ.get("AOS_AI_OFFLINE"):
         return ""
+<<<<<< codex/implement-dynamic-ai-provider-loader
+=======
     _load_providers()
+    if provider_name is None:
+        meta = os.environ.get("AOS_TASK_META")
+        if meta:
+            try:
+                provider_name = json.loads(meta).get("provider")
+            except Exception:
+                provider_name = None
+>>>>>> main
     provider_name = provider_name or os.environ.get("AOS_AI_PROVIDER", "openai")
-    prov = PROVIDERS.get(provider_name)
-    if prov is None:
-        raise RuntimeError(f"provider {provider_name} not available")
-    return prov.generate(prompt)
+    provider = get_provider(provider_name)
+    return provider.generate(prompt)
 
 
 def valid_patch(patch: str) -> bool:

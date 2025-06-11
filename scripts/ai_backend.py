@@ -2,6 +2,7 @@
 """Backend helper to query AI provider plugins."""
 import os
 import sys
+<<<<<< codex/implement-plugin-loader-hot-reload
 from scripts.ai_providers import loader
 from scripts.ai_providers.base import AIProvider
 
@@ -15,6 +16,9 @@ def _load_providers() -> None:
 
 def _get_provider(name: str):
     return loader.get_provider(name)
+=======
+from scripts.ai_providers.loader import get_provider
+>>>>>> main
 
 
 PROMPT_ERR = "usage: ai_backend.py <prompt>"
@@ -26,8 +30,9 @@ def main():
         return 1
 
     provider_name = os.environ.get("AOS_AI_PROVIDER", "openai")
-    provider = _get_provider(provider_name)
-    if provider is None:
+    try:
+        provider = get_provider(provider_name)
+    except ValueError:
         print(f"ERROR: provider '{provider_name}' not available", file=sys.stderr)
         return 2
     prompt = sys.argv[1]

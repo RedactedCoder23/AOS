@@ -90,6 +90,17 @@ Generate `compile_commands.json` for clang-tidy with:
 make compdb
 ```
 
+## CLI Options
+
+The helper `agent_runner.py` accepts a `--provider` flag to override the AI
+provider used by `merge_ai.py`.
+
+### Usage
+
+```bash
+python3 scripts/agent_runner.py --provider echo "<cmd>" hb.json result.json
+```
+
 ## Running AOS in QEMU
 
 **Prerequisite**: install QEMU—e.g., on Debian/Ubuntu:
