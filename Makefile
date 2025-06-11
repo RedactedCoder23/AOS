@@ -231,7 +231,7 @@ test-policy: policy
 test-net: net
 	./examples/net_echo_test.sh
 test-merge-ai:
-	pytest -q tests/python/test_merge_ai.py
+	pytest -q tests/python/test_merge_ai_split.py
 
 test-lifecycle:
 	pytest -q scripts/tests/test_branch_lifecycle.py

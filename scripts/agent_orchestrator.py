@@ -3,7 +3,8 @@
 import subprocess
 import queue
 import json
-from typing import Dict
+import os
+from typing import Dict, List
 from flask import Response
 
 
@@ -47,6 +48,8 @@ class AgentOrchestrator:
         return self._get_sse(branch_id).stream()
 
     def launch(self, branch_id: int, agent_id: int, cmd, timeout: int = 60):
+        sse = self._get_sse(branch_id)
+        sse.publish({"agent_id": agent_id, "status": "running", "log": ""}, event="agent-status")
         proc = subprocess.Popen(
             cmd,
             stdout=subprocess.PIPE,
@@ -72,6 +75,21 @@ class AgentOrchestrator:
             event["output"] = result.strip()
         if status != "success":
             self.logger.error("Agent %d failed: %s", agent_id, err.strip())
-        sse = self._get_sse(branch_id)
         sse.publish(event, event="agent-status")
         return event
+
+    def run_tasks(self, branch_id: int, spec_path: str) -> List[Dict]:
+        """Run tasks from JSON/YAML *spec_path* for *branch_id*."""
+        with open(spec_path, "r") as fh:
+            spec = json.load(fh)
+        results: List[Dict] = []
+        os.makedirs(f"branches/{branch_id}/agents", exist_ok=True)
+        for idx, task in enumerate(spec.get("jobs", []), start=1):
+            cmd = task.get("cmd")
+            if isinstance(cmd, str):
+                cmd = [cmd]
+            res = self.launch(branch_id, idx, cmd)
+            results.append(res)
+            with open(f"branches/{branch_id}/agents/agent-{idx}.json", "w") as fh:
+                json.dump(res, fh)
+        return results

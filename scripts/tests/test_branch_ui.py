@@ -47,7 +47,12 @@ class BranchUITest(unittest.TestCase):
     @mock.patch("scripts.branch_ui.flask_sse.publish")
     @mock.patch("scripts.branch_ui.kernel_ipc", return_value=0)
     def test_merge(self, _ipc, publish, _chk):
-        branch_ui.service.branches[1] = {"pid": 1, "sock": "s", "status": "RUNNING"}
+        branch_ui.service.branches[1] = {
+            "pid": 1,
+            "sock": "s",
+            "status": "RUNNING",
+            "owner_uid": os.getuid(),
+        }
         res = self.client.post("/branches/1/merge")
         data = json.loads(res.data)
         self.assertTrue(data["merged"])
@@ -107,14 +112,14 @@ class BranchUITest(unittest.TestCase):
         res = self.client.post("/branches/99/snapshot")
         data = json.loads(res.data)
         self.assertIn("error", data)
-        self.assertEqual(res.status_code, 400)
+        self.assertEqual(res.status_code, 404)
 
     @mock.patch("scripts.branch_ui.kernel_ipc", return_value=-22)
     def test_invalid_delete(self, ipc):
         res = self.client.delete("/branches/99")
         data = json.loads(res.data)
         self.assertIn("error", data)
-        self.assertEqual(res.status_code, 400)
+        self.assertEqual(res.status_code, 404)
 
     @mock.patch(
         "scripts.branch_ui.flask_sse.stream",

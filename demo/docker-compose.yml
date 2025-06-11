@@ -1,7 +1,8 @@
 version: '3'
 services:
-  aos:
+  aos-kernel:
     build: ..
-    ports:
-      - "8000:8000"
-    command: python3 scripts/branch_ui.py
+    volumes: [.:/aos]
+  aos-ui:
+    build: ./ui
+    ports: ['8080:80']

@@ -5,7 +5,8 @@
   "scripts": {
     "build": "parcel build index.html --dist-dir dist",
     "lint": "eslint *.js",
-    "test": "npm run lint"
+    "test": "npm run lint",
+    "e2e": "echo e2e tests"
   },
   "devDependencies": {
     "parcel": "^2.8.3",

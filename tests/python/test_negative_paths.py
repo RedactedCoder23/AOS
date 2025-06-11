@@ -1,4 +1,3 @@
-# TODO: This IPC negative-path test requires kernel-ipc host tool. Skipped until available.
 import json
 import os
 import shutil
@@ -11,35 +10,32 @@ from scripts import branch_ui
 
 import pytest
 
-from scripts import branch_ui
-
-IPC_TOOL = shutil.which("kernel-ipc") or os.path.join("build", "host_test")
+IPC_TOOL = shutil.which("kernel-ipc") or os.path.join(repo_root, "scripts", "kernel_ipc.py")
 
 
-def _run_tool(cmd, bid):
+def _run_tool(args):
     if not os.path.exists(IPC_TOOL):
         pytest.skip("ipc tool missing")
-    out = subprocess.check_output([IPC_TOOL, "--ipc", cmd, str(bid)], text=True)
-    out = out.strip()
-    try:
-        return json.loads(out)
-    except json.JSONDecodeError:
-        return {"retval": int(out)}
+    cmd = [IPC_TOOL] + args
+    if IPC_TOOL.endswith(".py"):
+        cmd.insert(0, sys.executable)
+    out = subprocess.check_output(cmd, text=True).strip()
+    return json.loads(out)
 
 
 def test_merge_invalid_syscall():
-    data = _run_tool("merge", 9999)
-    assert "error" in data
+    data = _run_tool(["merge-branch", "9999"])
+    assert data.get("code") == 404
 
 
 def test_snapshot_invalid_syscall():
-    data = _run_tool("snapshot", 9999)
-    assert "error" in data
+    data = _run_tool(["snapshot-branch", "9999"])
+    assert data.get("code") == 404
 
 
 def test_delete_invalid_syscall():
-    data = _run_tool("delete", 9999)
-    assert "error" in data
+    data = _run_tool(["delete-branch", "9999"])
+    assert data.get("code") == 404
 
 
 def test_http_merge_invalid_id(monkeypatch):
@@ -48,5 +44,11 @@ def test_http_merge_invalid_id(monkeypatch):
     monkeypatch.setattr(branch_ui, "kernel_ipc", lambda *a, **k: -22)
     client = branch_ui.app.test_client()
     res = client.post("/branches/9999/merge")
+    assert res.status_code == 404
     data = json.loads(res.data)
-    assert "error" in data
+    assert data.get("error")
+
+    res = client.delete("/branches/9999")
+    assert res.status_code == 404
+    data = json.loads(res.data)
+    assert data.get("error")

@@ -2,6 +2,7 @@ import os
 import sys
 import tempfile
 import unittest
+import json
 from unittest import mock
 
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "../..")))
@@ -41,6 +42,27 @@ class AgentOrchestratorTest(unittest.TestCase):
             self.assertEqual(data["status"], "failed")
             self.assertEqual(data.get("error"), "Timeout")
         os.remove(script)
+
+    def test_run_tasks(self):
+        script = self._script(
+            "import sys, time, json; time.sleep(1);\n"
+            "open('out.patch','w').write('diff');"
+        )
+        spec = {
+            "jobs": [{"cmd": [sys.executable, script]}]
+        }
+        tmp = tempfile.TemporaryDirectory()
+        spec_path = os.path.join(tmp.name, "spec.json")
+        with open(spec_path, "w") as fh:
+            json.dump(spec, fh)
+        with mock.patch("scripts.agent_orchestrator._SSE.publish") as publish:
+            res = self.orch.run_tasks(1, spec_path)
+            publish.assert_called()
+        self.assertEqual(len(res), 1)
+        out_file = os.path.join("branches", "1", "agents", "agent-1.json")
+        self.assertTrue(os.path.exists(out_file))
+        os.remove(script)
+        tmp.cleanup()
 
 
 if __name__ == "__main__":
