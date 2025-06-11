@@ -4,17 +4,17 @@
     {
       "type": "graph",
       "title": "Queue Length",
-      "targets": [{"expr": "queue_len"}]
+      "targets": [{ "expr": "queue_len" }]
     },
     {
       "type": "graph",
       "title": "Job Latency",
-      "targets": [{"expr": "job_latency"}]
+      "targets": [{ "expr": "job_latency" }]
     },
     {
       "type": "graph",
       "title": "Worker Count",
-      "targets": [{"expr": "worker_count"}]
+      "targets": [{ "expr": "worker_count" }]
     }
   ]
 }

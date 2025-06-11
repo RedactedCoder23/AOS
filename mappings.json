@@ -1,297 +1,297 @@
 {
-    "categories": {
-        "Basic System Commands": {
-            "id": 1,
-            "macro": "CAT_BASIC_SYSTEM_COMMANDS"
-        },
-        "Timers": {
-            "id": 2,
-            "macro": "CAT_TIMERS"
-        },
-        "Processes": {
-            "id": 3,
-            "macro": "CAT_PROCESSES"
-        },
-        "File Operations": {
-            "id": 4,
-            "macro": "CAT_FILE_OPERATIONS"
-        },
-        "Networking": {
-            "id": 5,
-            "macro": "CAT_NETWORKING"
-        },
-        "System Actions": {
-            "id": 6,
-            "macro": "CAT_SYSTEM_ACTIONS"
-        },
-        "User Management": {
-            "id": 7,
-            "macro": "CAT_USER_MANAGEMENT"
-        },
-        "Security": {
-            "id": 8,
-            "macro": "CAT_SECURITY"
-        },
-        "Application Control": {
-            "id": 9,
-            "macro": "CAT_APPLICATION_CONTROL"
-        },
-        "System Monitoring": {
-            "id": 10,
-            "macro": "CAT_SYSTEM_MONITORING"
-        },
-        "Scheduling": {
-            "id": 11,
-            "macro": "CAT_SCHEDULING"
-        },
-        "Backup & Restore": {
-            "id": 12,
-            "macro": "CAT_BACKUP_RESTORE"
-        },
-        "Power Management": {
-            "id": 13,
-            "macro": "CAT_POWER_MANAGEMENT"
-        },
-        "Accessibility": {
-            "id": 14,
-            "macro": "CAT_ACCESSIBILITY"
-        },
-        "Localization": {
-            "id": 15,
-            "macro": "CAT_LOCALIZATION"
-        },
-        "Development & Debugging": {
-            "id": 16,
-            "macro": "CAT_DEVELOPMENT_DEBUGGING"
-        },
-        "Hardware Management": {
-            "id": 17,
-            "macro": "CAT_HARDWARE_MANAGEMENT"
-        },
-        "Peripheral Devices": {
-            "id": 18,
-            "macro": "CAT_PERIPHERAL_DEVICES"
-        },
-        "Virtualization": {
-            "id": 19,
-            "macro": "CAT_VIRTUALIZATION"
-        },
-        "Package Management": {
-            "id": 20,
-            "macro": "CAT_PACKAGE_MANAGEMENT"
-        },
-        "Environment Variables": {
-            "id": 21,
-            "macro": "CAT_ENVIRONMENT_VARIABLES"
-        },
-        "System Logs": {
-            "id": 22,
-            "macro": "CAT_SYSTEM_LOGS"
-        },
-        "Disk Management": {
-            "id": 23,
-            "macro": "CAT_DISK_MANAGEMENT"
-        },
-        "Encryption": {
-            "id": 24,
-            "macro": "CAT_ENCRYPTION"
-        },
-        "Resource Management": {
-            "id": 25,
-            "macro": "CAT_RESOURCE_MANAGEMENT"
-        },
-        "Device Drivers": {
-            "id": 26,
-            "macro": "CAT_DEVICE_DRIVERS"
-        },
-        "Command Aliases": {
-            "id": 27,
-            "macro": "CAT_COMMAND_ALIASES"
-        },
-        "Scripting & Automation": {
-            "id": 28,
-            "macro": "CAT_SCRIPTING_AUTOMATION"
-        },
-        "Miscellaneous": {
-            "id": 29,
-            "macro": "CAT_MISCELLANEOUS"
-        },
-        "Meta-State Commands": {
-            "id": 30,
-            "macro": "CAT_META_STATE_COMMANDS"
-        },
-        "AI Integration": {
-            "id": 31,
-            "macro": "CAT_AI_INTEGRATION"
-        },
-        "Error Recovery": {
-            "id": 32,
-            "macro": "CAT_ERROR_RECOVERY"
-        },
-        "Compression": {
-            "id": 33,
-            "macro": "CAT_COMPRESSION"
-        },
-        "Adaptive Encoding": {
-            "id": 34,
-            "macro": "CAT_ADAPTIVE_ENCODING"
-        }
+  "categories": {
+    "Basic System Commands": {
+      "id": 1,
+      "macro": "CAT_BASIC_SYSTEM_COMMANDS"
     },
-    "commands": [
-        {
-            "name": "HELLO",
-            "binary": "1000000000000000000000000000000000000000000000000000000000000000",
-            "category": "Basic System Commands"
-        },
-        {
-            "name": "BYE",
-            "binary": "1000000000000000000000000000000000000000000000000000000000000000",
-            "category": "Basic System Commands"
-        },
-        {
-            "name": "UI_GRAPH",
-            "binary": "1000000000000000000000000000000000000000000000000000000000000000",
-            "category": "Basic System Commands"
-        },
-        {
-            "name": "MEM_ALLOC",
-            "binary": "1000000000000000000000000000000000000000000000000000000000000000",
-            "category": "Basic System Commands"
-        },
-        {
-            "name": "MEM_FREE",
-            "binary": "1000000000000000000000000000000000000000000000000000000000000000",
-            "category": "Basic System Commands"
-        },
-        {
-            "name": "FS_OPEN",
-            "binary": "1000000000000000000000000000000000000000000000000000000000000000",
-            "category": "Basic System Commands"
-        },
-        {
-            "name": "FS_WRITE",
-            "binary": "1000000000000000000000000000000000000000000000000000000000000000",
-            "category": "Basic System Commands"
-        },
-        {
-            "name": "FS_READ",
-            "binary": "1000000000000000000000000000000000000000000000000000000000000000",
-            "category": "Basic System Commands"
-        },
-        {
-            "name": "FS_CLOSE",
-            "binary": "1000000000000000000000000000000000000000000000000000000000000000",
-            "category": "Basic System Commands"
-        },
-        {
-            "name": "FS_MKDIR",
-            "binary": "1000000000000000000000000000000000000000000000000000000000000000",
-            "category": "Basic System Commands"
-        },
-        {
-            "name": "FS_LS",
-            "binary": "1000000000000000000000000000000000000000000000000000000000000000",
-            "category": "Basic System Commands"
-        },
-        {
-            "name": "AI_PROMPT",
-            "binary": "1000000000000000000000000000000000000000000000000000000000000000",
-            "category": "Basic System Commands"
-        },
-        {
-            "name": "AI_PROFILE",
-            "binary": "1000000000000000000000000000000000000000000000000000000000000000",
-            "category": "Basic System Commands"
-        },
-        {
-            "name": "BR_CREATE",
-            "binary": "1000000000000000000000000000000000000000000000000000000000000000",
-            "category": "Basic System Commands"
-        },
-        {
-            "name": "BR_LIST",
-            "binary": "1000000000000000000000000000000000000000000000000000000000000000",
-            "category": "Basic System Commands"
-        },
-        {
-            "name": "BR_STOP",
-            "binary": "1000000000000000000000000000000000000000000000000000000000000000",
-            "category": "Basic System Commands"
-        },
-        {
-            "name": "BR_DELETE",
-            "binary": "1000000000000000000000000000000000000000000000000000000000000000",
-            "category": "Basic System Commands"
-        },
-        {
-            "name": "BR_VM_CREATE",
-            "binary": "1000000000000000000000000000000000000000000000000000000000000000",
-            "category": "Basic System Commands"
-        },
-        {
-            "name": "BR_VM_LIST",
-            "binary": "1000000000000000000000000000000000000000000000000000000000000000",
-            "category": "Basic System Commands"
-        },
-        {
-            "name": "BR_VM_SWITCH",
-            "binary": "1000000000000000000000000000000000000000000000000000000000000000",
-            "category": "Basic System Commands"
-        },
-        {
-            "name": "BR_VM_STOP",
-            "binary": "1000000000000000000000000000000000000000000000000000000000000000",
-            "category": "Basic System Commands"
-        },
-        {
-            "name": "PLUGIN_INSTALL",
-            "binary": "1000000000000000000000000000000000000000000000000000000000000000",
-            "category": "Basic System Commands"
-        },
-        {
-            "name": "PLUGIN_LIST",
-            "binary": "1000000000000000000000000000000000000000000000000000000000000000",
-            "category": "Basic System Commands"
-        },
-        {
-            "name": "PLUGIN_LOAD",
-            "binary": "1000000000000000000000000000000000000000000000000000000000000000",
-            "category": "Basic System Commands"
-        },
-        {
-            "name": "BR_PEER_ADD",
-            "binary": "1000000000000000000000000000000000000000000000000000000000000000",
-            "category": "Basic System Commands"
-        },
-        {
-            "name": "BR_SYNC",
-            "binary": "1000000000000000000000000000000000000000000000000000000000000000",
-            "category": "Basic System Commands"
-        },
-        {
-            "name": "BR_SYNC_ALL",
-            "binary": "1000000000000000000000000000000000000000000000000000000000000000",
-            "category": "Basic System Commands"
-        },
-        {
-            "name": "AI_SERVICE_CREATE",
-            "binary": "1000000000000000000000000000000000000000000000000000000000000000",
-            "category": "Basic System Commands"
-        },
-        {
-            "name": "AI_SERVICE_MONITOR",
-            "binary": "1000000000000000000000000000000000000000000000000000000000000000",
-            "category": "Basic System Commands"
-        },
-        {
-            "name": "POLICY_LOAD",
-            "binary": "1000000000000000000000000000000000000000000000000000000000000000",
-            "category": "Basic System Commands"
-        },
-        {
-            "name": "POLICY_CHECK",
-            "binary": "1000000000000000000000000000000000000000000000000000000000000000",
-            "category": "Basic System Commands"
-        }
-    ]
+    "Timers": {
+      "id": 2,
+      "macro": "CAT_TIMERS"
+    },
+    "Processes": {
+      "id": 3,
+      "macro": "CAT_PROCESSES"
+    },
+    "File Operations": {
+      "id": 4,
+      "macro": "CAT_FILE_OPERATIONS"
+    },
+    "Networking": {
+      "id": 5,
+      "macro": "CAT_NETWORKING"
+    },
+    "System Actions": {
+      "id": 6,
+      "macro": "CAT_SYSTEM_ACTIONS"
+    },
+    "User Management": {
+      "id": 7,
+      "macro": "CAT_USER_MANAGEMENT"
+    },
+    "Security": {
+      "id": 8,
+      "macro": "CAT_SECURITY"
+    },
+    "Application Control": {
+      "id": 9,
+      "macro": "CAT_APPLICATION_CONTROL"
+    },
+    "System Monitoring": {
+      "id": 10,
+      "macro": "CAT_SYSTEM_MONITORING"
+    },
+    "Scheduling": {
+      "id": 11,
+      "macro": "CAT_SCHEDULING"
+    },
+    "Backup & Restore": {
+      "id": 12,
+      "macro": "CAT_BACKUP_RESTORE"
+    },
+    "Power Management": {
+      "id": 13,
+      "macro": "CAT_POWER_MANAGEMENT"
+    },
+    "Accessibility": {
+      "id": 14,
+      "macro": "CAT_ACCESSIBILITY"
+    },
+    "Localization": {
+      "id": 15,
+      "macro": "CAT_LOCALIZATION"
+    },
+    "Development & Debugging": {
+      "id": 16,
+      "macro": "CAT_DEVELOPMENT_DEBUGGING"
+    },
+    "Hardware Management": {
+      "id": 17,
+      "macro": "CAT_HARDWARE_MANAGEMENT"
+    },
+    "Peripheral Devices": {
+      "id": 18,
+      "macro": "CAT_PERIPHERAL_DEVICES"
+    },
+    "Virtualization": {
+      "id": 19,
+      "macro": "CAT_VIRTUALIZATION"
+    },
+    "Package Management": {
+      "id": 20,
+      "macro": "CAT_PACKAGE_MANAGEMENT"
+    },
+    "Environment Variables": {
+      "id": 21,
+      "macro": "CAT_ENVIRONMENT_VARIABLES"
+    },
+    "System Logs": {
+      "id": 22,
+      "macro": "CAT_SYSTEM_LOGS"
+    },
+    "Disk Management": {
+      "id": 23,
+      "macro": "CAT_DISK_MANAGEMENT"
+    },
+    "Encryption": {
+      "id": 24,
+      "macro": "CAT_ENCRYPTION"
+    },
+    "Resource Management": {
+      "id": 25,
+      "macro": "CAT_RESOURCE_MANAGEMENT"
+    },
+    "Device Drivers": {
+      "id": 26,
+      "macro": "CAT_DEVICE_DRIVERS"
+    },
+    "Command Aliases": {
+      "id": 27,
+      "macro": "CAT_COMMAND_ALIASES"
+    },
+    "Scripting & Automation": {
+      "id": 28,
+      "macro": "CAT_SCRIPTING_AUTOMATION"
+    },
+    "Miscellaneous": {
+      "id": 29,
+      "macro": "CAT_MISCELLANEOUS"
+    },
+    "Meta-State Commands": {
+      "id": 30,
+      "macro": "CAT_META_STATE_COMMANDS"
+    },
+    "AI Integration": {
+      "id": 31,
+      "macro": "CAT_AI_INTEGRATION"
+    },
+    "Error Recovery": {
+      "id": 32,
+      "macro": "CAT_ERROR_RECOVERY"
+    },
+    "Compression": {
+      "id": 33,
+      "macro": "CAT_COMPRESSION"
+    },
+    "Adaptive Encoding": {
+      "id": 34,
+      "macro": "CAT_ADAPTIVE_ENCODING"
+    }
+  },
+  "commands": [
+    {
+      "name": "HELLO",
+      "binary": "1000000000000000000000000000000000000000000000000000000000000000",
+      "category": "Basic System Commands"
+    },
+    {
+      "name": "BYE",
+      "binary": "1000000000000000000000000000000000000000000000000000000000000000",
+      "category": "Basic System Commands"
+    },
+    {
+      "name": "UI_GRAPH",
+      "binary": "1000000000000000000000000000000000000000000000000000000000000000",
+      "category": "Basic System Commands"
+    },
+    {
+      "name": "MEM_ALLOC",
+      "binary": "1000000000000000000000000000000000000000000000000000000000000000",
+      "category": "Basic System Commands"
+    },
+    {
+      "name": "MEM_FREE",
+      "binary": "1000000000000000000000000000000000000000000000000000000000000000",
+      "category": "Basic System Commands"
+    },
+    {
+      "name": "FS_OPEN",
+      "binary": "1000000000000000000000000000000000000000000000000000000000000000",
+      "category": "Basic System Commands"
+    },
+    {
+      "name": "FS_WRITE",
+      "binary": "1000000000000000000000000000000000000000000000000000000000000000",
+      "category": "Basic System Commands"
+    },
+    {
+      "name": "FS_READ",
+      "binary": "1000000000000000000000000000000000000000000000000000000000000000",
+      "category": "Basic System Commands"
+    },
+    {
+      "name": "FS_CLOSE",
+      "binary": "1000000000000000000000000000000000000000000000000000000000000000",
+      "category": "Basic System Commands"
+    },
+    {
+      "name": "FS_MKDIR",
+      "binary": "1000000000000000000000000000000000000000000000000000000000000000",
+      "category": "Basic System Commands"
+    },
+    {
+      "name": "FS_LS",
+      "binary": "1000000000000000000000000000000000000000000000000000000000000000",
+      "category": "Basic System Commands"
+    },
+    {
+      "name": "AI_PROMPT",
+      "binary": "1000000000000000000000000000000000000000000000000000000000000000",
+      "category": "Basic System Commands"
+    },
+    {
+      "name": "AI_PROFILE",
+      "binary": "1000000000000000000000000000000000000000000000000000000000000000",
+      "category": "Basic System Commands"
+    },
+    {
+      "name": "BR_CREATE",
+      "binary": "1000000000000000000000000000000000000000000000000000000000000000",
+      "category": "Basic System Commands"
+    },
+    {
+      "name": "BR_LIST",
+      "binary": "1000000000000000000000000000000000000000000000000000000000000000",
+      "category": "Basic System Commands"
+    },
+    {
+      "name": "BR_STOP",
+      "binary": "1000000000000000000000000000000000000000000000000000000000000000",
+      "category": "Basic System Commands"
+    },
+    {
+      "name": "BR_DELETE",
+      "binary": "1000000000000000000000000000000000000000000000000000000000000000",
+      "category": "Basic System Commands"
+    },
+    {
+      "name": "BR_VM_CREATE",
+      "binary": "1000000000000000000000000000000000000000000000000000000000000000",
+      "category": "Basic System Commands"
+    },
+    {
+      "name": "BR_VM_LIST",
+      "binary": "1000000000000000000000000000000000000000000000000000000000000000",
+      "category": "Basic System Commands"
+    },
+    {
+      "name": "BR_VM_SWITCH",
+      "binary": "1000000000000000000000000000000000000000000000000000000000000000",
+      "category": "Basic System Commands"
+    },
+    {
+      "name": "BR_VM_STOP",
+      "binary": "1000000000000000000000000000000000000000000000000000000000000000",
+      "category": "Basic System Commands"
+    },
+    {
+      "name": "PLUGIN_INSTALL",
+      "binary": "1000000000000000000000000000000000000000000000000000000000000000",
+      "category": "Basic System Commands"
+    },
+    {
+      "name": "PLUGIN_LIST",
+      "binary": "1000000000000000000000000000000000000000000000000000000000000000",
+      "category": "Basic System Commands"
+    },
+    {
+      "name": "PLUGIN_LOAD",
+      "binary": "1000000000000000000000000000000000000000000000000000000000000000",
+      "category": "Basic System Commands"
+    },
+    {
+      "name": "BR_PEER_ADD",
+      "binary": "1000000000000000000000000000000000000000000000000000000000000000",
+      "category": "Basic System Commands"
+    },
+    {
+      "name": "BR_SYNC",
+      "binary": "1000000000000000000000000000000000000000000000000000000000000000",
+      "category": "Basic System Commands"
+    },
+    {
+      "name": "BR_SYNC_ALL",
+      "binary": "1000000000000000000000000000000000000000000000000000000000000000",
+      "category": "Basic System Commands"
+    },
+    {
+      "name": "AI_SERVICE_CREATE",
+      "binary": "1000000000000000000000000000000000000000000000000000000000000000",
+      "category": "Basic System Commands"
+    },
+    {
+      "name": "AI_SERVICE_MONITOR",
+      "binary": "1000000000000000000000000000000000000000000000000000000000000000",
+      "category": "Basic System Commands"
+    },
+    {
+      "name": "POLICY_LOAD",
+      "binary": "1000000000000000000000000000000000000000000000000000000000000000",
+      "category": "Basic System Commands"
+    },
+    {
+      "name": "POLICY_CHECK",
+      "binary": "1000000000000000000000000000000000000000000000000000000000000000",
+      "category": "Basic System Commands"
+    }
+  ]
 }

@@ -1,6 +1,5 @@
 {
   "name": "AOS DevContainer",
-  "build": {"dockerfile": "Dockerfile.dev"},
+  "build": { "dockerfile": "Dockerfile.dev" },
   "postCreateCommand": "pip install -r requirements.txt"
 }
-

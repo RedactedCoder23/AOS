@@ -1,8 +1,8 @@
 export default {
-  preset: 'ts-jest',
-  testEnvironment: 'jsdom',
+  preset: "ts-jest",
+  testEnvironment: "jsdom",
   moduleNameMapper: {
-    '^react$': 'react',
-    '^react-dom$': 'react-dom',
+    "^react$": "react",
+    "^react-dom$": "react-dom",
   },
 };
