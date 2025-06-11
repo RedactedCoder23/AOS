@@ -2,6 +2,8 @@
 
 This directory contains additional guides for AOS.
 
+Version: **v0.2.0**
+
 - `getting_started.md` – build and run instructions.
 - `system_architecture.md` – subsystem overview.
 - `ARCHITECTURE.md` – high level data flow diagram.

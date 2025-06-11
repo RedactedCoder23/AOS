@@ -1,11 +1,11 @@
-#include "syscalls.h"
+#include "audit.h"
 #include "branch.h"
 #include "ipc_protocol.h"
-#include "audit.h"
+#include "syscalls.h"
 #include <errno.h>
+#include <stdint.h>
 #include <stdio.h>
 #include <string.h>
-#include <stdint.h>
 #include <unistd.h>
 
 static inline uint32_t current_uid(void) { return (uint32_t)getuid(); }
@@ -15,8 +15,7 @@ static uint32_t branch_count;
 static uint64_t next_snapshot_id = 1;
 
 /* allocate a free branch table slot */
-static struct branch_info *branch_alloc(void)
-{
+static struct branch_info *branch_alloc(void) {
     for (uint32_t i = 0; i < IPC_MAX_BRANCHES; i++) {
         if (branch_table[i].status == 0) {
             branch_table[i].branch_id = i;
@@ -33,8 +32,7 @@ static struct branch_info *branch_alloc(void)
 }
 
 /* lookup an active branch table entry */
-static struct branch_info *branch_lookup(uint32_t id)
-{
+static struct branch_info *branch_lookup(uint32_t id) {
     if (id >= IPC_MAX_BRANCHES)
         return NULL;
     if (branch_table[id].status == 0)
@@ -43,8 +41,7 @@ static struct branch_info *branch_lookup(uint32_t id)
 }
 
 /* free a branch table entry */
-static void branch_free(uint32_t id)
-{
+static void branch_free(uint32_t id) {
     if (id >= IPC_MAX_BRANCHES)
         return;
     memset(&branch_table[id], 0, sizeof(struct branch_info));
@@ -54,8 +51,7 @@ static void branch_free(uint32_t id)
     }
 }
 
-int sys_create_branch(void)
-{
+int sys_create_branch(void) {
     struct branch_info *b = branch_alloc();
     if (!b)
         return -ENOSPC;
@@ -67,8 +63,7 @@ int sys_create_branch(void)
     return (int)b->branch_id;
 }
 
-int sys_merge_branch(int branch_id)
-{
+int sys_merge_branch(int branch_id) {
     struct branch_info *b = branch_lookup((uint32_t)branch_id);
     static uint32_t next_job = 1;
     if (!b)

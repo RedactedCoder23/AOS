@@ -43,7 +43,7 @@ function setupGraph(data) {
   function dragended(event){if(!event.active) sim.alphaTarget(0); event.subject.fx=null; event.subject.fy=null;}
 }
 
-// eslint-disable-next-line no-unused-vars
+ 
 async function sendAI(){
   const input=document.getElementById('prompt');
   const msg=input.value.trim(); if(!msg) return;
