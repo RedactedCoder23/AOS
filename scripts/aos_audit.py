@@ -27,7 +27,10 @@ def log_entry(user: str, action: str, resource: str, result: str) -> None:
 
 def log(action: str, **fields) -> None:
     """Convenience wrapper to log an action with arbitrary fields."""
-    entry = {"timestamp": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()), "action": action}
+    entry = {
+        "timestamp": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
+        "action": action,
+    }
     entry.update(fields)
     path = os.environ.get("AOS_AUDIT_LOG", LOG_PATH)
     os.makedirs(os.path.dirname(path), exist_ok=True)

@@ -2,7 +2,6 @@ import os
 import sys
 import json
 import tempfile
-import shutil
 import subprocess
 import unittest
 from unittest import mock
@@ -28,9 +27,9 @@ class PluginsCliTest(unittest.TestCase):
             "--store",
             str(store),
         ]
-        with mock.patch.object(sys, "argv", argv), \
-            mock.patch.object(subprocess, "check_call") as cc, \
-            mock.patch("docker.from_env"):
+        with mock.patch.object(sys, "argv", argv), mock.patch.object(
+            subprocess, "check_call"
+        ) as cc, mock.patch("docker.from_env"):
             plugins_cli.main()
             self.assertTrue(cc.called)
 

@@ -11,8 +11,9 @@ class CredManagerTest(unittest.TestCase):
         with tempfile.TemporaryDirectory() as tmp:
             db = os.path.join(tmp, "creds.db")
             key = os.path.join(tmp, "master.key")
-            with mock.patch.object(cm, "DB_PATH", db), \
-                 mock.patch.object(cm, "KEY_PATH", key):
+            with mock.patch.object(cm, "DB_PATH", db), mock.patch.object(
+                cm, "KEY_PATH", key
+            ):
                 f = cm._fernet()
                 cm._save(f, {"svc": "token"})
                 data = cm._load(f)
@@ -22,9 +23,9 @@ class CredManagerTest(unittest.TestCase):
         with tempfile.TemporaryDirectory() as tmp:
             db = os.path.join(tmp, "creds.db")  # not created
             key = os.path.join(tmp, "master.key")
-            with mock.patch.object(cm, "DB_PATH", db), \
-                 mock.patch.object(cm, "KEY_PATH", key), \
-                 mock.patch.object(cm.aos_audit, "warn") as warn:
+            with mock.patch.object(cm, "DB_PATH", db), mock.patch.object(
+                cm, "KEY_PATH", key
+            ), mock.patch.object(cm.aos_audit, "warn") as warn:
                 f = cm._fernet()
                 with self.assertRaises(cm.CredentialsUnavailableError):
                     cm._load(f)
