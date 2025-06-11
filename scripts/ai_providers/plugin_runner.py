@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import docker
+from pathlib import Path
 
 from .base import AIProvider
 
@@ -13,6 +14,9 @@ class PluginRunner(AIProvider):
         self.image = image
         self.entry = entry
         self.client = docker.from_env()
+        self.seccomp = str(
+            Path(__file__).resolve().parents[2] / "profiles" / "aos-seccomp.json"
+        )
 
     def generate(self, prompt: str) -> str:  # pragma: no cover - docker mocked
         env = {"ENTRY_CLASS": self.entry, "PROMPT": prompt, "PROV_NAME": self.name}
@@ -21,6 +25,9 @@ class PluginRunner(AIProvider):
             environment=env,
             volumes={"/contracts": {"bind": "/contracts", "mode": "ro"}},
             mem_limit=64 * 1024 * 1024,
+            cap_drop=["ALL"],
+            pids_limit=256,
+            security_opt=[f"seccomp={self.seccomp}"],
             detach=True,
         )
         try:
