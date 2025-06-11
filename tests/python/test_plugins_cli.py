@@ -51,12 +51,20 @@ class PluginsCliTest(unittest.TestCase):
             client = mock.Mock()
             client.containers.run.return_value = cont
             with mock.patch("docker.from_env", return_value=client):
-                loader._CFG = str(reg)
-                loader._mtime = None
-                loader.PROVIDERS.clear()
-                prov = loader.get_provider("echo")
-                out = prov.generate("hi")
-                self.assertEqual(out, "hi")
+                orig_cfg = loader._CFG
+                orig_mtime = loader._mtime
+                orig_map = loader.PROVIDERS.copy()
+                try:
+                    loader._CFG = str(reg)
+                    loader._mtime = None
+                    loader.PROVIDERS.clear()
+                    prov = loader.get_provider("echo")
+                    out = prov.generate("hi")
+                    self.assertEqual(out, "hi")
+                finally:
+                    loader._CFG = orig_cfg
+                    loader._mtime = orig_mtime
+                    loader.PROVIDERS = orig_map
 
 
 if __name__ == "__main__":
