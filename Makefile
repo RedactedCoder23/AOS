@@ -1,7 +1,7 @@
 .PHONY: all clean test install regenerate host bootloader kernel bare run ui ui-check web-ui branch-vm plugins iso efi branch-net desktop-ui ai-service aicell modeld ipc-host branch-dashboard policy net subsystems checklist
 
 MAKEFLAGS += -j$(shell nproc)
-VERSION := 0.2.0
+VERSION := 0.3.0
 
 CC_TARGET ?= x86_64
 

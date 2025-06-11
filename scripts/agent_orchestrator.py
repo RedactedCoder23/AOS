@@ -60,6 +60,7 @@ def _load_providers() -> None:
         except Exception:  # pragma: no cover - plugin errors
             continue
 
+
 def _load_spec(branch_id: int) -> List[Dict[str, str]]:
     """Load tasks spec from branches/<id>/tasks.yaml or .json."""
     base = os.path.join("branches", str(branch_id))
@@ -197,15 +198,10 @@ def _run_quality(branch_id: int) -> float:
 
 def run_tasks(branch_id: int) -> Iterable[Dict[str, str]]:
     """Run all tasks for *branch_id* yielding result dicts."""
-<<<<<< codex/implement-quality/coverage-insights-and-ui-optimizations
-    for task in _load_spec(branch_id):
-        yield _run_agent(branch_id, task)
-    _run_quality(branch_id)
-=======
     tasks = _load_spec(branch_id)
     results: Dict[str, Dict[str, str]] = {}
     waiting = {t["agent_id"]: t for t in tasks if t.get("depends_on")}
-    queue_tasks = queue.Queue()
+    queue_tasks: queue.Queue = queue.Queue()
     for t in tasks:
         if not t.get("depends_on"):
             queue_tasks.put(t)
@@ -229,7 +225,10 @@ def run_tasks(branch_id: int) -> Iterable[Dict[str, str]]:
             results[task["agent_id"]] = res
             for wid in list(waiting.keys()):
                 w = waiting[wid]
-                if all(d in results and results[d].get("status") == "success" for d in w["depends_on"]):
+                if all(
+                    d in results and results[d].get("status") == "success"
+                    for d in w["depends_on"]
+                ):
                     queue_tasks.put(w)
                     waiting.pop(wid)
             queue_tasks.task_done()
@@ -247,16 +246,20 @@ def run_tasks(branch_id: int) -> Iterable[Dict[str, str]]:
 
     while True:
         # scaling logic
-        if (
-            queue_tasks.qsize() > 5 or _cpu_usage(os.getpid()) > 70
-        ) and len(workers) < MAX_AGENTS:
+        if (queue_tasks.qsize() > 5 or _cpu_usage(os.getpid()) > 70) and len(
+            workers
+        ) < MAX_AGENTS:
             t = threading.Thread(target=worker)
             workers.append(t)
             t.start()
         if queue_tasks.empty() and not waiting:
             if last_idle is None:
                 last_idle = time.time()
-            if time.time() - last_idle > 30 and len(workers) > 1 and _cpu_usage(os.getpid()) < 10:
+            if (
+                time.time() - last_idle > 30
+                and len(workers) > 1
+                and _cpu_usage(os.getpid()) < 10
+            ):
                 # shut down one worker
                 stop_event.set()
                 workers.pop().join()
@@ -281,7 +284,8 @@ def run_tasks(branch_id: int) -> Iterable[Dict[str, str]]:
     METRICS[branch_id] = {
         "agents_spawned": len(workers),
         "success_rate": (
-            sum(1 for e in results.values() if e.get("status") == "success") / len(tasks)
+            sum(1 for e in results.values() if e.get("status") == "success")
+            / len(tasks)
             if tasks
             else 0.0
         ),
@@ -292,9 +296,10 @@ def run_tasks(branch_id: int) -> Iterable[Dict[str, str]]:
         ),
     }
 
+    _run_quality(branch_id)
+
     while not res_queue.empty():
         yield res_queue.get()
->>>>>> main
 
 
 def main(branch_id: int) -> None:

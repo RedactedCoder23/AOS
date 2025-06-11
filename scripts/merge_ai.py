@@ -31,10 +31,11 @@ def _load_providers() -> None:
     for name, info in data.items():
         try:
             mod = importlib.import_module(f"scripts.ai_providers.{info['module']}")
-            cls = getattr(mod, info['class'])
+            cls = getattr(mod, info["class"])
             PROVIDERS[name] = cls(name)
         except Exception:
             continue
+
 
 MAX_HUNK_SIZE = 4096
 

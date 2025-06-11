@@ -1,7 +1,6 @@
 import os
 import sys
 import unittest
-from types import SimpleNamespace
 import unittest.mock
 import importlib
 
@@ -32,7 +31,6 @@ class AiBackendTest(unittest.TestCase):
         mod = importlib.reload(ai_backend)
         sys.argv = ["ai_backend.py"]
         self.assertEqual(mod.main(), 1)
-
 
 
 if __name__ == "__main__":

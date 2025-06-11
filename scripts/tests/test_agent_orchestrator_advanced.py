@@ -25,9 +25,7 @@ class AdvancedOrchestratorTest(unittest.TestCase):
             fh.write(text)
 
     def test_auto_scaling(self):
-        tasks = "\n".join(
-            f"- agent_id: t{i}\n  command: 'echo {i}'" for i in range(6)
-        )
+        tasks = "\n".join(f"- agent_id: t{i}\n  command: 'echo {i}'" for i in range(6))
         self._write_tasks(tasks)
         list(agent_orchestrator.run_tasks(1))
         m = agent_orchestrator.METRICS.get(1, {})
@@ -38,9 +36,13 @@ class AdvancedOrchestratorTest(unittest.TestCase):
             "- agent_id: build-1\n  command: 'echo build'\n"
             "- agent_id: test-2\n  command: 'echo test'\n  depends_on: ['build-1']\n"
         )
-        results = list(agent_orchestrator.run_tasks(1))
-        build = json.load(open(os.path.join("branches", "1", "agents", "agent-build-1.json")))
-        test = json.load(open(os.path.join("branches", "1", "agents", "agent-test-2.json")))
+        list(agent_orchestrator.run_tasks(1))
+        build = json.load(
+            open(os.path.join("branches", "1", "agents", "agent-build-1.json"))
+        )
+        test = json.load(
+            open(os.path.join("branches", "1", "agents", "agent-test-2.json"))
+        )
         self.assertEqual(build["status"], "success")
         self.assertEqual(test["status"], "success")
 
@@ -55,9 +57,13 @@ class AdvancedOrchestratorTest(unittest.TestCase):
             )
         self._write_tasks("- agent_id: flaky\n  command: 'python flaky.py'\n")
         list(agent_orchestrator.run_tasks(1))
-        res = json.load(open(os.path.join("branches", "1", "agents", "agent-flaky.json")))
+        res = json.load(
+            open(os.path.join("branches", "1", "agents", "agent-flaky.json"))
+        )
         self.assertEqual(res["status"], "success")
-        self.assertGreaterEqual(int(open(os.path.join("branches", "1", "cnt")).read()), 3)
+        self.assertGreaterEqual(
+            int(open(os.path.join("branches", "1", "cnt")).read()), 3
+        )
 
     def test_metrics_endpoint(self):
         self._write_tasks("- agent_id: ok\n  command: 'echo hi'\n")

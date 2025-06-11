@@ -4,9 +4,11 @@
 [![Build Status](https://img.shields.io/github/actions/workflow/status/RedactedCoder23/AOS/ci.yml?branch=main)](https://github.com/RedactedCoder23/AOS/actions)
 [![License](https://img.shields.io/github/license/RedactedCoder23/AOS)](LICENSE)
 
-Current Version: **v0.2.0**
+Current Version: **v0.3.0**
 
-Minimal experimental OS used for interpreter tests.
+Minimal experimental OS used for interpreter tests. The latest release adds a
+task orchestrator with plugin-based AI providers, coverage tracking and live UI
+previews.
 
 ## Quickstart
 
@@ -211,7 +213,8 @@ Then open `http://localhost:8000` in your browser. Drag nodes to rearrange the
 graph and double-click a branch to open a new tab pane. Right-click a tab to
 close it. The demo reads from `examples/graph_sample.json` and serves files from
 the new `ui/` directory. A `/metrics` endpoint exposes runtime metrics for the
-dashboard, while `/export` and `/import` allow workspace sync via JSON.
+dashboard, while `/export` and `/import` allow workspace sync via JSON. Each
+branch panel now shows coverage trends and task metrics.
 ## Graphical Desktop & AI Copilot
 
 Launch the desktop UI with live branch data and AI chat:
