@@ -1,8 +1,8 @@
 version: '3'
 services:
-  aos-kernel:
-    build: ..
-    volumes: [.:/aos]
-  aos-ui:
-    build: ./ui
-    ports: ['8080:80']
+  aos:
+    build: .
+    ports:
+      - "5000:5000"
+      - "8080:8080"
+    privileged: true  # for Firecracker or container-in-container

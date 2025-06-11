@@ -268,7 +268,7 @@ tests/c/test_plugin.c src/plugin_loader.c src/plugin_supervisor.c src/wasm_runti
 	-o build/tests/test_plugin
 	@./build/tests/test_plugin
 	gcc -Iinclude \
-        tests/c/test_policy.c src/policy.c src/audit.c src/logging.c src/error.c \
+	tests/c/test_policy.c src/policy.c src/audit.c src/logging.c src/error.c \
 	-o build/tests/test_policy
 	@./build/tests/test_policy
 	gcc -Isubsystems/dev -Iinclude \
@@ -360,6 +360,9 @@ ui-check: ui
 web-ui:
 	@echo "\u2192 Launching web UI at http://localhost:8000"
 	python3 scripts/branch_ui.py
+
+demo-test:
+	bash demo/demo_test.sh
 
 desktop-ui:
 	@echo "\u2192 Launching desktop UI at http://localhost:8000"

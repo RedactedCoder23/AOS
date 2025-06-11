@@ -477,8 +477,6 @@ Next agent must:
 
 Next agent must:
 - Expand audit coverage across subsystems.
-
-## [2025-06-11 00:04 UTC] additional test hooks [codex]
 - Added helper path fix in `tests/python/conftest.py` so packages import properly.
 - Documented missing IPC tool and skipped negative-path tests.
 ## [2025-06-10 09:00 UTC] merge hunk streamer [codex]
@@ -490,6 +488,14 @@ Next agent must:
 - LLM failures mark hunks with CONFLICT blocks.
 - Added tests for hunk splitting and fallback.
 - Documented algorithm in docs/merge_ai.md.
+
+Next agent must:
+- Expand audit coverage across subsystems.
+
+## [2025-06-11 00:20 UTC] docker demo packaging [codex]
+- Added container build using Ubuntu 24.04 and serve-based UI.
+- Created docker-compose demo and smoke test script.
+- Integrated demo-test into CI and README instructions.
 
 Next agent must:
 - Expand audit coverage across subsystems.
