@@ -755,7 +755,13 @@ Next agent must:
 - `pre-commit run --files Dockerfile demo/docker-compose.yml demo/demo_test.sh README.md Makefile .github/workflows/ci.yml AGENT.md PATCHLOG.md`
 - `make demo-test`
 
-<<<<<< codex/add-verify_all.sh-script-for-ci
+## [2025-06-11 02:59 UTC] project layout synced [codex]
+### Changes
+- Rewrote PROJECT_LAYOUT.md to match the repository tree.
+- Added descriptions for scripts/ai_providers and demo directories.
+### Tests
+- `pre-commit run --files PROJECT_LAYOUT.md AGENT.md PATCHLOG.md`
+
 ## [2025-06-11 03:00 UTC] verify-all script [codex]
 ### Changes
 - Added verify_all.sh script for build, tests and demo smoke tests.
@@ -764,11 +770,18 @@ Next agent must:
 ### Tests
 - `pre-commit run --files verify_all.sh README.md .github/workflows/ci.yml AGENT.md PATCHLOG.md`
 - `./verify_all.sh`
-=======
-## [2025-06-11 02:59 UTC] project layout synced [codex]
+
+## [2025-06-11 03:30 UTC] v0.3.0 – docs & cleanup [codex]
 ### Changes
-- Rewrote PROJECT_LAYOUT.md to match the repository tree.
-- Added descriptions for scripts/ai_providers and demo directories.
+- Removed stale Beta references and outdated guidelines.
+- Added v0.3.0 preview section and quickstart updates.
 ### Tests
-- `pre-commit run --files PROJECT_LAYOUT.md AGENT.md PATCHLOG.md`
->>>>>> main
+- `pre-commit run --files README.md CONTRIBUTING.md PATCHLOG.md`
+
+
+## [2025-06-11 03:23 UTC] verify script cleanup [codex]
+### Changes
+- Removed merge conflict markers from verify_all.sh and AGENT.md
+- Restored verify_all.sh to run build, tests and demo container
+### Tests
+- `pre-commit run --files verify_all.sh AGENT.md`
