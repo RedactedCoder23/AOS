@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import api from "../services/api";
+import React, { useEffect, useState } from 'react';
+import api from '../services/api';
 
 export default function BranchList() {
   const [branches, setBranches] = useState<any[]>([]);
@@ -12,7 +12,7 @@ export default function BranchList() {
   };
 
   useEffect(() => {
-    if (typeof fetch !== "undefined") {
+    if (typeof fetch !== 'undefined') {
       load();
     }
   }, []);

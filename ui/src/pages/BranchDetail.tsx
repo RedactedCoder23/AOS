@@ -1,7 +1,13 @@
+<<<<<< codex/add-bash-completion-for-aos-cli
+import React, { useEffect, useState } from 'react';
+import { LineChart, Line, XAxis, YAxis } from 'recharts';
+import { useParams } from 'react-router-dom';
+=======
 import React, { useEffect, useState } from "react";
 import { LineChart, Line, XAxis, YAxis } from "recharts";
 import { useParams } from "react-router-dom";
 import BranchDiff from "../components/BranchDiff";
+>>>>>> main
 
 export default function BranchDetail() {
   const { id } = useParams();
@@ -15,7 +21,7 @@ export default function BranchDetail() {
       try {
         const ev = JSON.parse(e.data);
         if (ev.branch_id && String(ev.branch_id) === String(id)) {
-          if ("cpu_pct" in ev) {
+          if ('cpu_pct' in ev) {
             setData((d) => [
               ...d.slice(-19),
               { ts: Date.now(), cpu: ev.cpu_pct, coverage: ev.coverage || 0 },
@@ -24,9 +30,9 @@ export default function BranchDetail() {
         }
       } catch {}
     };
-    es.addEventListener("stats", handler);
+    es.addEventListener('stats', handler);
     return () => {
-      es.removeEventListener("stats", handler);
+      es.removeEventListener('stats', handler);
       es.close();
     };
   }, [id]);
