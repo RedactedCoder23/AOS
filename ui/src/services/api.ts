@@ -52,12 +52,12 @@ export async function getBranches(limit = 10, cursor?: string) {
 }
 
 export async function installPlugin(repo: string) {
-  const res = await fetch("/plugins/install", {
-    method: "POST",
-    headers: { ...headers(), "Content-Type": "application/json" },
+  const res = await fetch('/plugins/install', {
+    method: 'POST',
+    headers: { ...headers(), 'Content-Type': 'application/json' },
     body: JSON.stringify({ repo }),
   });
-  if (!res.ok) throw new Error("install failed");
+  if (!res.ok) throw new Error('install failed');
   return res.json();
 }
 

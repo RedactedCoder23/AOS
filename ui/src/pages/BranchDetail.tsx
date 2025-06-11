@@ -1,18 +1,12 @@
-<<<<<< codex/add-bash-completion-for-aos-cli
 import React, { useEffect, useState } from 'react';
 import { LineChart, Line, XAxis, YAxis } from 'recharts';
 import { useParams } from 'react-router-dom';
-=======
-import React, { useEffect, useState } from "react";
-import { LineChart, Line, XAxis, YAxis } from "recharts";
-import { useParams } from "react-router-dom";
-import BranchDiff from "../components/BranchDiff";
->>>>>> main
+import BranchDiff from '../components/BranchDiff';
 
 export default function BranchDetail() {
   const { id } = useParams();
   const [data, setData] = useState<any[]>([]);
-  const [status, setStatus] = useState<string>("unknown");
+  const [status, setStatus] = useState<string>('unknown');
 
   useEffect(() => {
     if (!id) return;
@@ -51,8 +45,8 @@ export default function BranchDetail() {
 
   const rollback = async () => {
     if (!id) return;
-    if (!confirm("Rollback branch?")) return;
-    await fetch(`/branches/${id}/rollback`, { method: "POST" });
+    if (!confirm('Rollback branch?')) return;
+    await fetch(`/branches/${id}/rollback`, { method: 'POST' });
   };
 
   return (
