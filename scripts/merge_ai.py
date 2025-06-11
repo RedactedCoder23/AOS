@@ -11,29 +11,7 @@ import sys
 import time
 import logging
 from typing import List
-import importlib
-
-from scripts.ai_providers.base import AIProvider
-
-PROVIDERS: dict[str, AIProvider] = {}
-
-
-def _load_providers() -> None:
-    if PROVIDERS:
-        return
-    cfg = os.path.join(os.path.dirname(os.path.dirname(__file__)), "providers.json")
-    try:
-        with open(cfg, "r", encoding="utf-8") as fh:
-            data = json.load(fh)
-    except Exception:
-        data = {}
-    for name, info in data.items():
-        try:
-            mod = importlib.import_module(f"scripts.ai_providers.{info['module']}")
-            cls = getattr(mod, info["class"])
-            PROVIDERS[name] = cls(name)
-        except Exception:
-            continue
+from scripts.ai_providers.loader import get_provider
 
 
 MAX_HUNK_SIZE = 4096
@@ -76,6 +54,8 @@ def call_llm(prompt: str, provider_name: str | None = None) -> str:
     """Send *prompt* to an AI provider and return the response."""
     if os.environ.get("AOS_AI_OFFLINE"):
         return ""
+<<<<<< codex/implement-dynamic-ai-provider-loader
+=======
     _load_providers()
     if provider_name is None:
         meta = os.environ.get("AOS_TASK_META")
@@ -84,11 +64,10 @@ def call_llm(prompt: str, provider_name: str | None = None) -> str:
                 provider_name = json.loads(meta).get("provider")
             except Exception:
                 provider_name = None
+>>>>>> main
     provider_name = provider_name or os.environ.get("AOS_AI_PROVIDER", "openai")
-    prov = PROVIDERS.get(provider_name)
-    if prov is None:
-        raise RuntimeError(f"provider {provider_name} not available")
-    return prov.generate(prompt)
+    provider = get_provider(provider_name)
+    return provider.generate(prompt)
 
 
 def valid_patch(patch: str) -> bool:
