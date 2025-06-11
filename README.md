@@ -153,14 +153,6 @@ once to configure your provider and store the API key securely in
 `~/.aos/ai.conf`. Environment variables still override the stored
 value when present.
 
-## Branch Manager Demo
-
-```bash
-make branch
-./build/branch_demo
-```
-Creates a few branches, stops one, then deletes it, showing persistence via `~/.aos/branches.json`.
-
 ## Checkpoint HAL Demo
 
 ```bash

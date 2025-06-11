@@ -5,7 +5,7 @@ VERSION := 0.3.0
 
 CC_TARGET ?= x86_64
 
-SUBSYSTEM_DIRS := subsystems/memory subsystems/fs subsystems/ai subsystems/branch subsystems/net subsystems/dev subsystems/security
+SUBSYSTEM_DIRS := subsystems/memory subsystems/fs subsystems/ai subsystems/net subsystems/dev subsystems/security
 HOST_SRCS := \
 src/main.c src/repl.c src/interpreter.c src/branch_manager.c src/ui_graph.c \
 src/branch_vm.c src/plugin_loader.c src/plugin_supervisor.c src/wasm_runtime.c \
@@ -15,7 +15,7 @@ src/memory.c src/app_runtime.c src/config.c src/logging.c src/audit.c src/error.
 src/branch_syscalls.c \
 src/generated/command_map.c src/generated/commands.c \
 subsystems/memory/memory.c subsystems/fs/fs.c subsystems/ai/ai.c \
-subsystems/branch/branch.c subsystems/net/net.c \
+subsystems/net/net.c \
 subsystems/dev/dev.c subsystems/security/security.c
 HOST_OBJS := $(patsubst %.c, build/obj/%.o, $(HOST_SRCS))
 CFLAGS := -Wall -Werror -Wno-format-truncation
@@ -130,15 +130,11 @@ ai:
 	@mkdir -p build
 	gcc -Isubsystems/ai -Iinclude -Isrc/generated subsystems/ai/ai.c src/ai_syscall.c examples/ai_demo.c -lcurl -o build/ai_demo
 
-branch:
-	@echo "→ Building branch demo"
-	@mkdir -p build
-	gcc -Isubsystems/branch subsystems/branch/branch.c examples/branch_demo.c -o build/branch_demo
 
 branch-vm:
 	@echo "→ Building branch VM demo"
 	@mkdir -p build
-	gcc -Iinclude -Isrc/generated src/branch_vm.c subsystems/branch/branch.c examples/branch_vm_demo.c -o build/branch_vm_demo
+	gcc -Iinclude -Isrc/generated src/branch_vm.c examples/branch_vm_demo.c -o build/branch_vm_demo
 
 plugins:
 	        @echo "→ Building plugins demo"
@@ -147,10 +143,6 @@ plugins:
 	        gcc -Iinclude -Isrc/generated src/plugin_loader.c src/plugin_supervisor.c src/wasm_runtime.c \
 	            src/logging.c src/error.c examples/plugin_demo.c -ldl -o build/plugin_demo
 
-aos-cli:
-	@echo "→ Building aos CLI"
-	@mkdir -p build
-	gcc -Isubsystems/branch subsystems/branch/branch.c examples/aos_cli.c -o build/aos
 
 branch-net:
 	@echo "→ Building branch net demo"
@@ -218,9 +210,6 @@ test-memory: memory
 test-fs: fs
 	./examples/fs_smoke.sh
 
-test-branch: branch
-	./examples/branch_smoke.sh
-	@echo "branch IPC test disabled"
 	
 test-plugin: plugins
 	./examples/plugin_smoke.sh
@@ -252,11 +241,6 @@ test-unit:
 	subsystems/memory/memory.c src/logging.c src/error.c \
 	-o build/tests/test_memory
 	@./build/tests/test_memory
-	gcc -Isubsystems/branch -Iinclude \
-	tests/c/test_branch.c \
-	subsystems/branch/branch.c src/logging.c src/error.c \
-	-o build/tests/test_branch
-	@./build/tests/test_branch
 	gcc -Isubsystems/net -Iinclude \
 	tests/c/test_net.c \
 	subsystems/net/net.c src/logging.c src/error.c \
@@ -289,10 +273,10 @@ src/memory.c src/logging.c src/error.c \
 	-o build/tests/test_ai
 	@./build/tests/test_ai
 	gcc -Iinclude -pthread \
-		tests/ai_test.c src/syscall.c src/ipc_host.c \
-		src/branch_manager.c subsystems/branch/branch.c \
-		src/logging.c src/error.c -DIPC_HOST_LIBRARY \
-		-o build/tests/ai_test
+                tests/ai_test.c src/syscall.c src/ipc_host.c \
+                src/branch_manager.c \
+                src/logging.c src/error.c -DIPC_HOST_LIBRARY \
+                -o build/tests/ai_test
 			@./build/tests/ai_test
 	gcc -Iinclude -Isubsystems/security \
 	tests/c/test_wasm_runtime.c src/wasm_runtime.c subsystems/security/security.c src/logging.c src/error.c \
