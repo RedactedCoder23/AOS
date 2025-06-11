@@ -501,3 +501,10 @@ Next agent must:
 
 Next agent must:
 - Expand audit coverage across subsystems.
+
+## [2025-06-11 02:59 UTC] layout docs synced [codex]
+- Updated PROJECT_LAYOUT.md to mirror current directory tree.
+- Documented new folders including scripts/ai_providers and demo/.
+
+Next agent must:
+- Confirm documentation remains up to date after structural changes.

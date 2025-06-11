@@ -754,3 +754,10 @@ Next agent must:
 ### Tests
 - `pre-commit run --files Dockerfile demo/docker-compose.yml demo/demo_test.sh README.md Makefile .github/workflows/ci.yml AGENT.md PATCHLOG.md`
 - `make demo-test`
+
+## [2025-06-11 02:59 UTC] project layout synced [codex]
+### Changes
+- Rewrote PROJECT_LAYOUT.md to match the repository tree.
+- Added descriptions for scripts/ai_providers and demo directories.
+### Tests
+- `pre-commit run --files PROJECT_LAYOUT.md AGENT.md PATCHLOG.md`
