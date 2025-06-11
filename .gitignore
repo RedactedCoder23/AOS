@@ -18,6 +18,12 @@ bare_metal_os/*.bin
 scripts/__pycache__/
 ui/node_modules/
 ui/dist/
+ui/.yarn/
+ui/.pnp.cjs
+ui/.pnp.loader.mjs
+ui/package-lock.json
+ui/yarn.lock
+ui/test-results/
 # Coverage and test artifacts
 coverage.lcov
 coverage/

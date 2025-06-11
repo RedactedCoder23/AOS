@@ -832,3 +832,8 @@ Next agent must:
 - Removed flake8 ignore in ci-fast and added setup.cfg.
 - Pinned mypy and pytest-cov in dev requirements and documented bump note.
 
+### [2025-06-12 02:00 UTC] web dashboard scaffold [agent-mem]
+- Introduced React SPA with Vite under ui/src.
+- Added JWT login endpoint and paged branches API.
+- Orchestrator now emits live stats for SSE charts.
+
