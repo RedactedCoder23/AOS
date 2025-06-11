@@ -7,3 +7,14 @@ executes the demo container. Coverage is recorded and stored by
 
 `psutil` is an optional dependency; if absent CPU and memory metrics fall back to
 zero so tests still run on minimal runners.
+
+### Branch CLI
+
+```bash
+make branch BRANCH=foo
+```
+
+### Smoke Test
+
+The workflow includes a Linux-only `smoke-test` job which invokes
+`verify_all.sh`. Failures in this job do not fail the overall workflow.

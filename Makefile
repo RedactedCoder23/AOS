@@ -1,4 +1,4 @@
-.PHONY: all clean test install regenerate host bootloader kernel bare run ui ui-check web-ui branch-vm plugins iso efi branch-net desktop-ui ai-service aicell modeld ipc-host branch-dashboard policy net subsystems checklist verify-all
+.PHONY: all clean test install regenerate host bootloader kernel bare run ui ui-check web-ui branch-vm plugins iso efi branch-net desktop-ui ai-service aicell modeld ipc-host branch-dashboard policy net subsystems checklist branch verify-all
 
 MAKEFLAGS += -j$(shell nproc)
 VERSION := 0.3.0
@@ -352,12 +352,14 @@ ui-check: ui
 	@./build/ui_graph --help
 
 web-ui:
-	@echo "\u2192 Launching web UI at http://localhost:8000"
-	python3 scripts/branch_ui.py
+	        @echo "\u2192 Launching web UI at http://localhost:8000"
+	        python3 scripts/branch_ui.py
 
+branch:
+	@echo "Usage: make branch BRANCH=<branch-id> [ARGS]"
+	python3 scripts/branch_cli.py $(ARGS)
 demo-test:
-	bash demo/demo_test.sh
-
+	        bash demo/demo_test.sh
 desktop-ui:
 	@echo "\u2192 Launching desktop UI at http://localhost:8000"
 	python3 scripts/desktop_backend.py
