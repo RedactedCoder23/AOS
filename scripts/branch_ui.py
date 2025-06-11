@@ -8,6 +8,10 @@ import sys
 from flask import Flask, Response, jsonify, request, send_from_directory
 from . import agent_orchestrator
 from .aos_audit import log_entry
+try:
+    import yaml  # type: ignore
+except Exception:  # pragma: no cover - optional
+    yaml = None
 
 PORT = 8000
 BASE = os.path.dirname(os.path.abspath(__file__))
@@ -89,6 +93,7 @@ class BranchService:
                 "/etc/aos/firecracker.json",
                 "--root-drive",
                 vm_path,
+                "--cow",
             ]
         )
         self.logger.info("Launched branch %d, PID %d", branch_id, proc.pid)
@@ -101,7 +106,30 @@ class BranchService:
         }
         log_entry(str(uid), "branch_create", f"branch:{branch_id}", "success")
         flask_sse.publish({"branch_id": branch_id}, event="branch-created")
+        self._capture_thumbnail(branch_id)
         return branch_id
+
+    def _capture_thumbnail(self, branch_id: int) -> None:
+        path = os.path.join("branches", str(branch_id))
+        os.makedirs(path, exist_ok=True)
+        out = os.path.join(path, "thumbnail.png")
+        try:
+            subprocess.run([
+                "virsh",
+                "screenshot",
+                f"branch-{branch_id}",
+                out,
+            ], check=True)
+        except Exception:
+            try:
+                banner = subprocess.check_output(
+                    ["bash", "-c", "echo AOS branch"], text=True
+                )
+                with open(out, "wb") as fh:
+                    fh.write(banner.encode())
+            except Exception:
+                with open(out, "wb") as fh:
+                    fh.write(b"")
 
     def list(self):
         return [
@@ -218,11 +246,42 @@ def list_branches():
     return jsonify(service.list())
 
 
+@app.route("/branches/<int:branch_id>/coverage-history")
+def coverage_history(branch_id):
+    path = os.path.join("branches", str(branch_id), "history.json")
+    if not os.path.exists(path):
+        return jsonify([])
+    with open(path, "r", encoding="utf-8") as fh:
+        try:
+            data = json.load(fh)
+        except Exception:
+            data = []
+    return jsonify(data)
+
+
 @app.route("/branches/<int:bid>/merge", methods=["POST"])
 def merge_branch(bid):
     info = service.branches.get(bid)
     if info and str(request.remote_user) != str(info.get("owner_uid")):
         return jsonify({"error": "permission denied"}), 403
+    cov_file = os.path.join("branches", str(bid), "coverage.json")
+    cov = 100.0
+    if os.path.exists(cov_file):
+        try:
+            with open(cov_file, "r", encoding="utf-8") as fh:
+                cov = float(json.load(fh).get("totals", {}).get("percent_covered", 0))
+        except Exception:
+            cov = 0.0
+    threshold = 0
+    if os.path.exists("rules.yaml") and yaml is not None:
+        with open("rules.yaml", "r", encoding="utf-8") as fh:
+            try:
+                rules = yaml.safe_load(fh)
+                threshold = int(rules.get("coverage_threshold", 0))
+            except Exception:
+                threshold = 0
+    if threshold and cov < threshold:
+        return jsonify({"error": f"coverage below {threshold}%", "code": 422}), 422
     uid = int(request.remote_user or os.getuid())
     res = service.merge(bid, uid)
     if "error" in res:
@@ -240,6 +299,14 @@ def snapshot_branch(bid):
     if "error" in res:
         return jsonify(res), 404
     return jsonify(res)
+
+
+@app.route("/branches/<int:bid>/thumbnail.png")
+def branch_thumbnail(bid):
+    path = os.path.join("branches", str(bid), "thumbnail.png")
+    if not os.path.exists(path):
+        return jsonify({"error": "not found"}), 404
+    return send_from_directory(os.path.dirname(path), "thumbnail.png")
 
 
 @app.route("/branches/<int:bid>", methods=["DELETE"])

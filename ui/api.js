@@ -27,3 +27,9 @@ export async function deleteBranch(id) {
   if (!resp.ok) throw new Error('failed to delete branch');
   return await resp.json();
 }
+
+export async function getCoverageHistory(id) {
+  const resp = await fetch(`/branches/${id}/coverage-history`);
+  if (!resp.ok) throw new Error('failed to load history');
+  return await resp.json();
+}

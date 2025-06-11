@@ -1,5 +1,5 @@
-/* global d3, React, ReactDOM */
-import { listBranches, createBranch, mergeBranch, snapshotBranch, deleteBranch } from './api.js';
+/* global d3, React, ReactDOM, Recharts */
+import { listBranches, createBranch, mergeBranch, snapshotBranch, deleteBranch, getCoverageHistory } from './api.js';
 
 // Simple toast queue managed via React
 function ToastContainer({ toasts }) {
@@ -27,32 +27,36 @@ class ErrorBoundary extends React.Component {
 }
 
 
+let svg;
+let linkGroup;
+let nodeGroup;
+let labelGroup;
+let sim;
+
 function updateGraph(nodes, links) {
   const width = document.getElementById('graph').clientWidth;
   const height = document.getElementById('graph').clientHeight;
-  const svg = d3.select('#graph').html('').append('svg')
-    .attr('width', width)
-    .attr('height', height);
+  if (!svg) {
+    svg = d3.select('#graph').append('svg');
+    linkGroup = svg.append('g').attr('stroke', '#999').attr('stroke-opacity', 0.6);
+    nodeGroup = svg.append('g').attr('stroke', '#fff').attr('stroke-width', 1.5);
+    labelGroup = svg.append('g');
+    sim = d3.forceSimulation().force('link', d3.forceLink().id(d => d.id).distance(80))
+      .force('charge', d3.forceManyBody().strength(-200));
+  }
+  svg.attr('width', width).attr('height', height);
+  sim.force('center', d3.forceCenter(width / 2, height / 2));
 
-  const sim = d3.forceSimulation(nodes)
-    .force('link', d3.forceLink(links).id(d => d.id).distance(80))
-    .force('charge', d3.forceManyBody().strength(-200))
-    .force('center', d3.forceCenter(width / 2, height / 2));
+  sim.nodes(nodes);
+  sim.force('link').links(links);
 
-  const link = svg.append('g')
-    .attr('stroke', '#999')
-    .attr('stroke-opacity', 0.6)
-    .selectAll('line')
-    .data(links)
-    .enter().append('line')
-    .attr('stroke-width', 2);
+  const linkSel = linkGroup.selectAll('line').data(links, d => `${d.source.id}-${d.target.id}`);
+  linkSel.exit().remove();
+  linkSel.enter().append('line').attr('stroke-width', 2);
 
-  const node = svg.append('g')
-    .attr('stroke', '#fff')
-    .attr('stroke-width', 1.5)
-    .selectAll('circle')
-    .data(nodes)
-    .enter().append('circle')
+  const nodeSel = nodeGroup.selectAll('circle').data(nodes, d => d.id);
+  nodeSel.exit().remove();
+  nodeSel.enter().append('circle')
     .attr('r', 20)
     .attr('fill', '#69b')
     .call(d3.drag()
@@ -61,26 +65,29 @@ function updateGraph(nodes, links) {
       .on('end', dragended))
     .on('click', (event, d) => showMenu(event, d));
 
-  const labels = svg.append('g')
-    .selectAll('text')
-    .data(nodes)
-    .enter().append('text')
-    .text(d => d.name)
+  const labelSel = labelGroup.selectAll('text').data(nodes, d => d.id);
+  labelSel.exit().remove();
+  labelSel.enter().append('text')
     .attr('text-anchor', 'middle')
     .attr('dy', 4)
     .style('pointer-events', 'none');
 
+  labelGroup.selectAll('text').text(d => d.name);
+
   sim.on('tick', () => {
-    link.attr('x1', d => d.source.x)
-        .attr('y1', d => d.source.y)
-        .attr('x2', d => d.target.x)
-        .attr('y2', d => d.target.y);
+    linkGroup.selectAll('line')
+      .attr('x1', d => d.source.x)
+      .attr('y1', d => d.source.y)
+      .attr('x2', d => d.target.x)
+      .attr('y2', d => d.target.y);
 
-    node.attr('cx', d => d.x)
-        .attr('cy', d => d.y);
+    nodeGroup.selectAll('circle')
+      .attr('cx', d => d.x)
+      .attr('cy', d => d.y);
 
-    labels.attr('x', d => d.x)
-          .attr('y', d => d.y);
+    labelGroup.selectAll('text')
+      .attr('x', d => d.x)
+      .attr('y', d => d.y);
   });
 
   function dragstarted(event) {
@@ -146,12 +153,27 @@ function AgentPanel({ branchId }) {
   );
 }
 
+function CoverageChart({ branchId }) {
+  const [data, setData] = React.useState([]);
+  React.useEffect(() => {
+    getCoverageHistory(branchId).then(h => {
+      setData(h.map((v, i) => ({ i, v })));
+    }).catch(() => {});
+  }, [branchId]);
+  if (!data.length) return null;
+  return React.createElement(Recharts.LineChart, { width: 100, height: 40, data },
+    React.createElement(Recharts.Line, { type: 'monotone', dataKey: 'v', stroke: '#8884d8', dot: false })
+  );
+}
+
 function BranchNode({ data, onMerge, onSnapshot, onDelete }) {
   return React.createElement('div', { className: 'branch-node' },
+    React.createElement('img', { src: `/branches/${data.id}/thumbnail.png`, width: 80, height: 60 }),
     `${data.name} `,
     React.createElement('button', { onClick: onSnapshot }, 'Checkpoint'),
     React.createElement('button', { onClick: onMerge }, 'Merge'),
     React.createElement('button', { onClick: onDelete }, 'Delete'),
+    React.createElement(CoverageChart, { branchId: data.id }),
     React.createElement(AgentPanel, { branchId: data.id }));
 }
 
