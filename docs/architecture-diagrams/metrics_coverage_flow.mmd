@@ -1,0 +1,5 @@
+graph TD
+    A[agent_orchestrator] -->|update| B(branch_stats)
+    B -->|GET /metrics| C(metrics_api)
+    D[coverage_recorder] --> E[~/.aos/branches/<id>/coverage-YYYYMMDD.json]
+    E -->|GET /coverage-history| F(coverage_api)

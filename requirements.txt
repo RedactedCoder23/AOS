@@ -6,4 +6,6 @@ cryptography
 keyring
 flask
 PyYAML
+psutil
+fastapi
 

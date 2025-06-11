@@ -341,7 +341,7 @@ efi:
 iso: efi
 	@echo "→ Creating aos.iso"
 	touch aos.iso
-subsystems: memory fs ai branch net
+subsystems: memory fs ai net
 
 
 ui: host
