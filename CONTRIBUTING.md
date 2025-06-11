@@ -3,6 +3,7 @@
 Thank you for your interest in improving AOS. The project uses a simple Makefile based build.
 
 ## Getting Started
+
 1. Run `./scripts/bootstrap.sh` to install all required packages.
 2. Build the host tools with `make host`.
 3. Run smoke tests with `make test-memory`, `make test-fs`, `make test-branch`, `make test-plugin`, `make test-policy`, and `make test-net`.
@@ -14,8 +15,8 @@ Thank you for your interest in improving AOS. The project uses a simple Makefile
 All commits must update `AGENT.md` and `PATCHLOG.md` with a timestamped summary and a "Next agent must" baton-pass. Follow the existing format when adding entries.
 
 ### Style
+
 - Use tabs for Makefile recipes and spaces elsewhere.
 - Document complex logic with inline comments.
 - Run `make test-unit` and `make test-integration` before sending a pull request.
- - Format C sources with `clang-format` and Python with `black`.
-
+- Format C sources with `clang-format` and Python with `black`.

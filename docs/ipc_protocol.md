@@ -65,6 +65,7 @@ single integer and optional string. Future revisions may extend the
 structs but must keep the total size within one page.
 
 ### SYS_CREATE_BRANCH
+
 - **Request:** `{}`
 - **Response:**
   ```json
@@ -72,6 +73,7 @@ structs but must keep the total size within one page.
   ```
 
 ### SYS_MERGE_BRANCH
+
 - **Request:**
   ```json
   { "branch_id": 123 }
@@ -82,6 +84,7 @@ structs but must keep the total size within one page.
   ```
 
 ### SYS_LIST_BRANCHES
+
 - **Request:** `{}`
 - **Kernel Response (binary):**
   ```c
@@ -104,12 +107,19 @@ structs but must keep the total size within one page.
   ```json
   {
     "branches": [
-      { "branch_id": 1, "parent_id": 0, "status": 1, "last_snapshot_id": 0, "owner_uid": 1000 }
+      {
+        "branch_id": 1,
+        "parent_id": 0,
+        "status": 1,
+        "last_snapshot_id": 0,
+        "owner_uid": 1000
+      }
     ]
   }
   ```
 
 ### SYS_SNAPSHOT_BRANCH
+
 - **Request:**
   ```json
   { "branch_id": 2 }
@@ -120,6 +130,7 @@ structs but must keep the total size within one page.
   ```
 
 ### SYS_DELETE_BRANCH
+
 - **Request:**
   ```json
   { "branch_id": 2 }
@@ -145,6 +156,7 @@ kernel-ipc merge 123
 ### Error Cases
 
 Errors follow the JSON form:
+
 ```json
 { "error": "branch not found", "code": 404 }
 { "error": "merge conflict", "code": 409 }

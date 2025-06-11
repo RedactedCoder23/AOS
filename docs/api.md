@@ -1,6 +1,7 @@
 # API Endpoints
 
 ## GET /branches/{id}/metrics
+
 Returns live orchestrator statistics.
 
 ```
@@ -15,6 +16,7 @@ Returns live orchestrator statistics.
 ```
 
 ## GET /branches/{id}/coverage-history
+
 Returns coverage history and current threshold.
 
 ```

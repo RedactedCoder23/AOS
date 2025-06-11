@@ -5,10 +5,10 @@ It gives a short overview of how AOS is structured and where to find additional 
 
 ## Overview
 
-AOS is composed of a minimal kernel accompanied by a set of host tools.  The kernel boots via GRUB and
-initialises core subsystems such as memory management, the filesystem and the branch manager.  The same
+AOS is composed of a minimal kernel accompanied by a set of host tools. The kernel boots via GRUB and
+initialises core subsystems such as memory management, the filesystem and the branch manager. The same
 subsystems are also compiled into a host REPL which provides a simple command line interface for
-experimentation.  Each subsystem resides under `subsystems/` and exposes a small C API defined in
+experimentation. Each subsystem resides under `subsystems/` and exposes a small C API defined in
 `include/`.
 
 A high level component diagram is available in `docs/system_architecture.md` and command dispatch is
@@ -31,7 +31,7 @@ illustrated in `docs/command_flow.md`.
 
 ## Development History
 
-Past design decisions and open issues are logged in `AGENT.md` and `PATCHLOG.md`.  Earlier specifications
+Past design decisions and open issues are logged in `AGENT.md` and `PATCHLOG.md`. Earlier specifications
 were tracked in `SPEC.md` which has now been superseded by this summary.
 
 ## Building

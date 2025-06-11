@@ -9,8 +9,9 @@ python3 scripts/generate_aos_mappings.py [--validate] [--outdir DIR]
 ```
 
 Options:
-- `--validate`  Only validate the mappings and exit with status 0 on success.
-- `--outdir DIR`  Directory where `command_map.c`, `commands.c` and
+
+- `--validate` Only validate the mappings and exit with status 0 on success.
+- `--outdir DIR` Directory where `command_map.c`, `commands.c` and
   `category_defs.h` are written. Defaults to `src/generated/`.
 
 Errors during parsing or file generation print a message and exit with a non-zero

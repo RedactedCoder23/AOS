@@ -20,7 +20,7 @@ class AIProvider:
 
 ```json
 {
-  "my-provider": {"module": "my_module", "class": "MyProvider"}
+  "my-provider": { "module": "my_module", "class": "MyProvider" }
 }
 ```
 
@@ -31,8 +31,8 @@ class AIProvider:
 
 ```json
 {
-  "openai": {"module": "openai_provider", "class": "OpenAIProvider"},
-  "local-llama": {"module": "llama_provider", "class": "LlamaProvider"}
+  "openai": { "module": "openai_provider", "class": "OpenAIProvider" },
+  "local-llama": { "module": "llama_provider", "class": "LlamaProvider" }
 }
 ```
 
