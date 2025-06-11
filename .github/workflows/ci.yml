@@ -14,7 +14,7 @@ jobs:
         with:
           node-version: '20'
       - name: Install deps
-        run: pip install -r requirements.txt pre-commit
+        run: pip install -r requirements.txt -r requirements-dev.txt pre-commit
       - name: Run fast CI
         run: ./scripts/ci-fast.sh
 
@@ -29,7 +29,7 @@ jobs:
         with:
           node-version: '20'
       - name: Install deps
-        run: pip install -r requirements.txt pre-commit
+        run: pip install -r requirements.txt -r requirements-dev.txt pre-commit
       - name: Run full tests
         run: ./scripts/ci-full.sh
       - name: Set up buildx

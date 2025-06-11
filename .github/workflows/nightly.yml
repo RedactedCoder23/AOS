@@ -16,7 +16,7 @@ jobs:
         with:
           node-version: '20'
       - name: Install deps
-        run: pip install -r requirements.txt pre-commit
+        run: pip install -r requirements.txt -r requirements-dev.txt pre-commit
       - name: Run full CI
         run: ./scripts/ci-full.sh
 

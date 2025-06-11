@@ -1,6 +1,7 @@
 # Continuous Integration
 
-`ci-fast.sh` runs pre-commit hooks and `pytest -m "not slow"`.
+`ci-fast.sh` invokes `make fast-test` which runs `black --check`, `flake8` and
+`pytest -m "not slow"`.
 `ci-full.sh` builds the entire project, runs all tests and executes the demo
 container. Coverage is recorded and stored by `coverage_recorder.py`.
 
@@ -23,7 +24,8 @@ The workflow includes a Linux-only `smoke-test` job which invokes
 
 ### Updating dependencies
 
-Run the following to refresh your environment before executing the CI scripts:
+Edit `requirements.txt` and `requirements-dev.txt` to bump the minor versions
+using the `~=` constraint. Then refresh your environment with:
 
 ```bash
 pip install -r requirements.txt -r requirements-dev.txt

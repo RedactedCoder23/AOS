@@ -231,7 +231,7 @@ test-lifecycle:
 test-negative:
 	pytest -q tests/python/test_negative_paths.py
 
-fast-test:
+fast-test: lint
 	pytest -q -m "not slow" tests/python --ignore tests/python/test_ui_playwright.py
 
 lint:
