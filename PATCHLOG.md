@@ -797,7 +797,6 @@ Next agent must:
 - `make test-integration`
 - `pytest -q tests/python/test_agent_runner_cli.py`
 
-<<<<<< codex/stabilize-dev-environment-and-ci-pipeline
 ## [2025-06-11 06:08 UTC] dev container and ci split [codex]
 ### Changes
 - Added .devcontainer.json and Dockerfile.dev.
@@ -809,7 +808,6 @@ Next agent must:
 - `make fast-test`
 - `./scripts/ci-fast.sh`
 - *(docker build skipped: no docker available)*
-=======
 ## History (done)
 ### [2025-06-12 00:00 UTC] branch target fix [codex]
 - Missing make target resolved; baton closed.
@@ -829,8 +827,6 @@ Next agent must:
 
 ### [2025-06-11 06:06 UTC] meta-log sweep [agent-mem]
 - Moved resolved baton passes to History (done). Updated docs/REMAINING.md.
->>>>>> main
-
 ### [2025-06-12 01:00 UTC] ci hardening & lint restore [agent-mem]
 - Replaced docker build steps with buildx action and caching.
 - Removed flake8 ignore in ci-fast and added setup.cfg.

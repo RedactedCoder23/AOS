@@ -20,3 +20,11 @@ make branch BRANCH=foo
 
 The workflow includes a Linux-only `smoke-test` job which invokes
 `scripts/ci-full.sh`. Failures in this job do not fail the overall workflow.
+
+### Updating dependencies
+
+Run the following to refresh your environment before executing the CI scripts:
+
+```bash
+pip install -r requirements.txt -r requirements-dev.txt
+```

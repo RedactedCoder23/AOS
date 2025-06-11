@@ -534,10 +534,7 @@ Next agent must:
 - Updated Makefile, docs and workflows for two-stage CI.
 - Pinned dependencies with ~= constraints.
 
-Next agent must:
-- Investigate missing 'branch' make target causing verify_all.sh failure
 
-=======
 ## History (done)
 ### [2025-06-12 00:00 UTC] branch target fix [codex]
 - Resolved missing Makefile target; smoke tests restored.
@@ -553,9 +550,30 @@ Next agent must:
 
 ## [2025-06-11 06:06 UTC] meta-log sweep [agent-mem]
 - Archived closed batons and updated remaining tasks.
->>>>>> main
 
 ## [2025-06-12 01:00 UTC] ci hardening & lint restore [agent-mem]
 - Added buildx workflow step with caching for demo container.
 - Restored flake8 failure on CI and pinned dev dependencies.
 - Documented dependency bumps note in README.
+
+## Open Tasks
+- Expand developer documentation and keep diagrams updated.
+- Review all subsystems for missing comments; use `AosError` consistently.
+- Expand unit and integration tests across subsystems.
+- Flesh out device and security APIs and extend profiler with multi-sample logging.
+- Improve ext2 backend and VFS tests.
+- Review branch sync for race conditions; add authentication and graceful shutdown.
+- Implement capability enforcement in WASM runtime and secure federation onboarding.
+- Integrate checkpoint delta handling with branch state.
+- Resolve cppcheck and clang-tidy warnings; restore `make host` with `compile_commands.json`.
+- Ensure pre-commit hooks install cleanly and monitor CI stability.
+- Implement real syscall handlers and micro-VM integration; extend paging and thread manager.
+- Harden filesystem error handling and integrate persistent storage backend.
+- Validate branch_manager JSON and plugin sandbox paths.
+- Complete AI backend integration and review privilege drop logic.
+- Persist policy files and expand syscall coverage.
+- Add REPL history, sanitisation and clean shutdown.
+- Audit memory subsystem for fragmentation and add unit tests.
+- Integrate web UI with live branch data and secure HTTP service.
+- Expand audit log coverage across subsystems.
+- Expand smoke tests with CI coverage and rollback support; keep ROADMAP updated and monitor community compliance.
