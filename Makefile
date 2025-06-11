@@ -1,4 +1,4 @@
-.PHONY: all clean test install regenerate host bootloader kernel bare run ui ui-check web-ui branch-vm plugins iso efi branch-net desktop-ui ai-service aicell modeld ipc-host branch-dashboard policy net subsystems checklist
+.PHONY: all clean test install regenerate host bootloader kernel bare run ui ui-check web-ui branch-vm plugins iso efi branch-net desktop-ui ai-service aicell modeld ipc-host branch-dashboard policy net subsystems checklist verify-all
 
 MAKEFLAGS += -j$(shell nproc)
 VERSION := 0.3.0
@@ -208,6 +208,7 @@ net-http:
 	@mkdir -p build
 	gcc -Isubsystems/net subsystems/net/net.c examples/http_server.c -o build/http_server
 
+# 4. Verification and tests
 # Aggregate test target used by CI
 test: test-unit test-integration
 	@echo "→ Running full test suite"
@@ -241,9 +242,9 @@ test-negative:
 
 test-all: test-unit test-integration test-merge-ai test-lifecycle test-negative
 
-
-
-
+# Run full verification script
+verify-all:
+	./verify_all.sh
 test-unit:
 	@echo "→ Running unit tests"
 	@mkdir -p build/tests build/plugins
