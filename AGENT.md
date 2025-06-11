@@ -501,3 +501,10 @@ Next agent must:
 
 Next agent must:
 - Expand audit coverage across subsystems.
+
+## [2025-06-11 03:00 UTC] verify-all script [codex]
+- Added verify_all.sh to run build, tests and demo smoke tests.
+- Hooked script into CI workflow and documented usage.
+
+Next agent must:
+- Expand audit coverage across subsystems.

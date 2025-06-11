@@ -22,6 +22,8 @@ CFLAGS := -Wall -Werror -Wno-format-truncation
 
 all: host
 
+build: all
+
 # 1. Regenerate C sources from text masters
 regenerate:
 	python3 scripts/generate_aos_mappings.py --outdir src/generated
