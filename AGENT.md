@@ -520,14 +520,25 @@ Next agent must:
 - Removed leftover merge markers from AGENT.md and verify_all.sh
 - Restored verify_all.sh logic to build, test and run the demo container
 
-Next agent must:
-- Investigate missing 'branch' make target causing verify_all.sh failure
-
 ## [2025-06-11 03:45 UTC] cli provider override [codex]
 - Added `--provider` flag to agent_runner and passed meta via `AOS_TASK_META`.
 - merge_ai now reads the provider override from task metadata.
 - Documented new CLI option in README.
 
-Next agent must:
-- Investigate missing 'branch' make target causing verify_all.sh failure
 
+
+## History (done)
+### [2025-06-12 00:00 UTC] branch target fix [codex]
+- Resolved missing Makefile target; smoke tests restored.
+
+## [2025-06-11 06:05 UTC] credential fallback hardening [agent-mem]
+- _load warns via aos_audit and raises CredentialsUnavailableError.
+
+## [2025-06-11 06:06 UTC] provider contract guard [agent-mem]
+- Added introspection test ensuring generate() is overridden.
+
+## [2025-06-11 06:06 UTC] orchestrator error mapping [agent-mem]
+- metrics endpoint now converts RuntimeError to 502 JSON.
+
+## [2025-06-11 06:06 UTC] meta-log sweep [agent-mem]
+- Archived closed batons and updated remaining tasks.
