@@ -1,0 +1,20 @@
+{
+  "title": "AOS Queue Metrics",
+  "panels": [
+    {
+      "type": "graph",
+      "title": "Queue Length",
+      "targets": [{"expr": "queue_len"}]
+    },
+    {
+      "type": "graph",
+      "title": "Job Latency",
+      "targets": [{"expr": "job_latency"}]
+    },
+    {
+      "type": "graph",
+      "title": "Worker Count",
+      "targets": [{"expr": "worker_count"}]
+    }
+  ]
+}
