@@ -19,7 +19,6 @@ PROVIDERS: dict[str, AIProvider] = {}
 
 
 def _load_providers() -> None:
-    global PROVIDERS
     if PROVIDERS:
         return
     cfg = os.path.join(os.path.dirname(os.path.dirname(__file__)), "providers.json")
