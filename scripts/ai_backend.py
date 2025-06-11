@@ -11,7 +11,6 @@ PROVIDERS: dict[str, AIProvider] = {}
 
 def _load_providers() -> None:
     """Load provider plugins from ``providers.json``."""
-    global PROVIDERS
     if PROVIDERS:
         return
     cfg_path = os.path.join(

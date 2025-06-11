@@ -231,6 +231,13 @@ test-lifecycle:
 test-negative:
 	pytest -q tests/python/test_negative_paths.py
 
+fast-test:
+	pytest -q tests/python
+
+lint:
+	black --check scripts src tests/python
+	flake8 scripts src tests/python
+
 test-all: test-unit test-integration test-merge-ai test-lifecycle test-negative
 
 # Run full verification script
