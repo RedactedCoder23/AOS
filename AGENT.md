@@ -568,6 +568,11 @@ Next agent must:
 - New `/auth/login` issues JWT and `/api/branches` supports paging.
 >>>>>> main
 
+### [2025-06-12 03:00 UTC] docker nightly & cleanup [agent-mem]
+- Added buildx and caching to nightly workflow to build Dockerfile.dev.
+- Synced CI docs and removed `ci-fast.sh` reference.
+- Confirmed Makefile already provides `branch` target; duplicate TODO removed.
+
 ## Open Tasks
 - Expand developer documentation and keep diagrams updated.
 - Review all subsystems for missing comments; use `AosError` consistently.

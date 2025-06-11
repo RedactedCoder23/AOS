@@ -19,4 +19,15 @@ jobs:
         run: pip install -r requirements.txt -r requirements-dev.txt pre-commit
       - name: Run full CI
         run: ./scripts/ci-full.sh
+      - name: Set up buildx
+        uses: docker/setup-buildx-action@v3
+      - name: Cache Docker layers
+        uses: actions/cache@v4
+        with:
+          path: /tmp/.buildx-cache
+          key: ${{ runner.os }}-buildx-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-buildx-
+      - name: Build dev container
+        run: docker build -f Dockerfile.dev -t aos-dev:${{ github.sha }} .
 
