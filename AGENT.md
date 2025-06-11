@@ -477,6 +477,10 @@ Next agent must:
 
 Next agent must:
 - Expand audit coverage across subsystems.
+
+## [2025-06-11 00:04 UTC] additional test hooks [codex]
+- Added helper path fix in `tests/python/conftest.py` so packages import properly.
+- Documented missing IPC tool and skipped negative-path tests.
 ## [2025-06-10 09:00 UTC] merge hunk streamer [codex]
 - Added streaming merge_ai with hunk-based prompts and tests.
 

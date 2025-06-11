@@ -735,3 +735,14 @@ Next agent must:
 - `make test-integration`
 - `pytest -q tests/python`
 
+## [2025-06-11 00:04 UTC] merge-ai and lifecycle tests [codex]
+### Changes
+- Added merge AI and lifecycle tests with negative-path coverage.
+- Fixed PYTHONPATH handling for script imports.
+- Some IPC-layer negative-path tests skipped due to missing kernel-ipc tool in current environment.
+### Tests
+- `pytest -q tests/python/test_merge_ai.py`
+- `pytest -q scripts/tests/test_branch_lifecycle.py`
+- `pytest -q tests/python/test_negative_paths.py`
+- `make test-all`
+
