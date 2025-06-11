@@ -1,10 +1,12 @@
 from fastapi import FastAPI, HTTPException
+from src.service.security import apply_security_headers
 from scripts.agent_orchestrator import get_stats, get_cached_stats
 from scripts import aos_audit as audit
 from fastapi.responses import JSONResponse
 from src.service.queue import load_status
 
 app = FastAPI()
+apply_security_headers(app)
 
 
 @app.get("/branches/{id}/metrics")

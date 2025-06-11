@@ -1,7 +1,9 @@
 from fastapi import FastAPI, HTTPException
+from src.service.security import apply_security_headers
 import redis
 
 app = FastAPI()
+apply_security_headers(app)
 
 
 @app.get("/health/live")

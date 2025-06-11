@@ -1,9 +1,11 @@
 from fastapi import FastAPI, Response
+from src.service.security import apply_security_headers
 import time
 import redis
 from rq import Queue, Worker
 
 app = FastAPI()
+apply_security_headers(app)
 _r = redis.Redis()
 _q = Queue(connection=_r)
 
