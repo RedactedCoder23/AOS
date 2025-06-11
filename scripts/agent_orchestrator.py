@@ -5,6 +5,7 @@ import subprocess
 import threading
 import time
 import shlex
+import importlib
 from dataclasses import dataclass
 from math import ceil
 from typing import Iterable, Dict, List
@@ -26,6 +27,20 @@ class LoadStats:
 MAX_AGENTS = int(os.environ.get("MAX_AGENTS", "4"))
 TASKS_PER_AGENT = int(os.environ.get("TASKS_PER_AGENT", "3"))
 METRICS: Dict[int, Dict[str, float]] = {}
+branch_stats: Dict[str, Dict] = {}
+_stats_lock = threading.Lock()
+
+
+def get_stats(branch_id: str) -> Dict | None:
+    """Return latest stats for ``branch_id`` copied from memory."""
+    with _stats_lock:
+        data = branch_stats.get(str(branch_id))
+        return json.loads(json.dumps(data)) if data else None
+
+try:
+    psutil = importlib.import_module("psutil") if importlib.util.find_spec("psutil") else None
+except Exception:  # pragma: no cover - optional dependency
+    psutil = None
 PROVIDERS: Dict[str, AIProvider] = loader.PROVIDERS
 
 
@@ -35,44 +50,23 @@ except Exception:  # pragma: no cover - handle optional dep
     yaml = None
 
 
-def _cpu_usage(pid: int) -> float:
-    """Return CPU usage percentage for *pid* over a short interval."""
-    try:
-        with open(f"/proc/{pid}/stat", "r") as fh:
-            fields = fh.read().split()
-            utime = int(fields[13])
-            stime = int(fields[14])
-    except Exception:  # pragma: no cover - /proc not available
+def _cpu_pct() -> float:
+    """Return system CPU utilisation percentage."""
+    if psutil is None:  # pragma: no cover - optional
         return 0.0
-    time.sleep(0.1)
     try:
-        with open(f"/proc/{pid}/stat", "r") as fh:
-            fields = fh.read().split()
-            utime2 = int(fields[13])
-            stime2 = int(fields[14])
-    except Exception:  # pragma: no cover - /proc not available
+        return psutil.cpu_percent(interval=None)
+    except Exception:  # pragma: no cover - psutil error
         return 0.0
-    clk = os.sysconf(os.sysconf_names.get("SC_CLK_TCK", 100))
-    delta = (utime2 + stime2) - (utime + stime)
-    return delta / clk * 1000.0  # approx percentage
 
 
-def _mem_usage() -> float:
-    """Return approximate memory utilisation percentage."""
+def _mem_pct() -> float:
+    """Return system memory utilisation percentage."""
+    if psutil is None:  # pragma: no cover - optional
+        return 0.0
     try:
-        total = avail = None
-        with open("/proc/meminfo", "r") as fh:
-            for line in fh:
-                if line.startswith("MemTotal:"):
-                    total = int(line.split()[1])
-                elif line.startswith("MemAvailable:"):
-                    avail = int(line.split()[1])
-                if total is not None and avail is not None:
-                    break
-        if not total or avail is None:
-            return 0.0
-        return 100.0 * (total - avail) / total
-    except Exception:  # pragma: no cover
+        return psutil.virtual_memory().percent
+    except Exception:  # pragma: no cover - psutil error
         return 0.0
 
 
@@ -286,12 +280,31 @@ def run_tasks(branch_id: int) -> Iterable[Dict[str, str]]:
 
     while True:
         pending = queue_tasks.qsize() + len(waiting)
+        cpu_val = _cpu_pct()
+        mem_val = _mem_pct()
         stats = LoadStats(
             pending_tasks=pending,
             active_agents=len(workers),
-            cpu_pct=_cpu_usage(os.getpid()),
-            mem_pct=_mem_usage(),
+            cpu_pct=cpu_val,
+            mem_pct=mem_val,
         )
+        with _stats_lock:
+            rec = branch_stats.setdefault(str(branch_id), {"history": []})
+            rec["pending_tasks"] = pending
+            rec["cpu_pct"] = cpu_val
+            rec["mem_pct"] = mem_val
+            rec.setdefault("history", []).append(
+                {
+                    "timestamp": time.strftime(
+                        "%Y-%m-%dT%H:%M:%SZ", time.gmtime()
+                    ),
+                    "pending_tasks": pending,
+                    "cpu_pct": cpu_val,
+                    "mem_pct": mem_val,
+                }
+            )
+            if len(rec["history"]) > 20:
+                rec["history"].pop(0)
         desired = calc_desired_agents(stats)
         if desired != desired_prev:
             events.emit({"type": "scaling", "desired": desired, "active": len(workers)})

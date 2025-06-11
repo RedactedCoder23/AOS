@@ -5,6 +5,12 @@ from typing import Dict
 
 from .base import AIProvider
 
+
+class ProviderImplementationError(RuntimeError):
+    """Raised when a provider fails to implement required methods."""
+    def __init__(self, alias: str):
+        super().__init__(f"Provider {alias} does not override generate()")
+
 _ROOT = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
 _CFG = os.path.join(_ROOT, "providers.json")
 
@@ -40,7 +46,12 @@ def _load_providers() -> None:
                 cls_name = info["class"]
             mod = importlib.import_module(module_path)
             cls = getattr(mod, cls_name)
-            PROVIDERS[name] = cls(name)
+            if cls.generate == AIProvider.generate:
+                raise ProviderImplementationError(name)
+            inst = cls(name)
+            PROVIDERS[name] = inst
+        except ProviderImplementationError:
+            raise
         except Exception:
             continue
     _mtime = mtime

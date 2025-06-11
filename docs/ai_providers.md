@@ -55,3 +55,7 @@ The active provider used by command line tools can also be overridden via the `A
 AOS_AI_PROVIDER=my-provider ./scripts/ai_backend.py "Hello"
 ```
 
+> **Warning**
+> Provider classes must override `generate`. The loader raises
+> `ProviderImplementationError` if this method is missing.
+

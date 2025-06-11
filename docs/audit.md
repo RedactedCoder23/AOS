@@ -22,3 +22,8 @@ aos-audit show --action=branch_create
 Additional filters are `--user` and `--resource`. The command reads the log
 file line by line, ignoring malformed entries, and prints matching records as
 pretty printed JSON.
+
+New actions recorded:
+- `get_metrics` – fetching branch metrics
+- `get_coverage` – retrieving coverage history
+- `merge_blocked` – merge denied due to low coverage

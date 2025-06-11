@@ -1,9 +1,15 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
+from scripts.agent_orchestrator import get_stats
+from scripts import aos_audit as audit
 
 app = FastAPI()
 
 
 @app.get("/branches/{id}/metrics")
 def get_metrics(id: str):
-    """Return stub metrics for branch ``id``."""
-    return {"pending_tasks": 0, "cpu_pct": 0.0, "mem_pct": 0.0, "history": []}
+    """Return live metrics for branch ``id``."""
+    data = get_stats(id)
+    if data is None:
+        raise HTTPException(status_code=404, detail="branch not found")
+    audit.log("get_metrics", branch=id, user="api")
+    return data
