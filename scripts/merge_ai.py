@@ -77,6 +77,13 @@ def call_llm(prompt: str, provider_name: str | None = None) -> str:
     if os.environ.get("AOS_AI_OFFLINE"):
         return ""
     _load_providers()
+    if provider_name is None:
+        meta = os.environ.get("AOS_TASK_META")
+        if meta:
+            try:
+                provider_name = json.loads(meta).get("provider")
+            except Exception:
+                provider_name = None
     provider_name = provider_name or os.environ.get("AOS_AI_PROVIDER", "openai")
     prov = PROVIDERS.get(provider_name)
     if prov is None:

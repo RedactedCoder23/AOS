@@ -785,3 +785,14 @@ Next agent must:
 - Restored verify_all.sh to run build, tests and demo container
 ### Tests
 - `pre-commit run --files verify_all.sh AGENT.md`
+
+## [2025-06-11 03:45 UTC] cli provider override [codex]
+### Changes
+- Added `--provider` flag to agent_runner.py.
+- merge_ai reads provider from `AOS_TASK_META` when present.
+- Documented CLI option in README and added unit tests.
+### Tests
+- `pre-commit run --files scripts/agent_runner.py scripts/merge_ai.py tests/python/test_agent_runner_cli.py README.md AGENT.md PATCHLOG.md`
+- `make test-unit`
+- `make test-integration`
+- `pytest -q tests/python/test_agent_runner_cli.py`
