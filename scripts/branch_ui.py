@@ -208,7 +208,7 @@ def import_graph():
 
 @app.route("/branches", methods=["POST"])
 def create_branch():
-    uid = int(request.environ.get("REMOTE_USER", os.getuid()))
+    uid = int(request.remote_user or os.getuid())
     bid = service.create(uid)
     return jsonify({"branch_id": bid})
 
@@ -220,7 +220,10 @@ def list_branches():
 
 @app.route("/branches/<int:bid>/merge", methods=["POST"])
 def merge_branch(bid):
-    uid = int(request.environ.get("REMOTE_USER", os.getuid()))
+    info = service.branches.get(bid)
+    if info and str(request.remote_user) != str(info.get("owner_uid")):
+        return jsonify({"error": "permission denied"}), 403
+    uid = int(request.remote_user or os.getuid())
     res = service.merge(bid, uid)
     if "error" in res:
         return jsonify(res), 404
@@ -229,7 +232,10 @@ def merge_branch(bid):
 
 @app.route("/branches/<int:bid>/snapshot", methods=["POST"])
 def snapshot_branch(bid):
-    uid = int(request.environ.get("REMOTE_USER", os.getuid()))
+    info = service.branches.get(bid)
+    if info and str(request.remote_user) != str(info.get("owner_uid")):
+        return jsonify({"error": "permission denied"}), 403
+    uid = int(request.remote_user or os.getuid())
     res = service.snapshot(bid, uid)
     if "error" in res:
         return jsonify(res), 404
@@ -238,7 +244,10 @@ def snapshot_branch(bid):
 
 @app.route("/branches/<int:bid>", methods=["DELETE"])
 def delete_branch(bid):
-    uid = int(request.environ.get("REMOTE_USER", os.getuid()))
+    info = service.branches.get(bid)
+    if info and str(request.remote_user) != str(info.get("owner_uid")):
+        return jsonify({"error": "permission denied"}), 403
+    uid = int(request.remote_user or os.getuid())
     res = service.delete(bid, uid)
     if "error" in res:
         return jsonify(res), 404

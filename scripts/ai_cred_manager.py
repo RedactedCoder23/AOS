@@ -8,6 +8,7 @@ import struct
 import sys
 from cryptography.fernet import Fernet
 import pwd
+import grp
 
 from scripts.aos_audit import log_entry
 
@@ -50,6 +51,18 @@ def _check_acl(action: str, uid: int | None = None) -> bool:
     if any(g in rule.get("groups", []) for g in gids):
         return True
     return False
+
+
+def _check_group(group: str | None, uid: int | None = None) -> bool:
+    if not group:
+        return True
+    uid = uid if uid is not None else os.getuid()
+    try:
+        user = pwd.getpwuid(uid)
+        gids = os.getgrouplist(user.pw_name, user.pw_gid)
+        return grp.getgrnam(group).gr_gid in gids
+    except Exception:
+        return False
 
 
 def _fernet():
@@ -113,7 +126,7 @@ def _save(db_f, data):
 
 
 def cmd_set(args):
-    if not _check_acl("set"):
+    if not _check_acl("set") or not _check_group(args.group):
         log_entry(pwd.getpwuid(os.getuid()).pw_name, "cred_set", args.service, "denied")
         print("Permission denied")
         return
@@ -125,7 +138,7 @@ def cmd_set(args):
 
 
 def cmd_get(args):
-    if not _check_acl("get"):
+    if not _check_acl("get") or not _check_group(args.group):
         log_entry(pwd.getpwuid(os.getuid()).pw_name, "cred_get", args.service, "denied")
         print("Permission denied")
         return
@@ -137,7 +150,7 @@ def cmd_get(args):
 
 
 def cmd_list(args):
-    if not _check_acl("list"):
+    if not _check_acl("list") or not _check_group(args.group):
         log_entry(pwd.getpwuid(os.getuid()).pw_name, "cred_list", "*", "denied")
         print("Permission denied")
         return
@@ -318,13 +331,16 @@ def main():
     s = sub.add_parser("set")
     s.add_argument("--service", required=True)
     s.add_argument("--key", required=True)
+    s.add_argument("--group")
     s.set_defaults(func=cmd_set)
 
     g = sub.add_parser("get")
     g.add_argument("--service", required=True)
+    g.add_argument("--group")
     g.set_defaults(func=cmd_get)
 
     lp = sub.add_parser("list")
+    lp.add_argument("--group")
     lp.set_defaults(func=cmd_list)
 
     d = sub.add_parser("delete")
