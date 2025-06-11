@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { LineChart, Line, XAxis, YAxis } from "recharts";
 import { useParams } from "react-router-dom";
+import BranchDiff from "../components/BranchDiff";
 
 export default function BranchDetail() {
   const { id } = useParams();
@@ -38,6 +39,7 @@ export default function BranchDetail() {
         <XAxis dataKey="ts" hide />
         <YAxis />
       </LineChart>
+      {id && <BranchDiff id={id} />}
     </div>
   );
 }
