@@ -259,6 +259,16 @@ def events():
     return flask_sse.stream()
 
 
+@app.route("/branches/<int:branch_id>/metrics")
+def branch_metrics(branch_id):
+    data = agent_orchestrator.METRICS.get(branch_id, {
+        "agents_spawned": 0,
+        "success_rate": 0.0,
+        "avg_runtime": 0.0,
+    })
+    return jsonify(data)
+
+
 @app.route("/branches/<int:branch_id>/agents/stream")
 def stream_agents(branch_id: int):
     def gen():

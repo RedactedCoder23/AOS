@@ -11,13 +11,30 @@ import sys
 import time
 import logging
 from typing import List
+import importlib
 
-from scripts.ai_cred_client import get_api_key
+from scripts.ai_providers.base import AIProvider
 
-try:
-    import openai
-except Exception:  # pragma: no cover - optional dependency
-    openai = None
+PROVIDERS: dict[str, AIProvider] = {}
+
+
+def _load_providers() -> None:
+    global PROVIDERS
+    if PROVIDERS:
+        return
+    cfg = os.path.join(os.path.dirname(os.path.dirname(__file__)), "providers.json")
+    try:
+        with open(cfg, "r", encoding="utf-8") as fh:
+            data = json.load(fh)
+    except Exception:
+        data = {}
+    for name, info in data.items():
+        try:
+            mod = importlib.import_module(f"scripts.ai_providers.{info['module']}")
+            cls = getattr(mod, info['class'])
+            PROVIDERS[name] = cls(name)
+        except Exception:
+            continue
 
 MAX_HUNK_SIZE = 4096
 
@@ -55,22 +72,16 @@ def split_hunks(patch: str) -> List[str]:
     return hunks
 
 
-def call_llm(prompt: str) -> str:
-    """Send *prompt* to OpenAI and return the response."""
+def call_llm(prompt: str, provider_name: str | None = None) -> str:
+    """Send *prompt* to an AI provider and return the response."""
     if os.environ.get("AOS_AI_OFFLINE"):
         return ""
-    try:
-        key = get_api_key("openai")
-    except KeyError as exc:  # pragma: no cover - credentials missing
-        raise RuntimeError("missing API credential") from exc
-    if openai is None:  # pragma: no cover - optional dependency
-        raise RuntimeError("openai package missing")
-    client = openai.OpenAI(api_key=key)
-    resp = client.chat.completions.create(
-        model="gpt-3.5-turbo",
-        messages=[{"role": "user", "content": prompt}],
-    )
-    return resp.choices[0].message.content.strip()
+    _load_providers()
+    provider_name = provider_name or os.environ.get("AOS_AI_PROVIDER", "openai")
+    prov = PROVIDERS.get(provider_name)
+    if prov is None:
+        raise RuntimeError(f"provider {provider_name} not available")
+    return prov.generate(prompt)
 
 
 def valid_patch(patch: str) -> bool:
