@@ -6,6 +6,7 @@ import queue
 import subprocess
 import sys
 from flask import Flask, Response, jsonify, request, send_from_directory
+import jwt
 from . import agent_orchestrator
 from .aos_audit import log_entry
 
@@ -20,6 +21,7 @@ WEB_DIR = os.path.join(BASE, "..", "ui")
 GRAPH_FILE = os.path.join(BASE, "..", "examples", "graph_sample.json")
 METRICS_FILE = os.path.join(BASE, "..", "examples", "metrics_sample.json")
 FC_BIN = os.environ.get("FIRECRACKER", "firecracker")
+JWT_SECRET = os.environ.get("AOS_JWT_SECRET", "dev-secret")
 
 
 class _SSE:
@@ -209,6 +211,23 @@ app = Flask(__name__, static_folder=WEB_DIR, static_url_path="")
 service = BranchService(app.logger)
 
 
+def _relay(event: dict) -> None:
+    """Forward orchestrator events to clients via SSE."""
+    flask_sse.publish(event, event=event.get("type"))
+
+
+agent_orchestrator.events.register(_relay)
+
+
+@app.route("/auth/login", methods=["POST"])
+def login():
+    data = request.get_json(force=True) or {}
+    if data.get("username") == "test" and data.get("password") == "test":
+        token = jwt.encode({"user": "test"}, JWT_SECRET, algorithm="HS256")
+        return jsonify({"token": token})
+    return jsonify({"error": "invalid"}), 401
+
+
 @app.route("/graph")
 def graph():
     with open(GRAPH_FILE, "r") as f:
@@ -248,6 +267,23 @@ def create_branch():
 @app.route("/branches", methods=["GET"])
 def list_branches():
     return jsonify(service.list())
+
+
+@app.route("/api/branches")
+def api_branches():
+    limit = int(request.args.get("limit", "10"))
+    cursor = request.args.get("cursor")
+    items = service.list()
+    start = 0
+    if cursor is not None:
+        try:
+            ids = [b["branch_id"] for b in items]
+            start = ids.index(int(cursor)) + 1
+        except ValueError:
+            start = 0
+    slice_ = items[start : start + limit]
+    next_cursor = slice_[-1]["branch_id"] if len(slice_) == limit else None
+    return jsonify({"items": slice_, "next": next_cursor})
 
 
 @app.route("/branches/<int:branch_id>/coverage-history")
