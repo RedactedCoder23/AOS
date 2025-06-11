@@ -1,12 +1,12 @@
-import { defineConfig } from "vite";
-import react from "@vitejs/plugin-react";
-import helmet from "helmet";
+import { defineConfig } from 'vite';
+import react from '@vitejs/plugin-react';
+import helmet from 'helmet';
 
 export default defineConfig({
   plugins: [
     react(),
     {
-      name: "helmet-plugin",
+      name: 'helmet-plugin',
       configureServer(server) {
         server.middlewares.use(helmet());
       },
@@ -14,7 +14,7 @@ export default defineConfig({
   ],
   server: {
     proxy: {
-      "/api": "http://localhost:8000",
+      '/api': 'http://localhost:8000',
     },
   },
 });
