@@ -8,4 +8,8 @@ flask~=3.1
 PyYAML~=6.0
 psutil~=7.0
 fastapi~=0.115
+redis~=5.3
+rq~=1.16
+uvicorn~=0.34
+websockets~=12.0
 
