@@ -556,6 +556,11 @@ Next agent must:
 - Restored flake8 failure on CI and pinned dev dependencies.
 - Documented dependency bumps note in README.
 
+## [2025-06-12 02:00 UTC] web dashboard scaffold [agent-mem]
+- Added React+Vite SPA under `ui/src` with BranchList and BranchDetail pages.
+- WebSocket metrics relay via SSE; orchestrator emits CPU and coverage stats.
+- New `/auth/login` issues JWT and `/api/branches` supports paging.
+
 ## Open Tasks
 - Expand developer documentation and keep diagrams updated.
 - Review all subsystems for missing comments; use `AosError` consistently.
