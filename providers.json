@@ -1,10 +1,5 @@
 {
-<<<<<< codex/add-echo-and-openai-provider-plugins
-  "echo": "scripts.ai_providers.echo_provider.EchoProvider",
-  "openai": "scripts.ai_providers.openai_provider.OpenAIProvider"
-=======
   "openai": "scripts.ai_providers.openai_provider.OpenAIProvider",
   "local-llama": "scripts.ai_providers.mock_provider.MockProvider",
   "echo": "scripts.ai_providers.echo_provider.EchoProvider"
->>>>>> main
 }

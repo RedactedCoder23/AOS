@@ -8,14 +8,10 @@ import shlex
 from dataclasses import dataclass
 from math import ceil
 from typing import Iterable, Dict, List
-from scripts.ai_providers.loader import get_provider
 
+from scripts.ai_providers import loader
+from scripts.ai_providers.base import AIProvider
 from src.api import events
-<<<<<< codex/implement-plugin-loader-hot-reload
-from .ai_providers import loader
-from .ai_providers.base import AIProvider
-=======
->>>>>> main
 from src.branch.task_definitions import Task
 
 
@@ -30,10 +26,8 @@ class LoadStats:
 MAX_AGENTS = int(os.environ.get("MAX_AGENTS", "4"))
 TASKS_PER_AGENT = int(os.environ.get("TASKS_PER_AGENT", "3"))
 METRICS: Dict[int, Dict[str, float]] = {}
-<<<<<< codex/implement-plugin-loader-hot-reload
 PROVIDERS: Dict[str, AIProvider] = loader.PROVIDERS
-=======
->>>>>> main
+
 
 try:
     import yaml  # type: ignore
@@ -95,35 +89,9 @@ def calc_desired_agents(stats: LoadStats) -> int:
     return desired
 
 
-<<<<<< codex/implement-plugin-loader-hot-reload
 def _load_providers() -> None:
-<<<<<< codex/add-echo-and-openai-provider-plugins
-    if PROVIDERS:
-        return
-    cfg = os.path.join(os.path.dirname(os.path.dirname(__file__)), "providers.json")
-    try:
-        with open(cfg, "r", encoding="utf-8") as fh:
-            data = json.load(fh)
-    except Exception:  # pragma: no cover - missing config
-        data = {}
-    for name, info in data.items():
-        try:
-            if isinstance(info, str):
-                module_path, cls_name = info.rsplit(".", 1)
-            else:  # backward compat
-                module_path = f"scripts.ai_providers.{info['module']}"
-                cls_name = info["class"]
-            mod = importlib.import_module(module_path)
-            cls = getattr(mod, cls_name)
-            PROVIDERS[name] = cls(name)
-        except Exception:  # pragma: no cover - plugin errors
-            continue
-=======
     """Compatibility wrapper around :func:`loader.load_providers`."""
     loader.load_providers()
-=======
->>>>>> main
->>>>>> main
 
 
 def _load_spec(branch_id: int) -> List[Task]:
@@ -176,13 +144,7 @@ def _run_agent(
         attempts += 1
         try:
             if provider:
-<<<<<< codex/implement-plugin-loader-hot-reload
                 prov = loader.get_provider(provider)
-                if prov is None:
-                    raise RuntimeError(f"provider {provider} not found")
-=======
-                prov = get_provider(provider)
->>>>>> main
                 out = prov.generate(task.command)
                 err = ""
                 status = "success"
@@ -209,7 +171,6 @@ def _run_agent(
             status = "failed"
         if status == "success" or attempts >= 3:
             break
-        # retry notification
         events.emit(
             {
                 "agent_id": task.agent_id,
