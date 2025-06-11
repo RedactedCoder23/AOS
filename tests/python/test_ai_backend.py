@@ -7,7 +7,7 @@ import importlib
 
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "../..")))
 
-from scripts import ai_backend
+from scripts import ai_backend  # noqa: E402
 
 SCRIPT = os.path.join("scripts", "ai_backend.py")
 

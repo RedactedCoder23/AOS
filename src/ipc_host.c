@@ -1,9 +1,9 @@
 #include "ipc_host.h"
 #include "branch.h"
 #include "ipc.h"
-#include "syscalls.h"
 #include "ipc_protocol.h"
 #include "logging.h"
+#include "syscalls.h"
 #include <errno.h>
 #include <fcntl.h>
 #include <stdint.h>
@@ -33,8 +33,7 @@ void ipc_host_handle(IpcRing *ring) {
         int rc = sys_merge_branch(req->branch_id);
         if (rc < 0) {
             snprintf(resp->data, sizeof(resp->data),
-                     "{ \"error\": \"invalid branch\", \"code\": %d }",
-                     -rc);
+                     "{ \"error\": \"invalid branch\", \"code\": %d }", -rc);
             resp->retval = strlen(resp->data);
         } else {
             resp->retval = rc;
@@ -63,7 +62,8 @@ void ipc_host_handle(IpcRing *ring) {
             memcpy(&bi, buf + off, sizeof(bi));
             off += sizeof(bi);
             pos += snprintf(resp->data + pos, sizeof(resp->data) - pos,
-                            "{ \"branch_id\": %u, \"parent_id\": %u, \"status\": %u, \"last_snapshot_id\": %llu, \"owner_uid\": %u }",
+                            "{ \"branch_id\": %u, \"parent_id\": %u, \"status\": %u, "
+                            "\"last_snapshot_id\": %llu, \"owner_uid\": %u }",
                             bi.branch_id, bi.parent_id, bi.status,
                             (unsigned long long)bi.last_snapshot_id, bi.owner_uid);
         }
@@ -73,16 +73,14 @@ void ipc_host_handle(IpcRing *ring) {
         break;
     }
     case SYS_SNAPSHOT_BRANCH:
-        *(uint64_t *)resp->data =
-            sys_snapshot_branch((unsigned int)req->branch_id);
+        *(uint64_t *)resp->data = sys_snapshot_branch((unsigned int)req->branch_id);
         resp->retval = 0;
         break;
     case SYS_DELETE_BRANCH: {
         int rc = sys_delete_branch((unsigned int)req->branch_id);
         if (rc < 0) {
             snprintf(resp->data, sizeof(resp->data),
-                     "{ \"error\": \"invalid branch\", \"code\": %d }",
-                     -rc);
+                     "{ \"error\": \"invalid branch\", \"code\": %d }", -rc);
             resp->retval = strlen(resp->data);
         } else {
             resp->retval = 0;

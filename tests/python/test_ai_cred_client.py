@@ -5,7 +5,7 @@ import sys
 
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "../..")))
 
-from scripts import ai_cred_client
+from scripts import ai_cred_client  # noqa: E402
 
 
 class AiCredClientTest(unittest.TestCase):

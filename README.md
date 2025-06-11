@@ -4,6 +4,8 @@
 [![Build Status](https://img.shields.io/github/actions/workflow/status/RedactedCoder23/AOS/ci.yml?branch=main)](https://github.com/RedactedCoder23/AOS/actions)
 [![License](https://img.shields.io/github/license/RedactedCoder23/AOS)](LICENSE)
 
+Current Version: **v0.2.0**
+
 Minimal experimental OS used for interpreter tests.
 
 ## Quickstart

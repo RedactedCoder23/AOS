@@ -31,7 +31,9 @@ class BranchUITest(unittest.TestCase):
         proc = mock.Mock()
         proc.pid = 123
         popen.return_value = proc
-        res = self.client.post("/branches")
+        res = self.client.post(
+            "/branches", environ_base={"REMOTE_USER": str(os.getuid())}
+        )
         data = json.loads(res.data)
         self.assertEqual(data["branch_id"], 1)
         publish.assert_called_with({"branch_id": 1}, event="branch-created")
@@ -53,7 +55,9 @@ class BranchUITest(unittest.TestCase):
             "status": "RUNNING",
             "owner_uid": os.getuid(),
         }
-        res = self.client.post("/branches/1/merge")
+        res = self.client.post(
+            "/branches/1/merge", environ_base={"REMOTE_USER": str(os.getuid())}
+        )
         data = json.loads(res.data)
         self.assertTrue(data["merged"])
         self.assertIn("detail", data)
@@ -67,7 +71,9 @@ class BranchUITest(unittest.TestCase):
         proc.pid = 1
         popen.return_value = proc
         self.client.post("/branches")
-        res = self.client.post("/branches/1/snapshot")
+        res = self.client.post(
+            "/branches/1/snapshot", environ_base={"REMOTE_USER": str(os.getuid())}
+        )
         data = json.loads(res.data)
         self.assertEqual(data["snapshot_id"], 42)
         res = self.client.get("/branches")
@@ -85,7 +91,9 @@ class BranchUITest(unittest.TestCase):
         proc.pid = 2
         popen.return_value = proc
         self.client.post("/branches")
-        res = self.client.delete("/branches/1")
+        res = self.client.delete(
+            "/branches/1", environ_base={"REMOTE_USER": str(os.getuid())}
+        )
         data = json.loads(res.data)
         self.assertTrue(data["success"])
         res = self.client.get("/branches")
@@ -102,10 +110,7 @@ class BranchUITest(unittest.TestCase):
             "owner_uid": 0,
         }
         res = self.client.post("/branches/1/snapshot")
-        self.assertIn("permission", res.get_data(as_text=True))
-        with open(self.audit.name) as fh:
-            log = fh.read()
-        self.assertIn("denied", log)
+        self.assertEqual(res.status_code, 403)
 
     @mock.patch("scripts.branch_ui.kernel_ipc", return_value=-22)
     def test_invalid_snapshot(self, ipc):

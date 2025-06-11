@@ -259,7 +259,6 @@ def events():
     return flask_sse.stream()
 
 
-
 @app.route("/branches/<int:branch_id>/agents/stream")
 def stream_agents(branch_id: int):
     def gen():

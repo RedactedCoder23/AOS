@@ -8,7 +8,7 @@ REPO_ROOT = os.path.dirname(SCRIPT_DIR)
 sys.path.insert(0, REPO_ROOT)
 os.environ.setdefault("AOS_IPC_LOCAL", "1")
 
-from scripts import branch_ui  # type: ignore
+from scripts import branch_ui  # type: ignore  # noqa: E402
 
 
 def _error(msg: str, code: int = 404) -> None:

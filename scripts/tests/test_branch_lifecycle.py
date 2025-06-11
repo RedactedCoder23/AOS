@@ -4,7 +4,7 @@ import sys
 
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "../..")))
 
-from scripts import branch_ui
+from scripts import branch_ui  # noqa: E402
 
 
 def _client():
@@ -25,18 +25,26 @@ def test_snapshot_endpoint(monkeypatch):
         return 0
 
     monkeypatch.setattr(branch_ui, "kernel_ipc", fake_ipc)
-    monkeypatch.setattr(branch_ui.subprocess, "Popen", lambda *a, **k: type("P", (), {"pid": 1})())
+    monkeypatch.setattr(
+        branch_ui.subprocess, "Popen", lambda *a, **k: type("P", (), {"pid": 1})()
+    )
 
-    res = client.post("/branches")
+    res = client.post("/branches", environ_base={"REMOTE_USER": str(os.getuid())})
     bid = json.loads(res.data)["branch_id"]
-    res = client.post(f"/branches/{bid}/snapshot")
+    res = client.post(
+        f"/branches/{bid}/snapshot",
+        environ_base={"REMOTE_USER": str(os.getuid())},
+    )
     assert res.status_code == 200
     data = json.loads(res.data)
     assert data["snapshot_id"] > 0
     listing = json.loads(client.get("/branches").data)
     assert any(e["last_snapshot_id"] > 0 for e in listing)
 
-    res = client.post("/branches/9999/snapshot")
+    res = client.post(
+        "/branches/9999/snapshot",
+        environ_base={"REMOTE_USER": str(os.getuid())},
+    )
     assert res.status_code >= 400
 
 
@@ -52,11 +60,15 @@ def test_delete_endpoint(monkeypatch):
         return 0
 
     monkeypatch.setattr(branch_ui, "kernel_ipc", fake_ipc)
-    monkeypatch.setattr(branch_ui.subprocess, "Popen", lambda *a, **k: type("P", (), {"pid": 2})())
+    monkeypatch.setattr(
+        branch_ui.subprocess, "Popen", lambda *a, **k: type("P", (), {"pid": 2})()
+    )
 
-    res = client.post("/branches")
+    res = client.post("/branches", environ_base={"REMOTE_USER": str(os.getuid())})
     bid = json.loads(res.data)["branch_id"]
-    res = client.delete(f"/branches/{bid}")
+    res = client.delete(
+        f"/branches/{bid}", environ_base={"REMOTE_USER": str(os.getuid())}
+    )
     assert res.status_code == 200
     data = json.loads(res.data)
     assert data.get("result") == "deleted" or data.get("success") is True
@@ -64,5 +76,7 @@ def test_delete_endpoint(monkeypatch):
     ids = [e["branch_id"] for e in listing]
     assert bid not in ids
 
-    res = client.delete("/branches/9999")
+    res = client.delete(
+        "/branches/9999", environ_base={"REMOTE_USER": str(os.getuid())}
+    )
     assert res.status_code >= 400

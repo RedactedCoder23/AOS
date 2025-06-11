@@ -1,3 +1,4 @@
+#include "../include/syscalls.h"
 #include "command_interpreter.h"
 #include "config.h"
 #include "error.h"
@@ -5,7 +6,6 @@
 #include "ipc.h"
 #include "logging.h"
 #include "traps.h"
-#include "../include/syscalls.h"
 #include <errno.h>
 #include <stdint.h>
 
@@ -33,8 +33,7 @@ static int syscall_dispatch(const SyscallRequest *req, SyscallResponse *resp) {
         resp->retval = sys_list_branches(resp->data, sizeof(resp->data));
         break;
     case SYS_SNAPSHOT_BRANCH:
-        *(uint64_t *)resp->data =
-            sys_snapshot_branch((uint32_t)req->branch_id);
+        *(uint64_t *)resp->data = sys_snapshot_branch((uint32_t)req->branch_id);
         resp->retval = 0;
         break;
     default:

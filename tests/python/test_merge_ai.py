@@ -218,6 +218,7 @@ class MergeAiTest(unittest.TestCase):
 if __name__ == "__main__":
     unittest.main()
 
+
 def test_hunk_splitting():
     small = (
         "diff --git a/a.txt b/a.txt\n"
