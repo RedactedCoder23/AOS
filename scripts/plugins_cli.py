@@ -35,7 +35,9 @@ def _clone(src: str, dest: Path) -> None:
 
 
 def _build_image(path: Path, tag: str) -> None:
-    subprocess.check_call(["docker", "build", "-t", tag, "-f", "Dockerfile.sandbox", str(path)])
+    subprocess.check_call(
+        ["docker", "build", "-t", tag, "-f", "Dockerfile.sandbox", str(path)]
+    )
 
 
 def _register(manifest: dict, registry: Path, image: str) -> None:

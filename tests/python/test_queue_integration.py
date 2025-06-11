@@ -1,5 +1,4 @@
 import asyncio
-import os
 import subprocess
 import time
 import unittest
@@ -16,18 +15,22 @@ from scripts import agent_orchestrator
 class QueueIntegrationTest(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        cls.redis_proc = subprocess.Popen(["redis-server", "--port", "6379", "--daemonize", "yes"])
+        cls.redis_proc = subprocess.Popen(
+            ["redis-server", "--port", "6379", "--daemonize", "yes"]
+        )
         time.sleep(0.5)
         cls.worker_proc = subprocess.Popen(["python", "scripts/jobqueue/worker.py"])
         time.sleep(0.5)
-        cls.ws_proc = subprocess.Popen([
-            "uvicorn",
-            "src.api.ws:app",
-            "--port",
-            "8765",
-            "--log-level",
-            "critical",
-        ])
+        cls.ws_proc = subprocess.Popen(
+            [
+                "uvicorn",
+                "src.api.ws:app",
+                "--port",
+                "8765",
+                "--log-level",
+                "critical",
+            ]
+        )
         time.sleep(1)
         agent_orchestrator.branch_stats["99"] = {
             "pending_tasks": 0,

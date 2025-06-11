@@ -837,3 +837,8 @@ Next agent must:
 - Added JWT login endpoint and paged branches API.
 - Orchestrator now emits live stats for SSE charts.
 
+## [2025-06-12 02:30 UTC] release v0.4-alpha [agent-mem]
+### Changes
+- Async job queue integrated with API and dashboard.
+- Initial web dashboard and plugin management features.
+
