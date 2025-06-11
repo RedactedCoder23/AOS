@@ -6,11 +6,13 @@ import sys
 
 repo_root = os.path.abspath(os.path.join(os.path.dirname(__file__), "../.."))
 sys.path.insert(0, repo_root)
-from scripts import branch_ui
+from scripts import branch_ui  # noqa: E402
 
-import pytest
+import pytest  # noqa: E402
 
-IPC_TOOL = shutil.which("kernel-ipc") or os.path.join(repo_root, "scripts", "kernel_ipc.py")
+IPC_TOOL = shutil.which("kernel-ipc") or os.path.join(
+    repo_root, "scripts", "kernel_ipc.py"
+)
 
 
 def _run_tool(args):

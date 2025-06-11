@@ -5,7 +5,7 @@ import sys
 
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "../..")))
 
-from scripts import merge_ai
+from scripts import merge_ai  # noqa: E402
 
 
 def test_hunk_splitting():

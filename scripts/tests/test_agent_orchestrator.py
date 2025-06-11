@@ -6,7 +6,7 @@ import sys
 
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "../..")))
 
-from scripts import agent_orchestrator
+from scripts import agent_orchestrator  # noqa: E402
 
 
 class AgentOrchestratorTest(unittest.TestCase):
@@ -30,9 +30,7 @@ class AgentOrchestratorTest(unittest.TestCase):
         out_dir = os.path.join("branches", "1", "agents")
         files = sorted(os.listdir(out_dir))
         self.assertEqual(len(files), 2)
-        statuses = {
-            json.load(open(os.path.join(out_dir, f)))["status"] for f in files
-        }
+        statuses = {json.load(open(os.path.join(out_dir, f)))["status"] for f in files}
         self.assertIn("success", statuses)
         self.assertIn("failed", statuses)
 

@@ -29,13 +29,19 @@ def _load_spec(branch_id: int) -> List[Dict[str, str]]:
         raise ValueError("spec must be a list of tasks")
     tasks = []
     for item in data:
-        if not isinstance(item, dict) or "agent_id" not in item or "command" not in item:
+        if (
+            not isinstance(item, dict)
+            or "agent_id" not in item
+            or "command" not in item
+        ):
             raise ValueError("invalid task entry")
         tasks.append({"agent_id": str(item["agent_id"]), "command": item["command"]})
     return tasks
 
 
-def _run_agent(branch_id: int, task: Dict[str, str], timeout: int = 60) -> Dict[str, str]:
+def _run_agent(
+    branch_id: int, task: Dict[str, str], timeout: int = 60
+) -> Dict[str, str]:
     """Execute a single agent task and write its result."""
     cmd = task["command"]
     if isinstance(cmd, str):
