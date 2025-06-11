@@ -754,3 +754,21 @@ Next agent must:
 ### Tests
 - `pre-commit run --files Dockerfile demo/docker-compose.yml demo/demo_test.sh README.md Makefile .github/workflows/ci.yml AGENT.md PATCHLOG.md`
 - `make demo-test`
+
+<<<<<< codex/add-verify_all.sh-script-for-ci
+## [2025-06-11 03:00 UTC] verify-all script [codex]
+### Changes
+- Added verify_all.sh script for build, tests and demo smoke tests.
+- Invoked script at end of CI workflow.
+- Documented usage in README.
+### Tests
+- `pre-commit run --files verify_all.sh README.md .github/workflows/ci.yml AGENT.md PATCHLOG.md`
+- `./verify_all.sh`
+=======
+## [2025-06-11 02:59 UTC] project layout synced [codex]
+### Changes
+- Rewrote PROJECT_LAYOUT.md to match the repository tree.
+- Added descriptions for scripts/ai_providers and demo directories.
+### Tests
+- `pre-commit run --files PROJECT_LAYOUT.md AGENT.md PATCHLOG.md`
+>>>>>> main

@@ -75,6 +75,8 @@ jobs:
           files: coverage.lcov
           token: ${{ secrets.CODECOV_TOKEN }}
           slug: RedactedCoder23/AOS
+      - name: Verify one-shot script
+        run: ./verify_all.sh
 
   sanitize-build:
     runs-on: ubuntu-latest

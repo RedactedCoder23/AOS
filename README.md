@@ -94,6 +94,15 @@ Generate `compile_commands.json` for clang-tidy with:
 make compdb
 ```
 
+## One-shot verify
+
+Run the full build, tests and demo smoke tests:
+
+```bash
+./verify_all.sh
+```
+
+
 ## Running AOS in QEMU
 
 **Prerequisite**: install QEMU—e.g., on Debian/Ubuntu:

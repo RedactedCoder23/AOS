@@ -16,14 +16,18 @@ illustrated in `docs/command_flow.md`.
 
 ## Source Layout
 
-- `bare_metal_os/` – kernel sources and boot files
-- `src/` – shared utilities and host code
-- `subsystems/` – memory, filesystem, branch and other modules
+- `bare_metal_os/` – kernel sources and runtime
+- `boot/` – GRUB configuration
+- `src/` – shared utilities and host tools
+- `subsystems/` – memory, filesystem, branch, net, dev and security modules
 - `include/` – public headers shared across the project
 - `apps_src/` – sample applications
+- `scripts/` – build helpers, daemons and orchestration tools
+- `examples/` – demonstration programs
 - `docs/` – further documentation
-- `scripts/agent_orchestrator.py` – task runner coordinating AI agents via
-  plugin providers
+- `tests/` – unit and integration suites
+- `ui/` – web front-end
+- `demo/` – container demo and smoke tests
 
 ## Development History
 
