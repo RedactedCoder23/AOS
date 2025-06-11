@@ -796,3 +796,16 @@ Next agent must:
 - `make test-unit`
 - `make test-integration`
 - `pytest -q tests/python/test_agent_runner_cli.py`
+
+## [2025-06-11 06:08 UTC] dev container and ci split [codex]
+### Changes
+- Added .devcontainer.json and Dockerfile.dev.
+- Renamed verify_all.sh to scripts/ci-full.sh and created ci-fast.sh.
+- Updated Makefile targets and docs.
+- Pinned package versions in requirements files.
+- Simplified CI workflows to use new scripts.
+### Tests
+- `make fast-test`
+- `./scripts/ci-fast.sh`
+- *(docker build skipped: no docker available)*
+

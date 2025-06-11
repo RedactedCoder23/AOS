@@ -531,3 +531,13 @@ Next agent must:
 Next agent must:
 - Investigate missing 'branch' make target causing verify_all.sh failure
 
+
+## [2025-06-11 06:08 UTC] dev container and ci split [codex]
+- Added Dockerfile.dev and .devcontainer.json for slim setup.
+- Moved verify_all.sh to scripts/ci-full.sh and created ci-fast.sh.
+- Updated Makefile, docs and workflows for two-stage CI.
+- Pinned dependencies with ~= constraints.
+
+Next agent must:
+- Investigate missing 'branch' make target causing verify_all.sh failure
+

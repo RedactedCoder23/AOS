@@ -232,7 +232,7 @@ test-negative:
 	pytest -q tests/python/test_negative_paths.py
 
 fast-test:
-	pytest -q tests/python
+	pytest -q -m "not slow" tests/python --ignore tests/python/test_ui_playwright.py
 
 lint:
 	black --check scripts src tests/python
@@ -242,7 +242,7 @@ test-all: test-unit test-integration test-merge-ai test-lifecycle test-negative
 
 # Run full verification script
 verify-all:
-	./verify_all.sh
+	./scripts/ci-full.sh
 test-unit:
 	@echo "→ Running unit tests"
 	@mkdir -p build/tests build/plugins

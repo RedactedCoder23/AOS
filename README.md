@@ -61,6 +61,14 @@ pip install -r requirements.txt
 pre-commit install
 ```
 
+Pinned versions live in `requirements*.txt`. To update them:
+
+```bash
+pip install -r requirements.txt -U
+pip freeze | grep -E 'openai|cbor2|pytest-cov|cryptography|keyring|flask|PyYAML|psutil|fastapi' > requirements.txt
+pip freeze | grep -E 'black|flake8|pytest|pre-commit|pre-commit-hooks|playwright' > requirements-dev.txt
+```
+
 See [ARCHITECTURE.md](ARCHITECTURE.md) for a detailed overview of the system design.
 
 ## Build
