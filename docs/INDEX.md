@@ -10,3 +10,4 @@
 - [Agent Log](../AGENT.md)
 - [Patch Log](../PATCHLOG.md)
 - [Roadmap](../ROADMAP.md)
+- [Configuration](configuration.md)

@@ -22,3 +22,15 @@ Audit events are recorded as newline-delimited JSON in
 `/var/log/aos-audit.log` with the fields `timestamp`, `user`, `action`,
 `resource` and `result`. Use `aos-audit show` with filtering options to
 inspect the log.
+
+### Updating sandbox seccomp profile
+
+Sandboxed plugins and services run under a seccomp policy defined in
+`profiles/aos-seccomp.json`. The profile uses a permissive default action and
+denies only dangerous syscalls such as `kill`. Edit this file to tighten the
+sandbox and restart the service to apply changes. The format matches Docker's
+seccomp JSON, so you can test updates with:
+
+```bash
+$ docker run --rm --security-opt seccomp=profiles/aos-seccomp.json your_image
+```

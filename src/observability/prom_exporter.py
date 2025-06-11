@@ -4,6 +4,8 @@ import time
 import redis
 from rq import Queue, Worker
 
+__all__ = ["expose_metrics"]
+
 app = FastAPI()
 apply_security_headers(app)
 _r = redis.Redis()
@@ -49,6 +51,11 @@ def metrics() -> Response:
         f"worker_count {workers}\n"
     )
     return Response(content=body, media_type="text/plain; version=0.0.4")
+
+
+def expose_metrics() -> FastAPI:
+    """Return the FastAPI app exposing Prometheus metrics."""
+    return app
 
 
 if __name__ == "__main__":
