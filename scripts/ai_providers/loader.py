@@ -1,4 +1,3 @@
-<<<<<< codex/implement-plugin-loader-hot-reload
 import importlib
 import json
 import os
@@ -14,7 +13,7 @@ _mtime: float | None = None
 
 
 def _load_providers() -> None:
-    """Load provider plugins from :data:`providers.json`."""
+    """Load provider plugins from ``providers.json`` if changed."""
     global _mtime
     try:
         mtime = os.path.getmtime(_CFG)
@@ -34,8 +33,13 @@ def _load_providers() -> None:
     PROVIDERS.clear()
     for name, info in data.items():
         try:
-            mod = importlib.import_module(f"scripts.ai_providers.{info['module']}")
-            cls = getattr(mod, info["class"])
+            if isinstance(info, str):
+                module_path, cls_name = info.rsplit(".", 1)
+            else:
+                module_path = f"scripts.ai_providers.{info['module']}"
+                cls_name = info["class"]
+            mod = importlib.import_module(module_path)
+            cls = getattr(mod, cls_name)
             PROVIDERS[name] = cls(name)
         except Exception:
             continue
@@ -47,29 +51,10 @@ def load_providers() -> None:
     _load_providers()
 
 
-def get_provider(name: str) -> AIProvider | None:
-    """Return provider instance by ``name`` reloading config if changed."""
-    _load_providers()
-    return PROVIDERS.get(name)
-=======
-import json
-import os
-import importlib
-from .base import AIProvider
-
-
 def get_provider(alias: str) -> AIProvider:
-    """Return provider instance for *alias* using providers.json mapping."""
-    cfg = os.path.join(
-        os.path.dirname(os.path.dirname(os.path.dirname(__file__))), "providers.json"
-    )
-    with open(cfg, "r", encoding="utf-8") as fh:
-        data = json.load(fh)
-    path = data.get(alias)
-    if not path:
+    """Return provider instance for ``alias`` reloading config if needed."""
+    _load_providers()
+    provider = PROVIDERS.get(alias)
+    if provider is None:
         raise ValueError(f"Unknown provider: {alias}")
-    module_path, class_name = path.rsplit(".", 1)
-    module = importlib.import_module(module_path)
-    cls = getattr(module, class_name)
-    return cls(alias)
->>>>>> main
+    return provider

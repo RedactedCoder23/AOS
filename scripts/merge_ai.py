@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 """LLM-assisted three-way merge helper."""
-
 from __future__ import annotations
 
 import argparse
@@ -11,8 +10,6 @@ import sys
 import time
 import logging
 from typing import List
-<<<<<< codex/implement-plugin-loader-hot-reload
-import importlib
 
 from scripts.ai_providers import loader
 from scripts.ai_providers.base import AIProvider
@@ -21,37 +18,8 @@ PROVIDERS: dict[str, AIProvider] = loader.PROVIDERS
 
 
 def _load_providers() -> None:
-<<<<<< codex/add-echo-and-openai-provider-plugins
-    if PROVIDERS:
-        return
-    cfg = os.path.join(os.path.dirname(os.path.dirname(__file__)), "providers.json")
-    try:
-        with open(cfg, "r", encoding="utf-8") as fh:
-            data = json.load(fh)
-    except Exception:
-        data = {}
-    for name, info in data.items():
-        try:
-            if isinstance(info, str):
-                module_path, cls_name = info.rsplit(".", 1)
-            else:
-                module_path = f"scripts.ai_providers.{info['module']}"
-                cls_name = info["class"]
-            mod = importlib.import_module(module_path)
-            cls = getattr(mod, cls_name)
-            PROVIDERS[name] = cls(name)
-        except Exception:
-            continue
-=======
     """Compatibility wrapper around :func:`loader.load_providers`."""
     loader.load_providers()
-=======
-from scripts.ai_providers.loader import get_provider
->>>>>> main
->>>>>> main
-
-
-MAX_HUNK_SIZE = 4096
 
 
 def run_diff(base: str, main: str, branch: str) -> str:
@@ -87,12 +55,13 @@ def split_hunks(patch: str) -> List[str]:
     return hunks
 
 
+MAX_HUNK_SIZE = 4096
+
+
 def call_llm(prompt: str, provider_name: str | None = None) -> str:
     """Send *prompt* to an AI provider and return the response."""
     if os.environ.get("AOS_AI_OFFLINE"):
         return ""
-<<<<<< codex/implement-dynamic-ai-provider-loader
-=======
     _load_providers()
     if provider_name is None:
         meta = os.environ.get("AOS_TASK_META")
@@ -101,9 +70,8 @@ def call_llm(prompt: str, provider_name: str | None = None) -> str:
                 provider_name = json.loads(meta).get("provider")
             except Exception:
                 provider_name = None
->>>>>> main
     provider_name = provider_name or os.environ.get("AOS_AI_PROVIDER", "openai")
-    provider = get_provider(provider_name)
+    provider = loader.get_provider(provider_name)
     return provider.generate(prompt)
 
 
