@@ -1,5 +1,5 @@
 from fastapi import FastAPI, HTTPException
-from scripts.agent_orchestrator import get_stats
+from scripts.agent_orchestrator import get_stats, get_cached_stats
 from scripts import aos_audit as audit
 from fastapi.responses import JSONResponse
 
@@ -15,7 +15,10 @@ def get_metrics(id: str):
     try:
         data = get_stats(id)
     except RuntimeError as exc:
-        return JSONResponse(status_code=502, content={"error": str(exc)})
+        cached = get_cached_stats(id)
+        return JSONResponse(
+            status_code=502, content={"error": str(exc), "data": cached}
+        )
     if data is None:
         raise HTTPException(status_code=404, detail="branch not found")
     audit.log("get_metrics", branch=id, user="api")

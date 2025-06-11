@@ -11,7 +11,7 @@ class MetricsFailureTest(unittest.TestCase):
             client = TestClient(app)
             resp = client.get("/branches/1/metrics")
             self.assertEqual(resp.status_code, 502)
-            self.assertEqual(resp.json(), {"error": "boom"})
+            self.assertEqual(resp.json()["error"], "boom")
 
 
 if __name__ == "__main__":

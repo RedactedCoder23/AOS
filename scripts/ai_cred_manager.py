@@ -9,6 +9,8 @@ import sys
 from cryptography.fernet import Fernet
 import pwd
 import grp
+import urllib.request
+import urllib.error
 
 from scripts import aos_audit
 from scripts.aos_audit import log_entry
@@ -24,6 +26,8 @@ SOCK_PATH = os.environ.get("AICRED_SOCK", "/run/ai-cred.sock")
 DROP_USER = os.environ.get("AICRED_DROP_USER", "branch-manager")
 DROP_GROUP = os.environ.get("AICRED_DROP_GROUP", "branchd")
 ACL_PATH = os.environ.get("AICRED_ACL", "/etc/ai-cred/acl.json")
+VAULT_ADDR = os.environ.get("VAULT_ADDR")
+ENV_PATH = os.path.expanduser("~/.aos/secrets.env")
 
 
 class CredentialsUnavailableError(RuntimeError):
@@ -68,6 +72,69 @@ def _check_group(group: str | None, uid: int | None = None) -> bool:
         return grp.getgrnam(group).gr_gid in gids
     except Exception:
         return False
+
+
+def _env_load() -> dict:
+    if not os.path.exists(ENV_PATH):
+        return {}
+    with open(ENV_PATH, "r", encoding="utf-8") as fh:
+        data = {}
+        for line in fh:
+            if "=" in line:
+                k, v = line.strip().split("=", 1)
+                data[k] = v
+        return data
+
+
+def _env_save(data: dict) -> None:
+    os.makedirs(os.path.dirname(ENV_PATH), exist_ok=True)
+    with open(ENV_PATH, "w", encoding="utf-8") as fh:
+        for k, v in data.items():
+            fh.write(f"{k}={v}\n")
+
+
+def _vault_get(key: str) -> str | None:
+    if not VAULT_ADDR:
+        return None
+    url = f"{VAULT_ADDR}/v1/secret/data/{key}"
+    try:
+        with urllib.request.urlopen(url) as resp:
+            data = json.load(resp)
+            return data.get("data", {}).get("data", {}).get("value")
+    except Exception:
+        return None
+
+
+def _vault_set(key: str, value: str) -> bool:
+    if not VAULT_ADDR:
+        return False
+    url = f"{VAULT_ADDR}/v1/secret/data/{key}"
+    req = urllib.request.Request(
+        url,
+        method="POST",
+        data=json.dumps({"data": {"value": value}}).encode(),
+        headers={"Content-Type": "application/json"},
+    )
+    try:
+        with urllib.request.urlopen(req):
+            return True
+    except Exception:
+        return False
+
+
+def vault_get(key: str) -> str:
+    val = _vault_get(key)
+    if val is not None:
+        return val
+    env = _env_load()
+    return env.get(key, "")
+
+
+def vault_set(key: str, value: str) -> None:
+    if not _vault_set(key, value):
+        data = _env_load()
+        data[key] = value
+        _env_save(data)
 
 
 def _fernet():

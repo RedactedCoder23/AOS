@@ -556,6 +556,11 @@ Next agent must:
 - Restored flake8 failure on CI and pinned dev dependencies.
 - Documented dependency bumps note in README.
 
+## [2025-06-12 02:00 UTC] provider safety & secrets [agent-mem]
+- Added flake8 plugin and pytest warning for missing provider generate().
+- Implemented metrics circuit breaker with cached data fallback.
+- Added Vault-backed secrets CLI with .env fallback.
+
 ## Open Tasks
 - Expand developer documentation and keep diagrams updated.
 - Review all subsystems for missing comments; use `AosError` consistently.

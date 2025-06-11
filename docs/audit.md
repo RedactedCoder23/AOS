@@ -30,3 +30,15 @@ New actions recorded:
 - `get_metrics` – fetching branch metrics
 - `get_coverage` – retrieving coverage history
 - `merge_blocked` – merge denied due to low coverage
+
+## Secrets Management
+
+The `aos secrets` command stores sensitive values either in HashiCorp Vault
+(if `VAULT_ADDR` is set) or a local `.env` file under `~/.aos/`. Example:
+
+```bash
+aos secrets set api_key abc123
+aos secrets get api_key
+```
+
+When Vault is unreachable the CLI falls back to the `.env` file.
