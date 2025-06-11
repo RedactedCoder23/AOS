@@ -11,6 +11,7 @@ LOG_PATH = os.environ.get("AOS_AUDIT_LOG", "/var/log/aos-audit.log")
 
 def log_entry(user: str, action: str, resource: str, result: str) -> None:
     """Append a single audit record."""
+    path = os.environ.get("AOS_AUDIT_LOG", LOG_PATH)
     entry = {
         "timestamp": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
         "user": user,
@@ -18,8 +19,8 @@ def log_entry(user: str, action: str, resource: str, result: str) -> None:
         "resource": resource,
         "result": result,
     }
-    os.makedirs(os.path.dirname(LOG_PATH), exist_ok=True)
-    with open(LOG_PATH, "a") as fh:
+    os.makedirs(os.path.dirname(path), exist_ok=True)
+    with open(path, "a") as fh:
         json.dump(entry, fh)
         fh.write("\n")
 
@@ -37,6 +38,12 @@ def iter_entries(path: str) -> Iterable[Dict]:
 
 def show(args):
     filters = {}
+    if args.user:
+        filters["user"] = args.user
+    if args.action:
+        filters["action"] = args.action
+    if args.resource:
+        filters["resource"] = args.resource
     for flt in args.filter:
         if ":" in flt:
             k, v = flt.split(":", 1)
@@ -58,6 +65,9 @@ def main():
 
     show_p = sub.add_parser("show")
     show_p.add_argument("--file", default=LOG_PATH)
+    show_p.add_argument("--user")
+    show_p.add_argument("--action")
+    show_p.add_argument("--resource")
     show_p.add_argument(
         "--filter",
         action="append",

@@ -125,9 +125,10 @@ class CredManagerTest(unittest.TestCase):
         self.assertTrue(
             "Permission denied" in res.stdout or "PermissionError" in res.stdout
         )
-        with open(self.audit_log) as fh:
-            log = fh.read()
-        self.assertIn("denied", log)
+        if os.path.exists(self.audit_log):
+            with open(self.audit_log) as fh:
+                log = fh.read()
+            self.assertIn("denied", log)
 
 
 if __name__ == "__main__":

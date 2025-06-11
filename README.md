@@ -325,3 +325,11 @@ See [AGENT.md](AGENT.md) and [PATCHLOG.md](PATCHLOG.md) for development logs. Th
 
 AOS is released under the [MIT License](LICENSE). This permits reuse, modification and distribution
 as long as the license notice is included. The project is provided **as is** without warranty.
+
+## Demo Quickstart
+```bash
+git clone …
+cd AOS-main
+docker-compose up --build
+```
+Open http://localhost:8080 in your browser

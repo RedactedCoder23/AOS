@@ -4,6 +4,7 @@ import json
 import os
 import queue
 import subprocess
+import sys
 from flask import Flask, Response, jsonify, request, send_from_directory
 from .agent_orchestrator import AgentOrchestrator
 from .aos_audit import log_entry
@@ -45,7 +46,7 @@ class _SSE:
 def kernel_ipc(cmd, payload=None):
     """Call host binary if available, otherwise return stub values."""
     host = os.path.join("./build", "host_test")
-    if os.path.exists(host):
+    if os.path.exists(host) and not os.environ.get("AOS_IPC_LOCAL"):
         args = [host, "--ipc", cmd]
         if payload and "branch_id" in payload:
             args.append(str(payload["branch_id"]))
@@ -56,10 +57,17 @@ def kernel_ipc(cmd, payload=None):
             return out
     if cmd == "create":
         return 1 + len(service.branches)
+    if cmd == "list":
+        return service.list()
+    if cmd == "merge":
+        bid = payload.get("branch_id", 0) if payload else 0
+        return 0 if bid in service.branches else -22
     if cmd == "snapshot":
-        return len(service.branches) + 10
+        bid = payload.get("branch_id", 0) if payload else 0
+        return len(service.branches) + 10 if bid in service.branches else -22
     if cmd == "delete":
-        return 0
+        bid = payload.get("branch_id", 0) if payload else 0
+        return 0 if bid in service.branches else -22
     return 0
 
 
@@ -68,7 +76,8 @@ class BranchService:
         self.branches = {}
         self.logger = logger
 
-    def create(self):
+    def create(self, uid: int | None = None):
+        uid = uid if uid is not None else os.getuid()
         branch_id = kernel_ipc("create")
         vm_path = f"/var/lib/branches/branch-{branch_id}.img"
         proc = subprocess.Popen(
@@ -88,9 +97,9 @@ class BranchService:
             "sock": f"/tmp/fc-{branch_id}.sock",
             "status": "RUNNING",
             "last_snapshot_id": 0,
-            "owner_uid": os.getuid(),
+            "owner_uid": uid,
         }
-        log_entry(str(os.getuid()), "branch_create", f"branch:{branch_id}", "success")
+        log_entry(str(uid), "branch_create", f"branch:{branch_id}", "success")
         flask_sse.publish({"branch_id": branch_id}, event="branch-created")
         return branch_id
 
@@ -104,59 +113,62 @@ class BranchService:
             for bid, info in self.branches.items()
         ]
 
-    def merge(self, bid):
+    def merge(self, bid, uid: int | None = None):
+        uid = uid if uid is not None else os.getuid()
         info = self.branches.get(bid)
-        if info and info.get("owner_uid") != os.getuid():
-            log_entry(str(os.getuid()), "branch_merge", f"branch:{bid}", "denied")
+        if info and info.get("owner_uid") != uid:
+            log_entry(str(uid), "branch_merge", f"branch:{bid}", "denied")
             return {"error": "permission denied"}
         rc = kernel_ipc("merge", {"branch_id": bid})
+        if isinstance(rc, int) and rc < 0:
+            log_entry(str(uid), "branch_merge", f"branch:{bid}", "denied")
+            return {"error": "invalid branch"}
         try:
             out = subprocess.check_output(
                 [
-                    "python3",
+                    sys.executable,
                     os.path.join(BASE, "merge_ai.py"),
                     str(bid),
                 ],
                 text=True,
             ).strip()
-            if isinstance(rc, int) and rc < 0:
-                log_entry(str(os.getuid()), "branch_merge", f"branch:{bid}", "denied")
-                return {"error": "permission denied"}
             flask_sse.publish({"branch_id": bid}, event="branch-merged")
-            log_entry(str(os.getuid()), "branch_merge", f"branch:{bid}", "success")
+            log_entry(str(uid), "branch_merge", f"branch:{bid}", "success")
             return {"merged": rc == 0, "detail": out}
         except subprocess.CalledProcessError as e:
             return {"error": e.output.strip()}
 
-    def snapshot(self, bid):
+    def snapshot(self, bid, uid: int | None = None):
+        uid = uid if uid is not None else os.getuid()
         info = self.branches.get(bid)
-        if info and info.get("owner_uid") != os.getuid():
-            log_entry(str(os.getuid()), "branch_snapshot", f"branch:{bid}", "denied")
+        if info and info.get("owner_uid") != uid:
+            log_entry(str(uid), "branch_snapshot", f"branch:{bid}", "denied")
             return {"error": "permission denied"}
         sid = kernel_ipc("snapshot", {"branch_id": bid})
         if isinstance(sid, int) and sid < 0:
-            log_entry(str(os.getuid()), "branch_snapshot", f"branch:{bid}", "denied")
+            log_entry(str(uid), "branch_snapshot", f"branch:{bid}", "denied")
             return {"error": "invalid branch"}
         if bid in self.branches:
             self.branches[bid]["last_snapshot_id"] = sid
         flask_sse.publish(
             {"branch_id": bid, "snapshot_id": sid}, event="branch-snapshot"
         )
-        log_entry(str(os.getuid()), "branch_snapshot", f"branch:{bid}", "success")
+        log_entry(str(uid), "branch_snapshot", f"branch:{bid}", "success")
         return {"snapshot_id": sid}
 
-    def delete(self, bid):
+    def delete(self, bid, uid: int | None = None):
+        uid = uid if uid is not None else os.getuid()
         info = self.branches.get(bid)
-        if info and info.get("owner_uid") != os.getuid():
-            log_entry(str(os.getuid()), "branch_delete", f"branch:{bid}", "denied")
+        if info and info.get("owner_uid") != uid:
+            log_entry(str(uid), "branch_delete", f"branch:{bid}", "denied")
             return {"error": "permission denied"}
         rc = kernel_ipc("delete", {"branch_id": bid})
         if isinstance(rc, int) and rc < 0:
-            log_entry(str(os.getuid()), "branch_delete", f"branch:{bid}", "denied")
+            log_entry(str(uid), "branch_delete", f"branch:{bid}", "denied")
             return {"error": "invalid branch"}
         self.branches.pop(bid, None)
         flask_sse.publish({"branch_id": bid}, event="branch-deleted")
-        log_entry(str(os.getuid()), "branch_delete", f"branch:{bid}", "success")
+        log_entry(str(uid), "branch_delete", f"branch:{bid}", "success")
         return {"success": True}
 
 
@@ -197,7 +209,8 @@ def import_graph():
 
 @app.route("/branches", methods=["POST"])
 def create_branch():
-    bid = service.create()
+    uid = int(request.environ.get("REMOTE_USER", os.getuid()))
+    bid = service.create(uid)
     return jsonify({"branch_id": bid})
 
 
@@ -208,22 +221,28 @@ def list_branches():
 
 @app.route("/branches/<int:bid>/merge", methods=["POST"])
 def merge_branch(bid):
-    return jsonify(service.merge(bid))
+    uid = int(request.environ.get("REMOTE_USER", os.getuid()))
+    res = service.merge(bid, uid)
+    if "error" in res:
+        return jsonify(res), 404
+    return jsonify(res)
 
 
 @app.route("/branches/<int:bid>/snapshot", methods=["POST"])
 def snapshot_branch(bid):
-    res = service.snapshot(bid)
+    uid = int(request.environ.get("REMOTE_USER", os.getuid()))
+    res = service.snapshot(bid, uid)
     if "error" in res:
-        return jsonify(res), 400
+        return jsonify(res), 404
     return jsonify(res)
 
 
 @app.route("/branches/<int:bid>", methods=["DELETE"])
 def delete_branch(bid):
-    res = service.delete(bid)
+    uid = int(request.environ.get("REMOTE_USER", os.getuid()))
+    res = service.delete(bid, uid)
     if "error" in res:
-        return jsonify(res), 400
+        return jsonify(res), 404
     return jsonify(res)
 
 
