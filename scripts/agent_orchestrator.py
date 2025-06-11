@@ -99,8 +99,13 @@ def _load_providers() -> None:
         data = {}
     for name, info in data.items():
         try:
-            mod = importlib.import_module(f"scripts.ai_providers.{info['module']}")
-            cls = getattr(mod, info["class"])
+            if isinstance(info, str):
+                module_path, cls_name = info.rsplit(".", 1)
+            else:  # backward compat
+                module_path = f"scripts.ai_providers.{info['module']}"
+                cls_name = info["class"]
+            mod = importlib.import_module(module_path)
+            cls = getattr(mod, cls_name)
             PROVIDERS[name] = cls(name)
         except Exception:  # pragma: no cover - plugin errors
             continue
