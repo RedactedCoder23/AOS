@@ -1,13 +1,37 @@
 #!/usr/bin/env python3
-"""Backend helper to query OpenAI API."""
+"""Backend helper to query AI provider plugins."""
+import importlib
+import json
 import os
 import sys
-from scripts.ai_cred_client import get_api_key
+from scripts.ai_providers.base import AIProvider
 
-try:
-    import openai
-except Exception:  # pragma: no cover - optional dependency
-    openai = None
+PROVIDERS: dict[str, AIProvider] = {}
+
+
+def _load_providers() -> None:
+    """Load provider plugins from ``providers.json``."""
+    global PROVIDERS
+    if PROVIDERS:
+        return
+    cfg_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), "providers.json")
+    try:
+        with open(cfg_path, "r", encoding="utf-8") as fh:
+            data = json.load(fh)
+    except Exception:  # pragma: no cover - config missing
+        data = {}
+    for name, info in data.items():
+        try:
+            mod = importlib.import_module(f"scripts.ai_providers.{info['module']}")
+            cls = getattr(mod, info["class"])
+            PROVIDERS[name] = cls(name)
+        except Exception:  # pragma: no cover - plugin errors
+            continue
+
+
+def _get_provider(name: str):
+    _load_providers()
+    return PROVIDERS.get(name)
 
 PROMPT_ERR = "usage: ai_backend.py <prompt>"
 
@@ -16,33 +40,24 @@ def main():
     if len(sys.argv) < 2:
         print(PROMPT_ERR, file=sys.stderr)
         return 1
+
+    provider_name = os.environ.get("AOS_AI_PROVIDER", "openai")
+    provider = _get_provider(provider_name)
+    if provider is None:
+        print(f"ERROR: provider '{provider_name}' not available", file=sys.stderr)
+        return 2
+    prompt = sys.argv[1]
+
     if os.environ.get("AOS_AI_OFFLINE"):
-        prompt = sys.argv[1]
         print(f"[mock-ai] response to: {prompt}")
         return 0
 
     try:
-        key = get_api_key("openai")
-    except KeyError:
-        print(
-            "ERROR: no AI credential for 'openai' \u2014 run `ai-cred set --service=openai <key>`",
-            file=sys.stderr,
-        )
-        return 1
-    if openai is None:
-        print("ERROR: openai package missing", file=sys.stderr)
-        return 2
-    client = openai.OpenAI(api_key=key)
-    prompt = sys.argv[1]
-    try:
-        resp = client.chat.completions.create(
-            model="gpt-3.5-turbo",
-            messages=[{"role": "user", "content": prompt}],
-        )
-        print(resp.choices[0].message.content.strip())
-    except Exception as e:
+        out = provider.generate(prompt)
+    except Exception as e:  # pragma: no cover - provider error
         print(f"ERROR: {e}", file=sys.stderr)
         return 3
+    print(out)
     return 0
 
 

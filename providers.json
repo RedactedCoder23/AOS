@@ -1,0 +1,4 @@
+{
+  "openai": {"module": "openai_provider", "class": "OpenAIProvider"},
+  "local-llama": {"module": "mock_provider", "class": "MockProvider"}
+}

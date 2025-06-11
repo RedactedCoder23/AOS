@@ -146,13 +146,26 @@ function AgentPanel({ branchId }) {
   );
 }
 
+function MetricsPanel({ branchId }) {
+  const [metrics, setMetrics] = React.useState(null);
+  React.useEffect(() => {
+    fetch(`/branches/${branchId}/metrics`).then(r => r.json()).then(setMetrics).catch(() => {});
+  }, [branchId]);
+  if (!metrics) return React.createElement('div', null, 'Loading metrics...');
+  return React.createElement('div', { className: 'metrics-panel' },
+    React.createElement('div', null, `Agents: ${metrics.agents_spawned}`),
+    React.createElement('div', null, `Success: ${Math.round(metrics.success_rate * 100)}%`),
+    React.createElement('div', null, `Avg time: ${metrics.avg_runtime.toFixed(2)}s`));
+}
+
 function BranchNode({ data, onMerge, onSnapshot, onDelete }) {
   return React.createElement('div', { className: 'branch-node' },
     `${data.name} `,
     React.createElement('button', { onClick: onSnapshot }, 'Checkpoint'),
     React.createElement('button', { onClick: onMerge }, 'Merge'),
     React.createElement('button', { onClick: onDelete }, 'Delete'),
-    React.createElement(AgentPanel, { branchId: data.id }));
+    React.createElement(AgentPanel, { branchId: data.id }),
+    React.createElement(MetricsPanel, { branchId: data.id }));
 }
 
 function App() {
