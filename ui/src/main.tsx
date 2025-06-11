@@ -1,3 +1,4 @@
+<<<<<< codex/add-bash-completion-for-aos-cli
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
@@ -5,6 +6,16 @@ import BranchList from './pages/BranchList';
 import BranchDetail from './pages/BranchDetail';
 import AdminPage from './pages/AdminPage';
 import RoleGuard from './RoleGuard';
+=======
+import React from "react";
+import ReactDOM from "react-dom/client";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import BranchList from "./pages/BranchList";
+import BranchDetail from "./pages/BranchDetail";
+import AdminPage from "./pages/AdminPage";
+import Marketplace from "./pages/Marketplace";
+import RoleGuard from "./RoleGuard";
+>>>>>> main
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
@@ -12,6 +23,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
       <Routes>
         <Route path="/" element={<BranchList />} />
         <Route path="/branches/:id" element={<BranchDetail />} />
+        <Route path="/marketplace" element={<Marketplace />} />
         <Route
           path="/admin"
           element={

@@ -51,4 +51,14 @@ export async function getBranches(limit = 10, cursor?: string) {
   return res.json();
 }
 
-export default { login, refresh, getBranches, getRole };
+export async function installPlugin(repo: string) {
+  const res = await fetch("/plugins/install", {
+    method: "POST",
+    headers: { ...headers(), "Content-Type": "application/json" },
+    body: JSON.stringify({ repo }),
+  });
+  if (!res.ok) throw new Error("install failed");
+  return res.json();
+}
+
+export default { login, refresh, getBranches, installPlugin, getRole };
