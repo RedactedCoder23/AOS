@@ -554,3 +554,8 @@ Next agent must:
 ## [2025-06-11 06:06 UTC] meta-log sweep [agent-mem]
 - Archived closed batons and updated remaining tasks.
 >>>>>> main
+
+## [2025-06-12 01:00 UTC] ci hardening & lint restore [agent-mem]
+- Added buildx workflow step with caching for demo container.
+- Restored flake8 failure on CI and pinned dev dependencies.
+- Documented dependency bumps note in README.

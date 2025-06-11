@@ -18,3 +18,36 @@ jobs:
       - name: Run fast CI
         run: ./scripts/ci-fast.sh
 
+  ci-full:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '20'
+      - name: Install deps
+        run: pip install -r requirements.txt pre-commit
+      - name: Run full tests
+        run: ./scripts/ci-full.sh
+      - name: Set up buildx
+        uses: docker/setup-buildx-action@v3
+      - name: Cache Docker layers
+        uses: actions/cache@v4
+        with:
+          path: /tmp/.buildx-cache
+          key: ${{ runner.os }}-buildx-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-buildx-
+      - name: Build demo image
+        uses: docker/build-push-action@v5
+        with:
+          context: demo
+          push: false
+          load: false
+          tags: aos-demo:ci
+          cache-from: type=local,src=/tmp/.buildx-cache
+          cache-to: type=local,dest=/tmp/.buildx-cache,mode=max
+

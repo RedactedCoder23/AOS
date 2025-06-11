@@ -17,7 +17,13 @@ class MergeGatekeeperTest(unittest.TestCase):
         with open(os.path.join(self.tmp.name, "config.yml"), "w") as fh:
             fh.write("coverage_threshold: 75.0\n")
         data = {"totals": {"percent_covered": 70.0}}
-        with open(os.path.join(self.tmp.name, ".aos/branches/foo/coverage-20250101.json"), "w") as fh:
+        with open(
+            os.path.join(
+                self.tmp.name,
+                ".aos/branches/foo/coverage-20250101.json",
+            ),
+            "w",
+        ) as fh:
             json.dump(data, fh)
 
     def tearDown(self):
