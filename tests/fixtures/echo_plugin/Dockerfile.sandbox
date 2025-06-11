@@ -1,0 +1,5 @@
+FROM python:3.11-slim
+WORKDIR /app
+COPY echo_plugin.py .
+COPY run_plugin.py .
+ENTRYPOINT ["python", "run_plugin.py"]

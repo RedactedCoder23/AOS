@@ -8,4 +8,5 @@ flask~=3.1
 PyYAML~=6.0
 psutil~=7.0
 fastapi~=0.115
+docker~=7.0
 

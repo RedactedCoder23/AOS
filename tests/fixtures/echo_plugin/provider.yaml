@@ -1,0 +1,4 @@
+name: echo
+version: "1.0"
+entry_class: echo_plugin.Echo
+permissions: []
