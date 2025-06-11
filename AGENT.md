@@ -594,3 +594,8 @@ Next agent must:
 - Integrate web UI with live branch data and secure HTTP service.
 - Expand audit log coverage across subsystems.
 - Expand smoke tests with CI coverage and rollback support; keep ROADMAP updated and monitor community compliance.
+
+## [2025-06-11 08:28 UTC] queue autoscaler added [agent-mem]
+- Implemented autoscaler daemon polling Redis and scaling Docker workers.
+- Added unit tests mocking Redis and Docker APIs.
+- Fixed plugin CLI test cleanup to avoid cross-test side effects.
