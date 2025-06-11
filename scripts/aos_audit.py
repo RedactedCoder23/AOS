@@ -36,6 +36,11 @@ def log(action: str, **fields) -> None:
         fh.write("\n")
 
 
+def warn(message: str) -> None:
+    """Log a warning with ``message`` field."""
+    log("warning", message=message)
+
+
 def iter_entries(path: str) -> Iterable[Dict]:
     if not os.path.exists(path):
         return []

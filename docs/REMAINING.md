@@ -1,9 +1,10 @@
 # Remaining Work
 
-The following areas are not yet fully implemented and require future attention:
+Open tasks still pending implementation:
 
 - Expand audit log coverage across all subsystems.
 - Improve documentation for newly added subsystems and update diagrams regularly.
 
-These tasks are tracked in `AGENT.md` and should be addressed in subsequent versions.
+Progress on credential fallback, provider contract checks and orchestrator error
+mapping has landed. Remaining items are tracked in `AGENT.md`.
 

@@ -797,6 +797,7 @@ Next agent must:
 - `make test-integration`
 - `pytest -q tests/python/test_agent_runner_cli.py`
 
+<<<<<< codex/stabilize-dev-environment-and-ci-pipeline
 ## [2025-06-11 06:08 UTC] dev container and ci split [codex]
 ### Changes
 - Added .devcontainer.json and Dockerfile.dev.
@@ -808,4 +809,25 @@ Next agent must:
 - `make fast-test`
 - `./scripts/ci-fast.sh`
 - *(docker build skipped: no docker available)*
+=======
+## History (done)
+### [2025-06-12 00:00 UTC] branch target fix [codex]
+- Missing make target resolved; baton closed.
+
+### [2025-06-11 06:05 UTC] credential fallback hardening [agent-mem]
+- ai_cred_manager raises CredentialsUnavailableError when DB missing.
+- Updated docs and audit warn helper.
+
+
+### [2025-06-11 06:06 UTC] provider contract guard [agent-mem]
+- Added unit test verifying all providers override generate()
+
+
+### [2025-06-11 06:06 UTC] orchestrator failure-path coverage [agent-mem]
+- Added 502 mapping for RuntimeError in metrics API and new unit test.
+
+
+### [2025-06-11 06:06 UTC] meta-log sweep [agent-mem]
+- Moved resolved baton passes to History (done). Updated docs/REMAINING.md.
+>>>>>> main
 
