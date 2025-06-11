@@ -527,6 +527,17 @@ Next agent must:
 
 
 
+<<<<<< codex/stabilize-dev-environment-and-ci-pipeline
+## [2025-06-11 06:08 UTC] dev container and ci split [codex]
+- Added Dockerfile.dev and .devcontainer.json for slim setup.
+- Moved verify_all.sh to scripts/ci-full.sh and created ci-fast.sh.
+- Updated Makefile, docs and workflows for two-stage CI.
+- Pinned dependencies with ~= constraints.
+
+Next agent must:
+- Investigate missing 'branch' make target causing verify_all.sh failure
+
+=======
 ## History (done)
 ### [2025-06-12 00:00 UTC] branch target fix [codex]
 - Resolved missing Makefile target; smoke tests restored.
@@ -542,3 +553,4 @@ Next agent must:
 
 ## [2025-06-11 06:06 UTC] meta-log sweep [agent-mem]
 - Archived closed batons and updated remaining tasks.
+>>>>>> main

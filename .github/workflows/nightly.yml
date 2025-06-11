@@ -5,16 +5,18 @@ on:
     - cron: '0 0 * * *'
 
 jobs:
-  build:
+  nightly:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '20'
       - name: Install deps
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y libncurses5-dev libncursesw5-dev pkg-config
-      - name: Build and test
-        run: |
-          make all
-          make test-unit
-          make test-integration
+        run: pip install -r requirements.txt pre-commit
+      - name: Run full CI
+        run: ./scripts/ci-full.sh
+
