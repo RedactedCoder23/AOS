@@ -6,6 +6,7 @@ import BranchDiff from "../components/BranchDiff";
 export default function BranchDetail() {
   const { id } = useParams();
   const [data, setData] = useState<any[]>([]);
+  const [status, setStatus] = useState<string>("unknown");
 
   useEffect(() => {
     if (!id) return;
@@ -30,9 +31,29 @@ export default function BranchDetail() {
     };
   }, [id]);
 
+  useEffect(() => {
+    if (!id) return;
+    const ws = new WebSocket(`ws://${window.location.host}/ws/branches/${id}`);
+    ws.onmessage = (ev) => {
+      try {
+        const msg = JSON.parse(ev.data);
+        if (msg.status) setStatus(msg.status);
+      } catch {}
+    };
+    return () => ws.close();
+  }, [id]);
+
+  const rollback = async () => {
+    if (!id) return;
+    if (!confirm("Rollback branch?")) return;
+    await fetch(`/branches/${id}/rollback`, { method: "POST" });
+  };
+
   return (
     <div>
       <h2>Branch {id}</h2>
+      <p>Status: {status}</p>
+      <button onClick={rollback}>Rollback</button>
       <LineChart width={300} height={200} data={data}>
         <Line type="monotone" dataKey="cpu" stroke="#8884d8" />
         <Line type="monotone" dataKey="coverage" stroke="#82ca9d" />
