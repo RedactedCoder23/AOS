@@ -4,6 +4,7 @@ import queue
 import subprocess
 import threading
 import time
+from collections import OrderedDict
 import shlex
 import importlib
 from dataclasses import dataclass
@@ -29,13 +30,43 @@ TASKS_PER_AGENT = int(os.environ.get("TASKS_PER_AGENT", "3"))
 METRICS: Dict[int, Dict[str, float]] = {}
 branch_stats: Dict[str, Dict] = {}
 _stats_lock = threading.Lock()
+_stats_cache: "OrderedDict[str, Dict]" = OrderedDict()
+_cache_limit = 20
+_failure_count = 0
+_break_until = 0.0
 
 
 def get_stats(branch_id: str) -> Dict | None:
-    """Return latest stats for ``branch_id`` copied from memory."""
-    with _stats_lock:
-        data = branch_stats.get(str(branch_id))
-        return json.loads(json.dumps(data)) if data else None
+    """Return latest stats for ``branch_id`` copied from memory.
+
+    Implements a simple circuit breaker to avoid repeated failures.
+    Successful calls populate an LRU cache used on failure paths.
+    """
+    global _failure_count, _break_until
+
+    now = time.time()
+    if now < _break_until:
+        raise RuntimeError("metrics temporarily unavailable")
+    try:
+        with _stats_lock:
+            data = branch_stats.get(str(branch_id))
+            result = json.loads(json.dumps(data)) if data else None
+        if result is not None:
+            if len(_stats_cache) >= _cache_limit:
+                _stats_cache.popitem(last=False)
+            _stats_cache[str(branch_id)] = result
+        _failure_count = 0
+        return result
+    except Exception as exc:
+        _failure_count += 1
+        if _failure_count >= 3:
+            _break_until = now + 5
+        raise RuntimeError(str(exc))
+
+
+def get_cached_stats(branch_id: str) -> Dict | None:
+    """Return cached stats for ``branch_id`` if available."""
+    return _stats_cache.get(str(branch_id))
 
 
 try:
