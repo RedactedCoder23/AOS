@@ -28,6 +28,9 @@ export default function BranchList() {
         ))}
       </ul>
       {cursor && <button onClick={load}>More</button>}
+      <p>
+        <a href="/marketplace">Marketplace</a>
+      </p>
     </div>
   );
 }

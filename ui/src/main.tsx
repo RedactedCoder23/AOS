@@ -4,6 +4,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import BranchList from "./pages/BranchList";
 import BranchDetail from "./pages/BranchDetail";
 import AdminPage from "./pages/AdminPage";
+import Marketplace from "./pages/Marketplace";
 import RoleGuard from "./RoleGuard";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
@@ -12,6 +13,7 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
       <Routes>
         <Route path="/" element={<BranchList />} />
         <Route path="/branches/:id" element={<BranchDetail />} />
+        <Route path="/marketplace" element={<Marketplace />} />
         <Route
           path="/admin"
           element={
