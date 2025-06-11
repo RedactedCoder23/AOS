@@ -1,15 +1,16 @@
 #!/usr/bin/env python3
 """Backend helper to query AI provider plugins."""
-import importlib
-import json
 import os
 import sys
+<<<<<< codex/implement-plugin-loader-hot-reload
+from scripts.ai_providers import loader
 from scripts.ai_providers.base import AIProvider
 
-PROVIDERS: dict[str, AIProvider] = {}
+PROVIDERS: dict[str, AIProvider] = loader.PROVIDERS
 
 
 def _load_providers() -> None:
+<<<<<< codex/add-echo-and-openai-provider-plugins
     """Load provider plugins from ``providers.json``."""
     if PROVIDERS:
         return
@@ -33,11 +34,17 @@ def _load_providers() -> None:
             PROVIDERS[name] = cls(name)
         except Exception:  # pragma: no cover - plugin errors
             continue
+=======
+    """Compatibility wrapper around :func:`loader.load_providers`."""
+    loader.load_providers()
+>>>>>> main
 
 
 def _get_provider(name: str):
-    _load_providers()
-    return PROVIDERS.get(name)
+    return loader.get_provider(name)
+=======
+from scripts.ai_providers.loader import get_provider
+>>>>> main
 
 
 def get_provider(name: str):
@@ -54,8 +61,9 @@ def main():
         return 1
 
     provider_name = os.environ.get("AOS_AI_PROVIDER", "openai")
-    provider = _get_provider(provider_name)
-    if provider is None:
+    try:
+        provider = get_provider(provider_name)
+    except ValueError:
         print(f"ERROR: provider '{provider_name}' not available", file=sys.stderr)
         return 2
     prompt = sys.argv[1]

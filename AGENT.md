@@ -523,3 +523,11 @@ Next agent must:
 Next agent must:
 - Investigate missing 'branch' make target causing verify_all.sh failure
 
+## [2025-06-11 03:45 UTC] cli provider override [codex]
+- Added `--provider` flag to agent_runner and passed meta via `AOS_TASK_META`.
+- merge_ai now reads the provider override from task metadata.
+- Documented new CLI option in README.
+
+Next agent must:
+- Investigate missing 'branch' make target causing verify_all.sh failure
+
