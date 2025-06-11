@@ -1,34 +1,41 @@
 # Project Layout
 
-This document outlines the purpose of each top-level directory in the AOS repository.
+This overview reflects the directory structure of AOS as of v0.3.0.
 
-| Path | Subsystem | Phase | Status |
-|------|-----------|-------|--------|
-| `apps_src/` | host | 6 | ✔ |
-| `bare_metal_os/` | kernel | 1 | ✔ |
-| `boot/` | kernel | 1 | ✔ |
-| `docs/` | tooling | 0 | ✔ |
-| `examples/` | host | 7 | ✔ |
-| `include/` | kernel | 1 | ✔ |
-| `scripts/` | tooling | 0 | ✔ |
-| `src/` | host | 3 | ✔ |
-| `subsystems/` | host | 2 | ✔ |
-| `tests/` | tooling | 0 | ✔ |
-| `ui/` | UI | 9 | ✔ |
-| `Makefile` | tooling | 0 | ✔ |
-| `AGENT.md` | tooling | 0 | ✔ |
-| `PATCHLOG.md` | tooling | 0 | ✔ |
-| `PROJECT_LAYOUT.md` | tooling | 0 | ✔ |
-| `ROADMAP.md` | tooling | 0 | ✔ |
-| `README.md` | tooling | 0 | ✔ |
-| `SECURITY.md` | tooling | 0 | ✔ |
-| `CODE_OF_CONDUCT.md` | tooling | 0 | ✔ |
-| `CONTRIBUTING.md` | tooling | 0 | ✔ |
-| `LICENSE` | tooling | 0 | ✔ |
-| `mappings.json` | tooling | 0 | ✔ |
-| `pyproject.toml` | tooling | 0 | ✔ |
-| `requirements.txt` | tooling | 0 | ✔ |
-| `requirements-dev.txt` | tooling | 0 | ✔ |
+```text
+.
+├── apps_src/              - example userland programs
+├── bare_metal_os/         - kernel sources for the bare metal build
+│   └── interpreter/       - simple command interpreter
+├── boot/                  - GRUB configuration and boot assets
+├── demo/                  - containerised demo packaging
+├── docs/
+│   └── archive/           - historical notes kept for reference
+├── examples/              - subsystem demonstration programs
+├── include/               - shared C headers
+├── scripts/
+│   ├── ai_providers/      - AI provider plugin modules
+│   ├── tests/             - tests for helper scripts
+│   └── *.py               - development utilities and CI helpers
+├── src/
+│   ├── generated/         - placeholder for generated code
+│   ├── tests/             - unit tests for src modules
+│   └── *.c                - host runtime implementation
+├── subsystems/
+│   ├── ai/
+│   ├── branch/
+│   ├── dev/
+│   ├── fs/
+│   ├── memory/
+│   ├── net/
+│   └── security/
+├── tests/
+│   ├── c/                 - C subsystem tests
+│   ├── integration/       - integration tests
+│   ├── python/            - Python tests
+│   └── unit/              - additional C unit tests
+└── ui/                    - web front-end sources
+```
 
-Other files at the repository root include build artifacts under `build/` and
-generated logs such as `AOS-CHECKLIST.log`.
+Key root files include `Makefile`, `AGENT.md`, `PATCHLOG.md`, `ROADMAP.md`,
+`providers.json`, `mappings.json` and the Python requirements files.
