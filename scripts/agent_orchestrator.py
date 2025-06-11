@@ -97,9 +97,32 @@ def calc_desired_agents(stats: LoadStats) -> int:
 
 <<<<<< codex/implement-plugin-loader-hot-reload
 def _load_providers() -> None:
+<<<<<< codex/add-echo-and-openai-provider-plugins
+    if PROVIDERS:
+        return
+    cfg = os.path.join(os.path.dirname(os.path.dirname(__file__)), "providers.json")
+    try:
+        with open(cfg, "r", encoding="utf-8") as fh:
+            data = json.load(fh)
+    except Exception:  # pragma: no cover - missing config
+        data = {}
+    for name, info in data.items():
+        try:
+            if isinstance(info, str):
+                module_path, cls_name = info.rsplit(".", 1)
+            else:  # backward compat
+                module_path = f"scripts.ai_providers.{info['module']}"
+                cls_name = info["class"]
+            mod = importlib.import_module(module_path)
+            cls = getattr(mod, cls_name)
+            PROVIDERS[name] = cls(name)
+        except Exception:  # pragma: no cover - plugin errors
+            continue
+=======
     """Compatibility wrapper around :func:`loader.load_providers`."""
     loader.load_providers()
 =======
+>>>>>> main
 >>>>>> main
 
 

@@ -24,8 +24,12 @@ class AiBackendTest(unittest.TestCase):
 
     def test_success(self):
         mod = importlib.reload(ai_backend)
+        os.environ["AOS_AI_PROVIDER"] = "echo"
         sys.argv = ["ai_backend.py", "hello"]
-        self.assertEqual(mod.main(), 0)
+        try:
+            self.assertEqual(mod.main(), 0)
+        finally:
+            del os.environ["AOS_AI_PROVIDER"]
 
     def test_no_args(self):
         mod = importlib.reload(ai_backend)

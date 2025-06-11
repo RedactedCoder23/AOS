@@ -31,6 +31,16 @@ repository root:
 
 ```json
 {
+<<<<<< codex/add-echo-and-openai-provider-plugins
+  "echo": "scripts.ai_providers.echo_provider.EchoProvider",
+  "openai": "scripts.ai_providers.openai_provider.OpenAIProvider"
+}
+```
+
+`echo` simply returns its prompt. The `openai` plugin forwards prompts to the
+OpenAI ChatCompletion API. Plugins can be hot-swapped at runtime in tests by
+reloading the provider loader.
+=======
   "openai": {"module": "openai_provider", "class": "OpenAIProvider"},
   "local-llama": {"module": "mock_provider", "class": "MockProvider"}
 }
@@ -85,5 +95,4 @@ hot-swapped in tests by reloading the loader module.
    ```
 
 See `scripts.ai_backend._get_provider()` for the loader implementation.
->>>>> main
->>>>> main
+>>>>>> main

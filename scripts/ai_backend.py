@@ -10,15 +10,46 @@ PROVIDERS: dict[str, AIProvider] = loader.PROVIDERS
 
 
 def _load_providers() -> None:
+<<<<<< codex/add-echo-and-openai-provider-plugins
+    """Load provider plugins from ``providers.json``."""
+    if PROVIDERS:
+        return
+    cfg_path = os.path.join(
+        os.path.dirname(os.path.dirname(__file__)), "providers.json"
+    )
+    try:
+        with open(cfg_path, "r", encoding="utf-8") as fh:
+            data = json.load(fh)
+    except Exception:  # pragma: no cover - config missing
+        data = {}
+    for name, info in data.items():
+        try:
+            if isinstance(info, str):
+                module_path, cls_name = info.rsplit(".", 1)
+            else:  # backward compat
+                module_path = f"scripts.ai_providers.{info['module']}"
+                cls_name = info["class"]
+            mod = importlib.import_module(module_path)
+            cls = getattr(mod, cls_name)
+            PROVIDERS[name] = cls(name)
+        except Exception:  # pragma: no cover - plugin errors
+            continue
+=======
     """Compatibility wrapper around :func:`loader.load_providers`."""
     loader.load_providers()
+>>>>>> main
 
 
 def _get_provider(name: str):
     return loader.get_provider(name)
 =======
 from scripts.ai_providers.loader import get_provider
->>>>>> main
+>>>>> main
+
+
+def get_provider(name: str):
+    """Public helper returning provider instance by *name*."""
+    return _get_provider(name)
 
 
 PROMPT_ERR = "usage: ai_backend.py <prompt>"
