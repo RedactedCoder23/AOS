@@ -5,6 +5,8 @@ import os
 import queue
 import subprocess
 import sys
+from datetime import datetime, timedelta
+import uuid
 from flask import Flask, Response, jsonify, request, send_from_directory
 import jwt
 from . import agent_orchestrator
@@ -22,6 +24,33 @@ GRAPH_FILE = os.path.join(BASE, "..", "examples", "graph_sample.json")
 METRICS_FILE = os.path.join(BASE, "..", "examples", "metrics_sample.json")
 FC_BIN = os.environ.get("FIRECRACKER", "firecracker")
 JWT_SECRET = os.environ.get("AOS_JWT_SECRET", "dev-secret")
+
+
+def issue_tokens(user: str, role: str) -> dict:
+    """Generate access and refresh JWTs."""
+    now = datetime.utcnow()
+    access = jwt.encode(
+        {
+            "user": user,
+            "role": role,
+            "exp": now + timedelta(minutes=15),
+            "jti": str(uuid.uuid4()),
+        },
+        JWT_SECRET,
+        algorithm="HS256",
+    )
+    refresh = jwt.encode(
+        {
+            "user": user,
+            "role": role,
+            "exp": now + timedelta(days=7),
+            "type": "refresh",
+            "jti": str(uuid.uuid4()),
+        },
+        JWT_SECRET,
+        algorithm="HS256",
+    )
+    return {"access": access, "refresh": refresh, "role": role}
 
 
 class _SSE:
@@ -222,10 +251,43 @@ agent_orchestrator.events.register(_relay)
 @app.route("/auth/login", methods=["POST"])
 def login():
     data = request.get_json(force=True) or {}
-    if data.get("username") == "test" and data.get("password") == "test":
-        token = jwt.encode({"user": "test"}, JWT_SECRET, algorithm="HS256")
-        return jsonify({"token": token})
+    user = data.get("username")
+    pwd = data.get("password")
+    if (user, pwd) in (("test", "test"), ("viewer", "viewer")):
+        role = "admin" if user == "test" else "viewer"
+        return jsonify(issue_tokens(user, role))
     return jsonify({"error": "invalid"}), 401
+
+
+@app.route("/auth/refresh", methods=["POST"])
+def refresh():
+    data = request.get_json(force=True) or {}
+    token = data.get("token")
+    if not token:
+        return jsonify({"error": "invalid"}), 401
+    try:
+        payload = jwt.decode(token, JWT_SECRET, algorithms=["HS256"])
+        if payload.get("type") != "refresh":
+            raise jwt.InvalidTokenError
+    except Exception:
+        return jsonify({"error": "invalid"}), 401
+    return jsonify(issue_tokens(payload["user"], payload.get("role", "viewer")))
+
+
+@app.route("/plugins/install", methods=["POST"])
+def plugins_install():
+    auth = request.headers.get("Authorization", "")
+    token = auth.replace("Bearer ", "")
+    try:
+        payload = jwt.decode(token, JWT_SECRET, algorithms=["HS256"])
+    except Exception:
+        return jsonify({"error": "unauthorized"}), 401
+    if payload.get("role") != "admin":
+        return jsonify({"error": "forbidden"}), 403
+    repo = (request.get_json(force=True) or {}).get("repo")
+    if not repo:
+        return jsonify({"error": "missing repo"}), 400
+    return jsonify({"installed": repo})
 
 
 @app.route("/graph")
