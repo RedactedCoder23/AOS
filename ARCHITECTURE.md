@@ -22,6 +22,8 @@ illustrated in `docs/command_flow.md`.
 - `include/` – public headers shared across the project
 - `apps_src/` – sample applications
 - `docs/` – further documentation
+- `scripts/agent_orchestrator.py` – task runner coordinating AI agents via
+  plugin providers
 
 ## Development History
 

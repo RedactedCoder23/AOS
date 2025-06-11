@@ -153,30 +153,34 @@ function AgentPanel({ branchId }) {
   );
 }
 
-<<<<<< codex/implement-quality/coverage-insights-and-ui-optimizations
 function CoverageChart({ branchId }) {
   const [data, setData] = React.useState([]);
   React.useEffect(() => {
-    getCoverageHistory(branchId).then(h => {
-      setData(h.map((v, i) => ({ i, v })));
-    }).catch(() => {});
+    getCoverageHistory(branchId)
+      .then(h => setData(h.map((v, i) => ({ i, v }))))
+      .catch(() => {});
   }, [branchId]);
   if (!data.length) return null;
-  return React.createElement(Recharts.LineChart, { width: 100, height: 40, data },
+  return React.createElement(
+    Recharts.LineChart,
+    { width: 100, height: 40, data },
     React.createElement(Recharts.Line, { type: 'monotone', dataKey: 'v', stroke: '#8884d8', dot: false })
   );
-=======
+}
+
 function MetricsPanel({ branchId }) {
   const [metrics, setMetrics] = React.useState(null);
   React.useEffect(() => {
     fetch(`/branches/${branchId}/metrics`).then(r => r.json()).then(setMetrics).catch(() => {});
   }, [branchId]);
   if (!metrics) return React.createElement('div', null, 'Loading metrics...');
-  return React.createElement('div', { className: 'metrics-panel' },
+  return React.createElement(
+    'div',
+    { className: 'metrics-panel' },
     React.createElement('div', null, `Agents: ${metrics.agents_spawned}`),
     React.createElement('div', null, `Success: ${Math.round(metrics.success_rate * 100)}%`),
-    React.createElement('div', null, `Avg time: ${metrics.avg_runtime.toFixed(2)}s`));
->>>>>> main
+    React.createElement('div', null, `Avg time: ${metrics.avg_runtime.toFixed(2)}s`)
+  );
 }
 
 function BranchNode({ data, onMerge, onSnapshot, onDelete }) {
@@ -186,13 +190,9 @@ function BranchNode({ data, onMerge, onSnapshot, onDelete }) {
     React.createElement('button', { onClick: onSnapshot }, 'Checkpoint'),
     React.createElement('button', { onClick: onMerge }, 'Merge'),
     React.createElement('button', { onClick: onDelete }, 'Delete'),
-<<<<<< codex/implement-quality/coverage-insights-and-ui-optimizations
     React.createElement(CoverageChart, { branchId: data.id }),
-    React.createElement(AgentPanel, { branchId: data.id }));
-=======
     React.createElement(AgentPanel, { branchId: data.id }),
     React.createElement(MetricsPanel, { branchId: data.id }));
->>>>>> main
 }
 
 function App() {
@@ -211,18 +211,17 @@ function App() {
     };
   }, []);
 
-  async function refresh() {
-    setGraphLoading(true);
-    const graphEl = document.getElementById('graph');
-    if (graphEl) graphEl.textContent = 'Loading...';
-    const g = await listBranches();
-    const nodes = g.branches || [];
-    const links = (g.edges || []).map(e => ({ source: e[0], target: e[1] }));
-    setBranches(nodes);
-    updateGraph(nodes.map(n => ({ ...n })), links);
-    setGraphLoading(false);
-  }
-
+async function refresh() {
+  setGraphLoading(true);
+  const graphEl = document.getElementById('graph');
+  if (graphEl) graphEl.textContent = 'Loading...';
+  const g = await listBranches();
+  const nodes = g.branches || [];
+  const links = (g.edges || []).map(e => ({ source: e[0], target: e[1] }));
+  setBranches(nodes);
+  updateGraph(nodes.map(n => ({ ...n })), links);
+  setGraphLoading(false);
+}
   React.useEffect(() => {
     refresh();
     window.refreshBranches = refresh;

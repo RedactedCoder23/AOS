@@ -8,6 +8,7 @@ import sys
 from flask import Flask, Response, jsonify, request, send_from_directory
 from . import agent_orchestrator
 from .aos_audit import log_entry
+
 try:
     import yaml  # type: ignore
 except Exception:  # pragma: no cover - optional
@@ -114,12 +115,15 @@ class BranchService:
         os.makedirs(path, exist_ok=True)
         out = os.path.join(path, "thumbnail.png")
         try:
-            subprocess.run([
-                "virsh",
-                "screenshot",
-                f"branch-{branch_id}",
-                out,
-            ], check=True)
+            subprocess.run(
+                [
+                    "virsh",
+                    "screenshot",
+                    f"branch-{branch_id}",
+                    out,
+                ],
+                check=True,
+            )
         except Exception:
             try:
                 banner = subprocess.check_output(
@@ -328,11 +332,14 @@ def events():
 
 @app.route("/branches/<int:branch_id>/metrics")
 def branch_metrics(branch_id):
-    data = agent_orchestrator.METRICS.get(branch_id, {
-        "agents_spawned": 0,
-        "success_rate": 0.0,
-        "avg_runtime": 0.0,
-    })
+    data = agent_orchestrator.METRICS.get(
+        branch_id,
+        {
+            "agents_spawned": 0,
+            "success_rate": 0.0,
+            "avg_runtime": 0.0,
+        },
+    )
     return jsonify(data)
 
 

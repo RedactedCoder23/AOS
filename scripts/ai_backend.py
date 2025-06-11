@@ -14,7 +14,9 @@ def _load_providers() -> None:
     global PROVIDERS
     if PROVIDERS:
         return
-    cfg_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), "providers.json")
+    cfg_path = os.path.join(
+        os.path.dirname(os.path.dirname(__file__)), "providers.json"
+    )
     try:
         with open(cfg_path, "r", encoding="utf-8") as fh:
             data = json.load(fh)
@@ -32,6 +34,7 @@ def _load_providers() -> None:
 def _get_provider(name: str):
     _load_providers()
     return PROVIDERS.get(name)
+
 
 PROMPT_ERR = "usage: ai_backend.py <prompt>"
 

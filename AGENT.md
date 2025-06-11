@@ -1,6 +1,6 @@
 # Agent Log
 
-Version: **v0.2.0**
+Version: **v0.3.0**
 
 ## Context
 Initial repository had no AGENT log. `PATCHLOG.md` captured early development on the CLI and branch graph. Subsequent sessions added persistence, a REPL, networking, AI hooks and plugin support.
