@@ -1,32 +1,23 @@
 import asyncio
 import json
-import redis
 from fastapi import FastAPI, WebSocket
 from src.service.security import apply_security_headers
 from src.service.queue import load_status
+from src.api.errors import install as install_errors
+from src.api.profiler import install as install_profiler
+from src.security.permissions import requires_permission
 
 app = FastAPI()
 apply_security_headers(app)
+install_errors(app)
+install_profiler(app)
 
 
-@app.websocket("/ws/branches/{id}")
-async def branch_ws(ws: WebSocket, id: str):
-    await ws.accept()
-    r = redis.Redis()
-    pubsub = r.pubsub()
-    channel = f"branch:{id}"
-    pubsub.subscribe(channel)
-    status = load_status(id).get("status")
-    if status is not None:
-        await ws.send_text(json.dumps({"status": status}))
-    try:
-        while True:
-            message = pubsub.get_message(timeout=1)
-            if message and message["type"] == "message":
-                await ws.send_text(message["data"].decode())
-            await asyncio.sleep(0.1)
-    except Exception:
-        pass
-    finally:
-        pubsub.close()
-        await ws.close()
+@app.websocket("/ws/status/{id}")
+@requires_permission("view")
+async def status_ws(websocket: WebSocket, id: str):
+    await websocket.accept()
+    while True:
+        data = load_status(id)
+        await websocket.send_text(json.dumps(data))
+        await asyncio.sleep(1)
