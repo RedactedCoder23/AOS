@@ -738,3 +738,19 @@ Next agent must:
 - Implemented autoscaler daemon polling Redis and scaling Docker workers.
 - Added unit tests mocking Redis and Docker APIs.
 - Fixed plugin CLI test cleanup to avoid cross-test side effects.
+
+### [2025-06-12 04:00 UTC] api extensions [codex]
+
+- Added `/memory/fragmentation` returning allocator fragmentation ratio.
+  Example:
+  ```bash
+  curl -H "Role: admin" http://localhost:8000/memory/fragmentation
+  ```
+- Added `/branches/{id}/conflicts` for merge conflict summaries.
+  ```bash
+  curl -H "Role: admin" http://localhost:8000/branches/1/conflicts
+  ```
+- New `/health` endpoint provides uptime and memory usage.
+  ```bash
+  curl -H "Role: admin" http://localhost:8000/health
+  ```

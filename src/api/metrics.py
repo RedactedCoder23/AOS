@@ -4,12 +4,18 @@ from scripts.agent_orchestrator import get_stats, get_cached_stats
 from scripts import aos_audit as audit
 from fastapi.responses import JSONResponse
 from src.service.queue import load_status
+from src.security.permissions import requires_permission
+from src.api.errors import install as install_errors
+from src.api.profiler import install as install_profiler
 
 app = FastAPI()
 apply_security_headers(app)
+install_errors(app)
+install_profiler(app)
 
 
 @app.get("/branches/{id}/metrics")
+@requires_permission("view")
 def get_metrics(id: str):
     """Return live metrics for branch ``id``.
 

@@ -73,3 +73,10 @@ log at `/var/log/aos-audit.log`:
 ```
 
 Use `aos-audit show --filter=action:branch_create` to inspect entries.
+
+## Recent Additions
+
+- `src/memory/monitor.py` tracks RSS growth and fragmentation.
+- `src/fs/` now implements caching and journaling with a recovery helper.
+- `src/branch/merge.py` provides a three-way merge utility used by the API.
+- `src/security/permissions.py` supplies role-based access control.

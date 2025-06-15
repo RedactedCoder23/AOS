@@ -6,9 +6,14 @@ from src.service.security import apply_security_headers
 import yaml
 from scripts import aos_audit as audit
 from src.service.queue import load_status
+from src.api.errors import install as install_errors
+from src.api.profiler import install as install_profiler
+from src.security.permissions import requires_permission
 
 app = FastAPI()
 apply_security_headers(app)
+install_errors(app)
+install_profiler(app)
 
 
 def _load_threshold() -> float:
@@ -39,6 +44,7 @@ def _load_history(branch_id: str):
 
 
 @app.get("/branches/{id}/coverage-history")
+@requires_permission("view")
 def get_coverage(id: str, response: Response):
     """Return coverage history for branch ``id``."""
     hist = _load_history(id)

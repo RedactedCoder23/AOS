@@ -3,13 +3,21 @@ import json
 import os
 import shutil
 from fastapi import FastAPI, HTTPException
+from src.security.permissions import requires_permission
+from src.branch.merge import three_way_merge
+from src.db.branch_repo import get_branch
+from src.branch.policy import allowed_merge
 from src.service.security import apply_security_headers
 import yaml
 from scripts import aos_audit as audit
 from src.service import queue
+from src.api.errors import install as install_errors
+from src.api.profiler import install as install_profiler
 
 app = FastAPI()
 apply_security_headers(app)
+install_errors(app)
+install_profiler(app)
 
 
 def _threshold() -> float:
@@ -38,6 +46,7 @@ def _latest_coverage(branch_id: str) -> float:
 
 
 @app.post("/branches/{id}/merge")
+@requires_permission("write")
 def merge_branch(id: str):
     cov = _latest_coverage(id)
     thresh = _threshold()
@@ -45,6 +54,9 @@ def merge_branch(id: str):
         audit.log("merge_blocked", branch=id, user="api", reason="low_coverage")
         detail = f"coverage {cov:.1f}% below threshold {thresh}%"
         raise HTTPException(status_code=412, detail=detail)
+    branch = get_branch(int(id))
+    if branch and not allowed_merge(branch, "main"):
+        raise HTTPException(status_code=403, detail="merge policy violation")
     current = os.path.expanduser(os.path.join("~/.aos", "branches.json"))
     backup = current + ".bak"
     if os.path.exists(current):
@@ -56,7 +68,27 @@ def merge_branch(id: str):
     return {"merged": True}
 
 
+@app.get("/branches/{id}/conflicts")
+@requires_permission("view")
+def merge_conflicts(id: str):
+    base = ""
+    ours = ""
+    theirs = ""
+    merged, conflicts = three_way_merge(base, ours, theirs)
+    formatted = [
+        {
+            "line": c["line"],
+            "ours": c["ours"],
+            "theirs": c["theirs"],
+            "suggestions": ["accept ours", "accept theirs", "manual"],
+        }
+        for c in conflicts
+    ]
+    return {"conflicts": formatted, "merged": merged}
+
+
 @app.post("/branches/{id}/rollback")
+@requires_permission("write")
 def rollback_branch(id: str):
     """Restore last passing branch JSON and re-queue its job."""
     base = os.path.expanduser(os.path.join("~/.aos", "branches.json"))
