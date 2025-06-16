@@ -8,4 +8,4 @@ pytest-cov~=6.1.1
 mypy~=1.10.0
 PyJWT~=2.8.0
 argcomplete~=3.3
-hypothesis~=6.103
+hypothesis~=6.135
