@@ -3,7 +3,7 @@ ASMFLAGS = -f bin
 ARCH ?= x86_64
 CC = gcc
 LD = ld
-CFLAGS = -ffreestanding -O2 -Wall -Wextra -m32
+CFLAGS = -ffreestanding -O2 -Wall -Wextra -Werror -Wmissing-prototypes -Wno-pointer-to-int-cast -m32
 LDFLAGS = -T kernel.ld -m elf_i386 -z separate-code
 # Path to GRUB stage2. Use grub-install to discover the proper libdir if
 # available; fall back to the traditional location.

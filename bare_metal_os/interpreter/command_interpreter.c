@@ -8,19 +8,10 @@
 #include "../include/branch.h"
 #include <stddef.h>
 #include <stdint.h>
+#include "../memory.h"
+#include "../fs_bare.h"
 
 /* bare-metal subsystem prototypes */
-void mem_init_bare(void);
-void *mem_alloc(size_t size);
-void mem_free(void *ptr);
-void fs_init(void);
-int fs_open(const char *name, const char *mode);
-size_t fs_write(int fd, const char *buf, size_t n);
-size_t fs_read(int fd, char *buf, size_t n);
-void fs_close(int fd);
-void fs_ls(void);
-void bm_init(void);
-int bm_create(const char *name);
 
 /* basic serial helpers */
 static inline void outb(uint16_t p, uint8_t v) { asm volatile("outb %0,%1" ::"a"(v), "Nd"(p)); }

@@ -8,9 +8,12 @@
 #include "../include/ipc.h"
 #include "command_interpreter.h"
 #include "config.h"
+#include "../include/branch.h"
 #include "error.h"
 #include "idt.h"
 #include "serial.h"
+#include "memory.h"
+#include "fs_bare.h"
 #include "traps.h"
 #include <errno.h>
 #include <stdint.h>
@@ -19,10 +22,8 @@
 
 /* Boot entry points provided by assembly stub. */
 extern void repl(void);
-void mem_init_bare(void);
-void fs_init(void);
-void bm_init(void);
-void idt_init(void);
+void main(void);
+void _start(void);
 
 /* Dispatch syscalls coming from the host interface */
 
