@@ -61,4 +61,3 @@ We use pyproject.toml + setup.cfg for the Python CLI (aos, aos-audit), and stand
 📝 CI / GitHub Actions
 We now build & smoke-test the ISO under .github/workflows/ci.yml.
 
-Happy hacking!
