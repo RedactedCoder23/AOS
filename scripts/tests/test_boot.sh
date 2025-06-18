@@ -8,9 +8,11 @@ set -e
 [ -f aos.iso ] || make iso
 
 # Boot under QEMU and assert banner
-output=$(timeout 10s qemu-system-x86_64 -cdrom aos.iso -nographic -serial mon:stdio -display none -no-reboot)
+output=$(timeout 10s qemu-system-x86_64 \
+  -cdrom aos.iso -nographic -serial mon:stdio -display none -no-reboot)
+
 echo "$output"
-if ! grep -q "AOS" <<< "$output"; then
+if ! grep -q "AOS v" <<< "$output"; then
   echo "🔥 Kernel did not print AOS banner"
   exit 1
 fi

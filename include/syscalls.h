@@ -9,11 +9,7 @@
 #include <stddef.h>
 #include <stdint.h>
 
-#define SYS_CREATE_BRANCH  0x30
-#define SYS_MERGE_BRANCH   0x31
-#define SYS_LIST_BRANCHES  0x32
-#define SYS_SNAPSHOT_BRANCH 0x33
-#define SYS_DELETE_BRANCH   0x34
+
 
 int sys_create_branch(void);
 int sys_merge_branch(int branch_id);

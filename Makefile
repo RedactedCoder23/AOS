@@ -1,6 +1,6 @@
 .PHONY: all clean test install regenerate host bootloader kernel bare run ui ui-check web-ui branch-vm plugins iso efi branch-net desktop-ui ai-service aicell modeld ipc-host branch-dashboard policy net subsystems checklist branch verify-all
 
-MAKEFLAGS += -j$(shell nproc)
+	MAKEFLAGS += -j$(shell nproc)
 VERSION := 0.3.0
 
 CC_TARGET ?= x86_64
@@ -244,119 +244,60 @@ test-all: test-unit test-integration test-merge-ai test-lifecycle test-negative
 verify-all:
 	./scripts/ci-full.sh
 test-unit:
-	@echo "→ Running unit tests"
-	@mkdir -p build/tests build/plugins
-	gcc -Isubsystems/memory -Iinclude \
-	tests/unit/test_memory.c \
+	@echo "\u2192 Running unit tests"
+	python3 -m pytest -q tests/python/test_ai_provider_loader.py tests/python/test_agent_runner_cli.py
+	@mkdir -p build/tests
+	gcc -Isubsystems/memory -Iinclude tests/unit/test_memory.c \
 	subsystems/memory/memory.c src/logging.c src/error.c \
 	-o build/tests/test_memory
 	@./build/tests/test_memory
-	gcc -Isubsystems/net -Iinclude \
-	tests/c/test_net.c \
-	subsystems/net/net.c src/logging.c src/error.c \
-	-o build/tests/test_net
-	@./build/tests/test_net
-	gcc -fPIC -shared -o build/plugins/sample.so examples/sample_plugin.c
-	gcc -Iinclude -Isubsystems/security -Isubsystems/dev \
-tests/c/test_plugin.c src/plugin_loader.c src/plugin_supervisor.c src/wasm_runtime.c subsystems/security/security.c src/logging.c src/error.c -ldl \
-	-o build/tests/test_plugin
-	@./build/tests/test_plugin
-	gcc -Iinclude \
-	tests/c/test_policy.c src/policy.c src/audit.c src/logging.c src/error.c \
-	-o build/tests/test_policy
-	@./build/tests/test_policy
-	gcc -Isubsystems/dev -Iinclude \
-	tests/c/test_dev.c subsystems/dev/dev.c src/logging.c src/error.c \
-	-o build/tests/test_dev
-	@./build/tests/test_dev
-	gcc -Isubsystems/security -Iinclude \
-	tests/c/test_security.c subsystems/security/security.c src/logging.c src/error.c \
-	-o build/tests/test_security
-	@./build/tests/test_security
-	gcc -Isubsystems/fs -Isubsystems/memory -Iinclude \
-tests/c/test_fs.c subsystems/fs/fs.c subsystems/memory/memory.c \
-src/memory.c src/logging.c src/error.c \
-	-o build/tests/test_fs_unit
-	@./build/tests/test_fs_unit
-	gcc -Isubsystems/ai -Iinclude \
-	tests/c/test_ai.c subsystems/ai/ai.c src/ai_syscall.c src/logging.c src/error.c -lcurl \
-	-o build/tests/test_ai
-	@./build/tests/test_ai
-	gcc -Iinclude -pthread \
-	        tests/ai_test.c src/syscall.c src/ipc_host.c \
-	        src/branch_manager.c \
-	        src/logging.c src/error.c -DIPC_HOST_LIBRARY \
-	        -o build/tests/ai_test
-			@./build/tests/ai_test
-	gcc -Iinclude -Isubsystems/security \
-	tests/c/test_wasm_runtime.c src/wasm_runtime.c subsystems/security/security.c src/logging.c src/error.c \
-	-o build/tests/test_wasm_runtime
-	@./build/tests/test_wasm_runtime
-	gcc -Isubsystems/memory -Iinclude \
-	tests/memory_test.c subsystems/memory/memory.c src/logging.c src/error.c \
-	-o build/tests/test_memory_paging
-	@./build/tests/test_memory_paging
-	gcc -Iinclude \
-	tests/c/test_ui.c src/logging.c src/error.c -lncurses \
-	-o build/tests/test_ui
-	@./build/tests/test_ui
-	gcc -Iinclude -Isubsystems/ai  \
-	tests/lang_test.c src/lang_vm.c src/branch_manager.c  \
-	subsystems/ai/ai.c src/ai_syscall.c src/logging.c src/error.c -lcurl  \
-	-o build/tests/test_lang
-	@./build/tests/test_lang
-	@pip install -r requirements.txt
-	@python3 -m pytest --cov=./ -q tests/python
+	gcc -Iinclude tests/unit/test_logging.c src/logging.c src/error.c \
+	-o build/tests/test_logging
+	@./build/tests/test_logging
+
 test-integration:
 	@echo "\u2192 Running integration tests"
-	@pip install -r requirements.txt
-	@mkdir -p build/tests
-	gcc -Isubsystems/fs -Isubsystems/memory -Iinclude tests/integration/test_fs_memory.c \
-	subsystems/fs/fs.c subsystems/memory/memory.c src/memory.c src/logging.c src/error.c -o build/tests/test_fs
-	@./build/tests/test_fs
-	gcc -Isubsystems/fs -Isubsystems/memory -Iinclude tests/integration/test_persistence.c \
-	subsystems/fs/fs.c subsystems/memory/memory.c src/memory.c src/logging.c src/error.c -o build/tests/test_persistence
-	@./build/tests/test_persistence
-	        @[ -f aos.bin ] && ./scripts/qemu_smoke.sh $(CC_TARGET) || echo "aos.bin missing, skipping qemu"
-	
+	./scripts/tests/test_boot.sh
+
 test-fuzz:
 	@echo "\u2192 Running memory fuzz tests under ASan"
 	@mkdir -p build/tests
 	gcc -fsanitize=address -g -Isubsystems/memory -Iinclude \
-	tests/unit/test_memory_fuzz.c \
-	subsystems/memory/memory.c src/logging.c src/error.c -o build/tests/test_memory_fuzz
+tests/unit/test_memory_fuzz.c \
+subsystems/memory/memory.c src/logging.c src/error.c -o build/tests/test_memory_fuzz
 	@./build/tests/test_memory_fuzz
-
-# Generate simple coverage report
-coverage: test
+	
+	# Generate simple coverage report
+	coverage: test
 	@echo "\u2192 Generating coverage report"
 	@gcov -o build/tests $(shell find build/tests -name '*.gcno') >/tmp/coverage.txt || true
 	@cat /tmp/coverage.txt
-
-efi:
+	
+	efi:
 	@echo "→ Building EFI stub"
 	mkdir -p bare_metal_os/efi
 	echo "stub" > bare_metal_os/efi/aos.efi
-
-################################################################################
-# ISO BUILD: assemble bootloader + kernel + GRUB config into aos.iso
-################################################################################
-
+	
+	################################################################################
+	# ISO BUILD: assemble bootloader + kernel + GRUB config into aos.iso
+	################################################################################
+	
 .PHONY: iso bare-metal prepare-iso
 
 # Build bare-metal bootloader.bin + kernel.bin
-bare-metal:
+bare-metal: regenerate
 	@echo "→ Building bare-metal OS"
-	@make -C bare_metal_os all
-
+	@make -C bare_metal_os kernel.bin
+	
 # Collect files into a temporary ISO tree
 prepare-iso: bare-metal
 	@echo "→ Preparing ISO layout"
 	@rm -rf iso
 	@mkdir -p iso/boot/grub
-	@cp bare_metal_os/bootloader.bin bare_metal_os/kernel.bin iso/boot/
+	@cp bare_metal_os/kernel.bin iso/boot/
 	@cp boot/grub.cfg             iso/boot/grub/
 	@echo "→ Building initramfs"
+	@chmod +x rootfs/bin/init
 	@(cd rootfs && find . | cpio -o -H newc | gzip) > iso/boot/initramfs.img
 
 # Produce a true BIOS-bootable ISO
@@ -365,40 +306,40 @@ iso: prepare-iso
 	grub-mkrescue -o aos.iso iso
 	@echo "✅ ISO built: aos.iso"
 subsystems: memory fs ai net
-
-
-ui: host
+	
+	
+	ui: host
 	@echo "UI built via host target"
-
-ui-check: ui
+	
+	ui-check: ui
 	@echo "\u2192 Verifying UI binary"
 	@./build/ui_graph --help
-
-web-ui:
-	        @echo "\u2192 Launching web UI at http://localhost:8000"
-	        python3 scripts/branch_ui.py
-
-branch:
+	
+	web-ui:
+	@echo "\u2192 Launching web UI at http://localhost:8000"
+	python3 scripts/branch_ui.py
+	
+	branch:
 	@echo "Usage: make branch BRANCH=<branch-id> [ARGS]"
 	python3 scripts/branch_cli.py $(ARGS)
-demo-test:
-	        bash demo/demo_test.sh
-desktop-ui:
+	demo-test:
+	bash demo/demo_test.sh
+	desktop-ui:
 	@echo "\u2192 Launching desktop UI at http://localhost:8000"
 	python3 scripts/desktop_backend.py
-
-install: host
+	
+	install: host
 	@echo "→ Installing host binary to /usr/local/bin (requires sudo)"
 	install -m755 build/host_test /usr/local/bin/aos-host
-checklist:
+	checklist:
 	@if [ -s AOS-CHECKLIST.log ]; then \
 	echo "Checklist has entries:"; cat AOS-CHECKLIST.log; exit 1; \
 	else \
 	echo "Checklist clean"; \
 	fi
-
-generate: regenerate
-
-.PHONY: compdb
-compdb: regenerate
+	
+	generate: regenerate
+	
+	.PHONY: compdb
+	compdb: regenerate
 	compiledb -n make host

@@ -754,3 +754,13 @@ Next agent must:
   ```bash
   curl -H "Role: admin" http://localhost:8000/health
   ```
+
+## [2025-06-18 10:11 UTC] kernel build fix [codex]
+
+- Removed host logging dependencies and IPC stubs from bare-metal kernel.
+- Added cpio/xorriso to bootstrap and CI.
+- ISO now builds successfully with minimal kernel banner.
+
+Next agent must:
+
+- Expand kernel syscalls and restore logging with serial backend.

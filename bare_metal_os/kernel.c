@@ -4,16 +4,17 @@
  * Purpose: Kernel entry point
  * Dependencies: requires bootloader.bin stage1
  */
-#include "../include/syscalls.h"
+#include "../include/ipc.h"
 #include "command_interpreter.h"
 #include "config.h"
 #include "error.h"
 #include "idt.h"
-#include "ipc.h"
-#include "logging.h"
+#include "serial.h"
 #include "traps.h"
 #include <errno.h>
 #include <stdint.h>
+
+#define AOS_VERSION "0.3.0"
 
 /* Boot entry points provided by assembly stub. */
 extern void repl(void);
@@ -23,44 +24,9 @@ void bm_init(void);
 void idt_init(void);
 
 /* Dispatch syscalls coming from the host interface */
-extern char ipc_shared; /* linker symbol */
-static volatile IpcRing *ring = (volatile IpcRing *)&ipc_shared;
-
-static int syscall_dispatch(const SyscallRequest *req, SyscallResponse *resp) {
-    resp->retval = -ENOSYS;
-    switch (req->id) {
-    case SYS_CREATE_BRANCH:
-        resp->retval = sys_create_branch();
-        break;
-    case SYS_MERGE_BRANCH:
-        resp->retval = sys_merge_branch(req->branch_id);
-        break;
-    case SYS_LIST_BRANCHES:
-        resp->retval = sys_list_branches(resp->data, sizeof(resp->data));
-        break;
-    case SYS_SNAPSHOT_BRANCH:
-        *(uint64_t *)resp->data = sys_snapshot_branch((uint32_t)req->branch_id);
-        resp->retval = 0;
-        break;
-    default:
-        break;
-    }
-    return resp->retval;
-}
-
-static void process_ipc(void) {
-    while (ring->head != ring->tail) {
-        const SyscallRequest *req = &ring->req[ring->tail % IPC_RING_SIZE];
-        SyscallResponse *resp = &ring->resp[ring->tail % IPC_RING_SIZE];
-        syscall_dispatch(req, resp);
-        ring->tail++;
-    }
-}
 
 /* Initialise subsystems before entering the REPL. */
 static void kernel_init(void) {
-    log_init(NULL);
-    log_message(LOG_INFO, "Hello from AOS");
     idt_init();
     mem_init_bare();
     fs_init();
@@ -69,9 +35,9 @@ static void kernel_init(void) {
 }
 
 static void kernel_main(void) {
-    idt_init();
+    serial_init();
+    serial_print("AOS v" AOS_VERSION " booting...\n");
     kernel_init();
-    process_ipc();
     repl();
 }
 

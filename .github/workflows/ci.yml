@@ -14,9 +14,9 @@ jobs:
         with:
           node-version: '20'
       - name: Install deps
-        run: pip install -r requirements.txt -r requirements-dev.txt pre-commit
+        run: pip install -r requirements.txt -r requirements-dev.txt
       - name: Run fast CI
-        run: make fast-test
+        run: make test-unit
 
   ci-full:
     runs-on: ubuntu-latest
@@ -60,20 +60,13 @@ jobs:
 
       - name: Install system deps
         run: sudo apt-get update && sudo apt-get install -y \
-          nasm gcc binutils grub2-common grub-pc-bin xorriso qemu-system-x86
+          nasm gcc gcc-multilib libc6-dev-i386 grub2-common grub-pc-bin xorriso cpio qemu-system-x86_64
+      - name: Install python deps
+        run: pip install -r requirements.txt -r requirements-dev.txt
 
       - name: Build ISO
         run: make iso
 
       - name: Smoke-test in QEMU
-        run: |
-          timeout 15s qemu-system-x86_64 \
-            -cdrom aos.iso \
-            -nographic \
-            -serial mon:stdio \
-            -display none \
-            -no-reboot \
-          | tee qemu.log
-      - name: Verify boot banner
-        run: grep -q "AOS" qemu.log
+        run: ./scripts/tests/test_boot.sh
 
