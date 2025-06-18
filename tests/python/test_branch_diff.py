@@ -1,3 +1,4 @@
+/* AOS — tests/python/test_branch_diff.py — Purpose: Python module */
 # AOS — ./tests/python/test_branch_diff.py
 # (c) 2025 RedactedCoder23
 # Brief: Source file.

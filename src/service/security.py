@@ -1,3 +1,4 @@
+/* AOS — src/service/security.py — Purpose: Python module */
 # AOS — ./src/service/security.py
 # (c) 2025 RedactedCoder23
 # Brief: Source file.

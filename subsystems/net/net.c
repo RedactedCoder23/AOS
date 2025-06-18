@@ -1,3 +1,4 @@
+/* AOS — subsystems/net/net.c — Purpose: C source file */
 /*
  * AOS — net.c
  * (c) 2025 RedactedCoder23

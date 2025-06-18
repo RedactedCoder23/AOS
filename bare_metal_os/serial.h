@@ -1,3 +1,4 @@
+/* AOS — bare_metal_os/serial.h — Purpose: Header file */
 /*
  * AOS — serial.h
  * Purpose: Minimal 16550 UART driver

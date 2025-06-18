@@ -1,3 +1,4 @@
+/* AOS — examples/memory_demo.c — Purpose: C source file */
 /*
  * AOS — memory_demo.c
  * (c) 2025 RedactedCoder23

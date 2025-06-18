@@ -1,3 +1,4 @@
+/* AOS — tests/c/test_policy.c — Purpose: C source file */
 /*
  * AOS — test_policy.c
  * (c) 2025 RedactedCoder23

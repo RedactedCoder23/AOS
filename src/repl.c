@@ -1,3 +1,4 @@
+/* AOS — src/repl.c — Purpose: C source file */
 /*
  * AOS — repl.c
  * (c) 2025 RedactedCoder23

@@ -1,3 +1,4 @@
+/* AOS — tests/trap_test.c — Purpose: C source file */
 /*
  * AOS — trap_test.c
  * (c) 2025 RedactedCoder23

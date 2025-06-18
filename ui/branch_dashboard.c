@@ -1,3 +1,4 @@
+/* AOS — ui/branch_dashboard.c — Purpose: C source file */
 /*
  * AOS — branch_dashboard.c
  * (c) 2025 RedactedCoder23

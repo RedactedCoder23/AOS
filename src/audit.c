@@ -1,3 +1,4 @@
+/* AOS — src/audit.c — Purpose: C source file */
 /*
  * AOS — audit.c
  * (c) 2025 RedactedCoder23

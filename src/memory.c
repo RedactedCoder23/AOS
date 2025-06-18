@@ -1,3 +1,4 @@
+/* AOS — src/memory.c — Purpose: C source file */
 /*
  * AOS — memory.c
  * (c) 2025 RedactedCoder23

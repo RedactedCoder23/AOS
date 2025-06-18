@@ -1,3 +1,4 @@
+/* AOS — scripts/jobqueue/tasks.py — Purpose: Python module */
 # AOS — ./scripts/jobqueue/tasks.py
 # (c) 2025 RedactedCoder23
 # Brief: Source file.

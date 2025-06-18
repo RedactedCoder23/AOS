@@ -1,3 +1,4 @@
+/* AOS — tests/test_benchmark.py — Purpose: Python module */
 # AOS — ./tests/test_benchmark.py
 # (c) 2025 RedactedCoder23
 # Brief: Source file.

@@ -1,3 +1,4 @@
+/* AOS — include/ai_trigger.h — Purpose: Header file */
 /*
  * AOS — ai_trigger.h
  * (c) 2025 RedactedCoder23

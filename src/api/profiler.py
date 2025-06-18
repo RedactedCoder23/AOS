@@ -1,3 +1,4 @@
+/* AOS — src/api/profiler.py — Purpose: Python module */
 # AOS — ./src/api/profiler.py
 # (c) 2025 RedactedCoder23
 # Brief: Source file.

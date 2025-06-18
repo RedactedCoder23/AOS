@@ -1,3 +1,4 @@
+/* AOS — src/branch_vm.c — Purpose: C source file */
 /*
  * AOS — branch_vm.c
  * (c) 2025 RedactedCoder23

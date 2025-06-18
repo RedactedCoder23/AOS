@@ -1,3 +1,4 @@
+/* AOS — include/interpreter.h — Purpose: Header file */
 /*
  * AOS — interpreter.h
  * (c) 2025 RedactedCoder23

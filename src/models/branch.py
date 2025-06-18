@@ -1,3 +1,4 @@
+/* AOS — src/models/branch.py — Purpose: Python module */
 # AOS — ./src/models/branch.py
 # (c) 2025 RedactedCoder23
 # Brief: Source file.

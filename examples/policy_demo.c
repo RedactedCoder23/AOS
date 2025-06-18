@@ -1,3 +1,4 @@
+/* AOS — examples/policy_demo.c — Purpose: C source file */
 /*
  * AOS — policy_demo.c
  * (c) 2025 RedactedCoder23

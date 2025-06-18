@@ -1,3 +1,4 @@
+/* AOS — include/ui_graph.h — Purpose: Header file */
 /*
  * AOS — ui_graph.h
  * (c) 2025 RedactedCoder23

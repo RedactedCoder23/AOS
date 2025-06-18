@@ -1,3 +1,4 @@
+/* AOS — subsystems/security/security.h — Purpose: Header file */
 /*
  * AOS — security.h
  * (c) 2025 RedactedCoder23

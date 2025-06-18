@@ -1,3 +1,4 @@
+/* AOS — src/error.c — Purpose: C source file */
 /*
  * AOS — error.c
  * (c) 2025 RedactedCoder23

@@ -1,3 +1,4 @@
+/* AOS — include/audit.h — Purpose: Header file */
 /*
  * AOS — audit.h
  * (c) 2025 RedactedCoder23

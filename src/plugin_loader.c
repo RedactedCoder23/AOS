@@ -1,3 +1,4 @@
+/* AOS — src/plugin_loader.c — Purpose: C source file */
 /*
  * AOS — plugin_loader.c
  * (c) 2025 RedactedCoder23

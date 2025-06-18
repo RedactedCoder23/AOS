@@ -1,3 +1,4 @@
+/* AOS — bare_metal_os/idt.h — Purpose: Header file */
 /*
  * AOS — idt.h
  * (c) 2025 RedactedCoder23

@@ -1,3 +1,4 @@
+/* AOS — bare_metal_os/serial.c — Purpose: C source file */
 /*
  * AOS — serial.c
  * Purpose: Basic UART routines for early boot

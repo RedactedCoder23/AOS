@@ -1,3 +1,4 @@
+/* AOS — examples/http_server.c — Purpose: C source file */
 /*
  * AOS — http_server.c
  * (c) 2025 RedactedCoder23

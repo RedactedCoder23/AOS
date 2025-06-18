@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+/* AOS — scripts/merge_ai.py — Purpose: Python module */
 # AOS — ./scripts/merge_ai.py
 # (c) 2025 RedactedCoder23
 # Brief: Source file.

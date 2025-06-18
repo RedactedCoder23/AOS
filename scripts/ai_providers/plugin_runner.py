@@ -1,3 +1,4 @@
+/* AOS — scripts/ai_providers/plugin_runner.py — Purpose: Python module */
 # AOS — ./scripts/ai_providers/plugin_runner.py
 # (c) 2025 RedactedCoder23
 # Brief: Source file.

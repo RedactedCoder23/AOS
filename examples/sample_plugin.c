@@ -1,3 +1,4 @@
+/* AOS — examples/sample_plugin.c — Purpose: C source file */
 /*
  * AOS — sample_plugin.c
  * (c) 2025 RedactedCoder23

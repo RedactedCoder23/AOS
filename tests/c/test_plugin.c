@@ -1,3 +1,4 @@
+/* AOS — tests/c/test_plugin.c — Purpose: C source file */
 /*
  * AOS — test_plugin.c
  * (c) 2025 RedactedCoder23

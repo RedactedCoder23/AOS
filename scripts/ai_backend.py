@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+/* AOS — scripts/ai_backend.py — Purpose: Python module */
 """
 AOS — scripts/ai_backend.py
 (c) 2025 RedactedCoder23
