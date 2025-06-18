@@ -1,5 +1,4 @@
-/* AOS — scripts/ai_providers/openai_provider.py — Purpose: Python module */
-# AOS — ./scripts/ai_providers/openai_provider.py
+# AOS — scripts/ai_providers/openai_provider.py — Purpose: Python module 
 # (c) 2025 RedactedCoder23
 # Brief: Source file.
 from scripts.ai_providers.base import AIProvider

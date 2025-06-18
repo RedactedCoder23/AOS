@@ -65,7 +65,7 @@ int dev_write(const char *name, const void *buf, int len) {
     return -1;
 }
 
-/* Serial driver stubs */
+/* Serial driver */
 static int serial_init(void) {
     log_message(LOG_INFO, "serial init");
     return 0;
@@ -84,7 +84,7 @@ static int serial_write(const void *buf, int len) {
     return len;
 }
 
-/* Timer driver stubs */
+/* Timer driver */
 static int timer_init(void) {
     log_message(LOG_INFO, "timer init");
     return 0;

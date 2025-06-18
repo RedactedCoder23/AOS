@@ -1,4 +1,4 @@
-#!/bin/sh
-# Smoke test for policy engine
+#!/usr/bin/env bash
+set -euo pipefail
 set -e
 ./examples/policy_demo.sh

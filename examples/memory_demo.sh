@@ -1,5 +1,5 @@
-#!/bin/sh
-# Demo for memory subsystem with error cases
+#!/usr/bin/env bash
+set -euo pipefail
 set -e
 > AOS-CHECKLIST.log
 out=$(./build/memory_demo)

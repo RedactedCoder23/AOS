@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-/* AOS — scripts/aos.py — Purpose: Python module */
+# AOS — scripts/aos.py — Purpose: Python module 
 """
 AOS — scripts/aos.py
 (c) 2025 RedactedCoder23

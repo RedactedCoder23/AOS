@@ -16,22 +16,6 @@
 /* Consolidated syscall identifiers used by host and kernel */
 typedef enum {
     SYS_NONE = 0,
-<<<<<< codex/implement-ai-pipeline-functions-in-ai.c
-    SYS_FORK_BRANCH,   /* fork a new branch from int_arg0 -> str_arg0 */
-    SYS_MERGE_BRANCH,  /* merge branch int_arg0 into int_arg1 */
-    SYS_DELETE_BRANCH, /* delete branch identified by int_arg0 */
-    SYS_LIST_BRANCH,   /* list all branches */
-    SYS_AI_QUERY,      /* str_arg0 holds the prompt */
-    SYS_AI_MODEL_INFO, /* request model metadata */
-    SYS_AI_INIT,       /* payload is model path */
-    SYS_AI_PROCESS,    /* process input payload */
-    SYS_FS_OPEN,       /* open file str_arg0 with mode str_arg1 */
-    SYS_FS_READ,       /* read int_arg1 bytes from fd int_arg0 */
-    SYS_FS_WRITE,      /* write int_arg1 bytes from str_arg0 to fd int_arg0 */
-    SYS_FS_CLOSE,      /* close fd in int_arg0 */
-    SYS_FS_LIST,       /* list directory str_arg0 */
-=======
-
     /* Branch management */
     SYS_CREATE_BRANCH,
     SYS_MERGE_BRANCH,
@@ -46,6 +30,8 @@ typedef enum {
     /* AI requests */
     SYS_AI_QUERY,
     SYS_AI_MODEL_INFO,
+    SYS_AI_INIT,
+    SYS_AI_PROCESS,
 
     /* Filesystem operations */
     SYS_FS_OPEN,
@@ -54,7 +40,7 @@ typedef enum {
     SYS_FS_CLOSE,
     SYS_FS_LIST,
 
->>>>>> main
+
     SYS_MAX
 } SyscallID;
 

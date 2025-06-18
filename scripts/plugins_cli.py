@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-/* AOS — scripts/plugins_cli.py — Purpose: Python module */
+# AOS — scripts/plugins_cli.py — Purpose: Python module 
 # AOS — ./scripts/plugins_cli.py
 # (c) 2025 RedactedCoder23
 # Brief: Source file.

@@ -1,5 +1,5 @@
-#!/bin/sh
-# Demo for policy engine with deny rule
+#!/usr/bin/env bash
+set -euo pipefail
 set -e
 > AOS-CHECKLIST.log
 > AOS-AUDIT.log

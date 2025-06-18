@@ -1,4 +1,4 @@
-/* AOS — scripts/tests/test_branch_ui.py — Purpose: Python module */
+# AOS — scripts/tests/test_branch_ui.py — Purpose: Python module 
 # AOS — ./scripts/tests/test_branch_ui.py
 # (c) 2025 RedactedCoder23
 # Brief: Source file.

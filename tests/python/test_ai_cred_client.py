@@ -1,4 +1,4 @@
-/* AOS — tests/python/test_ai_cred_client.py — Purpose: Python module */
+# AOS — tests/python/test_ai_cred_client.py — Purpose: Python module 
 # AOS — ./tests/python/test_ai_cred_client.py
 # (c) 2025 RedactedCoder23
 # Brief: Source file.

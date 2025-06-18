@@ -1,4 +1,4 @@
-/* AOS — scripts/ai_cred_client.py — Purpose: Python module */
+# AOS — scripts/ai_cred_client.py — Purpose: Python module 
 # AOS — ./scripts/ai_cred_client.py
 # (c) 2025 RedactedCoder23
 # Brief: Source file.

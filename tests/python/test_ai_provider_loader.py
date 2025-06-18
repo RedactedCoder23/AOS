@@ -1,5 +1,4 @@
-/* AOS — tests/python/test_ai_provider_loader.py — Purpose: Python module */
-# AOS — ./tests/python/test_ai_provider_loader.py
+# AOS — tests/python/test_ai_provider_loader.py — Purpose: Python module 
 # (c) 2025 RedactedCoder23
 # Brief: Source file.
 import unittest

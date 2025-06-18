@@ -1,7 +1,6 @@
-#!/bin/sh
-# Run smoke tests for the bare-metal REPL. Errors are tolerated so we can
-# report failures instead of exiting early.
-set +e
+#!/usr/bin/env bash
+set -euo pipefail
+command -v qemu-system-x86_64 >/dev/null || { echo "qemu-system-x86_64 missing" >&2; exit 1; }
 
 log="AOS-CHECKLIST.log"
 pass=1

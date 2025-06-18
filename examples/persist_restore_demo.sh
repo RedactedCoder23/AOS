@@ -1,5 +1,5 @@
-#!/bin/sh
-# Demonstrate branch persistence
+#!/usr/bin/env bash
+set -euo pipefail
 rm -f "$HOME/.aos/branches.json"
 
 cat <<EOF | ./build/host_test > /tmp/persist1.log

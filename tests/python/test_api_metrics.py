@@ -1,4 +1,4 @@
-/* AOS — tests/python/test_api_metrics.py — Purpose: Python module */
+# AOS — tests/python/test_api_metrics.py — Purpose: Python module 
 # AOS — ./tests/python/test_api_metrics.py
 # (c) 2025 RedactedCoder23
 # Brief: Source file.

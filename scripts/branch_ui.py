@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-/* AOS — scripts/branch_ui.py — Purpose: Python module */
+# AOS — scripts/branch_ui.py — Purpose: Python module 
 # AOS — ./scripts/branch_ui.py
 # (c) 2025 RedactedCoder23
 # Brief: Source file.

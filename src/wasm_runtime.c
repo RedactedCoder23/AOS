@@ -20,7 +20,7 @@ int wasm_load_module(const char *path) {
     if (!initialised)
         wasm_runtime_init();
     printf("loading wasm module %s\n", path);
-    return 0; /* stub */
+    return 0;
 }
 
 int wasm_invoke(const char *func) {

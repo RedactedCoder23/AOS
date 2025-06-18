@@ -1,5 +1,4 @@
-/* AOS — scripts/ai_providers/plugin_runner.py — Purpose: Python module */
-# AOS — ./scripts/ai_providers/plugin_runner.py
+# AOS — scripts/ai_providers/plugin_runner.py — Purpose: Python module 
 # (c) 2025 RedactedCoder23
 # Brief: Source file.
 from __future__ import annotations

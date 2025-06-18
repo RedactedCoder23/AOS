@@ -1,4 +1,4 @@
-/* AOS — scripts/tests/test_quality_insights.py — Purpose: Python module */
+# AOS — scripts/tests/test_quality_insights.py — Purpose: Python module 
 # AOS — ./scripts/tests/test_quality_insights.py
 # (c) 2025 RedactedCoder23
 # Brief: Source file.

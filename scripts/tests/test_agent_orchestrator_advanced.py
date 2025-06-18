@@ -1,4 +1,4 @@
-/* AOS — scripts/tests/test_agent_orchestrator_advanced.py — Purpose: Python module */
+# AOS — scripts/tests/test_agent_orchestrator_advanced.py — Purpose: Python module 
 # AOS — ./scripts/tests/test_agent_orchestrator_advanced.py
 # (c) 2025 RedactedCoder23
 # Brief: Source file.

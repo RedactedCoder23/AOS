@@ -1,5 +1,5 @@
-#!/bin/sh
-# Demo for TCP echo
+#!/usr/bin/env bash
+set -euo pipefail
 ./build/net_echo --server --port 12345 &
 PID=$!
 sleep 1

@@ -1,5 +1,4 @@
-/* AOS — tests/python/conftest.py — Purpose: Python module */
-# AOS — ./tests/python/conftest.py
+# AOS — tests/python/conftest.py — Purpose: test fixtures
 # (c) 2025 RedactedCoder23
 # Brief: Source file.
 import os
