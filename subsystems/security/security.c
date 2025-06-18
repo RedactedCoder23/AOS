@@ -1,3 +1,4 @@
+/* AOS — subsystems/security/security.c — Purpose: C source file */
 /*
  * AOS — security.c
  * (c) 2025 RedactedCoder23

@@ -1,3 +1,4 @@
+/* AOS — subsystems/dev/dev.h — Purpose: Header file */
 /*
  * AOS — dev.h
  * (c) 2025 RedactedCoder23

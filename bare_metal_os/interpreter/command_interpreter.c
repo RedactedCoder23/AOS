@@ -1,3 +1,4 @@
+/* AOS — bare_metal_os/interpreter/command_interpreter.c — Purpose: C source file */
 /*
  * AOS — command_interpreter.c
  * (c) 2025 RedactedCoder23

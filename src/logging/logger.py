@@ -1,3 +1,4 @@
+/* AOS — src/logging/logger.py — Purpose: Python module */
 # AOS — ./src/logging/logger.py
 # (c) 2025 RedactedCoder23
 # Brief: Source file.

@@ -1,3 +1,4 @@
+/* AOS — src/policy.c — Purpose: C source file */
 /*
  * AOS — policy.c
  * (c) 2025 RedactedCoder23

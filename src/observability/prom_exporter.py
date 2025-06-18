@@ -1,3 +1,4 @@
+/* AOS — src/observability/prom_exporter.py — Purpose: Python module */
 # AOS — ./src/observability/prom_exporter.py
 # (c) 2025 RedactedCoder23
 # Brief: Source file.

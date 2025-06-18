@@ -1,3 +1,4 @@
+/* AOS — src/security/crypto.py — Purpose: Python module */
 # AOS — ./src/security/crypto.py
 # (c) 2025 RedactedCoder23
 # Brief: Source file.

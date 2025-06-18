@@ -1,3 +1,4 @@
+/* AOS — apps_src/fileman.c — Purpose: C source file */
 /*
  * AOS — fileman.c
  * (c) 2025 RedactedCoder23

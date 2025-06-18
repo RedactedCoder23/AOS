@@ -1,3 +1,4 @@
+/* AOS — src/profiler.c — Purpose: C source file */
 /*
  * AOS — profiler.c
  * (c) 2025 RedactedCoder23

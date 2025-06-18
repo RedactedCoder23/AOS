@@ -1,3 +1,4 @@
+/* AOS — bare_metal_os/traps.c — Purpose: C source file */
 /*
  * AOS — traps.c
  * (c) 2025 RedactedCoder23

@@ -1,3 +1,4 @@
+/* AOS — include/syscall.h — Purpose: Header file */
 /*
  * AOS — syscall.h
  * (c) 2025 RedactedCoder23

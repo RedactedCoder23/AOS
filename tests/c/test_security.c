@@ -1,3 +1,4 @@
+/* AOS — tests/c/test_security.c — Purpose: C source file */
 /*
  * AOS — test_security.c
  * (c) 2025 RedactedCoder23

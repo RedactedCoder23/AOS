@@ -1,3 +1,4 @@
+/* AOS — src/fs/cache.py — Purpose: Python module */
 # AOS — ./src/fs/cache.py
 # (c) 2025 RedactedCoder23
 # Brief: Source file.

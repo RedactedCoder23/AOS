@@ -1,3 +1,4 @@
+/* AOS — src/memory/allocator.py — Purpose: Python module */
 # AOS — ./src/memory/allocator.py
 # (c) 2025 RedactedCoder23
 # Brief: Source file.

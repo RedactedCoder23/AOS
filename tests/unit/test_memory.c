@@ -1,3 +1,4 @@
+/* AOS — tests/unit/test_memory.c — Purpose: C source file */
 /*
  * AOS — test_memory.c
  * (c) 2025 RedactedCoder23

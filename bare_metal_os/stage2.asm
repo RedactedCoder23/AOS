@@ -1,3 +1,4 @@
+/* AOS — bare_metal_os/stage2.asm — Purpose: Assembly source */
 /*
  * AOS — stage2.asm
  * (c) 2025 RedactedCoder23

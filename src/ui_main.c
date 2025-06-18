@@ -1,3 +1,4 @@
+/* AOS — src/ui_main.c — Purpose: C source file */
 /*
  * AOS — ui_main.c
  * (c) 2025 RedactedCoder23

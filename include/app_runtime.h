@@ -1,3 +1,4 @@
+/* AOS — include/app_runtime.h — Purpose: Header file */
 /*
  * AOS — app_runtime.h
  * (c) 2025 RedactedCoder23

@@ -1,3 +1,4 @@
+/* AOS — subsystems/fs/fs.h — Purpose: Header file */
 /*
  * AOS — fs.h
  * (c) 2025 RedactedCoder23

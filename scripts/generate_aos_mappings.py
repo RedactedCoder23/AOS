@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+/* AOS — scripts/generate_aos_mappings.py — Purpose: Python module */
 # AOS — ./scripts/generate_aos_mappings.py
 # (c) 2025 RedactedCoder23
 # Brief: Source file.

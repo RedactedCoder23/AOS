@@ -1,3 +1,4 @@
+/* AOS — src/api/errors.py — Purpose: Python module */
 # AOS — ./src/api/errors.py
 # (c) 2025 RedactedCoder23
 # Brief: Source file.

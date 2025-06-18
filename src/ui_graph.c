@@ -1,3 +1,4 @@
+/* AOS — src/ui_graph.c — Purpose: C source file */
 /*
  * AOS — ui_graph.c
  * (c) 2025 RedactedCoder23

@@ -1,3 +1,4 @@
+/* AOS — tests/python/test_plugins_cli.py — Purpose: Python module */
 # AOS — ./tests/python/test_plugins_cli.py
 # (c) 2025 RedactedCoder23
 # Brief: Source file.

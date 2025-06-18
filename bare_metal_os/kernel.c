@@ -1,3 +1,4 @@
+/* AOS — bare_metal_os/kernel.c — Purpose: C source file */
 /*
  * AOS — kernel.c
  * (c) 2025 RedactedCoder23

@@ -1,3 +1,4 @@
+/* AOS — tests/python/test_ui_playwright.py — Purpose: Python module */
 # AOS — ./tests/python/test_ui_playwright.py
 # (c) 2025 RedactedCoder23
 # Brief: Source file.

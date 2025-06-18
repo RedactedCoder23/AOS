@@ -1,3 +1,4 @@
+/* AOS — include/command_interpreter.h — Purpose: Header file */
 /*
  * AOS — command_interpreter.h
  * (c) 2025 RedactedCoder23

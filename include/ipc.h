@@ -1,3 +1,4 @@
+/* AOS — include/ipc.h — Purpose: Header file */
 /*
  * AOS — ipc.h
  * (c) 2025 RedactedCoder23

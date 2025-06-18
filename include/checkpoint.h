@@ -1,3 +1,4 @@
+/* AOS — include/checkpoint.h — Purpose: Header file */
 /*
  * AOS — checkpoint.h
  * (c) 2025 RedactedCoder23

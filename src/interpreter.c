@@ -1,3 +1,4 @@
+/* AOS — src/interpreter.c — Purpose: C source file */
 /*
  * AOS — interpreter.c
  * (c) 2025 RedactedCoder23
