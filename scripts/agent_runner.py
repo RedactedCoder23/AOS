@@ -1,4 +1,4 @@
-/* AOS — scripts/agent_runner.py — Purpose: Python module */
+# AOS — scripts/agent_runner.py — Purpose: Python module 
 # AOS — ./scripts/agent_runner.py
 # (c) 2025 RedactedCoder23
 # Brief: Source file.

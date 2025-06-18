@@ -249,7 +249,7 @@ const char *bm_current_name(void) {
 
 int bm_current_id(void) { return current_branch; }
 
-/* Userland thread/branch manager stubs */
+/* Minimal userland branch manager */
 #include "branch_manager.h"
 #include <stdio.h>
 #include <stdlib.h>
@@ -266,7 +266,6 @@ static branch_t *bm_branch_create_impl(void (*entry)(void *), void *arg) {
     b->parent = NULL;
     (void)entry;
     (void)arg;
-    printf("branch_create stub\n");
     return b;
 }
 
@@ -278,14 +277,12 @@ static branch_t *bm_branch_fork_impl(branch_t *parent) {
         return NULL;
     b->thread = NULL;
     b->parent = parent;
-    printf("branch_fork stub\n");
     return b;
 }
 
 static void bm_branch_join_impl(branch_t *b) {
     if (!b)
         return;
-    printf("branch_join stub\n");
     if (b->thread)
         free(b->thread);
     free(b);

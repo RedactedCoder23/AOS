@@ -1,5 +1,5 @@
-#!/bin/sh
-# Demo for hypervisor-backed branches
+#!/usr/bin/env bash
+set -euo pipefail
 set -euo pipefail
 
 usage() {

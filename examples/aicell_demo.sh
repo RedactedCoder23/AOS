@@ -1,5 +1,5 @@
-#!/bin/sh
-# Run aicell daemon and client demo
+#!/usr/bin/env bash
+set -euo pipefail
 ./build/aicell_daemon &
 DAEMON=$!
 sleep 1

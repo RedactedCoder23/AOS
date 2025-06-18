@@ -1,4 +1,4 @@
-/* AOS — tests/python/test_metrics_crossplatform.py — Purpose: Python module */
+# AOS — tests/python/test_metrics_crossplatform.py — Purpose: Python module 
 # AOS — ./tests/python/test_metrics_crossplatform.py
 # (c) 2025 RedactedCoder23
 # Brief: Source file.

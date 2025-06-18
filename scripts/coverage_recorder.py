@@ -1,4 +1,4 @@
-/* AOS — scripts/coverage_recorder.py — Purpose: Python module */
+# AOS — scripts/coverage_recorder.py — Purpose: Python module 
 # AOS — ./scripts/coverage_recorder.py
 # (c) 2025 RedactedCoder23
 # Brief: Source file.

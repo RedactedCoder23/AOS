@@ -1,4 +1,4 @@
-/* AOS — scripts/agent_orchestrator.py — Purpose: Python module */
+# AOS — scripts/agent_orchestrator.py — Purpose: Python module 
 # AOS — ./scripts/agent_orchestrator.py
 # (c) 2025 RedactedCoder23
 # Brief: Source file.

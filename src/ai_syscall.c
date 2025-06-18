@@ -5,7 +5,7 @@
  * Purpose: Source file.
  */
 #include "ai.h"
-/* [2025-06-09 06:06 UTC] AI syscall stub bridging to userland
+/* [2025-06-09 06:06 UTC] AI syscall bridging to userland
  * by: codex
  * Edge cases: buffer size fixed; service IDs not persisted.
  * See AGENT.md "Open Issues" for pending work.

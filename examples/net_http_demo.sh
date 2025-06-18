@@ -1,5 +1,5 @@
-#!/bin/sh
-# Demo for basic HTTP server
+#!/usr/bin/env bash
+set -euo pipefail
 PORT=9001
 ./build/http_server --port $PORT &
 PID=$!

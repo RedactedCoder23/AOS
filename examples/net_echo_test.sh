@@ -1,5 +1,5 @@
-#!/bin/sh
-# Smoke test for net echo demo
+#!/usr/bin/env bash
+set -euo pipefail
 set -e
 ./build/net_echo --server --port 23456 &
 server=$!

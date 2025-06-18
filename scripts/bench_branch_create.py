@@ -1,4 +1,4 @@
-/* AOS — scripts/bench_branch_create.py — Purpose: Python module */
+# AOS — scripts/bench_branch_create.py — Purpose: Python module 
 # AOS — ./scripts/bench_branch_create.py
 # (c) 2025 RedactedCoder23
 # Brief: Source file.

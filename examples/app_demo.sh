@@ -1,5 +1,5 @@
-#!/bin/sh
-# Demo for app runtime and installer
+#!/usr/bin/env bash
+set -euo pipefail
 set -e
 ../scripts/aos_install.sh install build/apps/fileman
 ../scripts/aos_install.sh install build/apps/textedit

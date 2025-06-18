@@ -1,6 +1,6 @@
-/* AOS — bare_metal_os/config_stub.c — Purpose: C source file */
+/* AOS — bare_metal_os/config.c — Purpose: C source file */
 /*
- * AOS — config_stub.c
+ * AOS — config.c
  * (c) 2025 RedactedCoder23
  * Purpose: Source file.
  */

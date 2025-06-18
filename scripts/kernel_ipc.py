@@ -1,4 +1,4 @@
-/* AOS — scripts/kernel_ipc.py — Purpose: Python module */
+# AOS — scripts/kernel_ipc.py — Purpose: Python module 
 # AOS — ./scripts/kernel_ipc.py
 # (c) 2025 RedactedCoder23
 # Brief: Source file.

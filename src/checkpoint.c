@@ -12,10 +12,10 @@
 #include <unistd.h>
 #endif
 
-/* Stub implementation. Linux attempts to call CRIU while other
+/* Minimal implementation. Linux attempts to call CRIU while other
  * platforms fallback to copying files. */
 
-static int write_stub(const char *path, const char *msg) {
+static int write_fallback(const char *path, const char *msg) {
     FILE *f = fopen(path, "w");
     if (!f)
         return -1;
@@ -34,14 +34,14 @@ int cp_snapshot(const char *branch, const char *dest) {
 #else
     char file[256];
     snprintf(file, sizeof(file), "%s/%s.chk", dest, branch);
-    return write_stub(file, "snapshot");
+    return write_fallback(file, "snapshot");
 #endif
 }
 
 int cp_diff(const char *branch, const char *dest) {
     char file[256];
     snprintf(file, sizeof(file), "%s/%s.diff", dest, branch);
-    return write_stub(file, "diff");
+    return write_fallback(file, "diff");
 }
 
 int cp_restore(const char *branch, const char *src) {

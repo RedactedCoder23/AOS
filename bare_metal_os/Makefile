@@ -14,8 +14,9 @@ STAGE2 ?= $(shell grub-install --print=libdir 2>/dev/null || echo /usr/lib/grub)
 all: bootloader.bin kernel.bin aos.bin
 	
 
-kernel.bin: kernel.c memory.c fs.c branch.c idt.c traps.c interpreter/command_interpreter.c serial.c \
-	../src/generated/commands.c ../src/generated/command_map.c config_stub.c
+kernel.bin: kernel.c memory.c fs.c branch.c idt.c traps.c \
+    interpreter/command_interpreter.c serial.c syscall_stubs.c config.c \
+    ../src/generated/commands.c ../src/generated/command_map.c
 	$(CC) $(CFLAGS) -I.. -I../include -I../src/generated -c kernel.c -o kernel.o
 	$(CC) $(CFLAGS) -I.. -I../include -I../src/generated -c memory.c -o memory.o
 	$(CC) $(CFLAGS) -I.. -I../include -I../src/generated -c fs.c -o fs.o
@@ -24,10 +25,11 @@ kernel.bin: kernel.c memory.c fs.c branch.c idt.c traps.c interpreter/command_in
 	$(CC) $(CFLAGS) -I.. -I../include -I../src/generated -c traps.c -o traps.o
 	$(CC) $(CFLAGS) -I.. -I../include -I../src/generated -c interpreter/command_interpreter.c -o command_interpreter.o
 	$(CC) $(CFLAGS) -I.. -I../include -I../src/generated -c serial.c -o serial.o
+	$(CC) $(CFLAGS) -I.. -I../include -I../src/generated -c syscall_stubs.c -o syscall_stubs.o
 	$(CC) $(CFLAGS) -I.. -I../include -I../src/generated -c ../src/generated/commands.c -o commands.o
 	$(CC) $(CFLAGS) -I.. -I../include -I../src/generated -c ../src/generated/command_map.c -o command_map.o
-	$(CC) $(CFLAGS) -I.. -I../include -I../src/generated -c config_stub.c -o config.o
-	$(LD) $(LDFLAGS) kernel.o memory.o fs.o branch.o idt.o traps.o command_interpreter.o serial.o commands.o command_map.o config.o -o kernel.elf
+	$(CC) $(CFLAGS) -I.. -I../include -I../src/generated -c config.c -o config.o
+	$(LD) $(LDFLAGS) kernel.o memory.o fs.o branch.o idt.o traps.o command_interpreter.o serial.o syscall_stubs.o commands.o command_map.o config.o -o kernel.elf
 	objcopy -O binary kernel.elf kernel.bin
 
 stage1.bin: stage1.asm

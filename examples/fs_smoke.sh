@@ -1,5 +1,5 @@
-#!/bin/sh
-# Smoke test for fs subsystem
+#!/usr/bin/env bash
+set -euo pipefail
 set -e
 out=$(./build/fs_demo)
 echo "$out"

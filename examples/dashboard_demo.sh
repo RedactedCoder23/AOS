@@ -1,5 +1,5 @@
-#!/bin/sh
-# Demo for branch dashboard and ipc host
+#!/usr/bin/env bash
+set -euo pipefail
 set -e
 ./build/ipc_host &
 HOST_PID=$!

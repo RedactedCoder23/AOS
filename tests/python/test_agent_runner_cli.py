@@ -1,5 +1,4 @@
-/* AOS — tests/python/test_agent_runner_cli.py — Purpose: Python module */
-# AOS — ./tests/python/test_agent_runner_cli.py
+# AOS — tests/python/test_agent_runner_cli.py — Purpose: Python module 
 # (c) 2025 RedactedCoder23
 # Brief: Source file.
 import os

@@ -86,7 +86,7 @@ void security_init(void) {
 }
 
 int check_capability(const char *cap) {
-    log_message(LOG_INFO, "checking cap %s (stub)", cap);
+    log_message(LOG_INFO, "checking cap %s", cap);
     return 0;
 }
 

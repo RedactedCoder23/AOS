@@ -1,4 +1,4 @@
-/* AOS — tests/python/test_audit_newactions.py — Purpose: Python module */
+# AOS — tests/python/test_audit_newactions.py — Purpose: Python module 
 # AOS — ./tests/python/test_audit_newactions.py
 # (c) 2025 RedactedCoder23
 # Brief: Source file.

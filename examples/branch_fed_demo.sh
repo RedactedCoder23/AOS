@@ -1,5 +1,5 @@
-#!/bin/sh
-# Demo for branch federation
+#!/usr/bin/env bash
+set -euo pipefail
 PORT1=10000
 PORT2=10001
 
