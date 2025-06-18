@@ -1,3 +1,4 @@
+/* AOS — src/tests/test_commands.c — Purpose: C source file */
 /*
  * AOS — test_commands.c
  * (c) 2025 RedactedCoder23

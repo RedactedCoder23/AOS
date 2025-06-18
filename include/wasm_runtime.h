@@ -1,3 +1,4 @@
+/* AOS — include/wasm_runtime.h — Purpose: Header file */
 /*
  * AOS — wasm_runtime.h
  * (c) 2025 RedactedCoder23

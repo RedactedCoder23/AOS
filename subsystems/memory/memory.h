@@ -1,3 +1,4 @@
+/* AOS — subsystems/memory/memory.h — Purpose: Header file */
 /*
  * AOS — memory.h
  * (c) 2025 RedactedCoder23

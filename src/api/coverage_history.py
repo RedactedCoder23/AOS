@@ -1,3 +1,4 @@
+/* AOS — src/api/coverage_history.py — Purpose: Python module */
 # AOS — ./src/api/coverage_history.py
 # (c) 2025 RedactedCoder23
 # Brief: Source file.

@@ -1,3 +1,4 @@
+/* AOS — include/ipc.h — Purpose: Header file */
 /*
  * AOS — ipc.h
  * (c) 2025 RedactedCoder23
@@ -12,10 +13,10 @@
 #define IPC_RING_SIZE 64
 #define IPC_PHYS_ADDR 0x00F00000 /* physical address of shared page */
 
-/* Enumeration of syscall identifiers */
-/* Enumeration of syscall identifiers used by the host and kernel */
+/* Consolidated syscall identifiers used by host and kernel */
 typedef enum {
     SYS_NONE = 0,
+<<<<<< codex/implement-ai-pipeline-functions-in-ai.c
     SYS_FORK_BRANCH,   /* fork a new branch from int_arg0 -> str_arg0 */
     SYS_MERGE_BRANCH,  /* merge branch int_arg0 into int_arg1 */
     SYS_DELETE_BRANCH, /* delete branch identified by int_arg0 */
@@ -29,6 +30,31 @@ typedef enum {
     SYS_FS_WRITE,      /* write int_arg1 bytes from str_arg0 to fd int_arg0 */
     SYS_FS_CLOSE,      /* close fd in int_arg0 */
     SYS_FS_LIST,       /* list directory str_arg0 */
+=======
+
+    /* Branch management */
+    SYS_CREATE_BRANCH,
+    SYS_MERGE_BRANCH,
+    SYS_LIST_BRANCHES,
+    SYS_SNAPSHOT_BRANCH,
+    SYS_DELETE_BRANCH,
+
+    /* Legacy/experimental */
+    SYS_FORK_BRANCH,
+    SYS_LIST_BRANCH,
+
+    /* AI requests */
+    SYS_AI_QUERY,
+    SYS_AI_MODEL_INFO,
+
+    /* Filesystem operations */
+    SYS_FS_OPEN,
+    SYS_FS_READ,
+    SYS_FS_WRITE,
+    SYS_FS_CLOSE,
+    SYS_FS_LIST,
+
+>>>>>> main
     SYS_MAX
 } SyscallID;
 

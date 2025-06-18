@@ -1,3 +1,4 @@
+/* AOS — examples/aicell_client.c — Purpose: C source file */
 /*
  * AOS — aicell_client.c
  * (c) 2025 RedactedCoder23

@@ -1,3 +1,4 @@
+/* AOS — include/plugin_supervisor.h — Purpose: Header file */
 /*
  * AOS — plugin_supervisor.h
  * (c) 2025 RedactedCoder23

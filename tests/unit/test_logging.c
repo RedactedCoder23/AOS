@@ -1,3 +1,4 @@
+/* AOS — tests/unit/test_logging.c — Purpose: C source file */
 /*
  * AOS — test_logging.c
  * (c) 2025 RedactedCoder23

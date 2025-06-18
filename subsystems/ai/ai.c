@@ -1,3 +1,4 @@
+/* AOS — subsystems/ai/ai.c — Purpose: C source file */
 /*
  * AOS — ai.c
  * (c) 2025 RedactedCoder23

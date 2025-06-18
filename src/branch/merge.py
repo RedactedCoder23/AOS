@@ -1,3 +1,4 @@
+/* AOS — src/branch/merge.py — Purpose: Python module */
 # AOS — ./src/branch/merge.py
 # (c) 2025 RedactedCoder23
 # Brief: Source file.

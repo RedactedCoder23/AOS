@@ -1,3 +1,4 @@
+/* AOS — include/lang_vm.h — Purpose: Header file */
 /*
  * AOS — lang_vm.h
  * (c) 2025 RedactedCoder23

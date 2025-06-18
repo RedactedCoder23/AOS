@@ -1,3 +1,4 @@
+/* AOS — tests/c/test_ai.c — Purpose: C source file */
 /*
  * AOS — test_ai.c
  * (c) 2025 RedactedCoder23

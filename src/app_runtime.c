@@ -1,3 +1,4 @@
+/* AOS — src/app_runtime.c — Purpose: C source file */
 /*
  * AOS — app_runtime.c
  * (c) 2025 RedactedCoder23

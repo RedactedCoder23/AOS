@@ -1,3 +1,4 @@
+/* AOS — include/branch_manager.h — Purpose: Header file */
 /*
  * AOS — branch_manager.h
  * (c) 2025 RedactedCoder23

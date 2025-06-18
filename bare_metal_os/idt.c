@@ -1,3 +1,4 @@
+/* AOS — bare_metal_os/idt.c — Purpose: C source file */
 /*
  * AOS — idt.c
  * (c) 2025 RedactedCoder23

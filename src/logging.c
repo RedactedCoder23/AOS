@@ -1,3 +1,4 @@
+/* AOS — src/logging.c — Purpose: C source file */
 /*
  * AOS — logging.c
  * (c) 2025 RedactedCoder23

@@ -1,3 +1,4 @@
+/* AOS — bare_metal_os/branch.c — Purpose: C source file */
 /*
  * AOS — branch.c
  * (c) 2025 RedactedCoder23

@@ -1,3 +1,4 @@
+/* AOS — tests/ipc_host_integration.c — Purpose: C source file */
 /*
  * AOS — ipc_host_integration.c
  * (c) 2025 RedactedCoder23
@@ -5,7 +6,7 @@
  */
 #include "ipc_host.h"
 #include "ipc_protocol.h"
-#include "syscalls.h"
+#include "ipc.h"
 #include <pthread.h>
 #include <assert.h>
 #include <stdio.h>

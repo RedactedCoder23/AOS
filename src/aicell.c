@@ -1,3 +1,4 @@
+/* AOS — src/aicell.c — Purpose: C source file */
 /*
  * AOS — aicell.c
  * (c) 2025 RedactedCoder23

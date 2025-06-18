@@ -1,3 +1,4 @@
+/* AOS — examples/net_echo.c — Purpose: C source file */
 /*
  * AOS — net_echo.c
  * (c) 2025 RedactedCoder23

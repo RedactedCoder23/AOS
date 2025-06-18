@@ -1,3 +1,4 @@
+/* AOS — src/wasm_runtime.c — Purpose: C source file */
 /*
  * AOS — wasm_runtime.c
  * (c) 2025 RedactedCoder23

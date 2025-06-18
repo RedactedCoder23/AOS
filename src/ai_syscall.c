@@ -1,3 +1,4 @@
+/* AOS — src/ai_syscall.c — Purpose: C source file */
 /*
  * AOS — ai_syscall.c
  * (c) 2025 RedactedCoder23

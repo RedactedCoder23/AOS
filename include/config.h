@@ -1,3 +1,4 @@
+/* AOS — include/config.h — Purpose: Header file */
 /*
  * AOS — config.h
  * (c) 2025 RedactedCoder23

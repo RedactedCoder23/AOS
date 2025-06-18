@@ -1,3 +1,4 @@
+/* AOS — tests/integration/test_persistence.c — Purpose: C source file */
 /*
  * AOS — test_persistence.c
  * (c) 2025 RedactedCoder23

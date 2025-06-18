@@ -1,3 +1,4 @@
+/* AOS — src/main.c — Purpose: C source file */
 /*
  * AOS — main.c
  * (c) 2025 RedactedCoder23

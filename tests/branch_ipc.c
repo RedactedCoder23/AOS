@@ -1,10 +1,11 @@
+/* AOS — tests/branch_ipc.c — Purpose: C source file */
 /*
  * AOS — branch_ipc.c
  * (c) 2025 RedactedCoder23
  * Purpose: Source file.
  */
 #include "ipc_host.h"
-#include "syscalls.h"
+#include "ipc.h"
 #include <assert.h>
 #include <pthread.h>
 #include <string.h>

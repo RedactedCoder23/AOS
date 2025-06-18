@@ -1,3 +1,4 @@
+/* AOS — examples/branch_vm_demo.c — Purpose: C source file */
 /*
  * AOS — branch_vm_demo.c
  * (c) 2025 RedactedCoder23

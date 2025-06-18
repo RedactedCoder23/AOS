@@ -1,3 +1,4 @@
+/* AOS — src/api/branches.py — Purpose: Python module */
 # AOS — ./src/api/branches.py
 # (c) 2025 RedactedCoder23
 # Brief: Source file.

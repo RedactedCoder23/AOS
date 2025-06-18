@@ -1,3 +1,4 @@
+/* AOS — tests/c/test_net.c — Purpose: C source file */
 /*
  * AOS — test_net.c
  * (c) 2025 RedactedCoder23
