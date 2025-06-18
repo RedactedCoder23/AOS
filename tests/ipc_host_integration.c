@@ -5,7 +5,7 @@
  */
 #include "ipc_host.h"
 #include "ipc_protocol.h"
-#include "syscalls.h"
+#include "ipc.h"
 #include <pthread.h>
 #include <assert.h>
 #include <stdio.h>
