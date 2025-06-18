@@ -1,3 +1,4 @@
+/* AOS — src/memory/monitor.py — Purpose: Python module */
 # AOS — ./src/memory/monitor.py
 # (c) 2025 RedactedCoder23
 # Brief: Source file.

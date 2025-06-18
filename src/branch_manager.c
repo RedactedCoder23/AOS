@@ -1,3 +1,4 @@
+/* AOS — src/branch_manager.c — Purpose: C source file */
 /*
  * AOS — branch_manager.c
  * (c) 2025 RedactedCoder23

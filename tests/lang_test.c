@@ -1,3 +1,4 @@
+/* AOS — tests/lang_test.c — Purpose: C source file */
 /*
  * AOS — lang_test.c
  * (c) 2025 RedactedCoder23

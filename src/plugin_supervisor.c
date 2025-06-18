@@ -1,3 +1,4 @@
+/* AOS — src/plugin_supervisor.c — Purpose: C source file */
 /*
  * AOS — plugin_supervisor.c
  * (c) 2025 RedactedCoder23

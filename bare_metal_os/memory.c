@@ -1,3 +1,4 @@
+/* AOS — bare_metal_os/memory.c — Purpose: C source file */
 /*
  * AOS — memory.c
  * (c) 2025 RedactedCoder23
@@ -5,6 +6,7 @@
  */
 #include <stddef.h>
 #include <stdint.h>
+#include "memory.h"
 
 typedef struct Block {
     size_t size;
@@ -28,13 +30,13 @@ static void paging_init(void) {
         pt[i] = (uint64_t)(i * 0x1000) | 0x3; /* RW + present */
     for (int i = 256; i < 512; i++)
         pt[i] = 0;
-    pd[0] = (uint64_t)pt | 0x3;
+    pd[0] = (uint64_t)(uintptr_t)pt | 0x3;
     for (int i = 1; i < 512; i++)
         pd[i] = 0;
-    pdpt[0] = (uint64_t)pd | 0x3;
+    pdpt[0] = (uint64_t)(uintptr_t)pd | 0x3;
     for (int i = 1; i < 512; i++)
         pdpt[i] = 0;
-    pml4[0] = (uint64_t)pdpt | 0x3;
+    pml4[0] = (uint64_t)(uintptr_t)pdpt | 0x3;
     for (int i = 1; i < 512; i++)
         pml4[i] = 0;
 

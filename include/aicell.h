@@ -1,3 +1,4 @@
+/* AOS — include/aicell.h — Purpose: Header file */
 /*
  * AOS — aicell.h
  * (c) 2025 RedactedCoder23

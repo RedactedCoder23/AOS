@@ -1,3 +1,4 @@
+/* AOS — src/security/permissions.py — Purpose: Python module */
 # AOS — ./src/security/permissions.py
 # (c) 2025 RedactedCoder23
 # Brief: Source file.

@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+/* AOS — scripts/aos_checkpoint.py — Purpose: Python module */
 # AOS — ./scripts/aos_checkpoint.py
 # (c) 2025 RedactedCoder23
 # Brief: Source file.

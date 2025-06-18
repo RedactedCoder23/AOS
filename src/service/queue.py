@@ -1,3 +1,4 @@
+/* AOS — src/service/queue.py — Purpose: Python module */
 # AOS — ./src/service/queue.py
 # (c) 2025 RedactedCoder23
 # Brief: Source file.

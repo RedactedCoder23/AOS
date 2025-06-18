@@ -1,3 +1,4 @@
+/* AOS — tests/test_merge_hypothesis.py — Purpose: Python module */
 # AOS — ./tests/test_merge_hypothesis.py
 # (c) 2025 RedactedCoder23
 # Brief: Source file.

@@ -1,3 +1,4 @@
+/* AOS — tests/ipc_host_integration.c — Purpose: C source file */
 /*
  * AOS — ipc_host_integration.c
  * (c) 2025 RedactedCoder23

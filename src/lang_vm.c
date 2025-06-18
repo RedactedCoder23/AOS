@@ -1,3 +1,4 @@
+/* AOS — src/lang_vm.c — Purpose: C source file */
 /*
  * AOS — lang_vm.c
  * (c) 2025 RedactedCoder23

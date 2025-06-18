@@ -7,7 +7,7 @@ Version: **v0.3.0**
 - `getting_started.md` – build and run instructions.
 - `system_architecture.md` – subsystem overview.
 - `ARCHITECTURE.md` – high level data flow diagram.
-- `profiler_usage.md` – profiler stub reference.
+- `ARCHIVE/profiler_usage.md` – archived profiler stub.
 - `command_flow.md` – REPL command dispatch diagram.
 - `ci_cd.md` – CI/CD automation overview.
 - `generate_mappings.md` – mapping generator usage.

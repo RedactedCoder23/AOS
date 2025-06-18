@@ -1,3 +1,4 @@
+/* AOS — src/branch_syscalls.c — Purpose: C source file */
 /*
  * AOS — branch_syscalls.c
  * (c) 2025 RedactedCoder23

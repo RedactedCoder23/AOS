@@ -1,3 +1,4 @@
+/* AOS — src/modeld.c — Purpose: C source file */
 /*
  * AOS — modeld.c
  * (c) 2025 RedactedCoder23

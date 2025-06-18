@@ -1,3 +1,4 @@
+/* AOS — include/plugin.h — Purpose: Header file */
 /*
  * AOS — plugin.h
  * (c) 2025 RedactedCoder23

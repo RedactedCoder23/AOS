@@ -1,3 +1,4 @@
+/* AOS — subsystems/fs/fs.c — Purpose: C source file */
 /*
  * AOS — fs.c
  * (c) 2025 RedactedCoder23

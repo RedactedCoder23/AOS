@@ -1,3 +1,4 @@
+/* AOS — include/interpreter.h — Purpose: Header file */
 /*
  * AOS — interpreter.h
  * (c) 2025 RedactedCoder23
@@ -27,7 +28,7 @@ void cmd_br_create_wrapper(int argc, char **argv);
 void cmd_br_list_wrapper(int argc, char **argv);
 void cmd_br_stop_wrapper(int argc, char **argv);
 void cmd_br_delete_wrapper(int argc, char **argv);
-void init_command_map();
+void init_command_map(void);
 
 void cmd_br_vm_create_wrapper(int argc, char **argv);
 void cmd_br_vm_list_wrapper(int argc, char **argv);

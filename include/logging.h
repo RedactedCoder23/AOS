@@ -1,3 +1,4 @@
+/* AOS — include/logging.h — Purpose: Header file */
 /*
  * AOS — logging.h
  * (c) 2025 RedactedCoder23

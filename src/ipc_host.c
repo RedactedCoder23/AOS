@@ -1,3 +1,4 @@
+/* AOS — src/ipc_host.c — Purpose: C source file */
 /*
  * AOS — ipc_host.c
  * (c) 2025 RedactedCoder23

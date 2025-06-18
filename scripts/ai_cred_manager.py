@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+/* AOS — scripts/ai_cred_manager.py — Purpose: Python module */
 # AOS — ./scripts/ai_cred_manager.py
 # (c) 2025 RedactedCoder23
 # Brief: Source file.

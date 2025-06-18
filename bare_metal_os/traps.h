@@ -1,3 +1,4 @@
+/* AOS — bare_metal_os/traps.h — Purpose: Header file */
 /*
  * AOS — traps.h
  * (c) 2025 RedactedCoder23

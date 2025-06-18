@@ -1,3 +1,4 @@
+/* AOS — src/logging/audit.py — Purpose: Python module */
 # AOS — ./src/logging/audit.py
 # (c) 2025 RedactedCoder23
 # Brief: Source file.

@@ -1,3 +1,4 @@
+/* AOS — examples/aicell_daemon.c — Purpose: C source file */
 /*
  * AOS — aicell_daemon.c
  * (c) 2025 RedactedCoder23

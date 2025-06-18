@@ -1,3 +1,4 @@
+/* AOS — scripts/ai_providers/loader.py — Purpose: Python module */
 # AOS — ./scripts/ai_providers/loader.py
 # (c) 2025 RedactedCoder23
 # Brief: Source file.

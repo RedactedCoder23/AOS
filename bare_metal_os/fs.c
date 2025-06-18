@@ -1,9 +1,10 @@
+/* AOS — bare_metal_os/fs.c — Purpose: C source file */
 /*
  * AOS — fs.c
  * (c) 2025 RedactedCoder23
  * Purpose: Source file.
  */
-#include "../subsystems/fs/fs.h"
+#include "fs_bare.h"
 #include <stddef.h>
 
 static void mem_set(void *d, int v, size_t n) {

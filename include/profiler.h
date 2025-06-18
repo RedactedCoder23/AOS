@@ -1,3 +1,4 @@
+/* AOS — include/profiler.h — Purpose: Header file */
 /*
  * AOS — profiler.h
  * (c) 2025 RedactedCoder23

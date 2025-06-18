@@ -1,3 +1,4 @@
+/* AOS — bare_metal_os/ai_trigger.c — Purpose: C source file */
 /*
  * AOS — ai_trigger.c
  * (c) 2025 RedactedCoder23

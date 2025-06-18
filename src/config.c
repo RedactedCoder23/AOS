@@ -1,3 +1,4 @@
+/* AOS — src/config.c — Purpose: C source file */
 /*
  * AOS — config.c
  * (c) 2025 RedactedCoder23

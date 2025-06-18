@@ -1,3 +1,4 @@
+/* AOS — include/error.h — Purpose: Header file */
 /*
  * AOS — error.h
  * (c) 2025 RedactedCoder23

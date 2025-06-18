@@ -1,3 +1,4 @@
+/* AOS — src/branch_net.c — Purpose: C source file */
 /*
  * AOS — branch_net.c
  * (c) 2025 RedactedCoder23

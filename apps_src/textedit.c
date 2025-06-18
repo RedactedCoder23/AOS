@@ -1,3 +1,4 @@
+/* AOS — apps_src/textedit.c — Purpose: C source file */
 /*
  * AOS — textedit.c
  * (c) 2025 RedactedCoder23
