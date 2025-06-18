@@ -1198,3 +1198,8 @@ by: codex-agent-xyz
 
 - Async job queue integrated with API and dashboard.
 - Initial web dashboard and plugin management features.
+
+### [2025-06-18 10:11 UTC] kernel build fix [codex]
+
+- Bare-metal kernel no longer depends on host libs.
+- Bootstrap installs multilib, cpio and xorriso for ISO build.

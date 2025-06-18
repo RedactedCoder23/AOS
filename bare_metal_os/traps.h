@@ -16,6 +16,6 @@ typedef struct registers {
     uint32_t ss;
 } registers_t;
 
-void isr_default(registers_t *r) __attribute__((interrupt));
+void isr_default(registers_t *r);
 
 #endif
