@@ -273,10 +273,16 @@ subsystems/memory/memory.c src/logging.c src/error.c -o build/tests/test_memory_
 	@gcov -o build/tests $(shell find build/tests -name '*.gcno') >/tmp/coverage.txt || true
 	@cat /tmp/coverage.txt
 	
-	efi:
-	@echo "→ Building EFI stub"
+efi:
+	@echo "→ Building EFI loader"
 	mkdir -p bare_metal_os/efi
-	echo "stub" > bare_metal_os/efi/aos.efi
+	$(CC) -DEFI_FUNCTION_WRAPPER -fpic -fshort-wchar -m64 \
+	-I/usr/include/efi -I/usr/include/efi/x86_64 \
+	-c bare_metal_os/efi/loader.c -o bare_metal_os/efi/loader.o
+	ld -nostdlib -znocombreloc -T /usr/lib/gnu-efi/elf_x86_64_efi.lds \
+	bare_metal_os/efi/loader.o -o bare_metal_os/efi/aos.efi \
+	-lefi -lgnuefi
+	@echo "→ EFI loader built"
 	
 	################################################################################
 	# ISO BUILD: assemble bootloader + kernel + GRUB config into aos.iso
