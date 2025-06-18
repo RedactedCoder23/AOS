@@ -17,4 +17,6 @@ typedef struct {
     uint8_t category;
 } CommandDictionary;
 
+void repl(void);
+
 #endif
