@@ -9,6 +9,7 @@
 void ai_init(const char *profile);
 const char *ai_reply(const char *prompt);
 void ai_shutdown(void);
+int ai_process(const char *input, char *output, size_t out_sz);
 
 int ai_infer(const char *prompt, char *out, unsigned long outsz);
 

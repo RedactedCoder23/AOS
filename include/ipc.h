@@ -22,6 +22,8 @@ typedef enum {
     SYS_LIST_BRANCH,   /* list all branches */
     SYS_AI_QUERY,      /* str_arg0 holds the prompt */
     SYS_AI_MODEL_INFO, /* request model metadata */
+    SYS_AI_INIT,       /* payload is model path */
+    SYS_AI_PROCESS,    /* process input payload */
     SYS_FS_OPEN,       /* open file str_arg0 with mode str_arg1 */
     SYS_FS_READ,       /* read int_arg1 bytes from fd int_arg0 */
     SYS_FS_WRITE,      /* write int_arg1 bytes from str_arg0 to fd int_arg0 */
