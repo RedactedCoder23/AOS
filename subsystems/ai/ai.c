@@ -5,6 +5,7 @@
  * Purpose: Source file.
  */
 #include "ai.h"
+#include "syscall.h"
 /* [2025-06-09 06:06 UTC] HTTP echo based AI stub
  * by: codex
  * Edge cases: network errors not handled, insecure HTTP parameters.
@@ -20,6 +21,9 @@ static char profile[32] = "default";
 void ai_init(const char *p) {
     if (p)
         strncpy(profile, p, sizeof(profile) - 1);
+    if (sys_ai_init("/models/default.bin") < 0)
+        strncpy(response, "init error", sizeof(response) - 1);
+    response[sizeof(response) - 1] = '\0';
     curl_global_init(CURL_GLOBAL_DEFAULT);
 }
 
@@ -138,3 +142,14 @@ const char *ai_get_provider(void) {
 }
 
 const char *ai_get_param(void) { return get_param(); }
+
+int ai_process(const char *input, char *output, size_t out_sz) {
+    if (!output || out_sz == 0)
+        return -1;
+    int rc = sys_ai_process(input, input ? strlen(input) : 0, output, out_sz);
+    if (rc < 0)
+        output[0] = '\0';
+    else
+        output[out_sz - 1] = '\0';
+    return rc;
+}

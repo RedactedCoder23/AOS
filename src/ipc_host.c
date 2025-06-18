@@ -32,6 +32,16 @@ void ipc_host_handle(IpcRing *ring) {
         snprintf(resp->data, sizeof(resp->data), "OK");
         resp->retval = strlen(resp->data);
         break;
+    case SYS_AI_INIT:
+        log_message(LOG_INFO, "ai init %s", req->payload);
+        resp->retval = 0;
+        resp->data[0] = '\0';
+        break;
+    case SYS_AI_PROCESS:
+        log_message(LOG_INFO, "ai process %d bytes", req->int_arg0);
+        snprintf(resp->data, sizeof(resp->data), "processed");
+        resp->retval = strlen(resp->data);
+        break;
     case SYS_CREATE_BRANCH:
         resp->retval = sys_create_branch();
         break;

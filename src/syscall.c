@@ -119,3 +119,43 @@ int sys_delete_branch(unsigned int branch_id) {
         usleep(1000);
     return ring->resp[idx].retval;
 }
+
+int sys_ai_init(const char *model) {
+    if (!ring)
+        return -1;
+    size_t idx = ring->head % IPC_RING_SIZE;
+    SyscallRequest *req = &ring->req[idx];
+    memset(req, 0, sizeof(*req));
+    req->id = SYS_AI_INIT;
+    strncpy(req->payload, model ? model : "", sizeof(req->payload) - 1);
+    req->payload[sizeof(req->payload) - 1] = '\0';
+    ring->head++;
+    while (ring->tail <= idx)
+        usleep(1000);
+    return ring->resp[idx].retval;
+}
+
+int sys_ai_process(const char *input, size_t in_len, char *out, size_t out_sz) {
+    if (!ring)
+        return -1;
+    size_t idx = ring->head % IPC_RING_SIZE;
+    SyscallRequest *req = &ring->req[idx];
+    memset(req, 0, sizeof(*req));
+    req->id = SYS_AI_PROCESS;
+    req->int_arg0 = (int32_t)in_len;
+    if (input) {
+        strncpy(req->payload, input, sizeof(req->payload) - 1);
+        req->payload[sizeof(req->payload) - 1] = '\0';
+    } else {
+        req->payload[0] = '\0';
+    }
+    ring->head++;
+    while (ring->tail <= idx)
+        usleep(1000);
+    SyscallResponse *resp = &ring->resp[idx];
+    if (out && out_sz) {
+        strncpy(out, resp->data, out_sz - 1);
+        out[out_sz - 1] = '\0';
+    }
+    return resp->retval;
+}
