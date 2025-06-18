@@ -12,7 +12,7 @@ Thank you for your interest in improving AOS. The project uses a simple Makefile
 6. Generate the compilation database with `make compdb` and fix any `clang-tidy` warnings.
 7. To work offline, set `AOS_AI_OFFLINE=1` to use the bundled mock AI backend.
 
-All commits must update `AGENT.md` and `PATCHLOG.md` with a timestamped summary and a "Next agent must" baton-pass. Follow the existing format when adding entries.
+All commits must update `docs/dev/AGENT.md` and `PATCHLOG.md` with a timestamped summary and a "Next agent must" baton-pass. Follow the existing format when adding entries.
 
 ### Style
 

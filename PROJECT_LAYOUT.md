@@ -37,5 +37,5 @@ This overview reflects the directory structure of AOS as of v0.3.0.
 └── ui/                    - web front-end sources
 ```
 
-Key root files include `Makefile`, `AGENT.md`, `PATCHLOG.md`, `ROADMAP.md`,
+Key root files include `Makefile`, `docs/dev/AGENT.md`, `PATCHLOG.md`, `ROADMAP.md`,
 `providers.json`, `mappings.json` and the Python requirements files.
