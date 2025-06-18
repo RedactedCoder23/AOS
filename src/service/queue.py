@@ -1,3 +1,6 @@
+# AOS — ./src/service/queue.py
+# (c) 2025 RedactedCoder23
+# Brief: Source file.
 import json
 import os
 import sys

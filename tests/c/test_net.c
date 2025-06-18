@@ -1,3 +1,8 @@
+/*
+ * AOS — test_net.c
+ * (c) 2025 RedactedCoder23
+ * Purpose: Source file.
+ */
 #include "net.h"
 #include <assert.h>
 #include <stdio.h>

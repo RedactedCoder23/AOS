@@ -1,3 +1,6 @@
+# AOS — ./src/api/errors.py
+# (c) 2025 RedactedCoder23
+# Brief: Source file.
 from fastapi import FastAPI, Request
 from fastapi.responses import JSONResponse
 from src.fs import FSException

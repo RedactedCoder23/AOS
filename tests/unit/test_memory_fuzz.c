@@ -1,3 +1,8 @@
+/*
+ * AOS — test_memory_fuzz.c
+ * (c) 2025 RedactedCoder23
+ * Purpose: Source file.
+ */
 #include "memory.h"
 #include <assert.h>
 #include <stdio.h>

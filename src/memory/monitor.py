@@ -1,3 +1,6 @@
+# AOS — ./src/memory/monitor.py
+# (c) 2025 RedactedCoder23
+# Brief: Source file.
 import threading
 import time
 import psutil

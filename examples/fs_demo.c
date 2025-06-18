@@ -1,3 +1,8 @@
+/*
+ * AOS — fs_demo.c
+ * (c) 2025 RedactedCoder23
+ * Purpose: Source file.
+ */
 #include "fs.h"
 #include <stdio.h>
 

@@ -1,3 +1,8 @@
+/*
+ * AOS — aicell.c
+ * (c) 2025 RedactedCoder23
+ * Purpose: Source file.
+ */
 #include "aicell.h"
 #include <fcntl.h>
 #include <string.h>

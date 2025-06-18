@@ -1,3 +1,6 @@
+# AOS — ./tests/python/test_desktop_backend.py
+# (c) 2025 RedactedCoder23
+# Brief: Source file.
 import json
 import os
 import sys

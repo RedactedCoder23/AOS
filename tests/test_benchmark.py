@@ -1,3 +1,6 @@
+# AOS — ./tests/test_benchmark.py
+# (c) 2025 RedactedCoder23
+# Brief: Source file.
 from fastapi.testclient import TestClient
 from src.api.metrics import app as metrics_app
 from src.branch.merge import three_way_merge

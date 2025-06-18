@@ -1,3 +1,6 @@
+# AOS — ./src/models/branch.py
+# (c) 2025 RedactedCoder23
+# Brief: Source file.
 from dataclasses import dataclass, field
 from typing import List
 

@@ -1,3 +1,8 @@
+/*
+ * AOS — branch.c
+ * (c) 2025 RedactedCoder23
+ * Purpose: Source file.
+ */
 #include "../include/branch.h"
 
 static Branch branches[MAX_BRANCHES];

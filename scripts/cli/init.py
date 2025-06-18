@@ -1,4 +1,7 @@
 #!/usr/bin/env python3
+# AOS — ./scripts/cli/init.py
+# (c) 2025 RedactedCoder23
+# Brief: Source file.
 """Interactive setup wizard creating .env and docker-compose.yml."""
 
 import os

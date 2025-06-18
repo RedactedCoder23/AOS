@@ -1,3 +1,8 @@
+/*
+ * AOS — traps.c
+ * (c) 2025 RedactedCoder23
+ * Purpose: Source file.
+ */
 #include "traps.h"
 #include <stdint.h>
 

@@ -1,3 +1,8 @@
+/*
+ * AOS — wasm_runtime.h
+ * (c) 2025 RedactedCoder23
+ * Purpose: Source file.
+ */
 #ifndef WASM_RUNTIME_H
 #define WASM_RUNTIME_H
 

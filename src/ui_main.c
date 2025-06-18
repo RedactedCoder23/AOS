@@ -1,3 +1,8 @@
+/*
+ * AOS — ui_main.c
+ * (c) 2025 RedactedCoder23
+ * Purpose: Source file.
+ */
 #include "ui_graph.h"
 #include <stdio.h>
 #include <string.h>

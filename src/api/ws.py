@@ -1,3 +1,6 @@
+# AOS — ./src/api/ws.py
+# (c) 2025 RedactedCoder23
+# Brief: Source file.
 import asyncio
 import json
 from fastapi import FastAPI, WebSocket

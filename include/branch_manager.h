@@ -1,3 +1,8 @@
+/*
+ * AOS — branch_manager.h
+ * (c) 2025 RedactedCoder23
+ * Purpose: Source file.
+ */
 #ifndef BRANCH_MANAGER_H
 #define BRANCH_MANAGER_H
 

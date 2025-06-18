@@ -1,3 +1,6 @@
+# AOS — ./tests/python/test_three_way_merge.py
+# (c) 2025 RedactedCoder23
+# Brief: Source file.
 import unittest
 from src.branch.merge import three_way_merge
 

@@ -1,3 +1,6 @@
+# AOS — ./src/branch/policy.py
+# (c) 2025 RedactedCoder23
+# Brief: Source file.
 import json
 import os
 from src.models.branch import Branch

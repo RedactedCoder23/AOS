@@ -1,3 +1,8 @@
+/*
+ * AOS — branch_net.c
+ * (c) 2025 RedactedCoder23
+ * Purpose: Source file.
+ */
 #include "branch.h"
 #include <arpa/inet.h>
 #include <pthread.h>

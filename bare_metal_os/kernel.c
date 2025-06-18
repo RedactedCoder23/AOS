@@ -1,3 +1,9 @@
+/*
+ * AOS — kernel.c
+ * (c) 2025 RedactedCoder23
+ * Purpose: Kernel entry point
+ * Dependencies: requires bootloader.bin stage1
+ */
 #include "../include/syscalls.h"
 #include "command_interpreter.h"
 #include "config.h"

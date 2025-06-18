@@ -11,7 +11,8 @@ readme = "README.md"
 requires-python = ">=3.8"
 
 [tool.setuptools]
-packages = ["scripts"]
+[tool.setuptools.packages.find]
+where = ["scripts"]
 
 [project.scripts]
 aos-audit = "scripts.aos_audit:main"

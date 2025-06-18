@@ -1,3 +1,8 @@
+/*
+ * AOS — repl.c
+ * (c) 2025 RedactedCoder23
+ * Purpose: Source file.
+ */
 #include "repl.h"
 #include "command_interpreter.h"
 #include <stdio.h>

@@ -1,3 +1,6 @@
+# AOS — ./tests/python/test_cred_manager.py
+# (c) 2025 RedactedCoder23
+# Brief: Source file.
 import os
 import tempfile
 import unittest

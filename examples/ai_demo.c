@@ -1,3 +1,8 @@
+/*
+ * AOS — ai_demo.c
+ * (c) 2025 RedactedCoder23
+ * Purpose: Source file.
+ */
 #include "ai.h"
 #include <stdio.h>
 #include <string.h>

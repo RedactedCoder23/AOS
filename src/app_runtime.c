@@ -1,3 +1,8 @@
+/*
+ * AOS — app_runtime.c
+ * (c) 2025 RedactedCoder23
+ * Purpose: Source file.
+ */
 #include "app_runtime.h"
 #include <dirent.h>
 #include <stdio.h>

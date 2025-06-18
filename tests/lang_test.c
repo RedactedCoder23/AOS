@@ -1,3 +1,8 @@
+/*
+ * AOS — lang_test.c
+ * (c) 2025 RedactedCoder23
+ * Purpose: Source file.
+ */
 #include "lang_vm.h"
 #include <assert.h>
 #include <stdio.h>

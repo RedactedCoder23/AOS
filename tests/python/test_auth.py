@@ -1,3 +1,6 @@
+# AOS — ./tests/python/test_auth.py
+# (c) 2025 RedactedCoder23
+# Brief: Source file.
 import unittest
 import sys
 import os

@@ -1,3 +1,8 @@
+/*
+ * AOS — memory.h
+ * (c) 2025 RedactedCoder23
+ * Purpose: Source file.
+ */
 #ifndef MEMORY_H
 #define MEMORY_H
 #include <stddef.h>

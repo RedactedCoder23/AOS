@@ -1,3 +1,8 @@
+/*
+ * AOS — sample_plugin.c
+ * (c) 2025 RedactedCoder23
+ * Purpose: Source file.
+ */
 #include <stdio.h>
 
 int plugin_init(void) {

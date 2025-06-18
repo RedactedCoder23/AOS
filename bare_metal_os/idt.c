@@ -1,3 +1,8 @@
+/*
+ * AOS — idt.c
+ * (c) 2025 RedactedCoder23
+ * Purpose: Source file.
+ */
 #include "idt.h"
 #include "traps.h"
 #include <stdint.h>

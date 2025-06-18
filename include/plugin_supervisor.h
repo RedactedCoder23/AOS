@@ -1,3 +1,8 @@
+/*
+ * AOS — plugin_supervisor.h
+ * (c) 2025 RedactedCoder23
+ * Purpose: Source file.
+ */
 #ifndef PLUGIN_SUPERVISOR_H
 #define PLUGIN_SUPERVISOR_H
 

@@ -1,3 +1,8 @@
+/*
+ * AOS — ui_graph.c
+ * (c) 2025 RedactedCoder23
+ * Purpose: Source file.
+ */
 #include "ui_graph.h"
 #include "branch.h"
 #include <math.h>

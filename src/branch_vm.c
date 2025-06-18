@@ -1,3 +1,8 @@
+/*
+ * AOS — branch_vm.c
+ * (c) 2025 RedactedCoder23
+ * Purpose: Source file.
+ */
 #include "branch.h"
 #include <stdio.h>
 #include <string.h>

@@ -1,3 +1,6 @@
+# AOS — ./scripts/jobqueue/worker.py
+# (c) 2025 RedactedCoder23
+# Brief: Source file.
 import threading
 
 import redis

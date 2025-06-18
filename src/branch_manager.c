@@ -1,3 +1,8 @@
+/*
+ * AOS — branch_manager.c
+ * (c) 2025 RedactedCoder23
+ * Purpose: Source file.
+ */
 #include "branch.h"
 /* [2025-06-09 06:06 UTC] Branch manager with JSON persistence
  * by: codex

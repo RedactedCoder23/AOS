@@ -1,3 +1,8 @@
+/*
+ * AOS — memory_demo.c
+ * (c) 2025 RedactedCoder23
+ * Purpose: Source file.
+ */
 #include "memory.h"
 #include <stdio.h>
 

@@ -1,3 +1,8 @@
+/*
+ * AOS — plugin_loader.c
+ * (c) 2025 RedactedCoder23
+ * Purpose: Source file.
+ */
 #include "logging.h"
 #include "plugin.h"
 #include "plugin_supervisor.h"

@@ -6,6 +6,6 @@ pre-commit-hooks~=5.0.0
 playwright~=1.52.0
 pytest-cov~=6.2.1
 mypy~=1.10.0
-PyJWT~=2.10.1
+PyJWT~=2.10
 argcomplete~=3.3
 hypothesis~=6.135

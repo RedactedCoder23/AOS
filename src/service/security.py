@@ -1,3 +1,6 @@
+# AOS — ./src/service/security.py
+# (c) 2025 RedactedCoder23
+# Brief: Source file.
 from fastapi import FastAPI, Request, Response
 
 

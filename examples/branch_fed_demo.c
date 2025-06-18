@@ -1,3 +1,8 @@
+/*
+ * AOS — branch_fed_demo.c
+ * (c) 2025 RedactedCoder23
+ * Purpose: Source file.
+ */
 #include "branch.h"
 #include <arpa/inet.h>
 #include <getopt.h>

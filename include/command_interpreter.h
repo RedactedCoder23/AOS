@@ -1,3 +1,8 @@
+/*
+ * AOS — command_interpreter.h
+ * (c) 2025 RedactedCoder23
+ * Purpose: Source file.
+ */
 #ifndef COMMAND_INTERPRETER_H
 #define COMMAND_INTERPRETER_H
 

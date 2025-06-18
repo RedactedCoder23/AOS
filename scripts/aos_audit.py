@@ -1,4 +1,7 @@
 #!/usr/bin/env python3
+# AOS — ./scripts/aos_audit.py
+# (c) 2025 RedactedCoder23
+# Brief: Source file.
 """Audit log utilities."""
 import argparse
 import json

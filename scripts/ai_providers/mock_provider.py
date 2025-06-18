@@ -1,3 +1,6 @@
+# AOS — ./scripts/ai_providers/mock_provider.py
+# (c) 2025 RedactedCoder23
+# Brief: Source file.
 from .base import AIProvider
 
 

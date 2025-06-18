@@ -1,4 +1,7 @@
 #!/usr/bin/env python3
+# AOS — ./scripts/branch_ui.py
+# (c) 2025 RedactedCoder23
+# Brief: Source file.
 """Branch lifecycle HTTP service with micro-VM support."""
 import json
 import os

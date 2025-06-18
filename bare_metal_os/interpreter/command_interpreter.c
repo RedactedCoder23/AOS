@@ -1,3 +1,8 @@
+/*
+ * AOS — command_interpreter.c
+ * (c) 2025 RedactedCoder23
+ * Purpose: Source file.
+ */
 #include "command_interpreter.h"
 #include "../include/branch.h"
 #include <stddef.h>
@@ -187,6 +192,7 @@ static void print_help(void) {
 
 void repl(void) {
     serial_init();
+    serial_print("AOS v0.3.0 booting...\n");
     mem_init_bare();
     fs_init();
     bm_init();

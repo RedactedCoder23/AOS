@@ -1,3 +1,8 @@
+/*
+ * AOS — test_commands.c
+ * (c) 2025 RedactedCoder23
+ * Purpose: Source file.
+ */
 #include "ai.h"
 #include "branch.h"
 #include "command_interpreter.h"

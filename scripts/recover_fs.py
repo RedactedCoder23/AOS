@@ -1,3 +1,6 @@
+# AOS — ./scripts/recover_fs.py
+# (c) 2025 RedactedCoder23
+# Brief: Source file.
 import json
 import os
 

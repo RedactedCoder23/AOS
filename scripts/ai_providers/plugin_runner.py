@@ -1,3 +1,6 @@
+# AOS — ./scripts/ai_providers/plugin_runner.py
+# (c) 2025 RedactedCoder23
+# Brief: Source file.
 from __future__ import annotations
 
 import docker

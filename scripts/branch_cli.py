@@ -1,4 +1,7 @@
 #!/usr/bin/env python3
+# AOS — ./scripts/branch_cli.py
+# (c) 2025 RedactedCoder23
+# Brief: Source file.
 """Simple command-line wrapper for branch operations."""
 import os
 import sys

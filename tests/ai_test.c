@@ -1,3 +1,8 @@
+/*
+ * AOS — ai_test.c
+ * (c) 2025 RedactedCoder23
+ * Purpose: Source file.
+ */
 #include "syscall.h"
 #include "ipc_host.h"
 #include <pthread.h>

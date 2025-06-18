@@ -1,3 +1,6 @@
+# AOS — ./src/api/branch_diff.py
+# (c) 2025 RedactedCoder23
+# Brief: Source file.
 import os
 from fastapi import FastAPI, HTTPException
 from src.service.security import apply_security_headers

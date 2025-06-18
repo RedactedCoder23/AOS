@@ -1,3 +1,6 @@
+# AOS — ./scripts/agent_orchestrator.py
+# (c) 2025 RedactedCoder23
+# Brief: Source file.
 import json
 import os
 import queue

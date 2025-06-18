@@ -1,3 +1,8 @@
+/*
+ * AOS — plugin_supervisor.c
+ * (c) 2025 RedactedCoder23
+ * Purpose: Source file.
+ */
 #include "plugin_supervisor.h"
 #include "wasm_runtime.h"
 #include <stdio.h>

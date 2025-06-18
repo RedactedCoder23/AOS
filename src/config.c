@@ -1,3 +1,8 @@
+/*
+ * AOS — config.c
+ * (c) 2025 RedactedCoder23
+ * Purpose: Source file.
+ */
 #include "config.h"
 #include <stdio.h>
 #include <string.h>

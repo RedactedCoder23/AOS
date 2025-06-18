@@ -1,3 +1,8 @@
+/*
+ * AOS — fs.h
+ * (c) 2025 RedactedCoder23
+ * Purpose: Source file.
+ */
 #ifndef FS_H
 #define FS_H
 #include <stddef.h>

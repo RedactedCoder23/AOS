@@ -1,3 +1,6 @@
+# AOS — ./src/memory/allocator.py
+# (c) 2025 RedactedCoder23
+# Brief: Source file.
 from __future__ import annotations
 import threading
 from typing import Dict

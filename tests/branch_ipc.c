@@ -1,3 +1,8 @@
+/*
+ * AOS — branch_ipc.c
+ * (c) 2025 RedactedCoder23
+ * Purpose: Source file.
+ */
 #include "ipc_host.h"
 #include "syscalls.h"
 #include <assert.h>

@@ -1,3 +1,8 @@
+/*
+ * AOS — stage2.asm
+ * (c) 2025 RedactedCoder23
+ * Purpose: Source file.
+ */
 BITS 16
 ORG 0x7e00
 

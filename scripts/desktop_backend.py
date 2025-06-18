@@ -1,4 +1,7 @@
 #!/usr/bin/env python3
+# AOS — ./scripts/desktop_backend.py
+# (c) 2025 RedactedCoder23
+# Brief: Source file.
 """Backend server powering the desktop web UI."""
 import http.server
 import socketserver

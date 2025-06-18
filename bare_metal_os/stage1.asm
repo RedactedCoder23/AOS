@@ -1,3 +1,9 @@
+;
+; AOS — stage1.asm
+; (c) 2025 RedactedCoder23
+; Purpose: Bootloader stage1
+; Dependencies: stage2.bin
+;
 BITS 16
 ORG 0x7c00
 

@@ -1,3 +1,6 @@
+# AOS — ./scripts/ai_providers/base.py
+# (c) 2025 RedactedCoder23
+# Brief: Source file.
 from __future__ import annotations
 
 """Base classes for AI provider plugins."""

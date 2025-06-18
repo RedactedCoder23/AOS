@@ -1,3 +1,6 @@
+# AOS — ./src/api/profiler.py
+# (c) 2025 RedactedCoder23
+# Brief: Source file.
 import time
 from fastapi import FastAPI, Request
 from src.logging.logger import get_logger, log

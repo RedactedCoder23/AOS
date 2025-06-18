@@ -1,3 +1,6 @@
+# AOS — ./scripts/ai_providers/openai_provider.py
+# (c) 2025 RedactedCoder23
+# Brief: Source file.
 from scripts.ai_providers.base import AIProvider
 import openai
 

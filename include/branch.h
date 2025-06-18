@@ -1,3 +1,8 @@
+/*
+ * AOS — branch.h
+ * (c) 2025 RedactedCoder23
+ * Purpose: Source file.
+ */
 #ifndef BRANCH_H
 #define BRANCH_H
 

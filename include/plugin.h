@@ -1,3 +1,8 @@
+/*
+ * AOS — plugin.h
+ * (c) 2025 RedactedCoder23
+ * Purpose: Source file.
+ */
 #ifndef PLUGIN_H
 #define PLUGIN_H
 /* plugin system interface with sandbox hooks */
