@@ -5,7 +5,7 @@
  * Purpose: Source file.
  */
 #include "ipc_host.h"
-#include "syscalls.h"
+#include "ipc.h"
 #include <assert.h>
 #include <pthread.h>
 #include <string.h>

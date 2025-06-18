@@ -7,6 +7,7 @@
 #include "syscall.h"
 #include "branch.h"
 #include "syscalls.h"
+#include "ipc.h"
 #include <string.h>
 #include <unistd.h>
 
