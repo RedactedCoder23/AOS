@@ -7,7 +7,7 @@
 - [Async Job Queue](async_queue.md)
 - [Web Dashboard](dashboard.md)
 - [AI Provider Plugins](ai_providers.md)
-- [Agent Log](../AGENT.md)
+- [Agent Log](dev/AGENT.md)
 - [Patch Log](../PATCHLOG.md)
 - [Roadmap](../ROADMAP.md)
 - [Configuration](configuration.md)

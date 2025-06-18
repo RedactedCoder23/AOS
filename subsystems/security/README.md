@@ -10,4 +10,4 @@ Roadmap:
 
 **Baton pass**: Security primitives are placeholders. Next agent should hook
 the policy engine into the network layer and outline credential storage
-mechanisms in `AGENT.md`.
+mechanisms in `docs/dev/AGENT.md`.

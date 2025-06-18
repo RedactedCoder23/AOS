@@ -14,4 +14,4 @@ Version: **v0.3.0**
 - `merge_ai.md` – hunk-based AI merge helper.
 - `archive/` – legacy command mapping files kept for reference.
 
-Refer to [../AGENT.md](../AGENT.md) and [../PATCHLOG.md](../PATCHLOG.md) for development history.
+Refer to [dev/AGENT.md](dev/AGENT.md) and [../PATCHLOG.md](../PATCHLOG.md) for development history.

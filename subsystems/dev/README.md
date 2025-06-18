@@ -10,4 +10,4 @@ Planned features:
 
 **Baton pass**: Device APIs remain unimplemented. Next agent should expand
 `driver_register()` semantics and document the kernel interface in
-`AGENT.md`.
+`docs/dev/AGENT.md`.

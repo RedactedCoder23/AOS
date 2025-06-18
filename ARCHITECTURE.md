@@ -1,6 +1,6 @@
 # AOS Architecture
 
-This document consolidates the previous `README.md`, `AGENT.md` and the design notes once kept in `SPEC.md`.
+This document consolidates the previous `README.md`, `docs/dev/AGENT.md` and the design notes once kept in `SPEC.md`.
 It gives a short overview of how AOS is structured and where to find additional information.
 
 ## Overview
@@ -31,7 +31,7 @@ illustrated in `docs/command_flow.md`.
 
 ## Development History
 
-Past design decisions and open issues are logged in `AGENT.md` and `PATCHLOG.md`. Earlier specifications
+Past design decisions and open issues are logged in `docs/dev/AGENT.md` and `PATCHLOG.md`. Earlier specifications
 were tracked in `SPEC.md` which has now been superseded by this summary.
 
 ## Building
