@@ -9,5 +9,7 @@
 
 void security_init(void);
 int check_capability(const char *cap);
+int security_check(int syscall_id);
 
 #endif
+
