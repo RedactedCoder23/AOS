@@ -5,6 +5,7 @@
  */
 #include "command_interpreter.h"
 #include "../include/branch.h"
+#include "../include/syscalls.h"
 #include <stddef.h>
 #include <stdint.h>
 
@@ -116,6 +117,17 @@ static void print_hex(unsigned int v) {
         serial_write(hex[i]);
 }
 
+static void print_hex64(uint64_t v) {
+    char hex[16];
+    serial_print("0x");
+    for (int j = 0; j < 16; j++) {
+        int d = (v >> ((15 - j) * 4)) & 0xF;
+        hex[j] = d < 10 ? '0' + d : 'a' + d - 10;
+    }
+    for (int i = 0; i < 16; i++)
+        serial_write(hex[i]);
+}
+
 /* command registration and stubs so generated tables link */
 void add_command(const char *name, command_handler handler) {
     (void)name;
@@ -190,6 +202,63 @@ static void print_help(void) {
     serial_print("exit\n");
 }
 
+static int command_interpreter(int argc, char **argv) {
+    if (argc == 0)
+        return 0;
+
+    if (str_cmp(argv[0], "create") == 0) {
+        int id = sys_create_branch();
+        if (id < 0)
+            serial_print("error\n");
+        else {
+            serial_print("created ");
+            print_uint((unsigned int)id);
+            serial_print("\n");
+        }
+        return 1;
+    } else if (str_cmp(argv[0], "merge") == 0) {
+        if (argc < 2) {
+            serial_print("error\n");
+            return 1;
+        }
+        int job = sys_merge_branch((int)str_to_uint(argv[1]));
+        if (job < 0)
+            serial_print("error\n");
+        else {
+            serial_print("merge job ");
+            print_uint((unsigned int)job);
+            serial_print("\n");
+        }
+        return 1;
+    } else if (str_cmp(argv[0], "list") == 0) {
+        char buf[128];
+        int rc = sys_list_branches(buf, sizeof(buf));
+        if (rc < 0)
+            serial_print("error\n");
+        else {
+            serial_print(buf);
+            serial_print("\n");
+        }
+        return 1;
+    } else if (str_cmp(argv[0], "snapshot") == 0) {
+        if (argc < 2) {
+            serial_print("error\n");
+            return 1;
+        }
+        uint64_t sid = sys_snapshot_branch((unsigned int)str_to_uint(argv[1]));
+        if ((int64_t)sid < 0)
+            serial_print("error\n");
+        else {
+            serial_print("snapshot ");
+            print_hex64(sid);
+            serial_print("\n");
+        }
+        return 1;
+    }
+
+    return 0;
+}
+
 void repl(void) {
     serial_init();
     serial_print("AOS v0.3.0 booting...\n");
@@ -220,6 +289,8 @@ void repl(void) {
             continue;
         if (str_cmp(argv[0], "exit") == 0)
             break;
+        if (command_interpreter(argc, argv))
+            continue;
         else if (str_cmp(argv[0], "help") == 0) {
             print_help();
             continue;
