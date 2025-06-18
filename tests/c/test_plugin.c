@@ -1,3 +1,8 @@
+/*
+ * AOS — test_plugin.c
+ * (c) 2025 RedactedCoder23
+ * Purpose: Source file.
+ */
 #include "plugin.h"
 #include <assert.h>
 #include <stdio.h>

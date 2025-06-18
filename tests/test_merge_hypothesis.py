@@ -1,3 +1,6 @@
+# AOS — ./tests/test_merge_hypothesis.py
+# (c) 2025 RedactedCoder23
+# Brief: Source file.
 from hypothesis import given, strategies as st
 from src.branch.merge import three_way_merge
 

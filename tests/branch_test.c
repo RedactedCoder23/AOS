@@ -1,3 +1,8 @@
+/*
+ * AOS — branch_test.c
+ * (c) 2025 RedactedCoder23
+ * Purpose: Source file.
+ */
 #include "branch_manager.h"
 #include <stdio.h>
 #include <stdlib.h>

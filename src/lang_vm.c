@@ -1,3 +1,8 @@
+/*
+ * AOS — lang_vm.c
+ * (c) 2025 RedactedCoder23
+ * Purpose: Source file.
+ */
 #include "lang_vm.h"
 #include "ai.h"
 #include "branch.h"

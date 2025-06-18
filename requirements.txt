@@ -8,14 +8,9 @@ flask~=3.1
 PyYAML~=6.0
 psutil~=7.0
 fastapi~=0.115
-<<<<<< dependabot/pip/pyjwt-approx-eq-2.10.1
-docker~=7.0
-PyJWT~=2.10
-=======
 docker~=7.1
-PyJWT~=2.8
->>>>>> main
-redis~=5.3
+PyJWT~=2.10
+redis~=6.2
 rq~=1.16
 uvicorn~=0.34
 websockets~=12.0

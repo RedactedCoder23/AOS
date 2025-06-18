@@ -1,3 +1,6 @@
+# AOS — ./scripts/ai_providers/loader.py
+# (c) 2025 RedactedCoder23
+# Brief: Source file.
 import importlib
 import json
 import os

@@ -283,10 +283,10 @@ src/memory.c src/logging.c src/error.c \
 	-o build/tests/test_ai
 	@./build/tests/test_ai
 	gcc -Iinclude -pthread \
-                tests/ai_test.c src/syscall.c src/ipc_host.c \
-                src/branch_manager.c \
-                src/logging.c src/error.c -DIPC_HOST_LIBRARY \
-                -o build/tests/ai_test
+	        tests/ai_test.c src/syscall.c src/ipc_host.c \
+	        src/branch_manager.c \
+	        src/logging.c src/error.c -DIPC_HOST_LIBRARY \
+	        -o build/tests/ai_test
 			@./build/tests/ai_test
 	gcc -Iinclude -Isubsystems/security \
 	tests/c/test_wasm_runtime.c src/wasm_runtime.c subsystems/security/security.c src/logging.c src/error.c \
@@ -337,10 +337,33 @@ efi:
 	@echo "→ Building EFI stub"
 	mkdir -p bare_metal_os/efi
 	echo "stub" > bare_metal_os/efi/aos.efi
-	
-iso: efi
-	@echo "→ Creating aos.iso"
-	touch aos.iso
+
+################################################################################
+# ISO BUILD: assemble bootloader + kernel + GRUB config into aos.iso
+################################################################################
+
+.PHONY: iso bare-metal prepare-iso
+
+# Build bare-metal bootloader.bin + kernel.bin
+bare-metal:
+	@echo "→ Building bare-metal OS"
+	@make -C bare_metal_os all
+
+# Collect files into a temporary ISO tree
+prepare-iso: bare-metal
+	@echo "→ Preparing ISO layout"
+	@rm -rf iso
+	@mkdir -p iso/boot/grub
+	@cp bare_metal_os/bootloader.bin bare_metal_os/kernel.bin iso/boot/
+	@cp boot/grub.cfg             iso/boot/grub/
+	@echo "→ Building initramfs"
+	@(cd rootfs && find . | cpio -o -H newc | gzip) > iso/boot/initramfs.img
+
+# Produce a true BIOS-bootable ISO
+iso: prepare-iso
+	@echo "→ Generating aos.iso"
+	grub-mkrescue -o aos.iso iso
+	@echo "✅ ISO built: aos.iso"
 subsystems: memory fs ai net
 
 

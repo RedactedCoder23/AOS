@@ -1,5 +1,9 @@
 #!/usr/bin/env python3
-"""Unified AOS command line interface."""
+"""
+AOS — scripts/aos.py
+(c) 2025 RedactedCoder23
+Brief: Unified AOS command line interface.
+"""
 
 from __future__ import annotations
 

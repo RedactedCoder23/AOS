@@ -1,3 +1,6 @@
+# AOS — ./scripts/ai_cred_client.py
+# (c) 2025 RedactedCoder23
+# Brief: Source file.
 """Client helper to fetch AI credentials from the vault daemon."""
 
 from __future__ import annotations

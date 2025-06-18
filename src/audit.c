@@ -1,3 +1,8 @@
+/*
+ * AOS — audit.c
+ * (c) 2025 RedactedCoder23
+ * Purpose: Source file.
+ */
 #include "audit.h"
 #include <stdio.h>
 #include <stdlib.h>

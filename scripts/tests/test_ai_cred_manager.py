@@ -1,3 +1,6 @@
+# AOS — ./scripts/tests/test_ai_cred_manager.py
+# (c) 2025 RedactedCoder23
+# Brief: Source file.
 import os
 import subprocess
 import tempfile

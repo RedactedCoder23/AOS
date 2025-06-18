@@ -1,4 +1,7 @@
 #!/usr/bin/env python3
+# AOS — ./scripts/plugins_cli.py
+# (c) 2025 RedactedCoder23
+# Brief: Source file.
 """Plugin registry management CLI."""
 
 from __future__ import annotations

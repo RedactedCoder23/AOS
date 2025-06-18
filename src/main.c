@@ -1,3 +1,8 @@
+/*
+ * AOS — main.c
+ * (c) 2025 RedactedCoder23
+ * Purpose: Source file.
+ */
 #include "ai.h"
 #include "app_runtime.h"
 #include "branch.h"

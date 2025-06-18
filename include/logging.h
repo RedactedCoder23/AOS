@@ -1,3 +1,8 @@
+/*
+ * AOS — logging.h
+ * (c) 2025 RedactedCoder23
+ * Purpose: Source file.
+ */
 #ifndef AOS_LOGGING_H
 #define AOS_LOGGING_H
 

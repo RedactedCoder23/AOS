@@ -1,4 +1,7 @@
 #!/usr/bin/env python3
+# AOS — ./scripts/merge_ai.py
+# (c) 2025 RedactedCoder23
+# Brief: Source file.
 """LLM-assisted three-way merge helper."""
 from __future__ import annotations
 

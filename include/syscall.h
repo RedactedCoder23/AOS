@@ -1,3 +1,8 @@
+/*
+ * AOS — syscall.h
+ * (c) 2025 RedactedCoder23
+ * Purpose: Source file.
+ */
 #ifndef SYSCALL_H
 #define SYSCALL_H
 

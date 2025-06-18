@@ -1,3 +1,6 @@
+# AOS — ./src/api/coverage.py
+# (c) 2025 RedactedCoder23
+# Brief: Source file.
 import glob
 import json
 import os

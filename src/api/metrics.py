@@ -1,3 +1,6 @@
+# AOS — ./src/api/metrics.py
+# (c) 2025 RedactedCoder23
+# Brief: Source file.
 from fastapi import FastAPI, HTTPException
 from src.service.security import apply_security_headers
 from scripts.agent_orchestrator import get_stats, get_cached_stats

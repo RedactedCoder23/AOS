@@ -1,3 +1,8 @@
+/*
+ * AOS — policy.h
+ * (c) 2025 RedactedCoder23
+ * Purpose: Source file.
+ */
 #ifndef POLICY_H
 #define POLICY_H
 

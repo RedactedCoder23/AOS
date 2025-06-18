@@ -1,3 +1,8 @@
+/*
+ * AOS — ai_trigger.c
+ * (c) 2025 RedactedCoder23
+ * Purpose: Source file.
+ */
 #include "logging.h"
 
 void ai_trigger(const char *prompt) {

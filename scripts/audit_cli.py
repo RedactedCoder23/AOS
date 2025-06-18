@@ -1,4 +1,7 @@
 #!/usr/bin/env python3
+# AOS — ./scripts/audit_cli.py
+# (c) 2025 RedactedCoder23
+# Brief: Source file.
 """Simple audit and rollback CLI"""
 import argparse
 import subprocess

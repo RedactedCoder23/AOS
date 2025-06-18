@@ -1,3 +1,6 @@
+# AOS — ./src/logging/logger.py
+# (c) 2025 RedactedCoder23
+# Brief: Source file.
 import json
 import logging
 import time

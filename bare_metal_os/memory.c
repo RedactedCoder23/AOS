@@ -1,3 +1,8 @@
+/*
+ * AOS — memory.c
+ * (c) 2025 RedactedCoder23
+ * Purpose: Source file.
+ */
 #include <stddef.h>
 #include <stdint.h>
 

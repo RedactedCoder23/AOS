@@ -1,3 +1,6 @@
+# AOS — ./src/security/jwt.py
+# (c) 2025 RedactedCoder23
+# Brief: Source file.
 import os
 from datetime import datetime, timedelta
 import jwt

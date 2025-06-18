@@ -1,3 +1,8 @@
+/*
+ * AOS — ai_syscall.c
+ * (c) 2025 RedactedCoder23
+ * Purpose: Source file.
+ */
 #include "ai.h"
 /* [2025-06-09 06:06 UTC] AI syscall stub bridging to userland
  * by: codex

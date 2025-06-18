@@ -1,4 +1,7 @@
 #!/usr/bin/env python3
+# AOS — ./scripts/generate_aos_mappings.py
+# (c) 2025 RedactedCoder23
+# Brief: Source file.
 """Generate and validate command mappings."""
 import argparse
 import json

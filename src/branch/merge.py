@@ -1,3 +1,6 @@
+# AOS — ./src/branch/merge.py
+# (c) 2025 RedactedCoder23
+# Brief: Source file.
 from typing import List, Tuple, Dict
 
 

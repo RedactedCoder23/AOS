@@ -1,3 +1,6 @@
+# AOS — ./src/api/health.py
+# (c) 2025 RedactedCoder23
+# Brief: Source file.
 from fastapi import FastAPI, HTTPException
 from src.service.security import apply_security_headers
 import redis

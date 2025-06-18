@@ -1,3 +1,6 @@
+# AOS — ./tests/python/test_ai_provider_loader.py
+# (c) 2025 RedactedCoder23
+# Brief: Source file.
 import unittest
 
 from scripts.ai_providers.loader import get_provider

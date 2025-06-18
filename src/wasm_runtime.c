@@ -1,3 +1,8 @@
+/*
+ * AOS — wasm_runtime.c
+ * (c) 2025 RedactedCoder23
+ * Purpose: Minimal WASM runtime hooks
+ */
 #include "wasm_runtime.h"
 #include "security.h"
 #include <stdio.h>

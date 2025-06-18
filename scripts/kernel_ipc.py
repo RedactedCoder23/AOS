@@ -1,3 +1,6 @@
+# AOS — ./scripts/kernel_ipc.py
+# (c) 2025 RedactedCoder23
+# Brief: Source file.
 import argparse
 import json
 import os

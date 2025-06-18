@@ -1,3 +1,8 @@
+/*
+ * AOS — ipc_host_integration.c
+ * (c) 2025 RedactedCoder23
+ * Purpose: Source file.
+ */
 #include "ipc_host.h"
 #include "ipc_protocol.h"
 #include "syscalls.h"

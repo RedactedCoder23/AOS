@@ -1,3 +1,8 @@
+/*
+ * AOS — branch_dashboard.c
+ * (c) 2025 RedactedCoder23
+ * Purpose: Source file.
+ */
 #include "ipc.h"
 #include <fcntl.h>
 #include <ncurses.h>

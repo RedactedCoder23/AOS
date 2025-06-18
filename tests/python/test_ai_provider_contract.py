@@ -1,3 +1,6 @@
+# AOS — ./tests/python/test_ai_provider_contract.py
+# (c) 2025 RedactedCoder23
+# Brief: Source file.
 import inspect
 import importlib
 import os

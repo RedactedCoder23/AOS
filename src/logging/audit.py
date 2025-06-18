@@ -1,3 +1,6 @@
+# AOS — ./src/logging/audit.py
+# (c) 2025 RedactedCoder23
+# Brief: Source file.
 import hashlib
 import json
 import os

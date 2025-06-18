@@ -1,3 +1,6 @@
+# AOS — ./tests/python/test_api_failure.py
+# (c) 2025 RedactedCoder23
+# Brief: Source file.
 import unittest
 from unittest import mock
 from fastapi.testclient import TestClient

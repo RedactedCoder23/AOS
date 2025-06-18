@@ -1,3 +1,8 @@
+/*
+ * AOS — syscall.c
+ * (c) 2025 RedactedCoder23
+ * Purpose: Source file.
+ */
 #include "syscall.h"
 #include "branch.h"
 #include "syscalls.h"

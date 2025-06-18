@@ -1,3 +1,6 @@
+# AOS — ./tests/fixtures/echo_plugin/run_plugin.py
+# (c) 2025 RedactedCoder23
+# Brief: Source file.
 import os
 import importlib
 

@@ -1,3 +1,6 @@
+# AOS — ./tests/python/test_branch_diff.py
+# (c) 2025 RedactedCoder23
+# Brief: Source file.
 import os
 import subprocess
 import tempfile

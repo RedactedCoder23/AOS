@@ -1,3 +1,6 @@
+# AOS — ./src/observability/prom_exporter.py
+# (c) 2025 RedactedCoder23
+# Brief: Source file.
 from fastapi import FastAPI, Response
 from src.service.security import apply_security_headers
 import time

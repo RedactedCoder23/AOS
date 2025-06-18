@@ -1,3 +1,8 @@
+/*
+ * AOS — plugin_demo.c
+ * (c) 2025 RedactedCoder23
+ * Purpose: Source file.
+ */
 #include "plugin.h"
 #include <stdio.h>
 int main(void) {

@@ -5,7 +5,9 @@ CC = gcc
 LD = ld
 CFLAGS = -ffreestanding -O2 -Wall -Wextra -Werror -m32
 LDFLAGS = -T kernel.ld -m elf_i386 -z separate-code
-STAGE2 ?= /usr/lib/grub/i386-pc/stage2
+# Path to GRUB stage2. Use grub-install to discover the proper libdir if
+# available; fall back to the traditional location.
+STAGE2 ?= $(shell grub-install --print=libdir 2>/dev/null || echo /usr/lib/grub)/i386-pc/stage2
 
 .PHONY: all clean stage1.bin stage2.bin bootloader.bin kernel.bin aos.bin
 
@@ -26,9 +28,9 @@ kernel.bin: kernel.c memory.c fs.c branch.c ai_trigger.c idt.c traps.c interpret
 	$(CC) $(CFLAGS) -I.. -I../include -I../src/generated -c ../src/generated/command_map.c -o command_map.o
 	$(CC) $(CFLAGS) -I.. -I../include -I../src/generated -c config_stub.c -o config.o
 	$(CC) $(CFLAGS) -I.. -I../include -I../src/generated -c ../src/logging.c -o logging.o
-        $(CC) $(CFLAGS) -I.. -I../include -I../src/generated -c ../src/error.c -o error.o
-        $(CC) $(CFLAGS) -I.. -I../include -I../src/generated -c ../src/branch_syscalls.c -o branch_syscalls.o
-        $(LD) $(LDFLAGS) kernel.o memory.o fs.o branch.o ai_trigger.o idt.o traps.o command_interpreter.o commands.o command_map.o config.o logging.o error.o branch_syscalls.o -o kernel.elf
+	$(CC) $(CFLAGS) -I.. -I../include -I../src/generated -c ../src/error.c -o error.o
+	$(CC) $(CFLAGS) -I.. -I../include -I../src/generated -c ../src/branch_syscalls.c -o branch_syscalls.o
+	$(LD) $(LDFLAGS) kernel.o memory.o fs.o branch.o ai_trigger.o idt.o traps.o command_interpreter.o commands.o command_map.o config.o logging.o error.o branch_syscalls.o -o kernel.elf
 	objcopy -O binary kernel.elf kernel.bin
 
 stage1.bin: stage1.asm

@@ -1,3 +1,8 @@
+/*
+ * AOS — checkpoint.h
+ * (c) 2025 RedactedCoder23
+ * Purpose: Source file.
+ */
 #ifndef CHECKPOINT_H
 #define CHECKPOINT_H
 

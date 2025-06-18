@@ -1,3 +1,8 @@
+/*
+ * AOS — net.h
+ * (c) 2025 RedactedCoder23
+ * Purpose: Source file.
+ */
 #ifndef NET_H
 #define NET_H
 

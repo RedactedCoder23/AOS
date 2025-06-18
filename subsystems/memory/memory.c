@@ -1,3 +1,8 @@
+/*
+ * AOS — memory.c
+ * (c) 2025 RedactedCoder23
+ * Purpose: Source file.
+ */
 #include "memory.h"
 /* [2025-06-09 10:45 UTC] Buddy allocator upgrade
  * by: codex

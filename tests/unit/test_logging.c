@@ -1,3 +1,8 @@
+/*
+ * AOS — test_logging.c
+ * (c) 2025 RedactedCoder23
+ * Purpose: Source file.
+ */
 #include "logging.h"
 #include <stdio.h>
 int main(void) {

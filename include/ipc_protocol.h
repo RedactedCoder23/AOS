@@ -1,3 +1,8 @@
+/*
+ * AOS — ipc_protocol.h
+ * (c) 2025 RedactedCoder23
+ * Purpose: Source file.
+ */
 #ifndef IPC_PROTOCOL_H
 #define IPC_PROTOCOL_H
 #include <stdint.h>

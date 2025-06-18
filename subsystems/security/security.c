@@ -1,3 +1,8 @@
+/*
+ * AOS — security.c
+ * (c) 2025 RedactedCoder23
+ * Purpose: Source file.
+ */
 #include "security.h"
 #include "logging.h"
 

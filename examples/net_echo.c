@@ -1,3 +1,8 @@
+/*
+ * AOS — net_echo.c
+ * (c) 2025 RedactedCoder23
+ * Purpose: Source file.
+ */
 #include "net.h"
 #include <getopt.h>
 #include <stdio.h>

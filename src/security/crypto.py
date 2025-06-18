@@ -1,3 +1,6 @@
+# AOS — ./src/security/crypto.py
+# (c) 2025 RedactedCoder23
+# Brief: Source file.
 import os
 from cryptography.hazmat.primitives.ciphers.aead import AESGCM
 

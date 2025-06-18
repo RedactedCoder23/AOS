@@ -1,3 +1,8 @@
+/*
+ * AOS — error.h
+ * (c) 2025 RedactedCoder23
+ * Purpose: Source file.
+ */
 #ifndef AOS_ERROR_H
 #define AOS_ERROR_H
 

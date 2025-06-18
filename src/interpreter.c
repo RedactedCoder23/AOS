@@ -1,3 +1,8 @@
+/*
+ * AOS — interpreter.c
+ * (c) 2025 RedactedCoder23
+ * Purpose: Source file.
+ */
 #include "interpreter.h"
 #include "ai.h"
 #include "branch.h"

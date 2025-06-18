@@ -1,3 +1,8 @@
+/*
+ * AOS — error.c
+ * (c) 2025 RedactedCoder23
+ * Purpose: Source file.
+ */
 #include "error.h"
 #include <stdio.h>
 

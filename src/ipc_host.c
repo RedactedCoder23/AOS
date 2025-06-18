@@ -1,3 +1,8 @@
+/*
+ * AOS — ipc_host.c
+ * (c) 2025 RedactedCoder23
+ * Purpose: Source file.
+ */
 #include "ipc_host.h"
 #include "branch.h"
 #include "ipc.h"

@@ -1,3 +1,8 @@
+/*
+ * AOS — profiler.c
+ * (c) 2025 RedactedCoder23
+ * Purpose: Source file.
+ */
 /* Profiler implementation stub. Measures elapsed time between start and report.
  * Integration with the logging subsystem is planned. */
 

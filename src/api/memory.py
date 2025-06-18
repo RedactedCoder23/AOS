@@ -1,3 +1,6 @@
+# AOS — ./src/api/memory.py
+# (c) 2025 RedactedCoder23
+# Brief: Source file.
 from fastapi import FastAPI, Request
 from src.service.security import apply_security_headers
 from src.memory.monitor import fragmentation_ratio

@@ -1,3 +1,6 @@
+# AOS — ./src/fs/cache.py
+# (c) 2025 RedactedCoder23
+# Brief: Source file.
 from functools import lru_cache
 import os
 

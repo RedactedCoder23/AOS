@@ -1,5 +1,9 @@
 #!/usr/bin/env python3
-"""Backend helper to query AI provider plugins."""
+"""
+AOS — scripts/ai_backend.py
+(c) 2025 RedactedCoder23
+Brief: FastAPI backend for the AI interpreter.
+"""
 import os
 import sys
 

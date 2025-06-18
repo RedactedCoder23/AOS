@@ -1,4 +1,7 @@
 #!/usr/bin/env python3
+# AOS — ./scripts/ai_backend_mock.py
+# (c) 2025 RedactedCoder23
+# Brief: Source file.
 """Offline mock for ai_backend."""
 import sys
 

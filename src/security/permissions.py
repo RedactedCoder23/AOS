@@ -1,3 +1,6 @@
+# AOS — ./src/security/permissions.py
+# (c) 2025 RedactedCoder23
+# Brief: Source file.
 from functools import wraps
 from typing import Any, Callable, Awaitable
 from fastapi import HTTPException, Request

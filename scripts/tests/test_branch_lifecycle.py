@@ -1,3 +1,6 @@
+# AOS — ./scripts/tests/test_branch_lifecycle.py
+# (c) 2025 RedactedCoder23
+# Brief: Source file.
 import json
 import os
 import sys

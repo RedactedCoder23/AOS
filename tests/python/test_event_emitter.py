@@ -1,3 +1,6 @@
+# AOS — ./tests/python/test_event_emitter.py
+# (c) 2025 RedactedCoder23
+# Brief: Source file.
 import unittest
 
 from src.api import events

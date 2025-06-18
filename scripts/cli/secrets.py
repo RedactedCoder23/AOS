@@ -1,4 +1,7 @@
 #!/usr/bin/env python3
+# AOS — ./scripts/cli/secrets.py
+# (c) 2025 RedactedCoder23
+# Brief: Source file.
 """Minimal secrets helper using ai_cred_manager."""
 
 import argparse

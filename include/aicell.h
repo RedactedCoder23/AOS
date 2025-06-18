@@ -1,3 +1,8 @@
+/*
+ * AOS — aicell.h
+ * (c) 2025 RedactedCoder23
+ * Purpose: Source file.
+ */
 #ifndef AICELL_H
 #define AICELL_H
 #include <stddef.h>

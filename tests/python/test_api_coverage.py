@@ -1,3 +1,6 @@
+# AOS — ./tests/python/test_api_coverage.py
+# (c) 2025 RedactedCoder23
+# Brief: Source file.
 import unittest
 from fastapi.testclient import TestClient
 from src.api.coverage import app

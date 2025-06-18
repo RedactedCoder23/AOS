@@ -1,3 +1,8 @@
+/*
+ * AOS — ipc.h
+ * (c) 2025 RedactedCoder23
+ * Purpose: Source file.
+ */
 #ifndef IPC_H
 #define IPC_H
 

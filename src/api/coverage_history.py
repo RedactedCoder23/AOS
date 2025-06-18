@@ -1,3 +1,6 @@
+# AOS — ./src/api/coverage_history.py
+# (c) 2025 RedactedCoder23
+# Brief: Source file.
 from fastapi import FastAPI
 from src.service.security import apply_security_headers
 from src.security.permissions import requires_permission

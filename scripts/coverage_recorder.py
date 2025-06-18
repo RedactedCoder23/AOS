@@ -1,3 +1,6 @@
+# AOS — ./scripts/coverage_recorder.py
+# (c) 2025 RedactedCoder23
+# Brief: Source file.
 import argparse
 import datetime
 import os
