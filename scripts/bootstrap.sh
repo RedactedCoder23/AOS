@@ -2,12 +2,12 @@
 set -e
 
 # Basic dev packages
-sudo apt-get update || true
-sudo apt-get install -y build-essential clang clang-tidy clang-format \
-    nasm gcc gcc-multilib libc6-dev-i386 binutils grub2-common grub-pc-bin \
-    xorriso cpio qemu-system-x86 \
-    pkg-config libcurl4-openssl-dev libncurses-dev python3-pip nodejs npm \
-    || echo "⚠️  Network unavailable; skipped installing build packages"
+sudo apt-get update || echo "⚠️ offline"
+sudo apt-get install -y \
+  build-essential clang tidy nasm gcc gcc-multilib libc6-dev-i386 \
+  binutils grub2-common grub-pc-bin xorriso qemu-system-x86_64 \
+  python3-pip nodejs npm \
+  || echo "⚠️ some packages failed—continuing"
 
 # Python dependencies
 python3 -m pip install --upgrade pip

@@ -3,9 +3,8 @@
 # (c) 2025 RedactedCoder23
 # Brief: QEMU boot integration test
 set -euo pipefail
-
-if ! command -v qemu-system-x86_64 >/dev/null 2>&1; then
-  echo "⚠️  QEMU not found; skipping integration test"
+if ! command -v qemu-system-x86_64 &>/dev/null; then
+  echo "⚠️ qemu-system-x86_64 not found—skipping"
   exit 0
 fi
 

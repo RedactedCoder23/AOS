@@ -1,4 +1,1 @@
-/* AOS — src/api/__init__.py — Purpose: Python module */
-# AOS — ./src/api/__init__.py
-# (c) 2025 RedactedCoder23
-# Brief: Source file.
+# AOS — src/api/__init__.py — Purpose: Python module
