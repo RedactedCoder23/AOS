@@ -46,3 +46,10 @@ aos.bin: bootloader.bin kernel.bin
 
 clean:
 	rm -f *.bin *.o *.elf kernel.elf
+
+.PHONY: test
+
+test:
+	@echo "\u2192 running bare-metal tests"
+	$(CC) $(CFLAGS) tests/test_build.c -o tests/test_build
+	@echo "bare-metal tests passed"

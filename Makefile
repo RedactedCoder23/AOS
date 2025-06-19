@@ -246,11 +246,12 @@ verify-all:
 test-unit:
 	@echo "\u2192 Running unit tests"
 	pytest -q tests/python/test_ai_provider_loader.py tests/python/test_agent_runner_cli.py || true
+	$(MAKE) -C bare_metal_os test
 	@mkdir -p build/tests
-	gcc -Isubsystems/memory -Iinclude tests/unit/test_memory.c \
-	subsystems/memory/memory.c src/logging.c src/error.c \
-	-o build/tests/test_memory
-	@./build/tests/test_memory
+		gcc -Isubsystems/memory -Iinclude tests/unit/test_memory.c \
+		subsystems/memory/memory.c src/logging.c src/error.c \
+		-o build/tests/test_memory
+		@./build/tests/test_memory
 	gcc -Iinclude tests/unit/test_logging.c src/logging.c src/error.c \
 	-o build/tests/test_logging
 	@./build/tests/test_logging
